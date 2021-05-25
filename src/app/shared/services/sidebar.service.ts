@@ -14,4 +14,9 @@ export class SideBarService {
     this.isOpen = !this.isOpen;
     this.toggleChange.emit(this.isOpen);
   }
+
+  close(){
+    this.isOpen = false;
+    this.toggleChange.emit(this.isOpen);
+  }
 }

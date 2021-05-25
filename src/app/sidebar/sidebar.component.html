@@ -1,6 +1,7 @@
 <div class="sidebar" [ngClass]="{'isOpen': isOpen === true}" >
   <section class="full-nav">
-    <a [routerLink]="['/']"><i class="material-icons mr-3">nature</i>All Parks</a>
-    <a [routerLink]="['/']"><i class="material-icons mr-3">view_module</i>Pass Lookup</a>
+    <a [routerLink]="parks" id="parks" (click)="activateLoading(['/parks'])"><i class="material-icons mr-3">terrain</i>All Parks</a>
+    <a [routerLink]="reservations" id="reservations" (click)="activateLoading(['/reservations'])"><i class="material-icons mr-3">book</i>Reservations</a>
+    <a [routerLink]="metrics" id="metrics" (click)="activateLoading(['/metrics'])"><i class="material-icons mr-3">multiline_chart</i>Site Metrics</a>
   </section>
 </div>

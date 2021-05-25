@@ -1,0 +1,21 @@
+<div class="fb-container bg-faded">
+    <section class="container-fluid-padding" id="anchor-point">
+        <div class="spinner-container" *ngIf="loading">
+            <div class="spinner-new rotating"></div>
+        </div>
+    </section>
+    <main class='mx-4' *ngIf="!loading">
+        <section> 
+            <h1>Reservations</h1>
+            <p class="tab-intro">
+                A list of all reservations, filterable by user name, email, reservation number, date, trailhead, etc...
+            </p> 
+        </section>
+        <hr>
+        <section>
+            <p>
+                Table of all reservations, active, canceled, and expired.
+            </p>
+        </section>
+    </main>
+</div>
