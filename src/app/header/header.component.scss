@@ -292,6 +292,19 @@
   }
 }
 
+.navbar-brand__subtitle {
+  align-content: center;
+  margin-left: 20px;
+  display: inline-block;
+  color: #fff;
+  line-height: 1.1rem;
+  font-weight: 800;
+  font-size: 1rem;
+  .wb {
+    display: block;
+  }
+}
+
 .navbar-brand__version {
   margin-top: -0.1rem;
   display: inline-block;
@@ -315,6 +328,15 @@
     font-size: 3rem;
     margin-top: 17px;
   }
+
+  .navbar-brand__subtitle {
+    align-content: center;
+    margin-left: 88px;
+    line-height: 1.2rem;
+    font-weight: 800;
+    font-size: 1.5rem;
+  }
+  
 
   .navbar-brand__version {
     font-size: 0.6rem;

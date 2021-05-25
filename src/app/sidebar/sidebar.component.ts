@@ -25,6 +25,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   public mainRouteId = '';
   public currentMenu = '';
   public showArchiveButton = false;
+  public mobileWindowWidth = 768;
 
   @HostBinding('class.is-toggled')
   isOpen = false;
@@ -145,9 +146,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.isNavMenuOpen = false;
   }
 
-  goToParks() {
-    // To be implemented
-    this.router.navigate(['/']);
+  activateLoading(path) {
+    this.router.navigate(path);
+    if (window.innerWidth <= this.mobileWindowWidth) {
+      this.sideBarService.close();
+    }
   }
 
   ngOnDestroy() {

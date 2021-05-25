@@ -1,0 +1,39 @@
+<div class="fb-container bg-faded">
+    <section class="container-fluid-padding" id="anchor-point">
+        <div class="spinner-container" *ngIf="loading">
+            <div class="spinner-new rotating"></div>
+        </div>
+    </section>
+    <main class='mx-4' *ngIf="!loading">
+        <section> 
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-between heading-bar">
+                <div>
+                  <h1 id="name" class="m-0">{{ 'Park Details' || '-' }}</h1>
+                </div>
+            </div>
+            <p class="tab-intro">
+                This page will show the details of a particular park and tables of all the areas (trailheads, parking lots, etc) within the park.
+                <button class="btn btn-primary" id="park-add" (click)="parkNavigate($event, 'add')">Add Park</button>
+                <button class="btn btn-warning" id="park-edit" (click)="parkNavigate($event, 'edit')">Edit Park</button>
+            </p> 
+        </section>
+        <hr>
+        <section>
+            <h4>Trails</h4>
+            <p>
+                Table of park trails here.
+            </p>
+            <button class="btn btn-primary" id="park-area" (click)="activateLoading($event, 'details')">Add New Trail</button>
+            <button class="btn btn-warning" id="park-edit" (click)="activateLoading($event, 'edit')">Edit Trail</button>
+        </section>
+        <hr>
+        <section>
+            <h4>Parking Lots</h4>
+            <p>
+                Table of parking lots here.
+            </p>
+            <button class="btn btn-primary" id="park-area" (click)="activateLoading($event, 'details')">Add New Parking Lot</button>
+            <button class="btn btn-warning" id="park-edit" (click)="parkNavigate($event, 'edit')">Edit Parking Lot</button>
+        </section>
+    </main>
+</div>
