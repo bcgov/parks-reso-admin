@@ -22,13 +22,10 @@ import { HomeComponent } from 'app/home/home.component';
 import { SidebarComponent } from 'app/sidebar/sidebar.component';
 import { SharedModule } from './shared/shared.module';
 import { ConfirmComponent } from './confirm/confirm.component';
-import { ParksComponent } from './parks/parks.component';
 import { ReservationsComponent } from './reservations/reservations.component';
-import { MetricsComponent } from './metrics/metrics.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { ParksDetailComponent } from './parks/parks-detail/parks-detail.component';
-import { ParksAddComponent } from './parks/parks-add/parks-add.component';
-import { ParksEditComponent } from './parks/parks-edit/parks-edit.component';
+import { ParksModule } from './parks/parks.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 // services
 
@@ -44,13 +41,9 @@ import { ParksEditComponent } from './parks/parks-edit/parks-edit.component';
     SidebarComponent,
     ToggleButtonComponent,
     ConfirmComponent,
-    ParksComponent,
     ReservationsComponent,
-    MetricsComponent,
     BreadcrumbComponent,
-    ParksDetailComponent,
-    ParksAddComponent,
-    ParksEditComponent
+
   ],
   imports: [
     SharedModule,
@@ -66,6 +59,8 @@ import { ParksEditComponent } from './parks/parks-edit/parks-edit.component';
     NgSelectModule,
     MatMenuModule,
     MatTabsModule,
+    ParksModule,
+    MetricsModule
   ],
   providers: [
     CookieService,
