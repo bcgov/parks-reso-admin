@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-parks',
@@ -8,11 +9,19 @@ import { Component, OnInit } from '@angular/core';
 export class ParksComponent implements OnInit {
 
   public loading = true;
+  private currentParkId = 123456789;
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.loading = false;
+  }
+
+  activateLoading(e: Event) {
+    e.stopPropagation();
+    this.router.navigate(['parks', this.currentParkId, 'details']);
   }
 
 }
