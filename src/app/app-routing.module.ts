@@ -5,6 +5,9 @@ import { HomeComponent } from './home/home.component';
 import { MetricsComponent } from './metrics/metrics.component';
 import { ParksComponent } from './parks/parks.component';
 import { ReservationsComponent } from './reservations/reservations.component';
+import { ParksAddComponent } from './parks/parks-add/parks-add.component';
+import { ParksDetailComponent } from './parks/parks-detail/parks-detail.component';
+import { ParksEditComponent } from './parks/parks-edit/parks-edit.component';
 
 const routes: Routes = [
   {
@@ -23,6 +26,13 @@ const routes: Routes = [
     component: ParksComponent,
   },
   {
+    path: 'parks/add',
+    component: ParksAddComponent,
+    data: {
+      breadcrumb: 'Add New Park',
+    }
+  },
+  {
     path: 'parks/:parkId',
     component: ParksComponent,
     data: {
@@ -37,31 +47,22 @@ const routes: Routes = [
     },
     {
       path: 'details',
-      redirectTo: '/',
+      component: ParksDetailComponent,
       data: {
         breadcrumb: null,
       },
       // TODO: implement component - park details
     },
     {
-      path: 'add',
-      redirectTo: '/',
-      data: {
-        breadcrumb: 'Add Park'
-      },
-      // TODO: implement component - add new park
-    },
-    {
       path: 'edit',
-      redirectTo: '/',
+      component: ParksEditComponent,
       data: {
         breadcrumb: 'Edit Park'
       },
       // TODO: implement component - edit existing park
     },
     {
-      path: ':areaId',
-      component: ParksComponent,
+      path: 'add-trail',
       data:{
         breadcrumb: 'Area Details'
       },

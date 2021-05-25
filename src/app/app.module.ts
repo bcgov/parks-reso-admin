@@ -26,6 +26,9 @@ import { ParksComponent } from './parks/parks.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { MetricsComponent } from './metrics/metrics.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { ParksDetailComponent } from './parks/parks-detail/parks-detail.component';
+import { ParksAddComponent } from './parks/parks-add/parks-add.component';
+import { ParksEditComponent } from './parks/parks-edit/parks-edit.component';
 
 // services
 
@@ -44,7 +47,10 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
     ParksComponent,
     ReservationsComponent,
     MetricsComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    ParksDetailComponent,
+    ParksAddComponent,
+    ParksEditComponent
   ],
   imports: [
     SharedModule,
