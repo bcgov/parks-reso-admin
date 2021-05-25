@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ParksDetailComponent implements OnInit {
 
   private currentAreaId: 987654321;
+  public loading = true;
 
   constructor(
     private router: Router,
@@ -16,9 +17,10 @@ export class ParksDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loading = false;
   }
 
-  activateLoading(e: Event,) {
+  activateLoading(e: Event) {
     e.stopPropagation();
     this.router.navigate([this.activatedRoute, this.currentAreaId, 'details']);
   }

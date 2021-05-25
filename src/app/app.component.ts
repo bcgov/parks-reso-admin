@@ -10,7 +10,7 @@ import { IBreadcrumb } from './breadcrumb/breadcrumb.component';
 })
 
 export class AppComponent implements OnInit {
-  
+
   public breadcrumbs: IBreadcrumb[];
   public activeBreadcrumb: IBreadcrumb;
 
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     private router: Router,
   ) {
     this.breadcrumbs = [];
-   }
+  }
 
   ngOnInit() {
     this.sideBarService.toggleChange.subscribe(isOpen => {

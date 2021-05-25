@@ -40,117 +40,117 @@ const routes: Routes = [
     },
     // TODO: implement resolver
     children: [
-    {
-      path: '',
-      redirectTo: 'details',
-      pathMatch: 'full'
-    },
-    {
-      path: 'details',
-      component: ParksDetailComponent,
-      data: {
-        breadcrumb: null,
+      {
+        path: '',
+        redirectTo: 'details',
+        pathMatch: 'full'
       },
-      // TODO: implement component - park details
-    },
-    {
-      path: 'edit',
-      component: ParksEditComponent,
-      data: {
-        breadcrumb: 'Edit Park'
+      {
+        path: 'details',
+        component: ParksDetailComponent,
+        data: {
+          breadcrumb: null,
+        },
+        // TODO: implement component - park details
       },
-      // TODO: implement component - edit existing park
-    },
-    {
-      path: 'add-trail',
-      data:{
-        breadcrumb: 'Area Details'
+      {
+        path: 'edit',
+        component: ParksEditComponent,
+        data: {
+          breadcrumb: 'Edit Park'
+        },
+        // TODO: implement component - edit existing park
       },
-      // TODO: implement router for trailheads/parking lots/etc
-      children: [
-        {
-          path: '',
-          redirectTo: 'details',
-          pathMatch: 'full',
+      {
+        path: 'add-trail',
+        data: {
+          breadcrumb: 'Area Details'
         },
-        {
-          path: 'details',
-          redirectTo: '/',
-          data: {
-            breadcrumb: null
+        // TODO: implement router for trailheads/parking lots/etc
+        children: [
+          {
+            path: '',
+            redirectTo: 'details',
+            pathMatch: 'full',
           },
-          // TODO: implement component - area details
-        },
-        {
-          path: 'add',
-          redirectTo: '/',
-          data: {
-            breadcrumb: 'Add Park Area'
-          },
-          // TODO: implement component - add new area
-        },
-        {
-          path: 'edit',
-          redirectTo: '/',
-          data: {
-            breadcrumb: 'Edit Park Area'
-          },
-          // TODO: implement component - edit existing area
-        },
-        {
-          path: ':passId',
-          component: ParksComponent,
-          data: {
-            breadcrumb: 'Pass Details'
-          },
-          // TODO: implement router for different passtypes
-          children: [
-            {
-              path: '',
-              redirectTo: 'details',
-              pathMatch: 'full',
+          {
+            path: 'details',
+            redirectTo: '/',
+            data: {
+              breadcrumb: null
             },
-            {
-              path: 'details',
-              redirectTo: '/',
-              data: {
-                breadcrumb: null
+            // TODO: implement component - area details
+          },
+          {
+            path: 'add',
+            redirectTo: '/',
+            data: {
+              breadcrumb: 'Add Park Area'
+            },
+            // TODO: implement component - add new area
+          },
+          {
+            path: 'edit',
+            redirectTo: '/',
+            data: {
+              breadcrumb: 'Edit Park Area'
+            },
+            // TODO: implement component - edit existing area
+          },
+          {
+            path: ':passId',
+            component: ParksComponent,
+            data: {
+              breadcrumb: 'Pass Details'
+            },
+            // TODO: implement router for different passtypes
+            children: [
+              {
+                path: '',
+                redirectTo: 'details',
+                pathMatch: 'full',
               },
-              // TODO: implement component - pass details
-            },
-            {
-              path: 'add',
-              redirectTo: '/',
-              data: {
-                breadcrumb: 'Add Pass'
+              {
+                path: 'details',
+                redirectTo: '/',
+                data: {
+                  breadcrumb: null
+                },
+                // TODO: implement component - pass details
               },
-              // TODO: implement component - add new pass
-            },
-            {
-              path: 'edit',
-              redirectTo: '/',
-              data: {
-                breadcrumb: 'Edit Pass'
+              {
+                path: 'add',
+                redirectTo: '/',
+                data: {
+                  breadcrumb: 'Add Pass'
+                },
+                // TODO: implement component - add new pass
               },
-              // TODO: implement component - edit existing path
-            },
-          ],
-        }
-      ],      
-    },
-  ],
+              {
+                path: 'edit',
+                redirectTo: '/',
+                data: {
+                  breadcrumb: 'Edit Pass'
+                },
+                // TODO: implement component - edit existing path
+              },
+            ],
+          }
+        ],
+      },
+    ],
   },
   {
     path: 'reservations',
     data: {
-      breadcrumb: "Reservations",
+      breadcrumb: 'Reservations',
     },
     component: ReservationsComponent,
   },
   {
     path: 'metrics',
     data: {
-      breadcrumb: "Site Metrics"
+      breadcrumb: 'Site Metrics'
     },
     component: MetricsComponent,
   },

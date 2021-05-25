@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./reservations.component.scss']
 })
 export class ReservationsComponent implements OnInit {
+  public loading = true;
 
   constructor() { }
 
   ngOnInit() {
+    this.loading = false;
   }
 
 }
