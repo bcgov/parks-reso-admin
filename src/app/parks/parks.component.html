@@ -1,0 +1,21 @@
+<div class="fb-container bg-faded">
+    <section class="container-fluid-padding" id="anchor-point">
+        <div class="spinner-container" *ngIf="loading">
+            <div class="spinner-new rotating"></div>
+        </div>
+    </section>
+    <main class='mx-4' *ngIf="!loading">
+        <section> 
+            <h1>All Parks</h1>
+            <p class="tab-intro">
+                A list of parks involved in the BC Parks day pass reservation program.
+            </p> 
+        </section>
+        <hr>
+        <section>
+            <p>
+                Table of parks here
+            </p>
+        </section>
+    </main>
+</div>

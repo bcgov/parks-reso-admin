@@ -1,6 +1,9 @@
 <app-header></app-header>
 <app-sidebar></app-sidebar>
 <div class="app-body content" id="scrollTop">
+	<span> 
+		<app-breadcrumb (navigateBreadcrumb)="navigateBreadcrumb($event)"></app-breadcrumb>
+	</span>
 	<app-toggle-button class="app-toggle"></app-toggle-button>
 	<router-outlet></router-outlet>
 </div>

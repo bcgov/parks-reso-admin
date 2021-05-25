@@ -20,6 +20,10 @@ import { FooterComponent } from 'app/footer/footer.component';
 import { ToggleButtonComponent } from 'app/toggle-button/toggle-button.component';
 import { HomeComponent } from 'app/home/home.component';
 import { SidebarComponent } from 'app/sidebar/sidebar.component';
+import { ParksComponent } from './parks/parks.component';
+import { ReservationsComponent } from './reservations/reservations.component';
+import { MetricsComponent } from './metrics/metrics.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 
 // services
 
@@ -34,6 +38,10 @@ import { SidebarComponent } from 'app/sidebar/sidebar.component';
     HomeComponent,
     SidebarComponent,
     ToggleButtonComponent,
+    ParksComponent,
+    ReservationsComponent,
+    MetricsComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserAnimationsModule,

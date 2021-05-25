@@ -1,0 +1,18 @@
+<div class="fb-container bg-faded">
+    <section class="container-fluid-padding" id="anchor-point">
+        <div class="spinner-container" *ngIf="loading">
+            <div class="spinner-new rotating"></div>
+        </div>
+    </section>
+    <main class='mx-4' *ngIf="!loading">
+        <section> 
+            <h1>Site Metrics</h1>
+        </section>
+        <hr>
+        <section>
+            <p>
+                Display site metrics here.
+            </p>
+        </section>
+    </main>
+</div>
