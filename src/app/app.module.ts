@@ -20,6 +20,8 @@ import { FooterComponent } from 'app/footer/footer.component';
 import { ToggleButtonComponent } from 'app/toggle-button/toggle-button.component';
 import { HomeComponent } from 'app/home/home.component';
 import { SidebarComponent } from 'app/sidebar/sidebar.component';
+import { SharedModule } from './shared/shared.module';
+import { ConfirmComponent } from './confirm/confirm.component';
 
 // services
 
@@ -34,8 +36,10 @@ import { SidebarComponent } from 'app/sidebar/sidebar.component';
     HomeComponent,
     SidebarComponent,
     ToggleButtonComponent,
+    ConfirmComponent
   ],
   imports: [
+    SharedModule,
     BrowserAnimationsModule,
     BrowserModule,
     FormsModule,

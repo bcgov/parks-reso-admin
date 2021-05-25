@@ -1,5 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
-import { SideBarService } from 'app/services/sidebar.service';
+import { SideBarService } from 'app/shared/services/sidebar.service';
 
 @Component({
   selector: 'app-root',
