@@ -7,6 +7,8 @@ import { ParkAddComponent } from './park-add/park-add.component';
 import { ParkEditComponent } from './park-edit/park-edit.component';
 import { ParkListComponent } from './park-list/park-list.component';
 import { ParkTableRowComponent } from './park-list/park-table-row/park-table-row.component';
+import { RouterModule } from '@angular/router';
+import { ParksComponent } from './parks.component';
 
 @NgModule({
   declarations: [
@@ -15,10 +17,12 @@ import { ParkTableRowComponent } from './park-list/park-table-row/park-table-row
     ParkEditComponent,
     ParkListComponent,
     ParkTableRowComponent,
+    ParksComponent,
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    RouterModule
   ],
   entryComponents: [
     ParkTableRowComponent

@@ -7,10 +7,28 @@ import { FacilityListComponent } from './facility-list/facility-list.component';
 export const FacilitiesRoutes: Routes = [
   {
     path: '',
+    redirectTo: 'list',
+    pathMatch: 'full'
+  },
+  {
+    path: 'list',
     component: FacilityListComponent,
+    data: {
+      breadcrumb: 'List',
+    }
+  },
+  {
+    path: 'add',
+    component: FacilityAddComponent,
+    data: {
+      breadcrumb: 'Add Facility',
+    },
   },
   {
     path: ':facilityId',
+    data: {
+      breadcrumb: null
+    },
     children: [
       {
         path: '',
@@ -19,15 +37,17 @@ export const FacilitiesRoutes: Routes = [
       },
       {
         path: 'details',
-        component: FacilityDetailsComponent
-      },
-      {
-        path: 'add',
-        component: FacilityAddComponent
+        component: FacilityDetailsComponent,
+        data: {
+          breadcrumb: 'Facility Details',
+        },
       },
       {
         path: 'edit',
-        component: FacilityEditComponent
+        component: FacilityEditComponent,
+        data: {
+          breadcrumb: 'Edit Facility',
+        },
       }
     ]
   }

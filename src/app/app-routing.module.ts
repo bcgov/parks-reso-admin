@@ -8,6 +8,7 @@ import { ReservationsComponent } from './reservations/reservations.component';
 
 // Routes
 import { ParksRoutes } from './parks/parks-routes';
+import { ParksComponent } from './parks/parks.component';
 
 
 const routes: Routes = [
@@ -16,11 +17,11 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'home',
-    component: HomeComponent,
-  },
-  {
     path: 'parks',
+    component: ParksComponent,
+    data: {
+      breadcrumb: 'Parks',
+    },
     children: ParksRoutes
   },
   {

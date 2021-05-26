@@ -5,6 +5,7 @@ import { FacilityAddComponent } from './facility-add/facility-add.component';
 import { FacilityEditComponent } from './facility-edit/facility-edit.component';
 import { FacilityDetailsComponent } from './facility-details/facility-details.component';
 import { FacilityListComponent } from './facility-list/facility-list.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { FacilityListComponent } from './facility-list/facility-list.component';
     FacilityListComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ]
 })
 export class FacilitiesModule { }

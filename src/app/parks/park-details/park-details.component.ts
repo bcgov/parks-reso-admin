@@ -17,6 +17,7 @@ export class ParkDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('WATASFSD');
     this.loading = false;
   }
 

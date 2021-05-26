@@ -1,1 +1,32 @@
-<p>feature-list works!</p>
+<div class="fb-container bg-faded">
+    <section class="container-fluid-padding"
+        id="anchor-point">
+        <!-- <div class="spinner-container"
+            *ngIf="loading">
+            <div class="spinner-new rotating"></div>
+        </div> -->
+    </section>
+    <main class='mx-4'>
+        <section>
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-between heading-bar">
+                <div>
+                    <h1 id="name"
+                        class="m-0">{{ 'Park Facility Details' || '-' }}</h1>
+                </div>
+            </div>
+            <p class="tab-intro">
+                This page will show the details of a particular park facility.
+                <button class="btn btn-warning"
+                    id="park-edit"
+                    (click)="editParkFacility($event)">Edit Facility</button>
+            </p>
+        </section>
+        <hr>
+        <section>
+            <h4>Details</h4>
+            <p>
+                Park Facility details here
+            </p>
+        </section>
+    </main>
+</div>

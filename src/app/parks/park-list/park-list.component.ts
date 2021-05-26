@@ -34,8 +34,7 @@ export class ParkListComponent implements OnInit {
 
   constructor(
     private _changeDetectionRef: ChangeDetectorRef,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -53,9 +52,8 @@ export class ParkListComponent implements OnInit {
     this._changeDetectionRef.detectChanges();
   }
 
-  addPark(e: Event) {
-    e.stopPropagation();
-    this.router.navigate(['add-park'], { relativeTo: this.route });
+  addPark() {
+    this.router.navigate(['parks', 'add']);
   }
 
   onMessageOut(msg: ITableMessage) {
