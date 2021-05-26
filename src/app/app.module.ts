@@ -13,6 +13,12 @@ import { MatMenuModule, MatTabsModule } from '@angular/material';
 import { AppRoutingModule } from 'app/app-routing.module';
 import { EditorModule } from '@tinymce/tinymce-angular';
 
+// Modules
+import { ParksModule } from './parks/parks.module';
+import { MetricsModule } from './metrics/metrics.module';
+import { FacilitiesModule } from './facilities/facilities.module';
+import { SharedModule } from './shared/shared.module';
+
 // components
 import { AppComponent } from 'app/app.component';
 import { HeaderComponent } from 'app/header/header.component';
@@ -20,17 +26,9 @@ import { FooterComponent } from 'app/footer/footer.component';
 import { ToggleButtonComponent } from 'app/toggle-button/toggle-button.component';
 import { HomeComponent } from 'app/home/home.component';
 import { SidebarComponent } from 'app/sidebar/sidebar.component';
-import { SharedModule } from './shared/shared.module';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { ParksModule } from './parks/parks.module';
-import { MetricsModule } from './metrics/metrics.module';
-
-// services
-
-// feature modules
-
 
 @NgModule({
   declarations: [
@@ -57,9 +55,11 @@ import { MetricsModule } from './metrics/metrics.module';
     NgSelectModule,
     MatMenuModule,
     MatTabsModule,
-    ParksModule,
     MetricsModule,
-    SharedModule
+    SharedModule,
+
+    ParksModule,
+    FacilitiesModule
   ],
   providers: [
     CookieService,

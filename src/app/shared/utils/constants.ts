@@ -20,12 +20,14 @@ export class Constants {
     firstName: 'Frank',
     lastName: 'Sinatra',
     email: 'frank@gmail.com',
-    feature: 10
+    confirmationNumber: 'b289djd831',
+    numberOfGuests: 3,
+    facility: 10
   };
 
-  public static readonly mockFeature1 = {
+  public static readonly mockFacility1 = {
     _id: 10,
-    _schemaName: 'Feature',
+    _schemaName: 'Facility',
     name: 'Goldstream Trail',
     type: 'trail',
     time: 'AM',
@@ -35,9 +37,9 @@ export class Constants {
     park: 1
   };
 
-  public static readonly mockFeature2 = {
+  public static readonly mockFacility2 = {
     _id: 11,
-    _schemaName: 'Feature',
+    _schemaName: 'Facility',
     name: 'Goldstream Parking Lot',
     type: 'parking',
     time: 'AM',
@@ -52,7 +54,7 @@ export class Constants {
     _schemaName: 'Park',
     name: 'Goldstream',
     status: 'open',
-    features: [10, 11]
+    facilities: [10, 11]
   };
 
   public static readonly mockPark2 = {
@@ -60,7 +62,7 @@ export class Constants {
     _schemaName: 'Park',
     name: 'Alice Lake Provincial Park',
     status: 'open',
-    features: []
+    facilities: []
   };
 
   public static readonly mockParkList = [
