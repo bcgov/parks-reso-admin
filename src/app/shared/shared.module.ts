@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MatSlideToggleModule, MatMenuModule, MatSelectModule, MatTooltipModule, MatCheckboxModule } from '@angular/material';
+import { MatSlideToggleModule, MatMenuModule, MatSelectModule, MatTooltipModule, MatCheckboxModule, MatTableModule } from '@angular/material';
 import { MatSnackBarModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -9,8 +9,6 @@ import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // <== add the imports!
 import { RouterModule } from '@angular/router';
-import { TableTemplateComponent } from './components/table-template/table-template.component';
-import { TableRowDirective } from './components/table-template/table-row.directive';
 import { PageSizePickerComponent } from './components/page-size-picker/page-size-picker.component';
 import { PageCountDisplayComponent } from './components/page-count-display/page-count-display.component';
 import { AutoCompleteMultiSelectComponent } from './components/autocomplete-multi-select/autocomplete-multi-select.component';
@@ -20,6 +18,8 @@ import { SearchFilterTemplateComponent } from './components/search-filter-templa
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TableRowDirective } from './components/table-template/table-row.directive';
+import { TableTemplateComponent } from './components/table-template/table-template.component';
 
 @NgModule({
   imports: [
@@ -37,16 +37,17 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgSelectModule,
     MatSelectModule,
     MatTooltipModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTableModule
   ],
   declarations: [
-    TableRowDirective,
-    TableTemplateComponent,
     PageSizePickerComponent,
     PageCountDisplayComponent,
     AutoCompleteMultiSelectComponent,
     SearchFilterTemplateComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    TableRowDirective,
+    TableTemplateComponent
   ],
   entryComponents: [
   ],
@@ -55,13 +56,13 @@ import { NgSelectModule } from '@ng-select/ng-select';
     MatSnackBarModule,
     NgZorroAntdModule,
 
-    TableRowDirective,
-    TableTemplateComponent,
     PageSizePickerComponent,
     PageCountDisplayComponent,
     AutoCompleteMultiSelectComponent,
     SearchFilterTemplateComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    TableRowDirective,
+    TableTemplateComponent
   ],
   providers: [
     TableTemplate,

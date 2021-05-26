@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule, ApplicationRef } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { MatTabsModule, MatMenuModule } from '@angular/material';
+import { MatMenuModule, MatTabsModule } from '@angular/material';
 
 // modules
 import { AppRoutingModule } from 'app/app-routing.module';
@@ -42,11 +42,9 @@ import { MetricsModule } from './metrics/metrics.module';
     ToggleButtonComponent,
     ConfirmComponent,
     ReservationsComponent,
-    BreadcrumbComponent,
-
+    BreadcrumbComponent
   ],
   imports: [
-    SharedModule,
     BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
@@ -60,7 +58,8 @@ import { MetricsModule } from './metrics/metrics.module';
     MatMenuModule,
     MatTabsModule,
     ParksModule,
-    MetricsModule
+    MetricsModule,
+    SharedModule
   ],
   providers: [
     CookieService,

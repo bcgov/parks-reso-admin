@@ -13,7 +13,7 @@ import { TableObject } from './table-object';
 import { ITableMessage } from './table-row-component';
 
 @Component({
-  selector: 'lib-table-template',
+  selector: 'app-table-template',
   templateUrl: './table-template.component.html',
   styleUrls: ['./table-template.component.scss']
 })
