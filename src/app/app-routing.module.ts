@@ -113,17 +113,17 @@ const routes: Routes = [
   },
   {
     path: 'reservations',
+    component: ReservationsComponent,
     data: {
       breadcrumb: 'Reservations',
     },
-    component: ReservationsComponent,
   },
   {
     path: 'metrics',
+    component: MetricsComponent,
     data: {
       breadcrumb: 'Site Metrics'
     },
-    component: MetricsComponent,
   },
   {
     // wildcard route
