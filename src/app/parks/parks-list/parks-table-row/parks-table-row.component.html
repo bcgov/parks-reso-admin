@@ -1,0 +1,12 @@
+<td data-label="Park Name"
+    scope="row"
+    class="col-6">{{rowData.name}}</td>
+<td data-label="Status"
+    scope="row"
+    class="col-6">{{rowData.status}}</td>
+<td data-label="Status"
+    scope="row"
+    class="col-6">
+    <button class="btn btn-primary"
+        (click)="navigate(rowData._id)">View Park</button>
+</td>
