@@ -8,12 +8,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ParksDetailComponent implements OnInit {
 
-  private currentAreaId: 987654321;
   public loading = true;
+  private currentFeatureId = 987654321;
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -22,12 +22,17 @@ export class ParksDetailComponent implements OnInit {
 
   activateLoading(e: Event) {
     e.stopPropagation();
-    this.router.navigate([this.activatedRoute, this.currentAreaId, 'details']);
+    this.router.navigate(['../details', this.currentFeatureId, 'details'], {relativeTo: this.route});
   }
 
-  parkNavigate(e: Event, path: any[]) {
+  editPark(e: Event) {
     e.stopPropagation();
-    this.router.navigate([`./${path}`]);
+    this.router.navigate(['../edit'], {relativeTo: this.route});
+  }
+
+  addParkFeature(e: Event) {
+    e.stopPropagation();
+    this.router.navigate(['../add-feature'], {relativeTo: this.route});
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-parks',
@@ -12,7 +12,8 @@ export class ParksComponent implements OnInit {
   private currentParkId = 123456789;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -21,7 +22,12 @@ export class ParksComponent implements OnInit {
 
   activateLoading(e: Event) {
     e.stopPropagation();
-    this.router.navigate(['parks', this.currentParkId, 'details']);
+    this.router.navigate([this.currentParkId, 'details'], {relativeTo: this.route});
+  }
+
+  addPark(e: Event) {
+    e.stopPropagation();
+    this.router.navigate(['add-park'], {relativeTo: this.route});
   }
 
 }
