@@ -9,7 +9,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ParksComponent implements OnInit {
 
   public loading = true;
-  private currentParkId = 123456789;
 
   constructor(
     private router: Router,
@@ -19,12 +18,6 @@ export class ParksComponent implements OnInit {
   ngOnInit() {
     this.loading = false;
   }
-
-  activateLoading(e: Event) {
-    e.stopPropagation();
-    this.router.navigate([this.currentParkId, 'details'], {relativeTo: this.route});
-  }
-
   addPark(e: Event) {
     e.stopPropagation();
     this.router.navigate(['add-park'], {relativeTo: this.route});

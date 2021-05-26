@@ -1,24 +1,26 @@
 <div class="fb-container bg-faded">
-    <section class="container-fluid-padding"
-        id="anchor-point">
-        <div class="spinner-container"
-            *ngIf="loading">
+    <section class="container-fluid-padding" id="anchor-point">
+        <div class="spinner-container" *ngIf="loading">
             <div class="spinner-new rotating"></div>
         </div>
     </section>
-    <main class='mx-4'
-        *ngIf="!loading">
+    <main class='mx-4' *ngIf="!loading">
         <section>
             <h1>All Parks</h1>
-            <p class="tab-intro">
-                A list of parks involved in the BC Parks day pass reservation program.
-            </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="tab-intro">
+                        A list of parks involved in the BC Parks day pass reservation program.
+                    </p>
+                </div>
+                <div class="flex-fill"></div>
+                <div class="d-flex justify-content-md-end mx-3">
+                    <button class='btn btn-primary' (click)="addPark($event)"><strong>+</strong> New Park</button>
+                </div>
+            </div>
         </section>
         <hr>
         <section>
-            <p>
-                Table of parks here
-            </p>
             <app-parks-list></app-parks-list>
         </section>
     </main>
