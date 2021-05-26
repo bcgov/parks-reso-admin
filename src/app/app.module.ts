@@ -66,7 +66,7 @@ import { MetricsModule } from './metrics/metrics.module';
   ],
   entryComponents: [
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 
 export class AppModule {
