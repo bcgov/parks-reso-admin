@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { TableRowComponent } from 'app/shared/components/table-template/table-row-component';
 
 @Component({
@@ -13,8 +14,7 @@ export class ParkTableRowComponent extends TableRowComponent implements OnInit {
     super();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   navigate(id) {
     this.router.navigate(['parks', id, 'details']);

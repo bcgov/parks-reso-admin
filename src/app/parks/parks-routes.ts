@@ -1,9 +1,7 @@
 import { Routes } from '@angular/router';
-import { FacilitiesRoutes } from 'app/facilities/facilities-routes';
-import { FacilitiesComponent } from 'app/facilities/facilities.component';
+import { ParkRoutes } from 'app/park/park-routes';
+import { ParkComponent } from 'app/park/park.component';
 import { ParkAddComponent } from './park-add/park-add.component';
-import { ParkDetailsComponent } from './park-details/park-details.component';
-import { ParkEditComponent } from './park-edit/park-edit.component';
 import { ParkListComponent } from './park-list/park-list.component';
 
 export const ParksRoutes: Routes = [
@@ -28,37 +26,10 @@ export const ParksRoutes: Routes = [
   },
   {
     path: ':parkId',
+    component: ParkComponent,
     data: {
-      breadcrumb: null
+      breadcrumb: 'NAME OF THE PARK'
     },
-    children: [
-      {
-        path: '',
-        redirectTo: 'details',
-        pathMatch: 'full'
-      },
-      {
-        path: 'details',
-        component: ParkDetailsComponent,
-        data: {
-          breadcrumb: 'Details',
-        }
-      },
-      {
-        path: 'facilities',
-        component: FacilitiesComponent,
-        data: {
-          breadcrumb: 'Facilities',
-        },
-        children: FacilitiesRoutes
-      },
-      {
-        path: 'edit',
-        component: ParkEditComponent,
-        data: {
-          breadcrumb: 'Edit Park',
-        },
-      }
-    ]
+    children: ParkRoutes
   }
 ];

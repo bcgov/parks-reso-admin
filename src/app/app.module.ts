@@ -29,6 +29,7 @@ import { SidebarComponent } from 'app/sidebar/sidebar.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { ParkModule } from './park/park.module';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
     ToggleButtonComponent,
     ConfirmComponent,
     ReservationsComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -59,6 +60,7 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
     SharedModule,
 
     ParksModule,
+    ParkModule,
     FacilitiesModule
   ],
   providers: [

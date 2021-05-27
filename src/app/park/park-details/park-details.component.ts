@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Constants } from 'app/shared/utils/constants';
 
 @Component({
   selector: 'app-park-details',
@@ -7,8 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./park-details.component.scss']
 })
 export class ParkDetailsComponent implements OnInit {
-
   public loading = true;
+  public park = Constants.mockPark1;
+
   private currentFacilityId = 987654321;
 
   constructor(
@@ -17,7 +19,6 @@ export class ParkDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('WATASFSD');
     this.loading = false;
   }
 
@@ -26,8 +27,7 @@ export class ParkDetailsComponent implements OnInit {
     this.router.navigate(['../details', this.currentFacilityId, 'details'], { relativeTo: this.route });
   }
 
-  editPark(e: Event) {
-    e.stopPropagation();
+  editPark() {
     this.router.navigate(['../edit'], { relativeTo: this.route });
   }
 

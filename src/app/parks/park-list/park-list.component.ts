@@ -11,49 +11,52 @@ import { ParkTableRowComponent } from './park-table-row/park-table-row.component
   styleUrls: ['./park-list.component.scss']
 })
 export class ParkListComponent implements OnInit {
+
+  // Component
+  public loading = true;
+
   // Table
   public tableData: TableObject = new TableObject({ component: ParkTableRowComponent });
   public tableColumns: IColumnObject[] = [
     {
       name: 'Name',
       value: 'name',
-      width: 'col-4'
+      width: 'col-6'
     },
     {
       name: 'Status',
       value: 'status',
-      width: 'col-4'
+      width: 'col-5'
     },
     {
       name: '',
       value: '',
-      width: 'col-4',
+      width: 'col-1',
       nosort: true
     },
   ];
 
   constructor(
     private _changeDetectionRef: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-
     // Get table controls from url and save them in the tableData
 
     // Get data from service
     this.tableData.totalListItems = 2;
-    this.tableData.items = Constants.mockParkList.map(item => {
-      return { rowData: item };
-    });
+    this.tableData.items = Constants.mockParkList;
 
     // Set columns
     this.tableData.columns = this.tableColumns;
     this._changeDetectionRef.detectChanges();
+    this.loading = false;
   }
 
   addPark() {
-    this.router.navigate(['parks', 'add']);
+    this.router.navigate(['../add'], { relativeTo: this.route });
   }
 
   onMessageOut(msg: ITableMessage) {

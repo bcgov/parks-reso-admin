@@ -58,7 +58,7 @@ export class Constants {
   };
 
   public static readonly mockPark2 = {
-    _id: 1,
+    _id: 2,
     _schemaName: 'Park',
     name: 'Alice Lake Provincial Park',
     status: 'open',
@@ -66,8 +66,8 @@ export class Constants {
   };
 
   public static readonly mockParkList = [
-    Constants.mockPark1,
-    Constants.mockPark2
+    { rowData: Constants.mockPark1 },
+    { rowData: Constants.mockPark2 }
   ];
 
 }

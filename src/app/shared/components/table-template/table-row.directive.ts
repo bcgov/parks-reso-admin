@@ -33,7 +33,7 @@ export class TableRowDirective implements OnInit, OnChanges, OnDestroy {
     public viewContainerRef: ViewContainerRef,
     public componentFactoryResolver: ComponentFactoryResolver,
     public injectComponentService: InjectComponentService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadComponent();
