@@ -67,6 +67,7 @@ import { ParkModule } from './park/park.module';
     CookieService,
   ],
   entryComponents: [
+    ConfirmComponent
   ],
   bootstrap: [AppComponent],
 })

@@ -8,18 +8,62 @@
         <section>
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between heading-bar">
                 <div>
-                    <h1 id="name" class="m-0">{{ 'Edit Park Details' || '-' }}</h1>
+                    <h1 id="name" class="m-0">Edit Park: {{ mockParkObject.parkName }}</h1>
                 </div>
             </div>
             <p class="tab-intro">
-                This page will allow the admin to edit a currently existing park.
+                Use the fields below to edit park information. Trailheads, parking lots, and other park facilities can
+                be edited from within the park's facilities page.
             </p>
         </section>
         <hr>
         <section>
-            <p>
-                Park edit form UI here.
-            </p>
+            <div>
+                <p>Park information will be displayed to public users of the BC Parks Day Pass Reservation System.</p>
+                <p>Parks must have a name.</p>
+            </div>
+            <form [formGroup]="addParkForm" (ngSubmit)="submitForm">
+                <div class="form-group custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" onColor="success" id="newParkStatus" formControlName="parkStatus">
+                    <label class="custom-control-label d-inline-flex" for="newParkStatus">
+                        Park Status: &nbsp;
+                        <div *ngIf="addParkForm.get('parkStatus').value" class="text-success">Open</div>
+                        <div *ngIf="!addParkForm.get('parkStatus').value" class="text-danger">Closed</div>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="newParkAddName">Park Name</label>
+                    <input type="text" class='form-control' id="newParkAddName" formControlName="parkName"
+                        placeholder="Enter park name" required>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class='col-md-11'>
+                            <label for="newParkAddDescription">Park Description</label>
+                        </div>
+                        <div class='col-md-1 text-right'>
+                            <label [ngClass]="{'text-danger' : addParkForm.get('parkDescription').value?.length > descriptionCharacterLimit}" for="newParkAddDescription">{{ addParkForm.get('parkDescription').value?.length }}/{{
+                                descriptionCharacterLimit }}</label>
+                        </div>
+                    </div>
+                    <textarea rows="5" type="text" class='form-control' id="newParkAddDescription"
+                        formControlName="parkDescription"
+                        placeholder="Enter park description ( {{ descriptionCharacterLimit }} character limit)"></textarea>
+                </div>
+            </form>
+            <div *ngIf="addParkForm.invalid" class="row">
+                <div class='flex-fill'></div>
+            </div>
+            <div class="row">
+                <div class='flex-fill'></div>
+                <div class="d-flex justify-content-md-end mx-3">
+                    <button class='btn btn-danger m-1' (click)="cancel()">Cancel</button>
+                    <button class='btn btn-secondary m-1' [disabled]="addParkForm.pristine"
+                        (click)="addParkForm.reset()">Clear Form</button>
+                    <button class='btn btn-primary m-1' [disabled]="addParkForm.invalid" (click)="submitForm()">Add New
+                        Park</button>
+                </div>
+            </div>
         </section>
     </main>
 </div>

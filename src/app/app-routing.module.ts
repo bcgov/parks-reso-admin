@@ -22,7 +22,90 @@ const routes: Routes = [
     data: {
       breadcrumb: 'Parks',
     },
-    children: ParksRoutes
+    children: [
+      {
+        path: '',
+        component: ParksComponent,
+        data: {
+          breadcrumb: null,
+        },
+      },
+      {
+        path: 'add-park',
+        component: ParksAddComponent,
+        data: {
+          breadcrumb: 'Add New Park',
+        }
+      },
+      {
+        path: ':parkId',
+        // TODO: implement resolver
+        data: {
+          breadcrumb: 'Park Details',
+        },
+        children: [
+          {
+            path: '',
+            redirectTo: 'details',
+            data: {
+              breadcrumb: null,
+            },
+            pathMatch: 'full',
+          },
+          {
+            path: 'edit',
+            component: ParksEditComponent,
+            data: {
+              breadcrumb: 'Edit Park'
+            },
+          },
+          {
+            path: 'add-feature',
+            component: ParksFeatureAddComponent,
+            data: {
+              breadcrumb: 'Add Park Feature'
+            },
+          },
+          {
+            path: 'details',
+            component: ParksDetailComponent,
+            data: {
+              breadcrumb: null,
+            },
+          },
+          {
+            path: 'details/:featureId',
+            data: {
+              breadcrumb: 'Park Feature Details',
+            },
+            children: [
+              {
+                path: '',
+                redirectTo: 'details',
+                data: {
+                  breadcrumb: null,
+                },
+                pathMatch: 'full',
+              },
+              {
+                path: 'details',
+                component: ParksFeatureComponent,
+                data: {
+                  breadcrumb: null,
+                },
+              },
+              {
+                path: 'edit',
+                component: ParksFeatureEditComponent,
+                data: {
+                  breadcrumb: 'Edit Park Feature',
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
   {
     path: 'reservations',
