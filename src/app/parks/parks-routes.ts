@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { ParkRoutes } from 'app/park/park-routes';
 import { ParkComponent } from 'app/park/park.component';
-import { ParkAddComponent } from './park-add/park-add.component';
+import { ParkFormComponent } from '../park-form/park-form.component';
 import { ParkListComponent } from './park-list/park-list.component';
 
 export const ParksRoutes: Routes = [
@@ -19,7 +19,7 @@ export const ParksRoutes: Routes = [
   },
   {
     path: 'add',
-    component: ParkAddComponent,
+    component: ParkFormComponent,
     data: {
       breadcrumb: 'Add Park',
     },

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ParkAddComponent } from './park-add.component';
+import { ParkFormComponent } from './park-form.component';
 
-describe('ParkAddComponent', () => {
-  let component: ParkAddComponent;
-  let fixture: ComponentFixture<ParkAddComponent>;
+describe('ParkFormComponent', () => {
+  let component: ParkFormComponent;
+  let fixture: ComponentFixture<ParkFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ParkAddComponent ]
+      declarations: [ ParkFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ParkAddComponent);
+    fixture = TestBed.createComponent(ParkFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

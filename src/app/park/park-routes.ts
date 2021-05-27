@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
+import { ParkFormComponent } from 'app/park-form/park-form.component';
 import { ParkDetailsComponent } from './park-details/park-details.component';
-import { ParkEditComponent } from './park-edit/park-edit.component';
 
 export const ParkRoutes: Routes = [
   {
@@ -17,7 +17,7 @@ export const ParkRoutes: Routes = [
   },
   {
     path: 'edit',
-    component: ParkEditComponent,
+    component: ParkFormComponent,
     data: {
       breadcrumb: 'Edit Park',
     },
