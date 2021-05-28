@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { ParkRoutes } from 'app/park/park-routes';
 import { ParkComponent } from 'app/park/park.component';
-import { ParkFormComponent } from '../park-form/park-form.component';
+import {ParkFormComponent } from 'app/park-form/park-form.component';
 import { ParkListComponent } from './park-list/park-list.component';
 
 export const ParksRoutes: Routes = [
