@@ -45,6 +45,7 @@ export class ParkFormComponent implements OnInit {
       status: this.park.status,
       visibility: this.park.visibility,
       link: this.park.link
+
     });
   }
 
@@ -70,6 +71,7 @@ export class ParkFormComponent implements OnInit {
       `</br><strong>Park Status: </strong>` + this.getParkInfoString('status') +
       `</br><strong>Park Visibility: </strong>` + this.getParkInfoString('visibility');
 
+
     this.dialogService
       .addDialog(
         ConfirmComponent,
@@ -88,6 +90,7 @@ export class ParkFormComponent implements OnInit {
 
   testLink() {
     window.open(this.parkForm.get('link').value);
+
   }
 
   cancel() {
