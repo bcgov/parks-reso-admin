@@ -30,6 +30,7 @@ import { ConfirmComponent } from './confirm/confirm.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { ParkModule } from './park/park.module';
+import { FacilityFormComponent } from './facility-form/facility-form.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { ParkModule } from './park/park.module';
     ConfirmComponent,
     ReservationsComponent,
     BreadcrumbComponent,
+    FacilityFormComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -58,7 +60,6 @@ import { ParkModule } from './park/park.module';
     MatTabsModule,
     MetricsModule,
     SharedModule,
-
     ParksModule,
     ParkModule,
     FacilitiesModule

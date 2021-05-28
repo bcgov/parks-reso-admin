@@ -1,0 +1,142 @@
+<div class="fb-container bg-faded">
+    <section class="container-fluid-padding" id="anchor-point">
+        <!-- <div class="spinner-container" *ngIf="loading">
+            <div class="spinner-new rotating"></div>
+        </div> -->
+    </section>
+    <main class='mx-4'>
+        <section>
+            <div class="form-group custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" (click)="toggleAddEdit()" id="toggleAddEdit">
+                <label class="custom-control-label d-inline-flex" for="toggleAddEdit">
+                    <div *ngIf="isNewFacility" class="text-info">Add New Facility</div>
+                    <div *ngIf="!isNewFacility" class="text-warning">Edit Existing Facility</div>
+                </label>
+            </div>
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-between heading-bar">
+                <div>
+                    <h1 *ngIf="isNewFacility" id="name" class="m-0">Add New Facility</h1>
+                    <h1 *ngIf="!isNewFacility" id="name" class="m-0">Edit Facility: {{ mockFacilityObject.name }}</h1>
+                </div>
+            </div>
+            <p class="tab-intro">
+                Changes to facility information will be reflected in the BC Parks Day Pass Reservation System public
+                site.
+            </p>
+        </section>
+        <hr>
+        <section>
+            <h4>Facility Information</h4>
+            <form [formGroup]="facilityForm" (ngSubmit)="submitForm()">
+                <div class="form-group custom-control custom-switch col-lg-4 ">
+                    <input type="checkbox" class="custom-control-input" id="status" formControlName="status">
+                    <label class="custom-control-label d-inline-flex" for="status">
+                        Status: &nbsp;
+                        <div *ngIf="facilityForm.get('status').value" class="mx-3 text-primary">Facility is open.
+                        </div>
+                        <div *ngIf="!facilityForm.get('status').value" class="mx-3 text-secondary">Facility is closed.
+                        </div>
+                    </label>
+                </div>
+                <div class="form-group custom-control custom-switch col-lg-4">
+                    <input type="checkbox" class="custom-control-input" id="visibility" formControlName="visibility">
+                    <label class="custom-control-label d-inline-flex" for="visibility">
+                        Visibility: &nbsp;
+                        <div *ngIf="facilityForm.get('visibility').value" class="mx-3 text-primary">Facility is
+                            visible
+                            to
+                            the
+                            public.
+                        </div>
+                        <div *ngIf="!facilityForm.get('visibility').value" class="mx-3 text-secondary">Facility is
+                            not
+                            visible to
+                            the
+                            public.</div>
+                    </label>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Availability:</label>
+                    </div>
+                    <div class="col-md-1">
+                        <input id="ampm" type="radio" class="custom-control-input" value="facilityForm.get('availability').value" name="availability"
+                            formControlName="availability">
+                        <label class="custom-control-label" for="ampm">AM/PM</label>
+                    </div>
+                    <div class="col-md-1">
+                        <input id="allday" type="radio" class="custom-control-input" value="!facilityForm.get('availability').value" name="availability"
+                            formControlName="availability">
+                        <label class="custom-control-label" for="allday">All Day</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="name">Facility Name *</label>
+                        <input type="text" class='form-control' id="name" formControlName="name"
+                            placeholder="Enter facility name" required>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="type">Type *</label>
+                        <select id="type" class='form-control' formControlName="type">
+                            <option *ngFor="let facilityType of types">{{ facilityType }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="capacity">Capacity *</label>
+                        <input (keypress)="checkNumber($event)" class='form-control' id="capacity"
+                            formControlName="capacity" placeholder="Enter facility capacity" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row justify-content-between">
+                        <div class='col-6'>
+                            <label for="description">Description</label>
+                        </div>
+                        <div class='col-1 text-right mr-5'>
+                            <label
+                                [ngClass]="{'text-danger' : facilityForm.get('description').value?.length > descriptionCharacterLimit}"
+                                for="description">{{ facilityForm.get('description').value?.length }}/{{
+                                descriptionCharacterLimit }}</label>
+                        </div>
+                    </div>
+                    <textarea rows="5" type="text" class='form-control' id="description" formControlName="description"
+                        placeholder="Enter facility description ({{ descriptionCharacterLimit }} character limit)"></textarea>
+                </div>
+                <div class="form-group">
+                    <div class="row justify-content-between">
+                        <div class='col-6'>
+                            <label for="notification">Notification Banner</label>
+                        </div>
+                        <div class='col-1 text-right mr-5'>
+                            <label
+                                [ngClass]="{'text-danger' : facilityForm.get('notification').value?.length > notificationCharacterLimit}"
+                                for="description">{{ facilityForm.get('notification').value?.length }}/{{
+                                notificationCharacterLimit }}</label>
+                        </div>
+                    </div>
+                    <textarea rows="2" type="text" class='form-control' id="notification" formControlName="notification"
+                        placeholder="Enter facility notification ({{ notificationCharacterLimit }} character limit)"></textarea>
+                </div>
+            </form>
+            <div *ngIf="facilityForm.invalid" class="row">
+                <div class='flex-fill'></div>
+            </div>
+            <div class="row">
+                <div *ngIf="!isNewFacility" class="col-md-2">
+                    <button class="btn btn-danger" (click)="delete()"><i
+                            class="material-icons mr-1">delete</i>Delete</button>
+                </div>
+                <div class='flex-fill'></div>
+                <div class="d-flex justify-content-md-end mx-3">
+                    <button class='btn btn-danger m-1' (click)="cancel()">Cancel</button>
+                    <button class='btn btn-secondary m-1' [disabled]="facilityForm.pristine" (click)="resetForm()">Reset
+                        Form</button>
+                    <button class='btn btn-primary m-1' [disabled]="facilityForm.invalid" (click)="submitForm()">Save
+                        Park</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>

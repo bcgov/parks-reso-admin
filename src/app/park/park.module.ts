@@ -11,7 +11,7 @@ import { ParkEditComponent } from 'app/park/park-edit/park-edit.component';
   declarations: [
     ParkComponent,
     ParkEditComponent,
-    ParkDetailsComponent
+    ParkDetailsComponent,
   ],
   imports: [
     CommonModule,

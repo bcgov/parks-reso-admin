@@ -47,7 +47,7 @@ import { TableTemplateComponent } from './components/table-template/table-templa
     SearchFilterTemplateComponent,
     DatePickerComponent,
     TableRowDirective,
-    TableTemplateComponent
+    TableTemplateComponent,
   ],
   entryComponents: [
   ],
@@ -55,7 +55,6 @@ import { TableTemplateComponent } from './components/table-template/table-templa
     MatSlideToggleModule,
     MatSnackBarModule,
     NgZorroAntdModule,
-
     PageSizePickerComponent,
     PageCountDisplayComponent,
     AutoCompleteMultiSelectComponent,

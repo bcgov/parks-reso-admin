@@ -14,6 +14,11 @@ export class Constants {
     ]
   };
 
+  public static readonly FacilityTypesList = [
+    'Trail',
+    'Parking Lot'
+  ];
+
   public static readonly mockPass1 = {
     _id: 100,
     _schemaName: 'Pass',
