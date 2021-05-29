@@ -15,6 +15,8 @@ export const ParksRoutes: Routes = [
     component: ParkListComponent,
     data: {
       breadcrumb: 'List',
+      module: 'parks',
+      component: 'list'
     }
   },
   {
@@ -22,7 +24,9 @@ export const ParksRoutes: Routes = [
     component: ParkFormComponent,
     data: {
       breadcrumb: 'Add Park',
-    },
+      module: 'parks',
+      component: 'add'
+    }
   },
   {
     path: ':parkId',

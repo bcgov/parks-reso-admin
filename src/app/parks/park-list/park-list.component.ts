@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { IColumnObject, TableObject } from 'app/shared/components/table-template/table-object';
 import { ITableMessage } from 'app/shared/components/table-template/table-row-component';
 import { Constants } from 'app/shared/utils/constants';
@@ -11,7 +10,6 @@ import { ParkTableRowComponent } from './park-table-row/park-table-row.component
   styleUrls: ['./park-list.component.scss']
 })
 export class ParkListComponent implements OnInit {
-
   // Component
   public loading = true;
 
@@ -21,7 +19,7 @@ export class ParkListComponent implements OnInit {
     {
       name: 'Name',
       value: 'name',
-      width: 'col-6'
+      width: 'col-5'
     },
     {
       name: 'Status',
@@ -29,17 +27,15 @@ export class ParkListComponent implements OnInit {
       width: 'col-5'
     },
     {
-      name: '',
+      name: 'Actions',
       value: '',
-      width: 'col-1',
+      width: 'col-2',
       nosort: true
-    },
+    }
   ];
 
   constructor(
     private _changeDetectionRef: ChangeDetectorRef,
-    private router: Router,
-    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -53,10 +49,6 @@ export class ParkListComponent implements OnInit {
     this.tableData.columns = this.tableColumns;
     this._changeDetectionRef.detectChanges();
     this.loading = false;
-  }
-
-  addPark() {
-    this.router.navigate(['../add'], { relativeTo: this.route });
   }
 
   onMessageOut(msg: ITableMessage) {

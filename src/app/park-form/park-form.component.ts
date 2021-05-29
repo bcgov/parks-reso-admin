@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
 import { DialogService } from 'ng2-bootstrap-modal';
 
@@ -32,10 +32,17 @@ export class ParkFormComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private dialogService: DialogService,
   ) { }
 
   ngOnInit() {
+    this.isNewPark = this.route.snapshot.data.component === 'add';
+    this.router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe(() => {
+        this.isNewPark = this.route.snapshot.data.component === 'add';
+      });
   }
 
   populateParkDetails() {
@@ -49,10 +56,10 @@ export class ParkFormComponent implements OnInit {
     });
   }
 
-  toggleAddEdit() {
-    this.isNewPark = !this.isNewPark;
-    this.resetForm();
-  }
+  // toggleAddEdit() {
+  //   this.isNewPark = !this.isNewPark;
+  //   this.resetForm();
+  // }
 
   getParkInfoString(info) {
     switch (info) {

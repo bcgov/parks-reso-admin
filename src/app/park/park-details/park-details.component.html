@@ -1,63 +1,8 @@
-<!-- <div class="fb-container bg-faded">
-    <section class="container-fluid-padding"
-        id="anchor-point">
-        <div class="spinner-container"
-            *ngIf="loading">
-            <div class="spinner-new rotating"></div>
-        </div>
-    </section>
-    <main class='mx-4'
-        *ngIf="!loading">
-        <section>
-            <div class="d-flex flex-column flex-sm-row justify-content-sm-between heading-bar">
-                <div>
-                    <h1 id="name"
-                        class="m-0">{{ 'Park Details' || '-' }}</h1>
-                </div>
-            </div>
-            <p class="tab-intro">
-                This page will show the details of a particular park and tables of all the areas (trailheads, parking
-                lots, etc) within the park.
-                <button class="btn btn-warning"
-                    id="park-edit"
-                    (click)="editPark($event)">Edit Park</button>
-            </p>
-        </section>
-        <hr>
-        <section>
-            <h4>Facilities</h4>
-            <p>
-                Table of park facilities here: trail, parking lots, etc.
-            </p>
-            <button class="btn btn-primary"
-                id="park-area"
-                (click)="activateLoading($event, 'details')">View Facility</button>
-            <button class="btn btn-secondary"
-                id="park-edit"
-                (click)="addParkFacility($event)">Add New Facility</button>
-        </section>
-    </main>
-</div> -->
-
-<div class="container-fluid-padding">
-    <section *ngIf="loading">
-        <div class="spinner-container">
-            <div class="spinner-new rotating"></div>
-        </div>
-    </section>
-    <section *ngIf="!loading">
-        <h1>{{park.name}}</h1>
-        <div class="row">
-            <div class="col-md-6">
-                <p class="tab-intro">
-                    Status: {{park.status}}
-                </p>
-            </div>
-            <div class="flex-fill"></div>
-            <div class="d-flex justify-content-md-end mx-3">
-                <button class='btn btn-primary'
-                    (click)="editPark()">Edit Park</button>
-            </div>
-        </div>
+<div class="container-fluid-padding-without-header">
+    <section>
+        <h3>
+            Facilities
+        </h3>
+        <app-facility-list></app-facility-list>
     </section>
 </div>

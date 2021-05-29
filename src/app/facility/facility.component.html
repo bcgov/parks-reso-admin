@@ -1,14 +1,13 @@
-<div class="container-fluid-padding"
-    *ngIf="showHeader">
+<div class="container-fluid-padding">
     <section *ngIf="!loading">
         <div class="bg-colour p-3">
-            <h1>{{park.name}}</h1>
+            <h1>{{facility.name}}</h1>
         </div>
         <br>
         <div class="row">
             <div class="col-md-6">
                 <p>
-                    Status: {{park.status}}
+                    Status: {{facility.status}}
                 </p>
             </div>
             <div class="flex-fill"></div>
@@ -20,29 +19,16 @@
                         <input type="radio"
                             name="options"
                             id="option1"
-                            (click)="navigate('details')"> Park Details
+                            (click)="navigate('details')"> Facility Details
                     </label>
                     <label class="btn btn-primary"
                         [ngClass]="{'active': navSelected === 'edit'}">
                         <input type="radio"
                             name="options"
                             id="option2"
-                            (click)="navigate('edit')"> Edit Park
+                            (click)="navigate('edit')"> Edit Facility
                     </label>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <p>
-                    Total Trail Capacity: 400
-                </p>
-                <p>
-                    Total Vehicle Capacity: 100
-                </p>
-            </div>
-            <div class="col-md-6">
-                Details: WOW THIS IS A COOL PARK
             </div>
         </div>
     </section>

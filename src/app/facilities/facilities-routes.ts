@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { FacilityAddComponent } from './facility-add/facility-add.component';
-import { FacilityDetailsComponent } from './facility-details/facility-details.component';
-import { FacilityEditComponent } from './facility-edit/facility-edit.component';
 import { FacilityListComponent } from './facility-list/facility-list.component';
 
 export const FacilitiesRoutes: Routes = [
@@ -15,6 +13,8 @@ export const FacilitiesRoutes: Routes = [
     component: FacilityListComponent,
     data: {
       breadcrumb: 'List',
+      module: 'facilities',
+      component: 'list'
     }
   },
   {
@@ -22,33 +22,8 @@ export const FacilitiesRoutes: Routes = [
     component: FacilityAddComponent,
     data: {
       breadcrumb: 'Add Facility',
+      module: 'facilities',
+      component: 'add'
     },
-  },
-  {
-    path: ':facilityId',
-    data: {
-      breadcrumb: null
-    },
-    children: [
-      {
-        path: '',
-        redirectTo: 'details',
-        pathMatch: 'full'
-      },
-      {
-        path: 'details',
-        component: FacilityDetailsComponent,
-        data: {
-          breadcrumb: 'Facility Details',
-        },
-      },
-      {
-        path: 'edit',
-        component: FacilityEditComponent,
-        data: {
-          breadcrumb: 'Edit Facility',
-        },
-      }
-    ]
   }
 ];

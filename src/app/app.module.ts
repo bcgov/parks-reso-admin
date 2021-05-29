@@ -18,6 +18,8 @@ import { ParksModule } from './parks/parks.module';
 import { MetricsModule } from './metrics/metrics.module';
 import { FacilitiesModule } from './facilities/facilities.module';
 import { SharedModule } from './shared/shared.module';
+import { ParkModule } from './park/park.module';
+import { FacilityModule } from './facility/facility.module';
 
 // components
 import { AppComponent } from 'app/app.component';
@@ -29,7 +31,6 @@ import { SidebarComponent } from 'app/sidebar/sidebar.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { ParkModule } from './park/park.module';
 import { FacilityFormComponent } from './facility-form/facility-form.component';
 
 @NgModule({
@@ -43,7 +44,7 @@ import { FacilityFormComponent } from './facility-form/facility-form.component';
     ConfirmComponent,
     ReservationsComponent,
     BreadcrumbComponent,
-    FacilityFormComponent,
+    FacilityFormComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -62,7 +63,8 @@ import { FacilityFormComponent } from './facility-form/facility-form.component';
     SharedModule,
     ParksModule,
     ParkModule,
-    FacilitiesModule
+    FacilitiesModule,
+    FacilityModule
   ],
   providers: [
     CookieService,

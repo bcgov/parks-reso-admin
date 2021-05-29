@@ -3,21 +3,19 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'app/shared/shared.module';
 
 import { RouterModule } from '@angular/router';
-import { ParkComponent } from './park.component';
-import { ParkDetailsComponent } from './park-details/park-details.component';
-import { FacilitiesModule } from 'app/facilities/facilities.module';
+import { FacilityComponent } from './facility.component';
+import { FacilityDetailsComponent } from './facility-details/facility-details.component';
 
 @NgModule({
   declarations: [
-    ParkComponent,
-    ParkDetailsComponent
+    FacilityComponent,
+    FacilityDetailsComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     RouterModule,
-    FacilitiesModule
   ],
   entryComponents: []
 })
-export class ParkModule { }
+export class FacilityModule { }

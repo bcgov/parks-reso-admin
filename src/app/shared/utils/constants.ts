@@ -59,6 +59,7 @@ export class Constants {
     _schemaName: 'Park',
     name: 'Goldstream',
     status: 'open',
+    description: 'That is a pretty cool park you got there',
     facilities: [10, 11]
   };
 
@@ -67,8 +68,14 @@ export class Constants {
     _schemaName: 'Park',
     name: 'Alice Lake Provincial Park',
     status: 'open',
+    description: 'Wow, nice park',
     facilities: []
   };
+
+  public static readonly mockFacilityList = [
+    { rowData: Constants.mockFacility1 },
+    { rowData: Constants.mockFacility2 }
+  ];
 
   public static readonly mockParkList = [
     { rowData: Constants.mockPark1 },

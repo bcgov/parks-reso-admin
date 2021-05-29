@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
+import { FacilityRoutes } from 'app/facility/facility-routes';
+import { FacilityComponent } from 'app/facility/facility.component';
 import { ParkDetailsComponent } from './park-details/park-details.component';
-import { ParkEditComponent } from './park-edit/park-edit.component';
 
 export const ParkRoutes: Routes = [
   {
@@ -13,13 +14,16 @@ export const ParkRoutes: Routes = [
     component: ParkDetailsComponent,
     data: {
       breadcrumb: 'Details',
+      module: 'park',
+      component: 'details'
     }
   },
   {
-    path: 'edit',
-    component: ParkEditComponent,
+    path: 'facility/:facilityId',
+    component: FacilityComponent,
     data: {
-      breadcrumb: 'Edit Park',
+      breadcrumb: 'NAME OF THE Facility'
     },
+    children: FacilityRoutes
   }
 ];

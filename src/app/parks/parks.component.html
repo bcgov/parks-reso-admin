@@ -1,1 +1,38 @@
+<div class="container-fluid-padding"
+    *ngIf="showHeader">
+    <section *ngIf="!loading">
+        <div class="bg-colour p-3">
+            <h1>All Parks</h1>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <p class="tab-intro">
+                    A list of parks involved in the BC Parks day pass reservation program.
+                </p>
+            </div>
+            <div class="flex-fill"></div>
+            <div class="d-flex justify-content-md-end mx-3">
+                <div class="btn-group btn-group-toggle"
+                    data-toggle="buttons">
+                    <label class="btn btn-primary"
+                        [ngClass]="{'active': navSelected === 'list'}">
+                        <input type="radio"
+                            name="options"
+                            id="option1"
+                            (click)="navigate('list')"> Park List
+                    </label>
+                    <label class="btn btn-primary"
+                        [ngClass]="{'active': navSelected === 'add'}">
+                        <input type="radio"
+                            name="options"
+                            id="option2"
+                            (click)="navigate('add')"> Add Park
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+</div>
 <router-outlet></router-outlet>

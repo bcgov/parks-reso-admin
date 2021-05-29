@@ -14,13 +14,13 @@ import { ParksComponent } from './parks/parks.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: HomeComponent
   },
   {
     path: 'parks',
     component: ParksComponent,
     data: {
-      breadcrumb: 'Parks',
+      breadcrumb: 'Parks'
     },
     children: ParksRoutes
   },

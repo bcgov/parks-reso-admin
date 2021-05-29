@@ -16,7 +16,7 @@ export class ParkTableRowComponent extends TableRowComponent implements OnInit {
 
   ngOnInit() { }
 
-  navigate(id) {
-    this.router.navigate(['parks', id, 'details']);
+  navigate(route) {
+    this.router.navigate(['parks', this.rowData._id, route]);
   }
 }
