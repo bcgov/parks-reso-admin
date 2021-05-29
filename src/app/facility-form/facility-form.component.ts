@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { Constants } from '../shared/utils/constants';
@@ -45,6 +45,12 @@ export class FacilityFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.isNewFacility = this.route.snapshot.data.component === 'add';
+    this.router.events
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe(() => {
+        this.isNewFacility = this.route.snapshot.data.component === 'add';
+      });
   }
 
   checkNumber(e): boolean {
@@ -69,10 +75,10 @@ export class FacilityFormComponent implements OnInit {
     });
   }
 
-  toggleAddEdit() {
-    this.isNewFacility = !this.isNewFacility;
-    this.resetForm();
-  }
+  // toggleAddEdit() {
+  //   this.isNewFacility = !this.isNewFacility;
+  //   this.resetForm();
+  // }
 
   getInfoString(info) {
     switch (info) {

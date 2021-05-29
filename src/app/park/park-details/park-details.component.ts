@@ -31,9 +31,8 @@ export class ParkDetailsComponent implements OnInit {
     this.router.navigate(['../edit'], { relativeTo: this.route });
   }
 
-  addParkFacility(e: Event) {
-    e.stopPropagation();
-    this.router.navigate(['../add-Facility'], { relativeTo: this.route });
+  addParkFacility() {
+    this.router.navigate(['../', 'facility', 'add'], { relativeTo: this.route });
   }
 
 }

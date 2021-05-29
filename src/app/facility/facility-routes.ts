@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { FacilityFormComponent } from 'app/facility-form/facility-form.component';
 import { FacilityDetailsComponent } from './facility-details/facility-details.component';
 
 export const FacilityRoutes: Routes = [
@@ -16,10 +17,13 @@ export const FacilityRoutes: Routes = [
       component: 'details'
     },
   },
-  // {
-  //   path: 'edit',
-  //   data: {
-  //     breadcrumb: 'Edit Facility',
-  //   },
-  // }
+  {
+    path: 'edit',
+    component: FacilityFormComponent,
+    data: {
+      breadcrumb: 'Edit Facility',
+      module: 'facility',
+      component: 'edit'
+    },
+  }
 ];
