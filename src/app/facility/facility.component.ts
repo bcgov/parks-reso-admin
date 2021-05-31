@@ -18,12 +18,12 @@ export class FacilityComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.showHeader = this.route.snapshot.firstChild.data.module === 'parks';
+    this.showHeader = this.route.snapshot.firstChild.data.module === 'facility';
     this.navSelected = this.route.snapshot.firstChild.data.component;
     this.router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe(() => {
-        this.showHeader = this.route.snapshot.firstChild.data.module === 'parks';
+        this.showHeader = this.route.snapshot.firstChild.data.module === 'facility';
         this.navSelected = this.route.snapshot.firstChild.data.component;
       });
   }
