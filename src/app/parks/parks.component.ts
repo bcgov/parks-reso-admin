@@ -27,7 +27,6 @@ export class ParksComponent implements OnInit {
   }
 
   navigate(nav) {
-    // this.navSelected = nav;
     this.router.navigate([nav], { relativeTo: this.route });
   }
 }

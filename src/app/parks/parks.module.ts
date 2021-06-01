@@ -9,6 +9,7 @@ import { ParkTableRowComponent } from './park-list/park-table-row/park-table-row
 import { RouterModule } from '@angular/router';
 import { ParksComponent } from './parks.component';
 import { ParkFormComponent } from '../park-form/park-form.component';
+import { ParkModule } from 'app/park/park.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ParkFormComponent } from '../park-form/park-form.component';
     CommonModule,
     SharedModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ParkModule
   ],
   entryComponents: [
     ParkTableRowComponent

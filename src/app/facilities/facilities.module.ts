@@ -6,6 +6,7 @@ import { FacilityListComponent } from './facility-list/facility-list.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 import { FacilityTableRowComponent } from './facility-list/facility-table-row/facility-table-row.component';
+import { FacilityModule } from 'app/facility/facility.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { FacilityTableRowComponent } from './facility-list/facility-table-row/fa
   imports: [
     CommonModule,
     RouterModule,
-    SharedModule
+    SharedModule,
+    FacilityModule
   ],
   exports: [
     FacilityListComponent

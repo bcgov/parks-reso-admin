@@ -2,7 +2,7 @@
   [ngClass]="{'isOpen': isOpen === true}">
   <section class="full-nav">
     <a [routerLink]="['parks']"
-      [ngClass]="{ active: mainRoute === 'parks' && !currentMenu }"
+      [ngClass]="{ active: mainRouteId === 'parks' && !currentMenu }"
       id="parks"
       (click)="activateLoading(['parks'])"><i class="material-icons mr-3">terrain</i>All Parks</a>
     <a [routerLink]="['reservations']"

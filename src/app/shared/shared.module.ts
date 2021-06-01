@@ -20,6 +20,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TableRowDirective } from './components/table-template/table-row.directive';
 import { TableTemplateComponent } from './components/table-template/table-template.component';
+import { ListComponent } from './components/list/list.component';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { TableTemplateComponent } from './components/table-template/table-templa
     DatePickerComponent,
     TableRowDirective,
     TableTemplateComponent,
+    ListComponent
   ],
   entryComponents: [
   ],
@@ -61,7 +63,8 @@ import { TableTemplateComponent } from './components/table-template/table-templa
     SearchFilterTemplateComponent,
     DatePickerComponent,
     TableRowDirective,
-    TableTemplateComponent
+    TableTemplateComponent,
+    ListComponent
   ],
   providers: [
     TableTemplate,

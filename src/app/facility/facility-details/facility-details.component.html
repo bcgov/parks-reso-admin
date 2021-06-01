@@ -1,3 +1,45 @@
 <div class="container-fluid-padding-without-header">
-    <p>facility-details works!</p>
+    <div class="row">
+        <div class="col-3">
+            <label>
+                Status:
+            </label>
+            <p>
+                {{data.status}}
+            </p>
+        </div>
+        <div class="col-3">
+            <label>
+                Type:
+            </label>
+            <p>
+                {{data.type}}
+            </p>
+        </div>
+        <div class="col-3">
+            <label>
+                Time:
+            </label>
+            <p>
+                {{data.time}}
+            </p>
+        </div>
+        <div class="col-3">
+            <label>
+                Capacity:
+            </label>
+            <p>
+                {{data.capacity}}
+            </p>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <div class="row bg-colour p-3">
+        <div class="col-md-7 col-sm-12">
+            <h3>Passes</h3>
+        </div>
+    </div>
+    <br>
+    <app-pass-list></app-pass-list>
 </div>

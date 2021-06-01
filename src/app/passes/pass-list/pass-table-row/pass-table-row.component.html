@@ -1,0 +1,37 @@
+<td data-label="Reg #"
+    scope="row"
+    class="col-2">{{rowData.registrationNumber}}</td>
+<td data-label="First Name"
+    scope="row"
+    class="col-2">{{rowData.firstName}}</td>
+<td data-label="Last Name"
+    scope="row"
+    class="col-2">{{rowData.lastName}}</td>
+<td data-label="Email"
+    scope="row"
+    class="col-2">{{rowData.email}}</td>
+<td data-label="Guests"
+    scope="row"
+    class="col-2">{{rowData.numberOfGuests}}</td>
+<td data-label="Controls"
+    scope="row"
+    class="col-2">
+    <div class="btn-group btn-block"
+        role="group"
+        aria-label="Basic example">
+        <button type="button"
+            class="btn btn-outline-secondary"
+            (click)="navigate('details')">
+            <span class="material-icons">
+                library_books
+            </span>
+        </button>
+        <button type="button"
+            class="btn btn-outline-danger"
+            (click)="navigate('edit')">
+            <span class="material-icons">
+                cancel
+            </span>
+        </button>
+    </div>
+</td>

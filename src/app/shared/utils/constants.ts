@@ -25,8 +25,19 @@ export class Constants {
     firstName: 'Frank',
     lastName: 'Sinatra',
     email: 'frank@gmail.com',
-    confirmationNumber: 'b289djd831',
+    registrationNumber: 'b289djd831',
     numberOfGuests: 3,
+    facility: 10
+  };
+
+  public static readonly mockPass2 = {
+    _id: 101,
+    _schemaName: 'Pass',
+    firstName: 'Lonely',
+    lastName: 'Person',
+    email: 'frank@gmail.com',
+    registrationNumber: 'b289djd831',
+    numberOfGuests: 1,
     facility: 10
   };
 
@@ -38,7 +49,7 @@ export class Constants {
     time: 'AM',
     capacity: 400,
     status: 'open',
-    passes: [100],
+    passes: [100, 101],
     park: 1
   };
 
@@ -71,6 +82,11 @@ export class Constants {
     description: 'Wow, nice park',
     facilities: []
   };
+
+  public static readonly mockPassList = [
+    { rowData: Constants.mockPass1 },
+    { rowData: Constants.mockPass2 }
+  ];
 
   public static readonly mockFacilityList = [
     { rowData: Constants.mockFacility1 },

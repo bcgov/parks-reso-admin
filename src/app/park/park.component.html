@@ -1,52 +1,53 @@
 <div class="container-fluid-padding"
     *ngIf="showHeader">
     <section *ngIf="!loading">
-        <div class="bg-colour p-3">
-            <h1>{{park.name}}</h1>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-6">
-                <p>
-                    Status: {{park.status}}
-                </p>
+        <div class="row bg-colour p-3">
+            <div class="col-md-7 col-sm-12">
+                <h1>{{park.name}}</h1>
             </div>
-            <div class="flex-fill"></div>
-            <div class="d-flex justify-content-md-end mx-3">
+            <div class="col-md-5 d-none d-sm-block pt-2 text-right">
                 <div class="btn-group btn-group-toggle"
                     data-toggle="buttons">
-                    <label class="btn btn-primary"
+                    <label class="btn btn-outline-light"
                         [ngClass]="{'active': navSelected === 'details'}">
                         <input type="radio"
                             name="options"
                             id="option1"
-                            (click)="navigate('details')"> Park Details
+                            (click)="navigate('details')"> Details
                     </label>
-                    <label class="btn btn-primary"
+                    <label class="btn btn-outline-light"
                         [ngClass]="{'active': navSelected === 'edit'}">
                         <input type="radio"
                             name="options"
                             id="option2"
-                            (click)="navigate('edit')"> Edit Park
+                            (click)="navigate('edit')"> Edit
                     </label>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <p>
-                    Total Trail Capacity: 400
-                </p>
-                <p>
-                    Total Vehicle Capacity: 100
-                </p>
-            </div>
-            <div class="col-md-6">
-                Details: WOW THIS IS A COOL PARK
+        <div class="row d-block d-sm-none">
+            <br>
+            <div class="col-12">
+                <div class="btn-group btn-group-toggle d-flex"
+                    data-toggle="buttons">
+                    <label class="btn btn-outline-secondary"
+                        [ngClass]="{'active': navSelected === 'details'}">
+                        <input type="radio"
+                            name="options"
+                            id="option1"
+                            (click)="navigate('details')"> Details
+                    </label>
+                    <label class="btn btn-outline-secondary"
+                        [ngClass]="{'active': navSelected === 'edit'}">
+                        <input type="radio"
+                            name="options"
+                            id="option2"
+                            (click)="navigate('edit')"> Edit
+                    </label>
+                </div>
             </div>
         </div>
     </section>
-    <hr>
+    <br>
 </div>
-
 <router-outlet></router-outlet>

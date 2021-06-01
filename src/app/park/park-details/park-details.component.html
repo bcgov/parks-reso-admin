@@ -1,15 +1,54 @@
 <div class="container-fluid-padding-without-header">
-    <section>
-        <h3>
-            Facilities
-        </h3>
-        <div class="row">
-            <div class="col-12 text-right">
-                <button class="btn btn-primary" (click)="addParkFacility()">
-                    Add Facility
-                </button>
+    <div class="row">
+        <div class="col-4">
+            <label>
+                Status:
+            </label>
+            <p>
+                {{park.status}}
+            </p>
+        </div>
+        <div class="col-4">
+            <label>
+                Description:
+            </label>
+            <p>
+                {{park.description}}
+            </p>
+        </div>
+    </div>
+    <hr>
+    <br>
+    <div class="row bg-colour p-3">
+        <div class="col-md-7 col-sm-12">
+            <h3>Facilities</h3>
+        </div>
+        <div class="col-md-5 d-none d-sm-block text-right">
+            <div class="btn-group btn-group-toggle"
+                data-toggle="buttons">
+                <label class="btn btn-outline-dark">
+                    <input type="radio"
+                        name="options"
+                        id="option1"
+                        (click)="addParkFacility()"> Add Facility
+                </label>
             </div>
         </div>
-        <app-facility-list></app-facility-list>
-    </section>
+    </div>
+    <div class="row d-block d-sm-none">
+        <br>
+        <div class="col-12">
+            <div class="btn-group btn-group-toggle d-flex"
+                data-toggle="buttons">
+                <label class="btn btn-outline-secondary">
+                    <input type="radio"
+                        name="options"
+                        id="option1"
+                        (click)="addParkFacility()"> Add Facility
+                </label>
+            </div>
+        </div>
+    </div>
+    <br>
+    <app-facility-list></app-facility-list>
 </div>

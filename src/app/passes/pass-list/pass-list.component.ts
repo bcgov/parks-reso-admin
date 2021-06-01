@@ -1,45 +1,45 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IColumnObject } from 'app/shared/components/table-template/table-object';
 import { Constants } from 'app/shared/utils/constants';
-import { FacilityTableRowComponent } from './facility-table-row/facility-table-row.component';
+import { PassTableRowComponent } from './pass-table-row/pass-table-row.component';
 
 @Component({
-  selector: 'app-facility-list',
-  templateUrl: './facility-list.component.html',
-  styleUrls: ['./facility-list.component.scss']
+  selector: 'app-pass-list',
+  templateUrl: './pass-list.component.html',
+  styleUrls: ['./pass-list.component.scss']
 })
-export class FacilityListComponent implements OnInit {
+export class PassListComponent implements OnInit {
   // Component
   public loading = true;
   // This will be changed to service.
   public tempData;
-  public tableRowComponent = FacilityTableRowComponent;
+  public tableRowComponent = PassTableRowComponent;
 
   // Table
   public tableColumns: IColumnObject[] = [
     {
-      name: 'Name',
-      value: 'name',
-      width: 'col-3'
-    },
-    {
-      name: 'Type',
-      value: 'type',
+      name: 'Reg #',
+      value: 'registrationNumber',
       width: 'col-2'
     },
     {
-      name: 'Time',
-      value: 'time',
+      name: 'First Name',
+      value: 'firstName',
       width: 'col-2'
     },
     {
-      name: 'Capacity',
-      value: 'capacity',
-      width: 'col-1'
+      name: 'Last Name',
+      value: 'lastName',
+      width: 'col-2'
     },
     {
-      name: 'Status',
-      value: 'status',
+      name: 'Email',
+      value: 'email',
+      width: 'col-2'
+    },
+    {
+      name: 'Guests',
+      value: 'numberOfGuests',
       width: 'col-2'
     },
     {
@@ -55,7 +55,7 @@ export class FacilityListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.tempData = Array.from(Constants.mockFacilityList);
+    this.tempData = Array.from(Constants.mockPassList);
     this._changeDetectionRef.detectChanges();
     this.loading = false;
   }

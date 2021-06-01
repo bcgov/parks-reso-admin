@@ -16,10 +16,7 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 // Modules
 import { ParksModule } from './parks/parks.module';
 import { MetricsModule } from './metrics/metrics.module';
-import { FacilitiesModule } from './facilities/facilities.module';
 import { SharedModule } from './shared/shared.module';
-import { ParkModule } from './park/park.module';
-import { FacilityModule } from './facility/facility.module';
 
 // components
 import { AppComponent } from 'app/app.component';
@@ -62,9 +59,6 @@ import { FacilityFormComponent } from './facility-form/facility-form.component';
     MetricsModule,
     SharedModule,
     ParksModule,
-    ParkModule,
-    FacilitiesModule,
-    FacilityModule
   ],
   providers: [
     CookieService,
