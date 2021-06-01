@@ -1,11 +1,43 @@
-<main id="anchor-point">
-	<div class="container">
-		<div class="home-title-container">
-			<h1 id="pgTitle">
-				<span>BC PARKS - Day Pass Reservation System</span>
-				<span class="badge"
-					id="alpha">ADMIN</span>
-			</h1>
+<div class="container pt-lg-5">
+	<div class="home-title-container">
+		<h1>
+			<span>BC PARKS - Day Pass Reservation System</span>
+			<span class="badge"
+				id="alpha">ADMIN</span>
+		</h1>
+	</div>
+	<div class="row">
+		<div class="col-lg-6 col-md-12">
+			<div class="card">
+				<h5 class="card-header">All Parks</h5>
+				<div class="card-body">
+					<h5 class="card-title">Parks Management</h5>
+					<p class="card-text">Manage parks, facilities and passes.</p>
+					<button (click)="navigate('parks')" type="button" class="btn btn-primary">Go</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-12">
+			<div class="card">
+				<h5 class="card-header">Pass Management</h5>
+				<div class="card-body">
+					<h5 class="card-title">Pass Management Tools</h5>
+					<p class="card-text">This page is a work in progress. Coming soon.</p>
+						<button (click)="navigate('reservations')" type="button" class="btn btn-primary">Go</button>
+				</div>
+			</div>
 		</div>
 	</div>
-</main>
+	<div class="row pt-lg-4">
+		<div class="col-lg-6 col-md-12">
+			<div class="card">
+				<h5 class="card-header">Site Metrics</h5>
+				<div class="card-body">
+					<h5 class="card-title">Site Metrics</h5>
+					<p class="card-text">This page is a work in progress. Coming soon.</p>
+					<button (click)="navigate('metrics')" type="button" class="btn btn-primary">Go</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

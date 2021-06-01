@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import 'rxjs/add/operator/takeUntil';
-import { TableObject } from 'app/shared/components/table-template/table-object';
 
 @Component({
   selector: 'app-home',
@@ -9,20 +8,18 @@ import { TableObject } from 'app/shared/components/table-template/table-object';
   styleUrls: ['./home.component.scss']
 })
 
-export class HomeComponent implements OnInit, OnDestroy {
-  public numProjects: number = null;
-  private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
-  public tableData: TableObject = new TableObject();
-
+export class HomeComponent implements OnInit {
   constructor(
-  ) { }
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+  }
 
   ngOnInit() {
 
   }
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+  navigate(nav) {
+    this.router.navigate([nav], { relativeTo: this.route });
   }
 }

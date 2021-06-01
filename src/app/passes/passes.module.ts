@@ -4,6 +4,7 @@ import { PassListComponent } from './pass-list/pass-list.component';
 import { PassTableRowComponent } from './pass-list/pass-table-row/pass-table-row.component';
 import { PassesComponent } from './passes.component';
 import { SharedModule } from 'app/shared/shared.module';
+import { PassModule } from 'app/pass/pass.module';
 
 
 
@@ -15,7 +16,8 @@ import { SharedModule } from 'app/shared/shared.module';
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    PassModule
   ],
   exports: [
     PassListComponent
