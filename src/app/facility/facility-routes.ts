@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { FacilityFormComponent } from 'app/facility-form/facility-form.component';
+import { PassRoutes } from 'app/pass/pass-routes';
+import { PassComponent } from 'app/pass/pass.component';
 import { FacilityDetailsComponent } from './facility-details/facility-details.component';
 
 export const FacilityRoutes: Routes = [
@@ -15,7 +17,7 @@ export const FacilityRoutes: Routes = [
       breadcrumb: 'Details',
       module: 'facility',
       component: 'details'
-    },
+    }
   },
   {
     path: 'edit',
@@ -25,5 +27,13 @@ export const FacilityRoutes: Routes = [
       module: 'facility',
       component: 'edit'
     },
+  },
+  {
+    path: 'pass/:parkId',
+    component: PassComponent,
+    data: {
+      breadcrumb: 'REGISTRATION NUMBER'
+    },
+    children: PassRoutes
   }
 ];

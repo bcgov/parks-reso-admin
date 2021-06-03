@@ -19,6 +19,6 @@ export class PassTableRowComponent extends TableRowComponent implements OnInit {
   ngOnInit() { }
 
   navigate(route) {
-    this.router.navigate(['../', this.rowData._id, route], { relativeTo: this.route });
+    this.router.navigate(['../', 'pass', this.rowData._id, route], { relativeTo: this.route });
   }
 }
