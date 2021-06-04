@@ -2,9 +2,9 @@ import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { CookieService } from 'ngx-cookie-service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgModule, ApplicationRef } from '@angular/core';
+import { NgModule, ApplicationRef, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatMenuModule, MatTabsModule } from '@angular/material';
@@ -28,6 +28,17 @@ import { SidebarComponent } from 'app/sidebar/sidebar.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { ConfigService } from './services/config.service';
+import { KeycloakService } from './services/keycloak.service';
+import { TokenInterceptor } from './shared/utils/token-interceptor';
+import { ParkService } from './services/park.service';
+
+export function initConfig(configService: ConfigService, keycloakService: KeycloakService) {
+  return async () => {
+    await configService.init();
+    await keycloakService.init();
+  };
+}
 
 @NgModule({
   declarations: [
@@ -59,7 +70,21 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
     ParksModule,
   ],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initConfig,
+      deps: [ConfigService, KeycloakService],
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
     CookieService,
+    ConfigService,
+    KeycloakService,
+    ParkService
   ],
   entryComponents: [
     ConfirmComponent

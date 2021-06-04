@@ -2,12 +2,13 @@
   width: 100%;
   table-layout: fixed;
 
-  td, th {
+  td,
+  th {
     text-align: left;
     flex: 1;
 
     @media screen and (max-width: 600px) {
-      text-align: left!important;
+      text-align: left !important;
     }
 
     &:first-child {
@@ -96,7 +97,7 @@ th {
 
     &:before,
     &:after {
-      content: ' ';
+      content: " ";
       position: absolute;
       display: block;
       border-color: #007bff transparent;
@@ -109,7 +110,7 @@ th {
     }
 
     &:after {
-      content: ' ';
+      content: " ";
       bottom: -1px;
       border-width: $table-sort-icon-size $table-sort-icon-size 0 $table-sort-icon-size;
     }
@@ -156,7 +157,7 @@ th {
   }
 
   .table thead:before {
-    content: 'Sort by:';
+    content: "Sort by:";
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 3px;
@@ -201,7 +202,6 @@ th {
     max-width: 50%;
     border-color: #fff;
   }
-
 }
 
 table {

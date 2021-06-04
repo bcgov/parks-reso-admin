@@ -1,7 +1,7 @@
 import { Component, HostBinding, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { SideBarService } from 'app/services/sidebar.service';
 
-import { SideBarService } from 'app/shared/services/sidebar.service';
 import { filter } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 

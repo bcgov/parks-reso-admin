@@ -28,6 +28,6 @@ export class ParkTableRowComponent extends TableRowComponent implements OnInit {
   }
 
   navigate(route) {
-    this.router.navigate(['../', this.rowData._id, route], { relativeTo: this.route });
+    this.router.navigate(['../', this.rowData.sk, route], { relativeTo: this.route });
   }
 }

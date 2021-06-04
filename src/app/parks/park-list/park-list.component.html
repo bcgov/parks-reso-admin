@@ -4,7 +4,9 @@
             <div class="spinner-new rotating"></div>
         </div>
     </section>
-    <app-list [tableRowComponent]="tableRowComponent"
+    <app-list *ngIf="!loading && data"
+        [tableRowComponent]="tableRowComponent"
         [tableColumns]="tableColumns"
-        [tempData]="tempData"></app-list>
+        [data]="data"
+        [totalListItems]=totalListItems></app-list>
 </div>

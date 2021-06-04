@@ -13,9 +13,9 @@ import {
 } from '@angular/core';
 import { IRowObject, TableObject } from './table-object';
 import { TableRowComponent, ITableMessage } from './table-row-component';
-import { InjectComponentService } from '../../services/inject-component.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { InjectComponentService } from 'app/services/inject-component.service';
 
 @Directive({
   selector: '[libTableRow]'
@@ -42,7 +42,7 @@ export class TableRowDirective implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     if (!changes.firstChange && changes['tableData'].currentValue) {
       this.tableData = changes['tableData'].currentValue;
-      this.rowObject = this.tableData.items.find(element => element.rowData._id === this.rowObject.rowData._id);
+      this.rowObject = this.tableData.items.find(element => element.rowData.sk === this.rowObject.rowData.sk);
 
       this.loadComponent();
     }

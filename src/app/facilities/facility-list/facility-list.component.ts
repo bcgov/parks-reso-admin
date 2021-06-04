@@ -12,7 +12,8 @@ export class FacilityListComponent implements OnInit {
   // Component
   public loading = true;
   // This will be changed to service.
-  public tempData;
+  public data;
+  public totalListItems = 0;
   public tableRowComponent = FacilityTableRowComponent;
 
   // Table
@@ -55,7 +56,8 @@ export class FacilityListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.tempData = Array.from(Constants.mockFacilityList);
+    this.data = Array.from(Constants.mockFacilityList);
+    this.totalListItems = this.data.length;
     this._changeDetectionRef.detectChanges();
     this.loading = false;
   }

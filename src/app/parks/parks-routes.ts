@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 import { ParkRoutes } from 'app/park/park-routes';
 import { ParkComponent } from 'app/park/park.component';
-import {ParkFormComponent } from 'app/park-form/park-form.component';
+import { ParkFormComponent } from 'app/park-form/park-form.component';
 import { ParkListComponent } from './park-list/park-list.component';
+import { ParksResolverService } from './parks-resolver.service';
 
 export const ParksRoutes: Routes = [
   {
@@ -17,6 +18,9 @@ export const ParksRoutes: Routes = [
       breadcrumb: 'List',
       module: 'parks',
       component: 'list'
+    },
+    resolve: {
+      ParksResolverService
     }
   },
   {
