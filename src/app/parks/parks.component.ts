@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-parks',
@@ -18,8 +19,8 @@ export class ParksComponent implements OnInit {
   ngOnInit() {
     this.showHeader = this.route.snapshot.firstChild.data.module === 'parks';
     this.navSelected = this.route.snapshot.firstChild.data.component;
-    this.router.events
-      .filter(event => event instanceof NavigationEnd)
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.showHeader = this.route.snapshot.firstChild.data.module === 'parks';
         this.navSelected = this.route.snapshot.firstChild.data.component;
