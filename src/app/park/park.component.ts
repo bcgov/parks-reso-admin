@@ -20,7 +20,7 @@ export class ParkComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.route.snapshot.firstChild && this.route.snapshot.firstChild.data && this.route.snapshot.firstChild.data.module){
+    if (this.route.snapshot.firstChild && this.route.snapshot.firstChild.data && this.route.snapshot.firstChild.data.module) {
       this.showHeader = this.route.snapshot.firstChild.data.module === 'park';
       this.navSelected = this.route.snapshot.firstChild.data.component;
       this.router.events.pipe(
