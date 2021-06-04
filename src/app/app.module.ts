@@ -28,7 +28,6 @@ import { SidebarComponent } from 'app/sidebar/sidebar.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ReservationsComponent } from './reservations/reservations.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
-import { FacilityFormComponent } from './facility-form/facility-form.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +40,6 @@ import { FacilityFormComponent } from './facility-form/facility-form.component';
     ConfirmComponent,
     ReservationsComponent,
     BreadcrumbComponent,
-    FacilityFormComponent
   ],
   imports: [
     BrowserAnimationsModule,

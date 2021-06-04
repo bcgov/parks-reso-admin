@@ -18,6 +18,14 @@ export class PassTableRowComponent extends TableRowComponent implements OnInit {
 
   ngOnInit() { }
 
+  validate(value) {
+    if (this.rowData && this.rowData.hasOwnProperty(value)) {
+      return this.rowData[value];
+    } else {
+      return '-';
+    }
+  }
+
   navigate(route) {
     this.router.navigate(['../', this.rowData._id, route], { relativeTo: this.route });
   }

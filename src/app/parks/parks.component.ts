@@ -17,16 +17,18 @@ export class ParksComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.showHeader = this.route.snapshot.firstChild.data.module === 'parks';
-    this.navSelected = this.route.snapshot.firstChild.data.component;
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.showHeader = this.route.snapshot.firstChild.data.module === 'parks';
-        this.navSelected = this.route.snapshot.firstChild.data.component;
-      });
-  }
 
+    if (this.route.snapshot.firstChild && this.route.snapshot.firstChild.data) {
+      this.showHeader = this.route.snapshot.firstChild.data.module === 'parks';
+      this.navSelected = this.route.snapshot.firstChild.data.component;
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd))
+        .subscribe(() => {
+          this.showHeader = this.route.snapshot.firstChild.data.module === 'parks';
+          this.navSelected = this.route.snapshot.firstChild.data.component;
+        });
+    }
+  }
   navigate(nav) {
     this.router.navigate([nav], { relativeTo: this.route });
   }

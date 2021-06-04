@@ -30,9 +30,10 @@ export class ListComponent implements OnInit {
     // Get table controls from url and save them in the tableData
 
     // Get data from service
-
-    this.tableData.totalListItems = this.tempData.length;
-    this.tableData.items = this.tempData;
+    if (this.tempData) {
+      this.tableData.totalListItems = this.tempData.length;
+      this.tableData.items = this.tempData;
+    }
 
     // Set columns
     this.tableData.columns = this.tableColumns;

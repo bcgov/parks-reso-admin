@@ -16,6 +16,14 @@ export class FacilityTableRowComponent extends TableRowComponent implements OnIn
 
   ngOnInit() { }
 
+  validate(value) {
+    if (this.rowData && this.rowData.hasOwnProperty(value)) {
+      return this.rowData[value];
+    } else {
+      return '-';
+    }
+  }
+
   navigate(route) {
     this.router.navigate(['../', 'facility', this.rowData._id, route], { relativeTo: this.route });
   }

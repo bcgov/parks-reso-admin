@@ -5,6 +5,7 @@ import { PassTableRowComponent } from './pass-list/pass-table-row/pass-table-row
 import { PassesComponent } from './passes.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { PassModule } from 'app/pass/pass.module';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -17,7 +18,8 @@ import { PassModule } from 'app/pass/pass.module';
   imports: [
     CommonModule,
     SharedModule,
-    PassModule
+    PassModule,
+    RouterModule.forRoot([])
   ],
   exports: [
     PassListComponent
