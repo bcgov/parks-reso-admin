@@ -4,7 +4,6 @@ import 'hammerjs'; // https://material.angular.io/guide/getting-started#step-5-g
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-import 'rxjs/add/operator/filter';
 
 if (environment.production) {
   enableProdMode();

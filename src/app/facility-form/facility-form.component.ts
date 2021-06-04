@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { Constants } from '../shared/utils/constants';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-facility-form',
@@ -46,8 +47,8 @@ export class FacilityFormComponent implements OnInit {
 
   ngOnInit() {
     this.isNewFacility = this.route.snapshot.data.component === 'add';
-    this.router.events
-      .filter(event => event instanceof NavigationEnd)
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.isNewFacility = this.route.snapshot.data.component === 'add';
       });

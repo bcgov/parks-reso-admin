@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ParksModule } from 'app/parks/parks.module';
 
 import { ParkTableRowComponent } from './park-table-row.component';
 
@@ -8,9 +10,10 @@ describe('ParkTableRowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ParkTableRowComponent ]
+      declarations: [],
+      imports: [ParksModule, ReactiveFormsModule, FormsModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

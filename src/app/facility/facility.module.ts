@@ -7,6 +7,7 @@ import { FacilityComponent } from './facility.component';
 import { FacilityDetailsComponent } from './facility-details/facility-details.component';
 import { PassesModule } from 'app/passes/passes.module';
 import { FacilityEditComponent } from './facility-edit/facility-edit.component';
+import { FacilityRoutes } from './facility-routes';
 
 @NgModule({
   declarations: [
@@ -17,8 +18,8 @@ import { FacilityEditComponent } from './facility-edit/facility-edit.component';
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule,
-    PassesModule
+    RouterModule.forRoot(FacilityRoutes),
+    PassesModule,
   ],
   entryComponents: []
 })
