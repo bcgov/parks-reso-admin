@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { PassesModule } from 'app/passes/passes.module';
 
 import { PassTableRowComponent } from './pass-table-row.component';
 
@@ -8,9 +9,10 @@ describe('PassTableRowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PassTableRowComponent ]
+      declarations: [],
+      imports: [PassesModule],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

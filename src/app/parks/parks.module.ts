@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { ParksComponent } from './parks.component';
 import { ParkFormComponent } from '../park-form/park-form.component';
 import { ParkModule } from 'app/park/park.module';
+import { ParksRoutes } from './parks-routes';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import { ParkModule } from 'app/park/park.module';
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule,
+    RouterModule.forRoot(ParksRoutes),
     ReactiveFormsModule,
     ParkModule
   ],

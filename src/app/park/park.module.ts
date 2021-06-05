@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { ParkComponent } from './park.component';
 import { ParkDetailsComponent } from './park-details/park-details.component';
 import { FacilitiesModule } from 'app/facilities/facilities.module';
+import { ParkRoutes } from './park-routes';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import { FacilitiesModule } from 'app/facilities/facilities.module';
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule,
+    RouterModule.forRoot(ParkRoutes),
     FacilitiesModule
   ],
   entryComponents: []

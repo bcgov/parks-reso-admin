@@ -7,19 +7,25 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 import { FacilityTableRowComponent } from './facility-list/facility-table-row/facility-table-row.component';
 import { FacilityModule } from 'app/facility/facility.module';
+import { FacilitiesRoutes } from './facilities-routes';
+import { FacilityFormComponent } from 'app/facility-form/facility-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     FacilitiesComponent,
     FacilityAddComponent,
     FacilityListComponent,
-    FacilityTableRowComponent
+    FacilityTableRowComponent,
+    FacilityFormComponent
   ],
   imports: [
     CommonModule,
-    RouterModule,
+    RouterModule.forRoot(FacilitiesRoutes),
     SharedModule,
-    FacilityModule
+    FacilityModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
     FacilityListComponent

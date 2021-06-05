@@ -1,4 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ParksModule } from 'app/parks/parks.module';
+import { DialogService } from 'ng2-bootstrap-modal';
 
 import { ParkFormComponent } from './park-form.component';
 
@@ -8,9 +11,13 @@ describe('ParkFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ParkFormComponent ]
+      declarations: [],
+      imports: [ReactiveFormsModule, FormsModule, ParksModule],
+      providers: [
+        {provide: DialogService}
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
