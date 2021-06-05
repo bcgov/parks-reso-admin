@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PassComponent } from './pass.component';
+import { PassModule } from './pass.module';
 
 describe('PassComponent', () => {
   let component: PassComponent;
@@ -8,9 +8,13 @@ describe('PassComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PassComponent ]
+      declarations: [
+      ],
+      imports: [
+        PassModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

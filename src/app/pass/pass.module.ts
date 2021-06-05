@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PassDetailsComponent } from './pass-details/pass-details.component';
 import { RouterModule } from '@angular/router';
+import { PassRoutes } from './pass-routes';
 
 
 
@@ -16,7 +17,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     BrowserModule,
-    RouterModule,
+    RouterModule.forRoot(PassRoutes),
     NgbModule
   ],
   exports: [],
