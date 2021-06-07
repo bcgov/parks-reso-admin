@@ -13,7 +13,6 @@ export class ParkListComponent implements OnInit, OnDestroy {
   private alive = true;
   // Component
   public loading = true;
-  // This will be changed to service.
   public data = null;
   public totalListItems = 0;
 
