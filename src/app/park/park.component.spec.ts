@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ParksModule } from 'app/parks/parks.module';
 import { ConfigService } from 'app/services/config.service';
@@ -12,7 +13,7 @@ describe('ParkComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [ParkModule, ParksModule],
+      imports: [ParkModule, ParksModule, HttpClientTestingModule],
       providers: [ConfigService]
     })
       .compileComponents();

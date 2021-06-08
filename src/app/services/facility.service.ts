@@ -6,7 +6,7 @@ import { EventKeywords, EventObject, EventService } from './event.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ParkService {
+export class FacilityService {
   private item: BehaviorSubject<any>;
   private list: BehaviorSubject<any>;
 
@@ -32,17 +32,21 @@ export class ParkService {
     return this.list.asObservable();
   }
 
-  async fetchData(sk = null) {
+  async fetchData(pk = null, sk = null) {
     let res = null;
-    if (sk) {
+    if (pk === 'park' && sk) {
+      // We are getting a facilities of a given park.
+      res = await this.apiService.get('park', sk, { facilities: true }).toPromise();
+      this.setListValue(res);
+    } else if (sk) {
       // we're getting a single item
-      res = await this.apiService.get('park', sk).toPromise();
+      res = await this.apiService.get('facility', sk).toPromise();
       // TODO: checks before sending back item.
       this.setItemValue(res[0]);
     } else {
       // We're getting a list
       try {
-        res = await this.apiService.getList('park').toPromise();
+        res = await this.apiService.getList('facility').toPromise();
         this.setListValue(res);
       } catch (e) {
         console.log('ERROR', e);

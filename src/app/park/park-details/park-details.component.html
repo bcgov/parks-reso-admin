@@ -1,54 +1,82 @@
 <div class="container-fluid-padding-without-header">
-    <div class="row">
-        <div class="col-4">
-            <label>
-                Status:
-            </label>
-            <p>
-                {{park.status}}
-            </p>
+    <section *ngIf="loading">
+        <div class="spinner-container">
+            <div class="spinner-new rotating"></div>
         </div>
-        <div class="col-4">
-            <label>
-                Description:
-            </label>
-            <p>
-                {{park.description}}
-            </p>
-        </div>
-    </div>
-    <hr>
-    <br>
-    <div class="row bg-colour p-3">
-        <div class="col-md-7 col-sm-12">
-            <h3>Facilities</h3>
-        </div>
-        <div class="col-md-5 d-none d-sm-block text-right">
-            <div class="btn-group btn-group-toggle"
-                data-toggle="buttons">
-                <label class="btn btn-outline-dark">
-                    <input type="radio"
-                        name="options"
-                        id="option1"
-                        (click)="addParkFacility()"> Add Facility
+    </section>
+    <section *ngIf="!loading">
+        <div class="row">
+            <div class="col-4">
+                <label>
+                    Status:
                 </label>
+                <p>
+                    {{park.status}}
+                </p>
+            </div>
+            <div class="col-4">
+                <label>
+                    Description:
+                </label>
+                <p>
+                    {{park.description}}
+                </p>
+            </div>
+            <div class="col-4">
+                <label>
+                    Location:
+                </label>
+                <p>
+                    {{park.location}}
+                </p>
             </div>
         </div>
-    </div>
-    <div class="row d-block d-sm-none">
+        <div class="row">
+            <div class="col-12">
+                <label>
+                    BC Parks Link:
+                </label>
+                <br>
+                <a href="{{park.bcParksLink}}">
+                    {{park.bcParksLink}}
+                </a>
+            </div>
+        </div>
+        <hr>
         <br>
-        <div class="col-12">
-            <div class="btn-group btn-group-toggle d-flex"
-                data-toggle="buttons">
-                <label class="btn btn-outline-secondary">
-                    <input type="radio"
-                        name="options"
-                        id="option1"
-                        (click)="addParkFacility()"> Add Facility
-                </label>
+        <div class="row bg-colour p-3">
+            <div class="col-md-7 col-sm-12">
+                <h3>Facilities</h3>
+            </div>
+            <div class="col-md-5 d-none d-sm-block text-right">
+                <div class="btn-group btn-group-toggle"
+                    data-toggle="buttons">
+                    <label class="btn btn-outline-dark">
+                        <input type="radio"
+                            name="options"
+                            id="option1"
+                            (click)="addParkFacility()"> Add Facility
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
-    <br>
-    <app-facility-list></app-facility-list>
+        <div class="row d-block d-sm-none">
+            <br>
+            <div class="col-12">
+                <div class="btn-group btn-group-toggle d-flex"
+                    data-toggle="buttons">
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio"
+                            name="options"
+                            id="option1"
+                            (click)="addParkFacility()"> Add Facility
+                    </label>
+                </div>
+            </div>
+        </div>
+        <br>
+    </section>
+    <section>
+        <app-facility-list></app-facility-list>
+    </section>
 </div>

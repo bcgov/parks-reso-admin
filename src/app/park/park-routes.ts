@@ -15,7 +15,7 @@ export const ParkRoutes: Routes = [
     path: 'details',
     component: ParkDetailsComponent,
     data: {
-      breadcrumb: 'Details',
+      breadcrumb: 'Park Details',
       module: 'park',
       component: 'details'
     }

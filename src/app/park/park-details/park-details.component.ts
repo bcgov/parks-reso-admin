@@ -1,30 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Constants } from 'app/shared/utils/constants';
+import { ParkService } from 'app/services/park.service';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-park-details',
   templateUrl: './park-details.component.html',
   styleUrls: ['./park-details.component.scss']
 })
-export class ParkDetailsComponent implements OnInit {
-  public loading = true;
-  public park = Constants.mockPark1;
+export class ParkDetailsComponent implements OnInit, OnDestroy {
+  private alive = true;
 
-  private currentFacilityId = 987654321;
+  public loading = true;
+  public park;
+
+  // private currentFacilityId = 987654321;
 
   constructor(
+    private _changeDetectionRef: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute,
+    private parkService: ParkService
   ) { }
 
   ngOnInit() {
-    this.loading = false;
-  }
-
-  activateLoading(e: Event) {
-    e.stopPropagation();
-    this.router.navigate(['../details', this.currentFacilityId, 'details'], { relativeTo: this.route });
+    this.parkService.getItemValue()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((res) => {
+        if (res) {
+          this.park = res;
+          this.loading = false;
+          this._changeDetectionRef.detectChanges();
+        }
+      });
   }
 
   editPark() {
@@ -35,4 +43,7 @@ export class ParkDetailsComponent implements OnInit {
     this.router.navigate(['../', 'facility', 'add'], { relativeTo: this.route });
   }
 
+  ngOnDestroy() {
+    this.alive = false;
+  }
 }

@@ -46,7 +46,7 @@ export class ParkListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.parkService.getValue()
+    this.parkService.getListValue()
       .pipe(takeWhile(() => this.alive))
       .subscribe((res) => {
         this.loading = true;
