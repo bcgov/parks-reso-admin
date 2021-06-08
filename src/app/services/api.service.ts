@@ -43,14 +43,13 @@ export class ApiService {
     return throwError(error);
   }
 
-  get(pk, sk, queryParamsObject): Observable<any> {
+  get(pk, sk, queryParamsObject = null): Observable<any> {
     let queryParams = '';
     if (queryParamsObject) {
       for (let key of Object.keys(queryParamsObject)) {
         queryParams += `&${key}=${queryParamsObject[key]}`;
       }
     }
-
     return this.http.get<any>(`${this.apiPath}/${pk}?${pk}=${sk}${queryParams}`, {});
   }
 

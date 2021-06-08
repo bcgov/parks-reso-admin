@@ -4,6 +4,7 @@ import { ParkComponent } from 'app/park/park.component';
 import { ParkFormComponent } from 'app/park-form/park-form.component';
 import { ParkListComponent } from './park-list/park-list.component';
 import { ParksResolverService } from './parks-resolver.service';
+import { ParkResolverService } from 'app/park/park-resolver.service';
 
 export const ParksRoutes: Routes = [
   {
@@ -38,6 +39,9 @@ export const ParksRoutes: Routes = [
     data: {
       breadcrumb: 'NAME OF THE PARK'
     },
-    children: ParkRoutes
+    children: ParkRoutes,
+    resolve: {
+      ParkResolverService
+    }
   }
 ];

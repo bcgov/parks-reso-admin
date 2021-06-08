@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Constants } from 'app/shared/utils/constants';
+import { ParkService } from 'app/services/park.service';
+import { takeWhile } from 'rxjs/operators';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -8,15 +9,19 @@ import { filter } from 'rxjs/operators';
   templateUrl: './park.component.html',
   styleUrls: ['./park.component.scss']
 })
-export class ParkComponent implements OnInit {
+export class ParkComponent implements OnInit, OnDestroy {
+  private alive = true;
 
-  public park = Constants.mockPark1;
+  public park;
   public navSelected = 'details';
   public showHeader = true;
+  public loading = true;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private parkService: ParkService,
+    private _changeDetectionRef: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -30,10 +35,24 @@ export class ParkComponent implements OnInit {
           this.navSelected = this.route.snapshot.firstChild.data.component;
         });
     }
+
+    this.parkService.getItemValue()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((res) => {
+        if (res) {
+          this.park = res;
+          this.loading = false;
+          this._changeDetectionRef.detectChanges();
+        }
+      });
   }
 
 
   navigate(nav) {
     this.router.navigate([nav], { relativeTo: this.route });
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }

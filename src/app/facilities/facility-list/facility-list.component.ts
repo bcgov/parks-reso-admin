@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { FacilityService } from 'app/services/facility.service';
 import { IColumnObject } from 'app/shared/components/table-template/table-object';
-import { Constants } from 'app/shared/utils/constants';
+import { takeWhile } from 'rxjs/operators';
 import { FacilityTableRowComponent } from './facility-table-row/facility-table-row.component';
 
 @Component({
@@ -8,7 +9,9 @@ import { FacilityTableRowComponent } from './facility-table-row/facility-table-r
   templateUrl: './facility-list.component.html',
   styleUrls: ['./facility-list.component.scss']
 })
-export class FacilityListComponent implements OnInit {
+export class FacilityListComponent implements OnInit, OnDestroy {
+  private alive = true;
+
   // Component
   public loading = true;
   // This will be changed to service.
@@ -21,44 +24,47 @@ export class FacilityListComponent implements OnInit {
     {
       name: 'Name',
       value: 'name',
-      width: 'col-3'
+      width: 'col-4'
     },
     {
       name: 'Type',
       value: 'type',
-      width: 'col-2'
-    },
-    {
-      name: 'Time',
-      value: 'time',
-      width: 'col-2'
-    },
-    {
-      name: 'Capacity',
-      value: 'capacity',
-      width: 'col-1'
+      width: 'col-4'
     },
     {
       name: 'Status',
       value: 'status',
-      width: 'col-2'
+      width: 'col-4'
     },
     {
       name: 'Actions',
       value: '',
-      width: 'col-2',
+      width: 'col-4',
       nosort: true
     }
   ];
 
   constructor(
     private _changeDetectionRef: ChangeDetectorRef,
+    private facilityService: FacilityService
   ) { }
 
   ngOnInit() {
-    this.data = Array.from(Constants.mockFacilityList);
-    this.totalListItems = this.data.length;
-    this._changeDetectionRef.detectChanges();
-    this.loading = false;
+    this.facilityService.getListValue()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((res) => {
+        if (res) {
+          this.data = res.map(item => {
+            return { rowData: item };
+          });
+          this.totalListItems = this.data.length;
+          this.loading = false;
+          this._changeDetectionRef.detectChanges();
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }
