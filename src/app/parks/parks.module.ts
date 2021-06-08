@@ -11,6 +11,7 @@ import { ParksComponent } from './parks.component';
 import { ParkFormComponent } from '../park-form/park-form.component';
 import { ParkModule } from 'app/park/park.module';
 import { ParksRoutes } from './parks-routes';
+import { ParksResolverService } from './parks-resolver.service';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,9 @@ import { ParksRoutes } from './parks-routes';
     RouterModule.forRoot(ParksRoutes),
     ReactiveFormsModule,
     ParkModule
+  ],
+  providers: [
+    ParksResolverService
   ],
   entryComponents: [
     ParkTableRowComponent

@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
-import { SideBarService } from 'app/shared/services/sidebar.service';
 import { IBreadcrumb } from './breadcrumb/breadcrumb.component';
+import { SideBarService } from './services/sidebar.service';
 
 @Component({
   selector: 'app-root',

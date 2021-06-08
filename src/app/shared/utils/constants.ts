@@ -1,7 +1,7 @@
 export class Constants {
   public static readonly tableDefaults = {
     DEFAULT_CURRENT_PAGE: 1,
-    DEFAULT_PAGE_SIZE: 10,
+    DEFAULT_PAGE_SIZE: 1000,
     DEFAULT_SORT_BY: '-datePosted',
     DEFAULT_KEYWORDS: '',
     DEFAULT_SHOW_MORE_INCREMENT: 5,
@@ -12,6 +12,10 @@ export class Constants {
       { displayText: '50', value: 50 },
       { displayText: '100', value: 100 }
     ]
+  };
+
+  public static readonly ApplicationRoles: any = {
+    ADMIN: 'sysadmin'
   };
 
   public static readonly FacilityTypesList = [
