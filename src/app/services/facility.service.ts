@@ -32,32 +32,31 @@ export class FacilityService {
     return this.list.asObservable();
   }
 
-  async fetchData(pk = null, sk = null) {
+  async fetchData(facilitySk = null, parkSk = null) {
     let res = null;
-    if (pk === 'park' && sk) {
-      // We are getting a facilities of a given park.
-      res = await this.apiService.get('park', sk, { facilities: true }).toPromise();
-      this.setListValue(res);
-    } else if (sk) {
-      // we're getting a single item
-      res = await this.apiService.get('facility', sk).toPromise();
-      // TODO: checks before sending back item.
-      this.setItemValue(res[0]);
-    } else {
-      // We're getting a list
-      try {
-        res = await this.apiService.getList('facility').toPromise();
+    try {
+      if (!facilitySk) {
+        // We are getting a facilities of a given park.
+        res = await this.apiService.get('park', { park: parkSk, facilities: true });
         this.setListValue(res);
-      } catch (e) {
-        console.log('ERROR', e);
-        this.eventService.setError(
-          new EventObject(
-            EventKeywords.ERROR,
-            e,
-            'Park Service'
-          )
-        );
+      } else if (facilitySk && parkSk) {
+        // we're getting a single item for a given park
+        res = await this.apiService.get('facility', { facilityName: facilitySk, park: parkSk });
+        this.setItemValue(res[0]);
+      } else {
+        // We're getting a list
+        res = await this.apiService.getList('facility');
+        this.setListValue(res);
       }
+    } catch (e) {
+      console.log('ERROR', e);
+      this.eventService.setError(
+        new EventObject(
+          EventKeywords.ERROR,
+          e,
+          'Park Service'
+        )
+      );
     }
   }
 

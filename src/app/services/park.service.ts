@@ -34,26 +34,26 @@ export class ParkService {
 
   async fetchData(sk = null) {
     let res = null;
-    if (sk) {
-      // we're getting a single item
-      res = await this.apiService.get('park', sk).toPromise();
-      // TODO: checks before sending back item.
-      this.setItemValue(res[0]);
-    } else {
-      // We're getting a list
-      try {
-        res = await this.apiService.getList('park').toPromise();
+    try {
+      if (sk) {
+        // we're getting a single item
+        res = await this.apiService.get('park', { park: sk });
+        // TODO: checks before sending back item.
+        this.setItemValue(res[0]);
+      } else {
+        // We're getting a list
+        res = await this.apiService.getList('park');
         this.setListValue(res);
-      } catch (e) {
-        console.log('ERROR', e);
-        this.eventService.setError(
-          new EventObject(
-            EventKeywords.ERROR,
-            e,
-            'Park Service'
-          )
-        );
       }
+    } catch (e) {
+      console.log('ERROR', e);
+      this.eventService.setError(
+        new EventObject(
+          EventKeywords.ERROR,
+          e,
+          'Park Service'
+        )
+      );
     }
   }
 

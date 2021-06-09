@@ -9,6 +9,7 @@ import { FacilitiesModule } from 'app/facilities/facilities.module';
 import { ParkRoutes } from './park-routes';
 import { ParkResolverService } from './park-resolver.service';
 import { FacilityService } from 'app/services/facility.service';
+import { FacilityResolverService } from 'app/facility/facility-resolver.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FacilityService } from 'app/services/facility.service';
   entryComponents: [],
   providers: [
     ParkResolverService,
-    FacilityService
+    FacilityService,
+    FacilityResolverService
   ]
 })
 export class ParkModule { }

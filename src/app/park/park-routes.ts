@@ -4,6 +4,7 @@ import { FacilityRoutes } from 'app/facility/facility-routes';
 import { FacilityComponent } from 'app/facility/facility.component';
 import { ParkFormComponent } from 'app/park-form/park-form.component';
 import { ParkDetailsComponent } from './park-details/park-details.component';
+import { FacilityResolverService } from '../facility/facility-resolver.service';
 
 export const ParkRoutes: Routes = [
   {
@@ -42,8 +43,13 @@ export const ParkRoutes: Routes = [
     path: 'facility/:facilityId',
     component: FacilityComponent,
     data: {
-      breadcrumb: 'NAME OF THE Facility'
+      breadcrumb: 'NAME OF THE Facility',
+      module: 'facility',
+      component: 'main'
     },
-    children: FacilityRoutes
+    children: FacilityRoutes,
+    resolve: {
+      FacilityResolverService
+    }
   }
 ];

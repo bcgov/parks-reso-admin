@@ -14,8 +14,6 @@ export class ParkDetailsComponent implements OnInit, OnDestroy {
   public loading = true;
   public park;
 
-  // private currentFacilityId = 987654321;
-
   constructor(
     private _changeDetectionRef: ChangeDetectorRef,
     private router: Router,
