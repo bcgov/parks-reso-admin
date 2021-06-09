@@ -1,7 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FacilitiesModule } from 'app/facilities/facilities.module';
 import { PassesModule } from 'app/passes/passes.module';
+import { ConfigService } from 'app/services/config.service';
 
 import { FacilityDetailsComponent } from './facility-details.component';
 
@@ -12,7 +14,16 @@ describe('FacilityDetailsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [FacilitiesModule, PassesModule, ReactiveFormsModule, FormsModule]
+      imports: [
+        FacilitiesModule,
+        PassesModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientTestingModule
+      ],
+      providers: [
+        ConfigService
+      ]
     })
       .compileComponents();
   }));
