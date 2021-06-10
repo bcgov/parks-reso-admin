@@ -32,7 +32,9 @@ export const FacilityRoutes: Routes = [
     path: 'pass/:parkId',
     component: PassComponent,
     data: {
-      breadcrumb: 'REGISTRATION NUMBER'
+      breadcrumb: 'REGISTRATION NUMBER',
+      module: 'pass',
+      component: 'main'
     },
     children: PassRoutes
   }

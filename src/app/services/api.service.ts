@@ -43,17 +43,28 @@ export class ApiService {
     return throwError(error);
   }
 
-  get(pk, sk, queryParamsObject = null): Observable<any> {
-    let queryParams = '';
-    if (queryParamsObject) {
-      for (let key of Object.keys(queryParamsObject)) {
-        queryParams += `&${key}=${queryParamsObject[key]}`;
-      }
-    }
-    return this.http.get<any>(`${this.apiPath}/${pk}?${pk}=${sk}${queryParams}`, {});
+  post(obj, queryParamsObject = null): Promise<any> {
+    let queryString = this.generateQueryString(queryParamsObject);
+    return this.http.post<any>(`${this.apiPath}/${queryString}`, obj, {}).toPromise();
   }
 
-  getList(pk): Observable<any> {
-    return this.http.get<any>(`${this.apiPath}/${pk}`, {});
+  get(pk, queryParamsObject = null): Promise<any> {
+    let queryString = this.generateQueryString(queryParamsObject);
+    return this.http.get<any>(`${this.apiPath}/${pk}?${queryString}`, {}).toPromise();
+  }
+
+  getList(pk): Promise<any> {
+    return this.http.get<any>(`${this.apiPath}/${pk}`, {}).toPromise();
+  }
+
+  private generateQueryString(queryParamsObject) {
+    let queryString = '';
+    if (queryParamsObject) {
+      for (let key of Object.keys(queryParamsObject)) {
+        queryString += `&${key}=${queryParamsObject[key]}`;
+      }
+      queryString = queryString.substring(1);
+    }
+    return queryString;
   }
 }

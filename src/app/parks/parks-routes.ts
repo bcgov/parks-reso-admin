@@ -37,7 +37,9 @@ export const ParksRoutes: Routes = [
     path: ':parkId',
     component: ParkComponent,
     data: {
-      breadcrumb: 'NAME OF THE PARK'
+      breadcrumb: 'NAME OF THE PARK',
+      module: 'park',
+      component: 'main'
     },
     children: ParkRoutes,
     resolve: {

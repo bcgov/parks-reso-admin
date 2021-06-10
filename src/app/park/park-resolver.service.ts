@@ -15,7 +15,9 @@ export class ParkResolverService implements Resolve<void> {
     if (route.params && route.params.parkId) {
       this.parkService.clearItemValue();
       this.parkService.fetchData(route.params.parkId);
-      this.facilityService.fetchData('park', route.params.parkId);
+
+      this.facilityService.clearListValue();
+      this.facilityService.fetchData(null, route.params.parkId);
     } else {
       this.router.navigate(['']);
     }

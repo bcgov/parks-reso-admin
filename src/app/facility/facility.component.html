@@ -1,51 +1,58 @@
 <div class="container-fluid-padding"
     *ngIf="showHeader">
-    <div class="row bg-colour p-3">
-        <div class="col-md-7 col-sm-12">
-            <h1>{{facility.name}}</h1>
+    <section *ngIf="loading">
+        <div class="spinner-container">
+            <div class="spinner-new rotating"></div>
         </div>
-        <div class="col-md-5 d-none d-sm-block pt-2 text-right">
-            <div class="btn-group btn-group-toggle"
-                data-toggle="buttons">
-                <label class="btn btn-outline-light"
-                    [ngClass]="{'active': navSelected === 'details'}">
-                    <input type="radio"
-                        name="options"
-                        id="option1"
-                        (click)="navigate('details')"> Details
-                </label>
-                <label class="btn btn-outline-light"
-                    [ngClass]="{'active': navSelected === 'edit'}">
-                    <input type="radio"
-                        name="options"
-                        id="option2"
-                        (click)="navigate('edit')"> Edit
-                </label>
+    </section>
+    <section *ngIf="!loading">
+        <div class="row bg-colour p-3">
+            <div class="col-md-7 col-sm-12">
+                <h1>{{facility.name}}</h1>
+            </div>
+            <div class="col-md-5 d-none d-sm-block pt-2 text-right">
+                <div class="btn-group btn-group-toggle"
+                    data-toggle="buttons">
+                    <label class="btn btn-outline-light"
+                        [ngClass]="{'active': navSelected === 'details'}">
+                        <input type="radio"
+                            name="options"
+                            id="option1"
+                            (click)="navigate('details')"> Details
+                    </label>
+                    <label class="btn btn-outline-light"
+                        [ngClass]="{'active': navSelected === 'edit'}">
+                        <input type="radio"
+                            name="options"
+                            id="option2"
+                            (click)="navigate('edit')"> Edit
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row d-block d-sm-none">
-        <br>
-        <div class="col-12">
-            <div class="btn-group btn-group-toggle d-flex"
-                data-toggle="buttons">
-                <label class="btn btn-outline-secondary"
-                    [ngClass]="{'active': navSelected === 'details'}">
-                    <input type="radio"
-                        name="options"
-                        id="option1"
-                        (click)="navigate('details')"> Details
-                </label>
-                <label class="btn btn-outline-secondary"
-                    [ngClass]="{'active': navSelected === 'edit'}">
-                    <input type="radio"
-                        name="options"
-                        id="option2"
-                        (click)="navigate('edit')"> Edit
-                </label>
+        <div class="row d-block d-sm-none">
+            <br>
+            <div class="col-12">
+                <div class="btn-group btn-group-toggle d-flex"
+                    data-toggle="buttons">
+                    <label class="btn btn-outline-secondary"
+                        [ngClass]="{'active': navSelected === 'details'}">
+                        <input type="radio"
+                            name="options"
+                            id="option1"
+                            (click)="navigate('details')"> Details
+                    </label>
+                    <label class="btn btn-outline-secondary"
+                        [ngClass]="{'active': navSelected === 'edit'}">
+                        <input type="radio"
+                            name="options"
+                            id="option2"
+                            (click)="navigate('edit')"> Edit
+                    </label>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
 <br>
 <router-outlet></router-outlet>
