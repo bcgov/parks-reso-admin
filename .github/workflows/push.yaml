@@ -6,7 +6,6 @@ on:
     paths:
       - ".github/workflows/push.yaml"
       - ".github/workflows/deploy-*.yaml"
-      - "terraform/**"
       - "!**/README.md"
 
 jobs:
@@ -64,3 +63,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SOURCE_DIR: 'dist'
+          TARGET_DIR: 'dev/admin'
