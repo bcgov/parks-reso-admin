@@ -6,7 +6,7 @@
     </section>
     <section *ngIf="!loading">
         <div class="row">
-            <div class="col-4">
+            <div class="col-md-6">
                 <label>
                     Status:
                 </label>
@@ -14,25 +14,7 @@
                     {{park.status}}
                 </p>
             </div>
-            <div class="col-4">
-                <label>
-                    Description:
-                </label>
-                <p>
-                    {{park.description}}
-                </p>
-            </div>
-            <div class="col-4">
-                <label>
-                    Location:
-                </label>
-                <p>
-                    {{park.location}}
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
+            <div class="col-md-6">
                 <label>
                     BC Parks Link:
                 </label>
@@ -40,6 +22,16 @@
                 <a href="{{park.bcParksLink}}">
                     {{park.bcParksLink}}
                 </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <label>
+                    Description:
+                </label>
+                <p>
+                    {{park.description}}
+                </p>
             </div>
         </div>
         <hr>

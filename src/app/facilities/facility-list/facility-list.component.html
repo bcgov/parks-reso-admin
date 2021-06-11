@@ -4,7 +4,13 @@
     </div>
 </section>
 
-<app-list [tableRowComponent]="tableRowComponent"
-    [tableColumns]="tableColumns"
-    [totalListItems]="totalListItems"
-    [data]="data"></app-list>
+<section *ngIf="data.length > 0">
+    <app-list [tableRowComponent]="tableRowComponent"
+        [tableColumns]="tableColumns"
+        [totalListItems]="totalListItems"
+        [data]="data"></app-list>
+</section>
+
+<section *ngIf="data.length === 0">
+    There are no facilities associated with the park.
+</section>

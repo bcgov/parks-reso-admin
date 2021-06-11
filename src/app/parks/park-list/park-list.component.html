@@ -4,9 +4,15 @@
             <div class="spinner-new rotating"></div>
         </div>
     </section>
-    <app-list *ngIf="!loading && data"
-        [tableRowComponent]="tableRowComponent"
-        [tableColumns]="tableColumns"
-        [data]="data"
-        [totalListItems]=totalListItems></app-list>
+
+    <section *ngIf="!loading && data.length > 0">
+        <app-list [tableRowComponent]="tableRowComponent"
+            [tableColumns]="tableColumns"
+            [data]="data"
+            [totalListItems]=totalListItems></app-list>
+    </section>
+
+    <section *ngIf="data.length === 0">
+        There are no parks to display.
+    </section>
 </div>

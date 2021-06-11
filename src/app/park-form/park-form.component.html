@@ -1,111 +1,149 @@
-<div class="fb-container bg-faded">
-    <section class="container-fluid-padding-without-header" id="anchor-point">
-        <!-- <div class="spinner-container" *ngIf="loading">
+<div class="container-fluid-padding-without-header">
+    <section *ngIf="loading">
+        <div class="spinner-container">
             <div class="spinner-new rotating"></div>
-        </div> -->
+        </div>
     </section>
-    <main class='mx-4'>
-        <section>
-            <!-- <div class="form-group custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" (click)="toggleAddEdit()" id="toggleAddEdit">
-                <label class="custom-control-label d-inline-flex" for="toggleAddEdit">
-                    <div *ngIf="isNewPark" class="text-info">Add New Park</div>
-                    <div *ngIf="!isNewPark" class="text-warning">Edit Existing Park</div>
-                </label>
-            </div> -->
-            <div class="d-flex flex-column flex-sm-row justify-content-sm-between heading-bar">
-                <div>
-                    <h1 *ngIf="isNewPark" id="name" class="m-0">Add New Park</h1>
-                    <h1 *ngIf="!isNewPark" id="name" class="m-0">Edit Park: {{ park.name }}</h1>
-                </div>
-            </div>
-            <p class="tab-intro">
-                Changes to park information will be reflected in the BC Parks Day Pass Reservation System public
-                site.
-            </p>
-        </section>
-        <hr>
-        <section>
-            <h4>Park Information</h4>
-            <form [formGroup]="parkForm" (ngSubmit)="submitForm()">
-                    <div class="form-group custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="status" formControlName="status">
-                        <label class="custom-control-label d-inline-flex" for="status">
-                            Park&nbsp;Status:
-                            <div *ngIf="parkForm.get('status').value" class="mx-1 text-primary">Park is open.</div>
-                            <div *ngIf="!parkForm.get('status').value" class="mx-1 text-secondary">Park is closed.
-                            </div>
-                        </label>
-                    </div>
-                    <div class="form-group custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="visibility"
-                            formControlName="visibility">
-                        <label class="custom-control-label d-inline-flex" for="visibility">
-                            Park&nbsp;Visibility:
-                            <div *ngIf="parkForm.get('visibility').value" class="mx-1 text-primary">Park is visible
-                                to
-                                the
-                                public.
-                            </div>
-                            <div *ngIf="!parkForm.get('visibility').value" class="mx-1 text-secondary">Park is not
-                                visible to
-                                the
-                                public.</div>
-                        </label>
-                    </div>
-                    <div class="flex-fill"></div>
-                <div class="row">
-                    <div class="form-group col-md-5">
-                        <label for="name">Park Name *</label>
-                        <input type="text" class='form-control' id="name" formControlName="name"
-                            placeholder="Enter park name" required>
-                    </div>
-                    <div class="form-group col-md-5">
-                        <label for="link">Link to Park Site</label>
-                        <div class="input-group">
-                            <input id="link" formControlName="link" class="form-control" type="text"
-                                placeholder="Paste link here">
-                            <div class="input-group-append">
-                                <button (click)="testLink()" [disabled]="!parkForm.get('link').value" class="btn btn-primary" type="button">Test Link</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex-fill"></div>
-                <div class="form-group">
-                    <div class="row justify-content-between">
-                        <div class='col-6'>
-                            <label for="description">Park Description</label>
-                        </div>
-                        <div class='col-1 text-right mr-5'>
-                            <label
-                                [ngClass]="{'text-danger' : parkForm.get('description').value?.length > descriptionCharacterLimit}"
-                                for="description">{{ parkForm.get('description').value?.length }}/{{
-                                descriptionCharacterLimit }}</label>
-                        </div>
-                    </div>
-                    <textarea rows="5" type="text" class='form-control' id="description" formControlName="description"
-                        placeholder="Enter park description ({{ descriptionCharacterLimit }} character limit)"></textarea>
-                </div>
 
-            </form>
-            <div *ngIf="parkForm.invalid" class="row">
-                <div class='flex-fill'></div>
+    <section>
+        <div class="d-flex flex-column flex-sm-row justify-content-sm-between heading-bar">
+            <div *ngIf="!loading">
+                <h1 *ngIf="isNewPark"
+                    id="name"
+                    class="m-0">Add New Park</h1>
+                <h1 *ngIf="!isNewPark"
+                    id="name"
+                    class="m-0">Edit Park: {{ park.name }}</h1>
             </div>
+        </div>
+        <p class="tab-intro">
+            Changes to park information will be reflected in the BC Parks Day Pass Reservation System public
+            site.
+        </p>
+    </section>
+
+    <hr>
+
+    <section *ngIf="!loading">
+        <form [formGroup]="parkForm"
+            (ngSubmit)="submitForm()">
+
             <div class="row">
-                <div *ngIf="!isNewPark" class="col-md-2">
-                    <button class="btn btn-danger" (click)="delete()"><i
-                            class="material-icons mr-1">delete</i>Delete</button>
+                <div class="col-12">
+                    <div class="form-group custom-control custom-switch">
+                        <input type="checkbox"
+                            class="custom-control-input"
+                            id="status"
+                            formControlName="status">
+                        <label class="custom-control-label d-inline-flex"
+                            for="status">
+                            Park&nbsp;Status:
+                            <div *ngIf="parkForm.get('status').value"
+                                class="mx-1 text-primary">Park is open.</div>
+                            <div *ngIf="!parkForm.get('status').value"
+                                class="mx-1 text-secondary">Park is closed.
+                            </div>
+                        </label>
+                    </div>
                 </div>
-                <div class='flex-fill'></div>
-                <div class="d-flex justify-content-md-end mx-3">
-                    <button class='btn btn-danger m-1' (click)="cancel()">Cancel</button>
-                    <button class='btn btn-secondary m-1' [disabled]="parkForm.pristine" (click)="resetForm()">Reset
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group custom-control custom-switch">
+                        <input type="checkbox"
+                            class="custom-control-input"
+                            id="visible"
+                            formControlName="visible">
+                        <label class="custom-control-label d-inline-flex"
+                            for="visible">
+                            Park&nbsp;Visibility:
+                            <div *ngIf="parkForm.get('visible').value"
+                                class="mx-1 text-primary">
+                                Park is visible to the public.
+                            </div>
+                            <div *ngIf="!parkForm.get('visible').value"
+                                class="mx-1 text-secondary">
+                                Park is not visible to the public.
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="name">Name <span class="text-danger">*</span></label>
+                    <input type="text"
+                        class='form-control'
+                        id="name"
+                        formControlName="name"
+                        placeholder="Enter park name"
+                        required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="bcParksLink">Link to BC Parks Site</label>
+                    <div class="input-group">
+                        <input id="bcParksLink"
+                            formControlName="bcParksLink"
+                            class="form-control"
+                            type="text"
+                            placeholder="Paste link here">
+                        <div class="input-group-append">
+                            <button (click)="testLink()"
+                                [disabled]="!parkForm.get('bcParksLink').value"
+                                class="btn btn-primary"
+                                type="button">Test Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row justify-content-between">
+                    <div class='col-6'>
+                        <label for="description">Description <span class="text-danger">*</span></label>
+                    </div>
+                    <div class='col-1 text-right mr-5'>
+                        <label
+                            [ngClass]="{'text-danger' : parkForm.get('description').value?.length > descriptionCharacterLimit}"
+                            for="description">{{ parkForm.get('description').value?.length }}/{{
+                            descriptionCharacterLimit }}</label>
+                    </div>
+                </div>
+                <textarea rows="5"
+                    type="text"
+                    class='form-control'
+                    id="description"
+                    formControlName="description"
+                    placeholder="Enter park description ({{ descriptionCharacterLimit }} character limit)"></textarea>
+            </div>
+        </form>
+
+        <div *ngIf="parkForm.invalid"
+            class="row">
+        </div>
+        <div class="row">
+            <div *ngIf="!isNewPark"
+                class="col-md-2">
+                <button class="btn btn-danger icon-button"
+                    (click)="delete()"><span class="material-icons mr-1">delete</span>Delete</button>
+            </div>
+            <div class="col-md-10 mt-3 mt-md-0">
+                <div class="d-flex justify-content-md-end">
+                    <button class='btn btn-danger mr-1'
+                        (click)="cancel()">Cancel</button>
+                    <button class='btn btn-secondary mx-1'
+                        [disabled]="parkForm.pristine"
+                        (click)="resetForm()">Reset
                         Form</button>
-                    <button class='btn btn-primary m-1' [disabled]="parkForm.invalid" (click)="submitForm()">Save
+                    <button class='btn btn-primary ml-1'
+                        [disabled]="parkForm.invalid"
+                        (click)="submitForm()">Save
                         Park</button>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 </div>

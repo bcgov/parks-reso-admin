@@ -10,7 +10,7 @@
   window.__env.API_LOCATION = 'https://pkqlwkdzka.execute-api.ca-central-1.amazonaws.com';
   window.__env.API_PATH = '/dev';
   window.__env.KEYCLOAK_CLIENT_ID = 'nrpti-admin';
-  window.__env.KEYCLOAK_URL = 'https://dev.oidc.gov.bc.ca/auth';
+  window.__env.KEYCLOAK_URL = 'https://oidc.gov.bc.ca/auth';
   window.__env.KEYCLOAK_REALM = '3l5nw6dk';
   window.__env.KEYCLOAK_ENABLED = true;
 

@@ -1,6 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ParksModule } from 'app/parks/parks.module';
+import { ConfigService } from 'app/services/config.service';
 import { DialogService } from 'ng2-bootstrap-modal';
 
 import { ParkFormComponent } from './park-form.component';
@@ -12,9 +14,15 @@ describe('ParkFormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [ReactiveFormsModule, FormsModule, ParksModule],
+      imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        ParksModule,
+        HttpClientTestingModule
+      ],
       providers: [
-        {provide: DialogService}
+        ConfigService,
+        { provide: DialogService }
       ]
     })
       .compileComponents();
