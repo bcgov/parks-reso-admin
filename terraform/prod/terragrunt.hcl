@@ -1,5 +1,5 @@
 terraform {
-  source = "git::https://github.com/bcgov/parks_reso-admin-terraform.git//?ref=v0.0.0"
+  source = "git::https://github.com/bcgov/parks_reso-admin-terraform.git//?ref=main"
 }
 
 include {

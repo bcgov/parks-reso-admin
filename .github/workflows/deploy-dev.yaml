@@ -9,7 +9,7 @@ on:
       - "!**/README.md"
 
 jobs:
-
+  environment: dev
   ci:
     name: ci
     runs-on: ubuntu-20.04
@@ -52,4 +52,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SOURCE_DIR: 'dist'
-          TARGET_DIR: 'dev/admin'
+          TARGET_DIR: 'v0.0.0/admin'

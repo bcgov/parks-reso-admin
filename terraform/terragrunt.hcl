@@ -3,7 +3,6 @@ locals {
   tfc_organization = "bcgov"
   project          = "pil3ef"
   environment      = reverse(split("/", get_terragrunt_dir()))[0]
-  app_image        = get_env("app_image", "")
 }
 
 generate "remote_state" {

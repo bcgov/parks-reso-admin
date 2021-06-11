@@ -1,5 +1,5 @@
 terraform {
-  source = "git::https://github.com/bcgov/parks_reso-admin-terraform.git//?ref=v0.0.0"
+  source = "git::https://github.com/bcgov/parks_reso-admin-terraform.git//?ref=main"
 }
 
 include {
@@ -11,6 +11,5 @@ generate "test_tfvars" {
   if_exists         = "overwrite"
   disable_signature = true
   contents          = <<-EOF
-service_names = ["ssp"]
 EOF
 }
