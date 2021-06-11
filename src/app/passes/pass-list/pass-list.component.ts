@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IColumnObject } from 'app/shared/components/table-template/table-object';
 import { Constants } from 'app/shared/utils/constants';
+import { PassUtils } from 'app/shared/utils/pass-utils';
 import { PassTableRowComponent } from './pass-table-row/pass-table-row.component';
 
 @Component({
@@ -11,6 +12,7 @@ import { PassTableRowComponent } from './pass-table-row/pass-table-row.component
 export class PassListComponent implements OnInit {
   // Component
   public loading = true;
+  public downloading = false;
   // This will be changed to service.
   public data;
   public totalListItems = 0;
@@ -60,5 +62,10 @@ export class PassListComponent implements OnInit {
     this.totalListItems = this.data.length;
     this._changeDetectionRef.detectChanges();
     this.loading = false;
+  }
+
+  exportCsv(): void {
+    // TODO: hook up to data service properly
+    PassUtils.exportToCsv(this.data);
   }
 }
