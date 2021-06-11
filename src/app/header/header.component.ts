@@ -5,6 +5,7 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
 
 import { Subject } from 'rxjs/Subject';
+import { ApiService } from 'app/services/api.service';
 
 @Component({
   selector: 'app-header',
@@ -29,25 +30,25 @@ import { Subject } from 'rxjs/Subject';
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
-  public envName: string;
-  public bannerColour: string;
-  public showBanner = false;
+  private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+
   public isNavMenuOpen = false;
   public welcomeMsg: String;
-  public jwt: {
-    username: String,
-    realm_access: {
-      roles: Array<String>
-    }
-    scopes: Array<String>
-  };
-  public showDayCalculatorModal = false;
-  private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+  public isAuthenticated: boolean;
+  public environment: string;
 
   constructor(
     private dialogService: DialogService,
-    public router: Router
-  ) {}
+    public router: Router,
+    private apiService: ApiService
+  ) {
+    router.events.subscribe(() => {
+      this.isAuthenticated = this.apiService.isAuthenticated();
+      this.welcomeMsg = this.apiService.getWelcomeMessage();
+    });
+
+    this.environment = this.apiService.getEnvironment();
+  }
 
   ngOnInit() {
     let isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
@@ -58,21 +59,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
           message: '<strong>  Attention: </strong>This website is not supported by Internet Explorer and Microsoft Edge, please use Google Chrome or Firefox.',
           okOnly: true,
         }, {
-          backdropColor: 'rgba(0, 0, 0, 0.5)'
-        });
+        backdropColor: 'rgba(0, 0, 0, 0.5)'
+      });
     }
-
-  }
-
-  renderMenu(route: String) {
-    // Sysadmin's get administration.
-    if (route === 'administration') {
-      return (this.jwt && this.jwt.realm_access && this.jwt.realm_access.roles.find(x => x === 'sysadmin') && this.jwt.username === 'admin');
-    }
-  }
-
-  navigateToLogout() {
-    // reset login status
   }
 
   toggleNav() {

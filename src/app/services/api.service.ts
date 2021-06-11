@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JwtUtil } from 'app/shared/utils/jwt-utils';
 import { Observable, throwError } from 'rxjs';
 import { ConfigService } from './config.service';
+import { KeycloakService } from './keycloak.service';
 import { LoggerService } from './logger.service';
 
 @Injectable({
@@ -17,11 +19,40 @@ export class ApiService {
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private keycloakService: KeycloakService
   ) {
     this.apiPath = this.configService.config['API_LOCATION']
       + this.configService.config['API_PATH'];
     this.env = this.configService.config['ENVIRONMENT'];
+  }
+
+  public getEnvironment(): string {
+    return this.env;
+  }
+
+  public getToken(): string {
+    return this.keycloakService.getToken();
+  }
+
+  public getWelcomeMessage(): string {
+    const token = this.getToken();
+
+    if (!token) {
+      return '';
+    }
+
+    const jwt = JwtUtil.decodeToken(token);
+
+    if (!jwt) {
+      return '';
+    }
+
+    return `Hello ${jwt.displayName}`;
+  }
+
+  public isAuthenticated(): boolean {
+    return this.keycloakService.isAuthenticated();
   }
 
   handleError(error: any): Observable<never> {
