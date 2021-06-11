@@ -9,7 +9,7 @@ on:
       - "!**/README.md"
 
 jobs:
-
+  environment: dev
   ci:
     name: ci
     runs-on: ubuntu-20.04

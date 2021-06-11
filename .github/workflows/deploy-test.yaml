@@ -1,63 +1,65 @@
 
-# name: Deploy Test
-# TODO look into github environments to separate dev/test/prod AWS vars
-# on:
-#   workflow_run:
-#     workflows:
-#       - Tag
-#     branches:
-#       - "v[0-9].[0-9]+.[0-9]+-rc*"
-#     types:
-#       - completed
+name: Deploy Test
+on:
+  push:
+    tags: ["*"]
+    branches:
+      - "v[0-9].[0-9]+.[0-9]+-rc*"
 
-# env:
-#   TF_VERSION: 0.14.7
-#   TG_VERSION: 0.26.7
-#   TG_SRC_PATH: terraform
-#   TFC_WORKSPACE: test
+env:
+  TF_VERSION: 0.14.7
+  TG_VERSION: 0.26.7
+  TG_SRC_PATH: terraform
+  TFC_WORKSPACE: test
 
-# obs:
+jobs:
+  environment: test
+  cd:
+    name: cd
+    runs-on: ubuntu-20.04
 
-#   cd:
-#     name: cd
-#     runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
 
-#     steps:
-#       - name: Check out the repo
-#         uses: actions/checkout@v2
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
 
-#       - uses: actions/cache@v2
-#         with:
-#           path: /tmp/.buildx-cache
-#           key: ${{ runner.os }}-buildx-${{ github.sha }}
-#           restore-keys: |
-#             ${{ runner.os }}-buildx-
 
-#       - name: build, and test
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: 10
-#         run: |
-#           npm i
-#           npm run build
-#         env:
-#           CI: true
+      - uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
 
-#       - name: Archive build
-#         if: success()
-#         uses: actions/upload-artifact@v1
-#         with:
-#           name: deploy_dist
-#           path: dist
+      - name: build, and test
+        uses: actions/setup-node@v2
+        with:
+          node-version: 10
+        run: |
+          npm i
+          npm run build
+        env:
+          CI: true
 
-#       - name: Deploy to S3
-#         uses: jakejarvis/s3-sync-action@master
-#         with:
-#           args: --acl public-read --follow-symlinks --delete
-#         env:
-#           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#           AWS_REGION: ${{ secrets.AWS_REGION }}
-#           SOURCE_DIR: 'dist'
-#           TARGET_DIR: 'dev/admin'
+      - name: Archive build
+        if: success()
+        uses: actions/upload-artifact@v1
+        with:
+          name: deploy_dist
+          path: dist
+
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: 'dist'
+          TARGET_DIR: '${{ steps.extract_branch.outputs.branch }}/admin'
