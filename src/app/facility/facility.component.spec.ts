@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FacilityFormComponent } from 'app/facility-form/facility-form.component';
 import { ConfigService } from 'app/services/config.service';
+import { KeycloakService } from 'app/services/keycloak.service';
 
 import { FacilityComponent } from './facility.component';
 import { FacilityModule } from './facility.module';
@@ -21,7 +22,8 @@ describe('FacilityComponent', () => {
         HttpClientTestingModule
       ],
       providers: [
-        ConfigService
+        ConfigService,
+        KeycloakService
       ]
     })
       .compileComponents();

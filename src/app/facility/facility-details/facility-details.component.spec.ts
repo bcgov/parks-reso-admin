@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FacilitiesModule } from 'app/facilities/facilities.module';
 import { PassesModule } from 'app/passes/passes.module';
 import { ConfigService } from 'app/services/config.service';
+import { KeycloakService } from 'app/services/keycloak.service';
 
 import { FacilityDetailsComponent } from './facility-details.component';
 
@@ -22,7 +23,8 @@ describe('FacilityDetailsComponent', () => {
         HttpClientTestingModule
       ],
       providers: [
-        ConfigService
+        ConfigService,
+        KeycloakService
       ]
     })
       .compileComponents();

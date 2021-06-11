@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ParksModule } from 'app/parks/parks.module';
 import { ConfigService } from 'app/services/config.service';
+import { KeycloakService } from 'app/services/keycloak.service';
 import { DialogService } from 'ng2-bootstrap-modal';
 
 import { ParkFormComponent } from './park-form.component';
@@ -22,6 +23,7 @@ describe('ParkFormComponent', () => {
       ],
       providers: [
         ConfigService,
+        KeycloakService,
         { provide: DialogService }
       ]
     })
