@@ -5,6 +5,7 @@ import { SharedModule } from 'app/shared/shared.module';
 
 import { ParkListComponent } from './park-list.component';
 import { ConfigService } from 'app/services/config.service';
+import { KeycloakService } from 'app/services/keycloak.service';
 
 describe('ParkListComponent', () => {
   let component: ParkListComponent;
@@ -14,7 +15,10 @@ describe('ParkListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [SharedModule, ParksModule, HttpClientTestingModule],
-      providers: [ConfigService]
+      providers: [
+        ConfigService,
+        KeycloakService
+      ]
     })
       .compileComponents();
   }));

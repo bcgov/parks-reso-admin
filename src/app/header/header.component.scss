@@ -6,12 +6,12 @@
 
   &.red {
     background-color: #ff8e8e;
-    color: #a70404
+    color: #a70404;
   }
 
   &.orange {
     background-color: #ffd47e;
-    color: #bd7e02
+    color: #bd7e02;
   }
 
   &.yellow {
@@ -61,7 +61,6 @@
   }
 }
 
-
 // Navbar Toggle Button
 .navbar-toggler {
   margin-right: 0.5rem;
@@ -106,7 +105,6 @@
     }
   }
 }
-
 
 // NAVBAR
 .navbar {
@@ -192,6 +190,13 @@
       }
     }
   }
+  .navbar-environment {
+    padding: 0 2rem;
+    font-weight: 700;
+    font-size: 2rem;
+    background-color: #063;
+    border-radius: 1.5rem;
+  }
 }
 
 .navbar-collapse {
@@ -247,9 +252,9 @@
           }
 
           &:hover {
-            >a,
-            >a:hover,
-            >a:focus {
+            > a,
+            > a:hover,
+            > a:focus {
               background-color: #002663;
               border: none;
             }
@@ -336,7 +341,6 @@
     font-weight: 800;
     font-size: 1.5rem;
   }
-  
 
   .navbar-brand__version {
     font-size: 0.6rem;
