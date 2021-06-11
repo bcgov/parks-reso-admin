@@ -75,16 +75,8 @@ export class ParkService {
 
     let res = null;
     try {
-      this.checkManditoryFields(obj);
-      postObj['park'] = {
-        name: postObj.name,
-        bcParksLink: postObj.bcParksLink,
-        status: postObj.status
-      };
-      // TODO: add facilities during a put or post
-      delete postObj.name;
-      delete postObj.bcParksLink;
-      delete postObj.status;
+      this.checkManditoryFields(postObj);
+      this.createParkSubObject(postObj);
       postObj['facilities'] = [];
       res = await this.apiService.post('park', postObj);
     } catch (e) {
@@ -112,14 +104,7 @@ export class ParkService {
       if (!putObj.sk) {
         throw ('You must provide a park sk');
       }
-      putObj['park'] = {
-        name: putObj.name,
-        bcParksLink: putObj.bcParksLink,
-        status: putObj.status
-      };
-      delete putObj.name;
-      delete putObj.bcParksLink;
-      delete putObj.status;
+      this.createParkSubObject(putObj);
       // TODO: add facilities during a put or post
       putObj['facilities'] = [];
       return await this.apiService.put('park', putObj);
@@ -134,6 +119,19 @@ export class ParkService {
       );
       throw e;
     }
+  }
+
+  createParkSubObject(obj) {
+    obj['park'] = {
+      name: obj.name,
+      bcParksLink: obj.bcParksLink,
+      status: obj.status,
+      capacity: obj.capacity
+    };
+    delete obj.name;
+    delete obj.bcParksLink;
+    delete obj.status;
+    delete obj.capacity;
   }
 
   private checkManditoryFields(obj) {

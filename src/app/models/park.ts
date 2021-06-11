@@ -6,6 +6,7 @@ export class Park {
     bcParksLink: string;
     status: string;
     visible: boolean;
+    capacity: number;
     constructor(obj?: any) {
         this.pk = obj && obj.pk || null;
         this.sk = obj && obj.sk || null;
@@ -13,6 +14,7 @@ export class Park {
         this.description = obj && obj.description || null;
         this.bcParksLink = obj && obj.bcParksLink || null;
         this.status = obj && obj.status || null;
+        this.capacity = obj && obj.capacity || null;
         if (obj && typeof obj.visible === 'boolean') {
             this.visible = obj.visible;
         } else {

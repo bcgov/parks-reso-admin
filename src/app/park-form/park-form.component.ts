@@ -23,6 +23,7 @@ export class ParkFormComponent implements OnInit, OnDestroy {
 
   public parkForm = new FormGroup({
     name: new FormControl('', Validators.required),
+    capacity: new FormControl(''),
     description: new FormControl('', [
       Validators.maxLength(this.descriptionCharacterLimit),
       Validators.required
@@ -61,10 +62,11 @@ export class ParkFormComponent implements OnInit, OnDestroy {
   populateParkDetails() {
     this.parkForm.setValue({
       name: this.park.name,
+      capacity: this.park.capacity ? this.park.capacity : null,
       description: this.park.description,
       status: this.park.status === 'open' ? true : false,
       visible: this.park.visible,
-      bcParksLink: this.park.bcParksLink
+      bcParksLink: this.park.bcParksLink ? this.park.bcParksLink : ''
     });
     if (!this.isNewPark) {
       this.parkForm.get('name').disable();
@@ -86,6 +88,7 @@ export class ParkFormComponent implements OnInit, OnDestroy {
     const message = `<strong>Park Name:</strong></br>` + this.parkForm.get('name').value +
       `</br></br><strong>Park Status:</strong></br>` + this.getParkInfoString('status') +
       `</br></br><strong>Park Visibility:</strong></br>` + this.getParkInfoString('visible') +
+      `</br></br><strong>Park Capacity:</strong></br>` + this.parkForm.get('capacity').value +
       `</br></br><strong>Link to BC Parks Site:</strong></br>` + this.parkForm.get('bcParksLink').value +
       `</br></br><strong>Park Description:</strong></br>` + this.parkForm.get('description').value;
 
@@ -146,6 +149,11 @@ export class ParkFormComponent implements OnInit, OnDestroy {
       obj.bcParksLink = this.parkForm.get('bcParksLink').value;
     } else {
       delete obj.bcParksLink;
+    }
+    if (this.parkForm.get('capacity').value) {
+      obj.capacity = this.parkForm.get('capacity').value;
+    } else {
+      delete obj.capacity;
     }
   }
 
