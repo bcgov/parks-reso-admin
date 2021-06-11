@@ -15,7 +15,7 @@ export class FacilityListComponent implements OnInit, OnDestroy {
   // Component
   public loading = true;
   // This will be changed to service.
-  public data;
+  public data = [];
   public totalListItems = 0;
   public tableRowComponent = FacilityTableRowComponent;
 
@@ -24,17 +24,20 @@ export class FacilityListComponent implements OnInit, OnDestroy {
     {
       name: 'Name',
       value: 'name',
-      width: 'col-4'
+      width: 'col-4',
+      nosort: true
     },
     {
       name: 'Type',
       value: 'type',
-      width: 'col-4'
+      width: 'col-4',
+      nosort: true
     },
     {
       name: 'Status',
       value: 'status',
-      width: 'col-4'
+      width: 'col-4',
+      nosort: true
     },
     {
       name: 'Actions',

@@ -13,7 +13,7 @@ export class ParkListComponent implements OnInit, OnDestroy {
   private alive = true;
   // Component
   public loading = true;
-  public data = null;
+  public data = [];
   public totalListItems = 0;
 
   public tableRowComponent = ParkTableRowComponent;
@@ -59,7 +59,6 @@ export class ParkListComponent implements OnInit, OnDestroy {
           this._changeDetectionRef.detectChanges();
         }
       });
-
   }
 
   ngOnDestroy() {

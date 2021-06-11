@@ -1,84 +1,96 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
+import { Park } from 'app/models/park';
+import { ParkService } from 'app/services/park.service';
 import { DialogService } from 'ng2-bootstrap-modal';
-import { filter } from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-park-form',
   templateUrl: './park-form.component.html',
   styleUrls: ['./park-form.component.scss']
 })
-export class ParkFormComponent implements OnInit {
+export class ParkFormComponent implements OnInit, OnDestroy {
+  private alive = true;
 
   public isNewPark = true;
   public descriptionCharacterLimit = 500;
+  public loading = true;
 
-  public park = {
-    name: 'Goldstream Provincial Park',
-    description: 'Massive trees, majestic waterfalls, a meandering river that meets the sea, flowers, birds and fascinating fish are but a few of the attractions that draw people to Goldstream Provincial Park, a mere 16 km from downtown Victoria on southern Vancouver Island.',
-    status: true,
-    visibility: true,
-    link: 'https://bcparks.ca/explore/parkpgs/goldstream/'
-  };
+  public park = null;
 
   public parkForm = new FormGroup({
     name: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.maxLength(this.descriptionCharacterLimit)),
+    capacity: new FormControl(''),
+    description: new FormControl('', [
+      Validators.maxLength(this.descriptionCharacterLimit),
+      Validators.required
+    ]),
     status: new FormControl(false),
-    visibility: new FormControl(false),
-    link: new FormControl('')
+    visible: new FormControl(false),
+    bcParksLink: new FormControl('')
   });
 
   constructor(
+    private _changeDetectionRef: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: DialogService,
+    private parkService: ParkService
   ) { }
 
   ngOnInit() {
     this.isNewPark = this.route.snapshot.data.component === 'add';
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.isNewPark = this.route.snapshot.data.component === 'add';
-      });
+    if (!this.isNewPark) {
+      this.parkService.getItemValue()
+        .pipe(takeWhile(() => this.alive))
+        .subscribe((res) => {
+          if (res) {
+            this.park = res;
+            this.populateParkDetails();
+            this.loading = false;
+            this._changeDetectionRef.detectChanges();
+          }
+        });
+    } else {
+      this.loading = false;
+    }
   }
 
   populateParkDetails() {
     this.parkForm.setValue({
       name: this.park.name,
+      capacity: this.park.capacity ? this.park.capacity : null,
       description: this.park.description,
-      status: this.park.status,
-      visibility: this.park.visibility,
-      link: this.park.link
-
+      status: this.park.status === 'open' ? true : false,
+      visible: this.park.visible,
+      bcParksLink: this.park.bcParksLink ? this.park.bcParksLink : ''
     });
+    if (!this.isNewPark) {
+      this.parkForm.get('name').disable();
+    }
   }
-
-  // toggleAddEdit() {
-  //   this.isNewPark = !this.isNewPark;
-  //   this.resetForm();
-  // }
 
   getParkInfoString(info) {
     switch (info) {
       case 'status':
         return this.parkForm.get('status').value ? 'Open' : 'Closed';
-      case 'visibility':
-        return this.parkForm.get('visibility').value ? 'Visible to public' : 'Not visible to public';
+      case 'visible':
+        return this.parkForm.get('visible').value ? 'Visible to public' : 'Not visible to public';
       case 'passRequired':
         return this.parkForm.get('parkPassRequired').value ? 'Passes required' : 'Passes not required';
     }
   }
 
-  submitForm() {
-    const message = `<strong>Park Name: </strong>` + this.parkForm.get('name').value +
-      `</br><strong>Park Description: </strong>` + this.parkForm.get('description').value +
-      `</br><strong>Park Status: </strong>` + this.getParkInfoString('status') +
-      `</br><strong>Park Visibility: </strong>` + this.getParkInfoString('visibility');
-
+  async submitForm() {
+    const message = `<strong>Park Name:</strong></br>` + this.parkForm.get('name').value +
+      `</br></br><strong>Park Status:</strong></br>` + this.getParkInfoString('status') +
+      `</br></br><strong>Park Visibility:</strong></br>` + this.getParkInfoString('visible') +
+      `</br></br><strong>Park Capacity:</strong></br>` + this.parkForm.get('capacity').value +
+      `</br></br><strong>Link to BC Parks Site:</strong></br>` + this.parkForm.get('bcParksLink').value +
+      `</br></br><strong>Park Description:</strong></br>` + this.parkForm.get('description').value;
 
     this.dialogService
       .addDialog(
@@ -89,16 +101,64 @@ export class ParkFormComponent implements OnInit {
           okOnly: false
         },
         { backdropColor: 'rgba(0, 0, 0, 0.5)' }
-      ).subscribe(result => {
+      ).subscribe(async result => {
+        this.loading = true;
         if (result) {
+          try {
+            if (this.isNewPark) {
+              // Post
+              const postObj = new Park();
+              this.validateFields(postObj);
+              await this.parkService.createPark(postObj);
+            } else {
+              // Put
+              const putObj = new Park();
+              putObj.pk = this.park.pk;
+              putObj.sk = this.park.sk;
+              this.validateFields(putObj);
+
+              // Dont allow name change on edit.
+              putObj.name = this.park.name;
+
+              await this.parkService.editPark(putObj);
+            }
+          } catch (error) {
+            // TODO: Use toast service to make this look nicer.
+            alert('An error as occured.');
+          }
+          // TODO: Success toast.
           this.router.navigate(['parks']);
         }
+        this.loading = false;
       });
   }
 
-  testLink() {
-    window.open(this.parkForm.get('link').value);
+  private validateFields(obj) {
+    // Manditory fields
+    obj.name = this.parkForm.get('name').value;
+    if (this.parkForm.get('status').value) {
+      obj.status = 'open';
+    } else {
+      obj.status = 'closed';
+    }
+    obj.visible = this.parkForm.get('visible').value;
+    obj.description = this.parkForm.get('description').value;
 
+    // Optional
+    if (this.parkForm.get('bcParksLink').value) {
+      obj.bcParksLink = this.parkForm.get('bcParksLink').value;
+    } else {
+      delete obj.bcParksLink;
+    }
+    if (this.parkForm.get('capacity').value) {
+      obj.capacity = this.parkForm.get('capacity').value;
+    } else {
+      delete obj.capacity;
+    }
+  }
+
+  testLink() {
+    window.open(this.parkForm.get('bcParksLink').value);
   }
 
   cancel() {
@@ -134,8 +194,7 @@ export class ParkFormComponent implements OnInit {
     }
   }
 
-
-
-
-
+  ngOnDestroy() {
+    this.alive = false;
+  }
 }

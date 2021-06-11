@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Park } from 'app/models/park';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
@@ -42,7 +43,7 @@ export class ParkService {
         this.setItemValue(res[0]);
       } else {
         // We're getting a list
-        res = await this.apiService.getList('park');
+        res = await this.apiService.get('park');
         this.setListValue(res);
       }
     } catch (e) {
@@ -62,5 +63,92 @@ export class ParkService {
   }
   clearListValue(): void {
     this.setListValue(null);
+  }
+
+  async createPark(obj) {
+    // Remove non-valid fields and verify field types.
+    let postObj = new Park(obj);
+
+    // Remove ids
+    delete postObj.pk;
+    delete postObj.sk;
+
+    let res = null;
+    try {
+      this.checkManditoryFields(postObj);
+      this.createParkSubObject(postObj);
+      postObj['facilities'] = [];
+      res = await this.apiService.post('park', postObj);
+    } catch (e) {
+      console.log('ERROR', e);
+      this.eventService.setError(
+        new EventObject(
+          EventKeywords.ERROR,
+          e,
+          'Park Service'
+        )
+      );
+      throw e;
+    }
+    return res;
+  }
+
+  async editPark(obj) {
+    // To do an edit we need to pass back the entire object with all old and new fields.
+    let putObj = new Park(obj);
+    try {
+      this.checkManditoryFields(putObj);
+      if (!putObj.pk) {
+        throw ('You must provide a park pk');
+      }
+      if (!putObj.sk) {
+        throw ('You must provide a park sk');
+      }
+      this.createParkSubObject(putObj);
+      // TODO: add facilities during a put or post
+      putObj['facilities'] = [];
+      return await this.apiService.put('park', putObj);
+    } catch (e) {
+      console.log('ERROR', e);
+      this.eventService.setError(
+        new EventObject(
+          EventKeywords.ERROR,
+          e,
+          'Park Service'
+        )
+      );
+      throw e;
+    }
+  }
+
+  createParkSubObject(obj) {
+    obj['park'] = {
+      name: obj.name,
+      bcParksLink: obj.bcParksLink,
+      status: obj.status,
+      capacity: obj.capacity
+    };
+    delete obj.name;
+    delete obj.bcParksLink;
+    delete obj.status;
+    delete obj.capacity;
+  }
+
+  private checkManditoryFields(obj) {
+    if (obj.name === '') {
+      throw ('You must provide a park name');
+    }
+    if (obj.description === '') {
+      throw ('You must provide a park description');
+    }
+    if (typeof obj.visible !== 'boolean') {
+      throw ('You must provide a boolean for park visibility');
+    }
+    if (
+      obj.status === '' ||
+      (obj.status !== 'closed' && obj.status !== 'open')
+    ) {
+      throw ('You must provide a valid park status');
+    }
   }
 }
