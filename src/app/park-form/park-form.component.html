@@ -125,9 +125,9 @@
             class="row">
         </div>
         <div class="row">
-            <div *ngIf="!isNewPark"
-                class="col-md-2">
-                <button class="btn btn-danger icon-button"
+            <div class="col-md-2">
+                <button *ngIf="!isNewPark"
+                    class="btn btn-danger icon-button"
                     (click)="delete()"><span class="material-icons mr-1">delete</span>Delete</button>
             </div>
             <div class="col-md-10 mt-3 mt-md-0">

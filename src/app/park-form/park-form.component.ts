@@ -66,6 +66,9 @@ export class ParkFormComponent implements OnInit, OnDestroy {
       visible: this.park.visible,
       bcParksLink: this.park.bcParksLink
     });
+    if (!this.isNewPark) {
+      this.parkForm.get('name').disable();
+    }
   }
 
   getParkInfoString(info) {
@@ -110,16 +113,20 @@ export class ParkFormComponent implements OnInit, OnDestroy {
               putObj.pk = this.park.pk;
               putObj.sk = this.park.sk;
               this.validateFields(putObj);
+
+              // Dont allow name change on edit.
+              putObj.name = this.park.name;
+
               await this.parkService.editPark(putObj);
             }
           } catch (error) {
             // TODO: Use toast service to make this look nicer.
             alert('An error as occured.');
           }
-          this.loading = false;
           // TODO: Success toast.
           this.router.navigate(['parks']);
         }
+        this.loading = false;
       });
   }
 
