@@ -6,7 +6,7 @@
     </section>
     <section *ngIf="!loading">
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-6">
                 <label>
                     Status:
                 </label>
@@ -14,7 +14,7 @@
                     {{data.status.state}}
                 </p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6">
                 <label>
                     Type:
                 </label>
@@ -23,11 +23,79 @@
                 </p>
             </div>
         </div>
+        <div class="row"
+            *ngIf="data.status.state === 'closed'">
+            <div class="col-12">
+                <label>
+                    Closure Reason:
+                </label>
+                <p>
+                    {{data.status.stateReason}}
+                </p>
+            </div>
+        </div>
+        <div class="row"
+            *ngIf="data.bookingTimes.AM">
+            <div class="col-md-6">
+                <label>
+                    AM Capacity:
+                </label>
+                <p>
+                    {{data.bookingTimes.AM.max}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <label>
+                    AM Reservation Count:
+                </label>
+                <p>
+                    {{data.bookingTimes.AM.currentCount}}
+                </p>
+            </div>
+        </div>
+        <div class="row"
+            *ngIf="data.bookingTimes.PM">
+            <div class="col-md-6">
+                <label>
+                    PM Capacity:
+                </label>
+                <p>
+                    {{data.bookingTimes.PM.max}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <label>
+                    PM Reservation Count:
+                </label>
+                <p>
+                    {{data.bookingTimes.PM.currentCount}}
+                </p>
+            </div>
+        </div>
+        <div class="row"
+            *ngIf="data.bookingTimes.DAY">
+            <div class="col-md-6">
+                <label>
+                    All Day Capacity:
+                </label>
+                <p>
+                    {{data.bookingTimes.DAY.max}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <label>
+                    All Day Reservation Count:
+                </label>
+                <p>
+                    {{data.bookingTimes.DAY.currentCount}}
+                </p>
+            </div>
+        </div>
         <hr>
         <br>
     </section>
     <section>
-        <div class="row bg-colour px-3 pt-4">
+        <div class="row passes-header-bg-colour px-3 pt-4">
             <div class="col-md-7 col-sm-12">
                 <h3>Passes</h3>
             </div>

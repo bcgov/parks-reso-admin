@@ -6,6 +6,7 @@ import { ConfirmComponent } from 'app/confirm/confirm.component';
 
 import { Subject } from 'rxjs/Subject';
 import { ApiService } from 'app/services/api.service';
+import { KeycloakService } from 'app/services/keycloak.service';
 
 @Component({
   selector: 'app-header',
@@ -40,10 +41,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private dialogService: DialogService,
     public router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private keycloakService: KeycloakService,
   ) {
     router.events.subscribe(() => {
-      this.isAuthenticated = this.apiService.isAuthenticated();
+      this.isAuthenticated = this.keycloakService.isAuthenticated();
       this.welcomeMsg = this.apiService.getWelcomeMessage();
     });
 

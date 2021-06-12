@@ -121,7 +121,7 @@ export class ParkService {
     }
   }
 
-  createParkSubObject(obj) {
+  private createParkSubObject(obj) {
     obj['park'] = {
       name: obj.name,
       bcParksLink: obj.bcParksLink,
@@ -135,18 +135,23 @@ export class ParkService {
   }
 
   private checkManditoryFields(obj) {
-    if (obj.name === '') {
+    if (obj.name === '' || !obj.name) {
       throw ('You must provide a park name');
     }
-    if (obj.description === '') {
+    if (obj.description === '' || !obj.description) {
       throw ('You must provide a park description');
     }
-    if (typeof obj.visible !== 'boolean') {
+    if (
+      typeof obj.visible !== 'boolean' ||
+      obj.visible === null ||
+      obj.visible === undefined
+    ) {
       throw ('You must provide a boolean for park visibility');
     }
     if (
-      obj.status === '' ||
-      (obj.status !== 'closed' && obj.status !== 'open')
+      obj.status.state === '' ||
+      !obj.status.state ||
+      (obj.status.state !== 'closed' && obj.status.state !== 'open')
     ) {
       throw ('You must provide a valid park status');
     }

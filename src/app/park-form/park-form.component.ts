@@ -85,12 +85,12 @@ export class ParkFormComponent implements OnInit, OnDestroy {
   }
 
   async submitForm() {
-    const message = `<strong>Park Name:</strong></br>` + this.parkForm.get('name').value +
-      `</br></br><strong>Park Status:</strong></br>` + this.getParkInfoString('status') +
-      `</br></br><strong>Park Visibility:</strong></br>` + this.getParkInfoString('visible') +
-      `</br></br><strong>Park Capacity:</strong></br>` + this.parkForm.get('capacity').value +
+    const message = `<strong>Name:</strong></br>` + this.parkForm.get('name').value +
+      `</br></br><strong>Status:</strong></br>` + this.getParkInfoString('status') +
+      `</br></br><strong>Visibility:</strong></br>` + this.getParkInfoString('visible') +
+      `</br></br><strong>Capacity:</strong></br>` + this.parkForm.get('capacity').value +
       `</br></br><strong>Link to BC Parks Site:</strong></br>` + this.parkForm.get('bcParksLink').value +
-      `</br></br><strong>Park Description:</strong></br>` + this.parkForm.get('description').value;
+      `</br></br><strong>Description:</strong></br>` + this.parkForm.get('description').value;
 
     this.dialogService
       .addDialog(
@@ -110,6 +110,7 @@ export class ParkFormComponent implements OnInit, OnDestroy {
               const postObj = new Park();
               this.validateFields(postObj);
               await this.parkService.createPark(postObj);
+              this.parkService.fetchData();
             } else {
               // Put
               const putObj = new Park();
@@ -121,6 +122,7 @@ export class ParkFormComponent implements OnInit, OnDestroy {
               putObj.name = this.park.name;
 
               await this.parkService.editPark(putObj);
+              this.parkService.fetchData(this.park.sk);
             }
           } catch (error) {
             // TODO: Use toast service to make this look nicer.

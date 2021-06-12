@@ -38,7 +38,7 @@ export class ParkDetailsComponent implements OnInit, OnDestroy {
   }
 
   addParkFacility() {
-    this.router.navigate(['../', 'facility', 'add'], { relativeTo: this.route });
+    this.router.navigate(['../', 'add-facility'], { relativeTo: this.route });
   }
 
   ngOnDestroy() {
