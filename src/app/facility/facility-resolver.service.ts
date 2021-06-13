@@ -9,7 +9,7 @@ export class FacilityResolverService implements Resolve<void> {
     private router: Router,
   ) { }
 
-  resolve(route: ActivatedRouteSnapshot) {
+  async resolve(route: ActivatedRouteSnapshot) {
     if (
       route.params &&
       route.params.facilityId &&
@@ -18,7 +18,7 @@ export class FacilityResolverService implements Resolve<void> {
       route.parent.params.parkId
     ) {
       this.facilityService.clearItemValue();
-      this.facilityService.fetchData(route.params.facilityId, route.parent.params.parkId);
+      return await this.facilityService.fetchData(route.params.facilityId, route.parent.params.parkId);
     } else {
       this.router.navigate(['']);
     }

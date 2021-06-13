@@ -72,6 +72,27 @@ export class BreadcrumbComponent implements OnInit {
         return this.getBreadcrumbs(child, url, breadcrumbs);
       }
 
+      if (child.snapshot.data[ROUTE_DATA_BREADCRUMB] === 'PARK NAME') {
+        const detail = child.snapshot.data;
+        if (detail.park && detail.park.name) {
+          child.snapshot.data[ROUTE_DATA_BREADCRUMB] = detail.park.name;
+        }
+      }
+
+      if (child.snapshot.data[ROUTE_DATA_BREADCRUMB] === 'FACILITY NAME') {
+        const detail = child.snapshot.data;
+        if (detail.facility && detail.facility.name) {
+          child.snapshot.data[ROUTE_DATA_BREADCRUMB] = detail.facility.name;
+        }
+      }
+
+      if (child.snapshot.data[ROUTE_DATA_BREADCRUMB] === 'REGISTRATION NUMBER') {
+        const detail = child.snapshot.data;
+        if (detail.pass && detail.pass.registrationNumber) {
+          child.snapshot.data[ROUTE_DATA_BREADCRUMB] = detail.pass.registrationNumber;
+        }
+      }
+
       // get the route's URL segment
       const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
 
