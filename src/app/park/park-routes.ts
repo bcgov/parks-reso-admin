@@ -43,13 +43,13 @@ export const ParkRoutes: Routes = [
     path: 'facility/:facilityId',
     component: FacilityComponent,
     data: {
-      breadcrumb: 'NAME OF THE Facility',
+      breadcrumb: 'FACILITY NAME',
       module: 'facility',
       component: 'main'
     },
     children: FacilityRoutes,
     resolve: {
-      FacilityResolverService
+      facility: FacilityResolverService
     }
   }
 ];

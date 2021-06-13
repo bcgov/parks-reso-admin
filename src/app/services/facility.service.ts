@@ -42,7 +42,8 @@ export class FacilityService {
       } else if (facilitySk && parkSk) {
         // we're getting a single item for a given park
         res = await this.apiService.get('facility', { facilityName: facilitySk, park: parkSk });
-        this.setItemValue(res[0]);
+        res = res[0];
+        this.setItemValue(res);
       } else {
         // We're getting a list
         res = await this.apiService.get('facility');
@@ -58,6 +59,7 @@ export class FacilityService {
         )
       );
     }
+    return res;
   }
 
   clearItemValue(): void {

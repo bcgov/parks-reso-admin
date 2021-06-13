@@ -11,13 +11,13 @@ export class ParkResolverService implements Resolve<void> {
     private router: Router
   ) { }
 
-  resolve(route: ActivatedRouteSnapshot) {
+  async resolve(route: ActivatedRouteSnapshot) {
     if (route.params && route.params.parkId) {
-      this.parkService.clearItemValue();
-      this.parkService.fetchData(route.params.parkId);
-
       this.facilityService.clearListValue();
       this.facilityService.fetchData(null, route.params.parkId);
+
+      this.parkService.clearItemValue();
+      return await this.parkService.fetchData(route.params.parkId);
     } else {
       this.router.navigate(['']);
     }

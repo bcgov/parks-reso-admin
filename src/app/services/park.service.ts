@@ -39,8 +39,10 @@ export class ParkService {
       if (sk) {
         // we're getting a single item
         res = await this.apiService.get('park', { park: sk });
+        res = res[0];
         // TODO: checks before sending back item.
-        this.setItemValue(res[0]);
+        this.setItemValue(res);
+
       } else {
         // We're getting a list
         res = await this.apiService.get('park');
@@ -56,6 +58,7 @@ export class ParkService {
         )
       );
     }
+    return res;
   }
 
   clearItemValue(): void {
