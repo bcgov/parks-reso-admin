@@ -101,6 +101,39 @@
             </div>
         </div>
         <br>
-        <app-pass-list></app-pass-list>
+        <div class="row">
+            <div class="col-md-8">
+                <button class="btn btn-primary"
+                    (click)="exportCsv()">Export to .csv</button>
+            </div>
+            <div class="col-md-4 mt-4 mt-md-0">
+                <div class="btn-group btn-group-toggle d-flex justify-content-end"
+                    data-toggle="buttons">
+                    <label class="btn btn-outline-secondary"
+                        [ngClass]="{'active': navSelected === 'AM'}">
+                        <input type="radio"
+                            name="options"
+                            id="option1"
+                            (click)="navigate('AM')"> AM
+                    </label>
+                    <label class="btn btn-outline-secondary"
+                        [ngClass]="{'active': navSelected === 'PM'}">
+                        <input type="radio"
+                            name="options"
+                            id="option2"
+                            (click)="navigate('PM')"> PM
+                    </label>
+                    <label class="btn btn-outline-secondary"
+                        [ngClass]="{'active': navSelected === 'DAY'}">
+                        <input type="radio"
+                            name="options"
+                            id="option3"
+                            (click)="navigate('DAY')"> All Day
+                    </label>
+                </div>
+            </div>
+        </div>
     </section>
+    <br>
+    <app-pass-list></app-pass-list>
 </div>

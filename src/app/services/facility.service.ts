@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Facility } from 'app/models/facility';
+import { PostFacility, PutFacility } from 'app/models/facility';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
@@ -71,17 +71,15 @@ export class FacilityService {
   }
 
   async createFacility(obj, parkSk) {
-    // Remove non-valid fields and verify field types.
-    let postObj = new Facility(obj);
-
-    // Remove ids
-    delete postObj.pk;
-    delete postObj.sk;
-
     let res = null;
     try {
-      postObj['parkName'] = parkSk;
-      this.checkManditoryFields(postObj);
+      // Remove non-valid fields and verify field types.
+      this.checkManditoryFields(obj);
+      if (parkSk === '' || !parkSk) {
+        throw ('You must provide a park sk');
+      }
+      let postObj = new PostFacility(obj);
+      postObj.parkName = parkSk;
       res = await this.apiService.post('facility', postObj);
     } catch (e) {
       console.log('ERROR', e);
@@ -98,18 +96,24 @@ export class FacilityService {
   }
 
   async editFacility(obj, parkSk) {
-    // To do an edit we need to pass back the entire object with all old and new fields.
-    let putObj = new Facility(obj);
+    let res = null;
     try {
-      putObj['parkName'] = parkSk;
-      this.checkManditoryFields(putObj);
-      if (!putObj.pk) {
-        throw ('You must provide a park pk');
-      }
-      if (!putObj.sk) {
+      // To do an edit we need to pass back the entire object with all old and new fields.
+      this.checkManditoryFields(obj);
+      if (parkSk === '' || !parkSk) {
         throw ('You must provide a park sk');
       }
-      return await this.apiService.put('facility', putObj);
+      if (!obj.pk) {
+        throw ('You must provide a facility pk');
+      }
+      if (!obj.sk) {
+        throw ('You must provide a facility sk');
+      }
+
+      let putObj = new PutFacility(obj);
+      putObj.parkName = parkSk;
+
+      res = await this.apiService.put('facility', putObj);
     } catch (e) {
       console.log('ERROR', e);
       this.eventService.setError(
@@ -121,14 +125,12 @@ export class FacilityService {
       );
       throw e;
     }
+    return res;
   }
 
   private checkManditoryFields(obj) {
     if (obj.name === '' || !obj.name) {
       throw ('You must provide a facility name');
-    }
-    if (obj.parkName === '' || !obj.parkName) {
-      throw ('You must provide a park name');
     }
     if (
       typeof obj.visible !== 'boolean' ||
