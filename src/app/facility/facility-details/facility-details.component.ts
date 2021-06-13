@@ -12,6 +12,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   public loading = true;
   public data;
+  public passTypeSelected = 'AM';
 
   constructor(
     private facilityService: FacilityService,
@@ -28,6 +29,11 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
           this._changeDetectionRef.detectChanges();
         }
       });
+  }
+
+  exportCsv(): void {
+    // TODO: hook up to data service properly
+    // PassUtils.exportToCsv(this.data);
   }
 
   ngOnDestroy() {
