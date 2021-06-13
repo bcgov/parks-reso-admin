@@ -31,12 +31,8 @@ export class ApiService {
     return this.env;
   }
 
-  public getToken(): string {
-    return this.keycloakService.getToken();
-  }
-
   public getWelcomeMessage(): string {
-    const token = this.getToken();
+    const token = this.keycloakService.getToken();
 
     if (!token) {
       return '';
@@ -49,10 +45,6 @@ export class ApiService {
     }
 
     return `Hello ${jwt.displayName}`;
-  }
-
-  public isAuthenticated(): boolean {
-    return this.keycloakService.isAuthenticated();
   }
 
   handleError(error: any): Observable<never> {

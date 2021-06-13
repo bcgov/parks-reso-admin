@@ -1,2 +1,21 @@
 @import "~assets/styles/abstracts/mixins.scss";
 @import "~assets/styles/themes/default.scss";
+
+.parks-header-bg-colour {
+    background: linear-gradient(110deg, #93b17c 60%, #dfe8d8 60%);
+}
+.park-header-bg-colour {
+    background: linear-gradient(110deg, #dfe8d8 60%, #93b17c 60%);
+}
+.facilities-header-bg-colour {
+    background: linear-gradient(110deg, #d3be8a 60%, #eee6d2 60%);
+}
+.facility-header-bg-colour {
+    background: linear-gradient(110deg, #eee6d2 60%, #d3be8a 60%);
+}
+.passes-header-bg-colour {
+    background: linear-gradient(110deg, #cbc3e3 60%, #f4f3f9 60%);
+}
+.pass-header-bg-colour {
+    background: linear-gradient(110deg, #f4f3f9 60%, #cbc3e3 60%);
+}

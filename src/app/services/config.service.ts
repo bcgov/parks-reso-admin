@@ -21,7 +21,7 @@ export class ConfigService {
     try {
       // Attempt to get application via this.httpClient. This uses the url of the application that you are running it from
       // This will not work for local because it will try and get localhost:4200/api instead of 3000/api...
-      this.configuration = await this.httpClient.get(`api/config`).toPromise();
+      this.configuration = await this.httpClient.get(`config`).toPromise();
 
       console.log('Configuration:', this.configuration);
       if (this.configuration['debugMode']) {

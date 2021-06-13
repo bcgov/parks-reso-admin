@@ -36,6 +36,7 @@ export class ParkComponent implements OnInit, OnDestroy {
         });
     }
 
+
     this.parkService.getItemValue()
       .pipe(takeWhile(() => this.alive))
       .subscribe((res) => {

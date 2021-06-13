@@ -31,12 +31,12 @@ export const ParkRoutes: Routes = [
     }
   },
   {
-    path: 'facility/add',
+    path: 'add-facility',
     component: FacilityFormComponent,
     data: {
       breadcrumb: 'Add Facility',
-      module: 'facility',
-      component: 'add'
+      module: 'park',
+      component: 'addFacility'
     }
   },
   {

@@ -1,92 +1,187 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { Constants } from '../shared/utils/constants';
-import { filter } from 'rxjs/operators';
+import { takeWhile } from 'rxjs/operators';
+import { FacilityService } from 'app/services/facility.service';
+import { Facility } from 'app/models/facility';
+import { ParkService } from 'app/services/park.service';
 
 @Component({
   selector: 'app-facility-form',
   templateUrl: './facility-form.component.html',
   styleUrls: ['./facility-form.component.scss']
 })
-export class FacilityFormComponent implements OnInit {
+export class FacilityFormComponent implements OnInit, OnDestroy {
+  private alive = true;
+
+  public loading = true;
   public isNewFacility = true;
-  public descriptionCharacterLimit = 500;
-  public notificationCharacterLimit = 100;
   public types = Constants.FacilityTypesList;
 
-  public mockFacilityObject = {
-    name: 'Trailhead A',
-    description: 'Walk here and you will see some nice trees, some rocks, and maybe if you are super lucky, you will see a frog or six',
-    notification: 'Due to astronomical frog levels, this park is closed until further notice.',
-    status: true,
-    visibility: false,
-    type: Constants.FacilityTypesList[0],
-    capacity: 150,
-    availability: true
-  };
+  public facility = null;
+  public park = null;
+
 
   public facilityForm = new FormGroup({
     name: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.maxLength(this.descriptionCharacterLimit)),
-    notification: new FormControl('', Validators.maxLength(this.notificationCharacterLimit)),
     status: new FormControl(false),
-    visibility: new FormControl(false),
+    stateReason: new FormControl(''),
+    visible: new FormControl(false),
     type: new FormControl('', Validators.required),
-    capacity: new FormControl('', Validators.required),
-    availability: new FormControl(true),
+    availabilityAM: new FormControl(false),
+    availabilityPM: new FormControl(false),
+    availabilityDAY: new FormControl(false),
+    capacityAM: new FormControl(),
+    capacityPM: new FormControl(),
+    capacityDAY: new FormControl()
   });
 
   constructor(
+    private _changeDetectionRef: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private facilityService: FacilityService,
+    private parkService: ParkService
   ) { }
 
   ngOnInit() {
-    this.isNewFacility = this.route.snapshot.data.component === 'add';
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.isNewFacility = this.route.snapshot.data.component === 'add';
-      });
-  }
-
-  checkNumber(e): boolean {
-    const character = (e.which) ? e.which : e.keyCode;
-    if (character > 31 && (character < 48 || character > 57)) {
-      return false;
+    this.isNewFacility = this.route.snapshot.data.component === 'add' || this.route.snapshot.data.component === 'addFacility';
+    if (!this.isNewFacility) {
+      this.facilityService.getItemValue()
+        .pipe(takeWhile(() => this.alive))
+        .subscribe((res) => {
+          if (res) {
+            this.facility = res;
+            this.populateParkDetails();
+            this.loading = false;
+            this._changeDetectionRef.detectChanges();
+          }
+        });
+      this.facilityForm.get('name').disable();
     } else {
-      return true;
+      this.facilityForm.get('capacityAM').disable();
+      this.facilityForm.get('capacityPM').disable();
+      this.facilityForm.get('capacityDAY').disable();
+      this.loading = false;
     }
+
+    this.parkService.getItemValue()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((res) => {
+        if (res) {
+          this.park = res;
+        }
+      });
+
+    this.facilityForm.controls['availabilityAM'].valueChanges.subscribe(data => {
+      if (data) {
+        this.facilityForm.get('capacityAM').enable();
+        this.facilityForm.controls['capacityAM'].setValidators([Validators.required]);
+      } else {
+        this.facilityForm.get('capacityAM').setValue(null);
+        this.facilityForm.get('capacityAM').disable();
+        this.facilityForm.controls['capacityAM'].setValidators([]);
+      }
+      this.facilityForm.controls['capacityAM'].updateValueAndValidity();
+    });
+
+    this.facilityForm.controls['availabilityPM'].valueChanges.subscribe(data => {
+      if (data) {
+        this.facilityForm.get('capacityPM').enable();
+        this.facilityForm.controls['capacityPM'].setValidators([Validators.required]);
+      } else {
+        this.facilityForm.get('capacityPM').setValue(null);
+        this.facilityForm.get('capacityPM').disable();
+        this.facilityForm.controls['capacityPM'].setValidators([]);
+      }
+      this.facilityForm.controls['capacityPM'].updateValueAndValidity();
+    });
+
+    this.facilityForm.controls['availabilityDAY'].valueChanges.subscribe(data => {
+      if (data) {
+        this.facilityForm.get('capacityDAY').enable();
+        this.facilityForm.controls['capacityDAY'].setValidators([Validators.required]);
+      } else {
+        this.facilityForm.get('capacityDAY').setValue(null);
+        this.facilityForm.get('capacityDAY').disable();
+        this.facilityForm.controls['capacityDAY'].setValidators([]);
+      }
+      this.facilityForm.controls['capacityDAY'].updateValueAndValidity();
+    });
+
+    this.facilityForm.controls['status'].valueChanges.subscribe(data => {
+      if (!data) {
+        this.facilityForm.get('stateReason').enable();
+      } else {
+        this.facilityForm.get('stateReason').setValue(null);
+        this.facilityForm.get('stateReason').disable();
+      }
+    });
+
+    this.facilityForm.setErrors({ availibilityRequired: true });
+    this.facilityForm.valueChanges.subscribe((data) => {
+      if (data.availabilityAM === true || data.availabilityPM === true || data.availabilityDAY === true) {
+        this.facilityForm.setErrors(null);
+      } else {
+        this.facilityForm.setErrors({ availibilityRequired: true });
+      }
+    });
   }
 
   populateParkDetails() {
     this.facilityForm.setValue({
-      name: this.mockFacilityObject.name,
-      description: this.mockFacilityObject.description,
-      notification: this.mockFacilityObject.notification,
-      status: this.mockFacilityObject.status,
-      visibility: this.mockFacilityObject.visibility,
-      type: this.mockFacilityObject.type,
-      capacity: this.mockFacilityObject.capacity,
-      availability: this.mockFacilityObject.availability
+      name: this.facility.name,
+      status: this.facility.status.state === 'open' ? true : false,
+      stateReason: this.facility.status.stateReason,
+      visible: this.facility.visible,
+      type: this.facility.type,
+      availabilityAM: false,
+      capacityAM: null,
+      availabilityPM: false,
+      capacityPM: null,
+      availabilityDAY: false,
+      capacityDAY: null
     });
-  }
 
-  // toggleAddEdit() {
-  //   this.isNewFacility = !this.isNewFacility;
-  //   this.resetForm();
-  // }
+    if (this.facilityForm.get('status')) {
+      this.facilityForm.get('stateReason').disable();
+    } else {
+      this.facilityForm.get('stateReason').enable();
+    }
+
+    if (this.facility.bookingTimes && this.facility.bookingTimes.AM) {
+      this.facilityForm.get('availabilityAM').setValue(true);
+      this.facilityForm.get('capacityAM').setValue(this.facility.bookingTimes.AM.max);
+    } else {
+      this.facilityForm.get('availabilityAM').setValue(false);
+      this.facilityForm.get('capacityAM').setValue(null);
+    }
+    if (this.facility.bookingTimes && this.facility.bookingTimes.PM) {
+      this.facilityForm.get('availabilityPM').setValue(true);
+      this.facilityForm.get('capacityPM').setValue(this.facility.bookingTimes.PM.max);
+    } else {
+      this.facilityForm.get('availabilityPM').setValue(false);
+      this.facilityForm.get('capacityPM').setValue(null);
+    }
+    if (this.facility.bookingTimes && this.facility.bookingTimes.DAY) {
+      this.facilityForm.get('availabilityDAY').setValue(true);
+      this.facilityForm.get('capacityDAY').setValue(this.facility.bookingTimes.DAY.max);
+    } else {
+      this.facilityForm.get('availabilityDAY').setValue(false);
+      this.facilityForm.get('capacityDAY').setValue(null);
+    }
+  }
 
   getInfoString(info) {
     switch (info) {
       case 'status':
         return this.facilityForm.get('status').value ? 'Open' : 'Closed';
-      case 'visibility':
-        return this.facilityForm.get('visibility').value ? 'Visible to public' : 'Not visible to public';
+      case 'visible':
+        return this.facilityForm.get('visible').value ? 'Visible to public' : 'Not visible to public';
       case 'availability':
         let a = [];
         if (this.facilityForm.get('availabilityAM').value) {
@@ -95,7 +190,7 @@ export class FacilityFormComponent implements OnInit {
         if (this.facilityForm.get('availabilityPM').value) {
           a.push(' PM ');
         }
-        if (this.facilityForm.get('availabilityAllDay').value) {
+        if (this.facilityForm.get('availabilityDAY').value) {
           a.push(' All Day ');
         }
         return a.join('/');
@@ -103,14 +198,22 @@ export class FacilityFormComponent implements OnInit {
   }
 
   submitForm() {
-    const message = `<strong>Name: </strong>` + this.facilityForm.get('name').value +
-      `</br><strong>Description: </strong>` + this.facilityForm.get('description').value +
-      `</br><strong>Notification: </strong>` + this.facilityForm.get('notification').value +
-      `</br><strong>Status: </strong>` + this.getInfoString('status') +
-      `</br><strong>Type: </strong>` + this.facilityForm.get('type').value +
-      `</br><strong>Capacity: </strong>` + this.facilityForm.get('capacity').value +
-      `</br><strong>Availability: </strong>` + this.getInfoString('availability') +
-      `</br><strong>Visibility: </strong>` + this.getInfoString('visibility');
+    let message = `<strong>Name:</strong></br>` + this.facilityForm.get('name').value;
+    message += `</br><strong>Status:</strong></br>` + this.getInfoString('status');
+    if (this.facilityForm.get('stateReason').value) {
+      message += `</br><strong>Closure reason:</strong></br>` + this.facilityForm.get('stateReason').value;
+    }
+    message += `</br><strong>visible:</strong></br>` + this.getInfoString('visible');
+    message += `</br><strong>Type:</strong></br>` + this.facilityForm.get('type').value;
+    if (this.facilityForm.get('availabilityAM').value) {
+      message += `</br><strong>AM Capacity:</strong></br>` + this.facilityForm.get('capacityAM').value;
+    }
+    if (this.facilityForm.get('availabilityPM').value) {
+      message += `</br><strong>PM Capacity:</strong></br>` + this.facilityForm.get('capacityPM').value;
+    }
+    if (this.facilityForm.get('availabilityDAY').value) {
+      message += `</br><strong>All Day Capacity:</strong></br>` + this.facilityForm.get('capacityDAY').value;
+    }
 
     this.dialogService
       .addDialog(
@@ -121,11 +224,72 @@ export class FacilityFormComponent implements OnInit {
           okOnly: false
         },
         { backdropColor: 'rgba(0, 0, 0, 0.5)' }
-      ).subscribe(result => {
+      ).subscribe(async result => {
+        this.loading = true;
         if (result) {
+          try {
+            if (this.isNewFacility) {
+              // Post
+              let postObj = new Facility();
+              this.validateFields(postObj);
+              await this.facilityService.createFacility(postObj, this.park.sk);
+              this.facilityService.fetchData(null, this.park.sk);
+            } else {
+              // Put
+              let putObj = new Facility();
+              putObj.pk = this.facility.pk;
+              putObj.sk = this.facility.sk;
+              this.validateFields(putObj);
+
+              // Dont allow name change on edit.
+              putObj.name = this.facility.name;
+              await this.facilityService.editFacility(putObj, this.park.sk);
+              this.facilityService.fetchData(this.facility.sk, this.park.sk);
+            }
+          } catch (error) {
+            // TODO: Use toast service to make this look nicer.
+            alert('An error as occured.');
+          }
+          // TODO: Success toast.
           this.router.navigate(['../details'], { relativeTo: this.route });
         }
+        this.loading = false;
       });
+  }
+
+  private validateFields(obj) {
+    // Manditory fields
+    obj.name = this.facilityForm.get('name').value;
+    if (this.facilityForm.get('status').value) {
+      obj.status.state = 'open';
+    } else {
+      obj.status.state = 'closed';
+    }
+    obj.status.stateReason = this.facilityForm.get('stateReason').value;
+    obj.visible = this.facilityForm.get('visible').value;
+    obj.type = this.facilityForm.get('type').value;
+
+    // Booking times
+    let bookingObj = {};
+    if (this.facilityForm.get('availabilityAM').value) {
+      bookingObj['AM'] = {
+        currentCount: 0,
+        max: this.facilityForm.get('capacityAM').value
+      };
+    }
+    if (this.facilityForm.get('availabilityPM').value) {
+      bookingObj['PM'] = {
+        currentCount: 0,
+        max: this.facilityForm.get('capacityPM').value
+      };
+    }
+    if (this.facilityForm.get('availabilityDAY').value) {
+      bookingObj['DAY'] = {
+        currentCount: 0,
+        max: this.facilityForm.get('capacityDAY').value
+      };
+    }
+    obj.bookingTimes = bookingObj;
   }
 
   cancel() {
@@ -134,8 +298,8 @@ export class FacilityFormComponent implements OnInit {
   }
 
   delete() {
-    const message = `Are you sure you want to delete ${this.mockFacilityObject.name}?
-    All passes within ${this.mockFacilityObject.name}
+    const message = `Are you sure you want to delete ${this.facility.name}?
+    All passes within ${this.facility.name}
     will also be permanently deleted. This action cannot be undone.`;
     this.dialogService
       .addDialog(
@@ -148,7 +312,7 @@ export class FacilityFormComponent implements OnInit {
         { backdropColor: 'rgba(0, 0, 0, 0.5)' }
       ).subscribe(result => {
         if (result) {
-          this.router.navigate(['parks']);
+          this.router.navigate(['../'], { relativeTo: this.route });
         }
       });
   }
@@ -161,8 +325,7 @@ export class FacilityFormComponent implements OnInit {
     }
   }
 
-
-
-
-
+  ngOnDestroy() {
+    this.alive = false;
+  }
 }

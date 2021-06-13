@@ -37,9 +37,9 @@
                             formControlName="status">
                         <label class="custom-control-label d-inline-flex"
                             for="status">
-                            Park&nbsp;Status:
+                            Status:
                             <div *ngIf="parkForm.get('status').value"
-                                class="mx-1 text-primary">Park is open.</div>
+                                class="mx-1 text-success">Park is open.</div>
                             <div *ngIf="!parkForm.get('status').value"
                                 class="mx-1 text-secondary">Park is closed.
                             </div>
@@ -57,7 +57,7 @@
                             formControlName="visible">
                         <label class="custom-control-label d-inline-flex"
                             for="visible">
-                            Park&nbsp;Visibility:
+                            Visibility:
                             <div *ngIf="parkForm.get('visible').value"
                                 class="mx-1 text-primary">
                                 Park is visible to the public.
