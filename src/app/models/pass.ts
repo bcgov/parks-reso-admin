@@ -13,7 +13,7 @@ export class Pass {
     date: Date;
     passStatus: string;
     phoneNumber: string;
-    facilityType: string; // Parking Lot, Trail
+    facilityType: string; // Parking, Trail
     license: string;
 
     constructor(obj?: any) {
@@ -45,7 +45,7 @@ export class PostPass {
     numberOfGuests: number;
     date: Date;
     phoneNumber: string;
-    facilityType: string; // Parking Lot, Trail
+    facilityType: string; // Parking, Trail
     license: string;
 
     // SKs

@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ConfigService } from 'app/services/config.service';
+import { KeycloakService } from 'app/services/keycloak.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { PassesModule } from '../passes.module';
 
@@ -11,7 +14,15 @@ describe('PassListComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [SharedModule, PassesModule]
+      imports: [
+        SharedModule,
+        PassesModule,
+        HttpClientTestingModule
+      ],
+      providers: [
+        ConfigService,
+        KeycloakService
+      ]
     })
       .compileComponents();
   }));

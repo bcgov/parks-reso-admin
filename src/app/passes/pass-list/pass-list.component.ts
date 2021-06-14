@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { PassService } from 'app/services/pass.service';
 import { IColumnObject } from 'app/shared/components/table-template/table-object';
-import { Constants } from 'app/shared/utils/constants';
+import { takeWhile } from 'rxjs/operators';
 import { PassTableRowComponent } from './pass-table-row/pass-table-row.component';
 
 @Component({
@@ -8,13 +9,18 @@ import { PassTableRowComponent } from './pass-table-row/pass-table-row.component
   templateUrl: './pass-list.component.html',
   styleUrls: ['./pass-list.component.scss']
 })
-export class PassListComponent implements OnInit {
+export class PassListComponent implements OnInit, OnDestroy {
+  private alive = true;
   // Component
   public loading = true;
   public downloading = false;
   // This will be changed to service.
-  public data;
+  public data = [];
   public totalListItems = 0;
+  public options = {
+    showPageSizePicker: false,
+    showHeader: true
+  };
   public tableRowComponent = PassTableRowComponent;
 
   // Table
@@ -22,27 +28,32 @@ export class PassListComponent implements OnInit {
     {
       name: 'Reg #',
       value: 'registrationNumber',
-      width: 'col-2'
+      width: 'col-2',
+      nosort: true
     },
     {
       name: 'First Name',
       value: 'firstName',
-      width: 'col-2'
+      width: 'col-2',
+      nosort: true
     },
     {
       name: 'Last Name',
       value: 'lastName',
-      width: 'col-2'
+      width: 'col-2',
+      nosort: true
     },
     {
       name: 'Email',
       value: 'email',
-      width: 'col-2'
+      width: 'col-2',
+      nosort: true
     },
     {
       name: 'Guests',
       value: 'numberOfGuests',
-      width: 'col-2'
+      width: 'col-2',
+      nosort: true
     },
     {
       name: 'Actions',
@@ -54,12 +65,25 @@ export class PassListComponent implements OnInit {
 
   constructor(
     private _changeDetectionRef: ChangeDetectorRef,
+    private passService: PassService
   ) { }
 
   ngOnInit() {
-    this.data = Array.from(Constants.mockPassList);
-    this.totalListItems = this.data.length;
-    this._changeDetectionRef.detectChanges();
-    this.loading = false;
+    this.passService.getListValue()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((res) => {
+        if (res) {
+          this.data = res.map(item => {
+            return { rowData: item };
+          });
+          this.totalListItems = this.data.length;
+          this.loading = false;
+          this._changeDetectionRef.detectChanges();
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }
