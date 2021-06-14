@@ -1,3 +1,5 @@
+import { Pass } from 'app/models/pass';
+
 export class PassUtils {
 
     static exportToCsv(data: any[]): void {
@@ -13,25 +15,25 @@ export class PassUtils {
             'Date',
             'Time',
             'Number of Guests',
+            'License Plate'
         ];
 
         let output = '';
         output = `${csvHeaders.join(',')}\n`;
-
         for (const row of data) {
+            const pass = new Pass(row);
             let line = [];
-            line.push(escapeCsvString(row.rowData['passStatus']));
-            line.push(escapeCsvString(row.rowData['registrationNumber']));
-            line.push(escapeCsvString(row.rowData['firstName']));
-            line.push(escapeCsvString(row.rowData['lastName']));
-            line.push(escapeCsvString(row.rowData['email']));
-            if (row.rowData['pk']) {
-                line.push(escapeCsvString(row.rowData['pk'].slice(5)));
-            }
-            line.push(escapeCsvString(row.rowData['facilityName']));
-            line.push(escapeCsvString(row.rowData['date']));
-            line.push(escapeCsvString(row.rowData['type']));
-            line.push(escapeCsvString(row.rowData['numberOfGuests']));
+            line.push(escapeCsvString(pass.passStatus));
+            line.push(escapeCsvString(pass.registrationNumber));
+            line.push(escapeCsvString(pass.firstName));
+            line.push(escapeCsvString(pass.lastName));
+            line.push(escapeCsvString(pass.email));
+            line.push(escapeCsvString(pass.pk.replace('pass::', '')));
+            line.push(escapeCsvString(pass.facilityName));
+            line.push(escapeCsvString(pass.date));
+            line.push(escapeCsvString(pass.type));
+            line.push(escapeCsvString(pass.numberOfGuests));
+            line.push(escapeCsvString(pass.license));
 
             output += `${line.join(',')}\n`;
         }

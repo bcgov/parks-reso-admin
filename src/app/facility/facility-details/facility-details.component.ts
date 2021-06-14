@@ -32,7 +32,6 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeWhile(() => this.alive))
       .subscribe((res) => {
         if (res) {
-          this.loadingFacility = true;
           this.facility = res;
           this.facilitySk = res.sk;
           this.parkSk = res.pk.replace('facility::', '');
@@ -56,7 +55,6 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeWhile(() => this.alive))
       .subscribe((res) => {
         if (res) {
-          this.loadingPasses = true;
           this.passes = res;
           this.loadingPasses = false;
           this._changeDetectionRef.detectChanges();
@@ -65,6 +63,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   }
 
   fetchPassTable(time) {
+    this.loadingPasses = true;
     this.passTypeSelected = time;
     this.passService.fetchData(null, this.parkSk, this.facilitySk, time);
   }
