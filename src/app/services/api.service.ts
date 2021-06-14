@@ -66,9 +66,9 @@ export class ApiService {
     return throwError(error);
   }
 
-  post(pk, obj, queryParamsObject = null): Promise<any> {
+  get(pk, queryParamsObject = null): Promise<any> {
     let queryString = this.generateQueryString(queryParamsObject);
-    return this.http.post<any>(`${this.apiPath}/${pk}?${queryString}`, obj, {}).toPromise();
+    return this.http.get<any>(`${this.apiPath}/${pk}?${queryString}`, {}).toPromise();
   }
 
   put(pk, obj, queryParamsObject = null): Promise<any> {
@@ -77,9 +77,14 @@ export class ApiService {
     return this.http.post<any>(`${this.apiPath}/${pk}?${queryString}`, obj, {}).toPromise();
   }
 
-  get(pk, queryParamsObject = null): Promise<any> {
+  post(pk, obj, queryParamsObject = null): Promise<any> {
     let queryString = this.generateQueryString(queryParamsObject);
-    return this.http.get<any>(`${this.apiPath}/${pk}?${queryString}`, {}).toPromise();
+    return this.http.post<any>(`${this.apiPath}/${pk}?${queryString}`, obj, {}).toPromise();
+  }
+
+  delete(pk, queryParamsObject): Promise<any> {
+    let queryString = this.generateQueryString(queryParamsObject);
+    return this.http.delete<any>(`${this.apiPath}/${pk}?${queryString}`, {}).toPromise();
   }
 
   private generateQueryString(queryParamsObject) {

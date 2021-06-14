@@ -1,5 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FacilityService } from 'app/services/facility.service';
+import { PassService } from 'app/services/pass.service';
+import { PassUtils } from 'app/shared/utils/pass-utils';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
@@ -10,13 +12,19 @@ import { takeWhile } from 'rxjs/operators';
 export class FacilityDetailsComponent implements OnInit, OnDestroy {
   private alive = true;
 
-  public loading = true;
-  public data;
+  public loadingFacility = true;
+  public loadingPasses = true;
+  public facility;
+  public passes;
   public passTypeSelected = 'AM';
+
+  private parkSk;
+  private facilitySk;
 
   constructor(
     private facilityService: FacilityService,
-    private _changeDetectionRef: ChangeDetectorRef
+    private passService: PassService,
+    private _changeDetectionRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -24,16 +32,45 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeWhile(() => this.alive))
       .subscribe((res) => {
         if (res) {
-          this.data = res;
-          this.loading = false;
+          this.loadingFacility = true;
+          this.facility = res;
+          this.facilitySk = res.sk;
+          this.parkSk = res.pk.replace('facility::', '');
+
+          // Default order AM > PM > DAY
+          if (this.facility) {
+            if (this.facility.bookingTimes.AM) {
+              this.passTypeSelected = 'AM';
+            } else if (this.facility.bookingTimes.PM) {
+              this.passTypeSelected = 'PM';
+            } else if (this.facility.bookingTimes.DAY) {
+              this.passTypeSelected = 'DAY';
+            }
+          }
+
+          this.loadingFacility = false;
+          this._changeDetectionRef.detectChanges();
+        }
+      });
+    this.passService.getListValue()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe((res) => {
+        if (res) {
+          this.loadingPasses = true;
+          this.passes = res;
+          this.loadingPasses = false;
           this._changeDetectionRef.detectChanges();
         }
       });
   }
 
+  fetchPassTable(time) {
+    this.passTypeSelected = time;
+    this.passService.fetchData(null, this.parkSk, this.facilitySk, time);
+  }
+
   exportCsv(): void {
-    // TODO: hook up to data service properly
-    // PassUtils.exportToCsv(this.data);
+    PassUtils.exportToCsv(this.passes);
   }
 
   ngOnDestroy() {

@@ -1,17 +1,17 @@
 <div class="container-fluid-padding-without-header">
-    <section *ngIf="loading">
+    <section *ngIf="loadingFacility || loadingPasses">
         <div class="spinner-container">
             <div class="spinner-new rotating"></div>
         </div>
     </section>
-    <section *ngIf="!loading">
+    <section *ngIf="!loadingFacility">
         <div class="row">
             <div class="col-md-6">
                 <label>
                     Status:
                 </label>
                 <p>
-                    {{data.status.state}}
+                    {{facility.status.state}}
                 </p>
             </div>
             <div class="col-md-6">
@@ -19,29 +19,29 @@
                     Type:
                 </label>
                 <p>
-                    {{data.type}}
+                    {{facility.type}}
                 </p>
             </div>
         </div>
         <div class="row"
-            *ngIf="data.status.state === 'closed'">
+            *ngIf="facility.status.state === 'closed'">
             <div class="col-12">
                 <label>
                     Closure Reason:
                 </label>
                 <p>
-                    {{data.status.stateReason}}
+                    {{facility.status.stateReason}}
                 </p>
             </div>
         </div>
         <div class="row"
-            *ngIf="data.bookingTimes.AM">
+            *ngIf="facility?.bookingTimes.AM">
             <div class="col-md-6">
                 <label>
                     AM Capacity:
                 </label>
                 <p>
-                    {{data.bookingTimes.AM.max}}
+                    {{facility?.bookingTimes.AM.max}}
                 </p>
             </div>
             <div class="col-md-6">
@@ -49,18 +49,18 @@
                     AM Reservation Count:
                 </label>
                 <p>
-                    {{data.bookingTimes.AM.currentCount}}
+                    {{facility?.bookingTimes.AM.currentCount}}
                 </p>
             </div>
         </div>
         <div class="row"
-            *ngIf="data.bookingTimes.PM">
+            *ngIf="facility?.bookingTimes.PM">
             <div class="col-md-6">
                 <label>
                     PM Capacity:
                 </label>
                 <p>
-                    {{data.bookingTimes.PM.max}}
+                    {{facility?.bookingTimes.PM.max}}
                 </p>
             </div>
             <div class="col-md-6">
@@ -68,18 +68,18 @@
                     PM Reservation Count:
                 </label>
                 <p>
-                    {{data.bookingTimes.PM.currentCount}}
+                    {{facility?.bookingTimes.PM.currentCount}}
                 </p>
             </div>
         </div>
         <div class="row"
-            *ngIf="data.bookingTimes.DAY">
+            *ngIf="facility?.bookingTimes.DAY">
             <div class="col-md-6">
                 <label>
                     All Day Capacity:
                 </label>
                 <p>
-                    {{data.bookingTimes.DAY.max}}
+                    {{facility?.bookingTimes.DAY.max}}
                 </p>
             </div>
             <div class="col-md-6">
@@ -87,7 +87,7 @@
                     All Day Reservation Count:
                 </label>
                 <p>
-                    {{data.bookingTimes.DAY.currentCount}}
+                    {{facility?.bookingTimes.DAY.currentCount}}
                 </p>
             </div>
         </div>
@@ -103,32 +103,36 @@
         <br>
         <div class="row">
             <div class="col-md-8">
-                <button class="btn btn-primary"
+                <button [disabled]="loadingPasses"
+                    class="btn btn-primary"
                     (click)="exportCsv()">Export to .csv</button>
             </div>
             <div class="col-md-4 mt-4 mt-md-0">
                 <div class="btn-group btn-group-toggle d-flex justify-content-end"
-                    data-toggle="buttons">
-                    <label class="btn btn-outline-secondary"
-                        [ngClass]="{'active': navSelected === 'AM'}">
+                    facility-toggle="buttons">
+                    <label *ngIf="facility?.bookingTimes.AM"
+                        class="btn btn-outline-secondary"
+                        [ngClass]="{'active': passTypeSelected === 'AM'}">
                         <input type="radio"
                             name="options"
                             id="option1"
-                            (click)="navigate('AM')"> AM
+                            (click)="fetchPassTable('AM')"> AM
                     </label>
-                    <label class="btn btn-outline-secondary"
-                        [ngClass]="{'active': navSelected === 'PM'}">
+                    <label *ngIf="facility?.bookingTimes.PM"
+                        class="btn btn-outline-secondary"
+                        [ngClass]="{'active': passTypeSelected === 'PM'}">
                         <input type="radio"
                             name="options"
                             id="option2"
-                            (click)="navigate('PM')"> PM
+                            (click)="fetchPassTable('PM')"> PM
                     </label>
-                    <label class="btn btn-outline-secondary"
-                        [ngClass]="{'active': navSelected === 'DAY'}">
+                    <label *ngIf="facility?.bookingTimes.DAY"
+                        class="btn btn-outline-secondary"
+                        [ngClass]="{'active': passTypeSelected === 'DAY'}">
                         <input type="radio"
                             name="options"
                             id="option3"
-                            (click)="navigate('DAY')"> All Day
+                            (click)="fetchPassTable('DAY')"> All Day
                     </label>
                 </div>
             </div>
