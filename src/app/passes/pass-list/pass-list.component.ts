@@ -32,26 +32,20 @@ export class PassListComponent implements OnInit, OnDestroy {
       nosort: true
     },
     {
-      name: 'First Name',
-      value: 'firstName',
-      width: 'col-2',
-      nosort: true
-    },
-    {
-      name: 'Last Name',
-      value: 'lastName',
-      width: 'col-2',
-      nosort: true
-    },
-    {
       name: 'Email',
       value: 'email',
-      width: 'col-2',
+      width: 'col-3',
       nosort: true
     },
     {
-      name: 'Guests',
-      value: 'numberOfGuests',
+      name: 'Date',
+      value: 'date',
+      width: 'col-3',
+      nosort: true
+    },
+    {
+      name: 'Status',
+      value: 'passStatus',
       width: 'col-2',
       nosort: true
     },

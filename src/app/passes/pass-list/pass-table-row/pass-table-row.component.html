@@ -1,18 +1,15 @@
 <td data-label="Reg #"
     scope="row"
     class="col-2">{{validate('registrationNumber')}}</td>
-<td data-label="First Name"
-    scope="row"
-    class="col-2">{{validate('firstName')}}</td>
-<td data-label="Last Name"
-    scope="row"
-    class="col-2">{{validate('lastName')}}</td>
 <td data-label="Email"
     scope="row"
-    class="col-2">{{validate('email')}}</td>
-<td data-label="Guests"
+    class="col-3">{{validate('email')}}</td>
+<td data-label="Date"
     scope="row"
-    class="col-2">{{validate('numberOfGuests')}}</td>
+    class="col-3">{{validate('date')}}</td>
+<td data-label="Status"
+    scope="row"
+    class="col-2">{{validate('passStatus')}}</td>
 <td data-label="Controls"
     scope="row"
     class="col-2">
@@ -27,8 +24,9 @@
             </span>
         </button>
         <button type="button"
+            [disabled]="rowData?.passStatus !== 'active'"
             class="btn btn-outline-danger"
-            (click)="navigate('edit')">
+            (click)="navigate('cancel')">
             <span class="material-icons">
                 cancel
             </span>

@@ -70,7 +70,7 @@ export class PassService {
   async cancelPass(passId, parkSk) {
     let res = null;
     try {
-      res = await this.apiService.delete('pass', { passName: passId, park: parkSk });
+      res = await this.apiService.delete('pass', { passId: passId, park: parkSk });
       this.setItemValue(res);
     } catch (e) {
       console.log('ERROR', e);
