@@ -20,7 +20,7 @@ export class Constants {
 
   public static readonly FacilityTypesList = [
     'Trail',
-    'Parking Lot'
+    'Parking'
   ];
 
   public static readonly mockPass1 = {
