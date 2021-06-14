@@ -17,6 +17,10 @@ export class PassListComponent implements OnInit, OnDestroy {
   // This will be changed to service.
   public data = [];
   public totalListItems = 0;
+  public options = {
+    showPageSizePicker: false,
+    showHeader: true
+  };
   public tableRowComponent = PassTableRowComponent;
 
   // Table
@@ -24,27 +28,32 @@ export class PassListComponent implements OnInit, OnDestroy {
     {
       name: 'Reg #',
       value: 'registrationNumber',
-      width: 'col-2'
+      width: 'col-2',
+      nosort: true
     },
     {
       name: 'First Name',
       value: 'firstName',
-      width: 'col-2'
+      width: 'col-2',
+      nosort: true
     },
     {
       name: 'Last Name',
       value: 'lastName',
-      width: 'col-2'
+      width: 'col-2',
+      nosort: true
     },
     {
       name: 'Email',
       value: 'email',
-      width: 'col-2'
+      width: 'col-2',
+      nosort: true
     },
     {
       name: 'Guests',
       value: 'numberOfGuests',
-      width: 'col-2'
+      width: 'col-2',
+      nosort: true
     },
     {
       name: 'Actions',

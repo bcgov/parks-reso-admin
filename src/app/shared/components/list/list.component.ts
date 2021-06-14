@@ -14,6 +14,7 @@ export class ListComponent implements OnInit, OnChanges {
   // This will turn into fetching data from the service
   @Input() data;
   @Input() totalListItems;
+  @Input() options;
 
   // Table
   public tableData: TableObject = new TableObject();
