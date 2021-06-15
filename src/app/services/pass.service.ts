@@ -45,7 +45,9 @@ export class PassService {
             passType: passType
           }
         );
+        res = res.data;
         this.setListValue(res);
+        return res;
       }
     } catch (e) {
       console.log('ERROR', e);
@@ -57,7 +59,6 @@ export class PassService {
         )
       );
     }
-    return res;
   }
 
   clearItemValue(): void {

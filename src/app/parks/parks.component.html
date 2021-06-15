@@ -3,19 +3,19 @@
     <section *ngIf="!loading">
         <div class="row parks-header-bg-colour p-3">
             <div class="col-md-7 col-sm-12">
-                <h1>All Parks</h1>
+                <h1 class="text-white">All Parks</h1>
             </div>
             <div class="col-md-5 d-none d-sm-block pt-2 text-right">
                 <div class="btn-group btn-group-toggle"
                     data-toggle="buttons">
-                    <label class="btn btn-outline-dark"
+                    <label class="btn btn-outline-light"
                         [ngClass]="{'active': navSelected === 'list'}">
                         <input type="radio"
                             name="options"
                             id="option1"
                             (click)="navigate('list')"> List
                     </label>
-                    <label class="btn btn-outline-dark"
+                    <label class="btn btn-outline-light"
                         [ngClass]="{'active': navSelected === 'add'}">
                         <input type="radio"
                             name="options"

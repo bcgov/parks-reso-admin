@@ -18,6 +18,7 @@
         aria-label="Basic example">
         <button type="button"
             class="btn btn-outline-secondary"
+            title="Details for {{validate('registrationNumber')}}"
             (click)="navigate('details')">
             <span class="material-icons">
                 library_books
@@ -26,6 +27,7 @@
         <button type="button"
             [disabled]="rowData?.passStatus !== 'active'"
             class="btn btn-outline-danger"
+            title="Cancel {{validate('registrationNumber')}}"
             (click)="navigate('cancel')">
             <span class="material-icons">
                 cancel

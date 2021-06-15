@@ -8,7 +8,9 @@
         <div class="row">
             <div class="col-md-6">
                 <label>
-                    Status:
+                    <strong>
+                        Status:
+                    </strong>
                 </label>
                 <p>
                     {{facility.status.state}}
@@ -16,7 +18,31 @@
             </div>
             <div class="col-md-6">
                 <label>
-                    Type:
+                    <strong>
+                        Visible:
+                    </strong>
+                </label>
+                <p>
+                    {{facility.visible || '-'}}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label>
+                    <strong>
+                        Closure Reason:
+                    </strong>
+                </label>
+                <p>
+                    {{facility.status.stateReason || '-'}}
+                </p>
+            </div>
+            <div class="col-md-6">
+                <label>
+                    <strong>
+                        Type:
+                    </strong>
                 </label>
                 <p>
                     {{facility.type}}
@@ -24,21 +50,12 @@
             </div>
         </div>
         <div class="row"
-            *ngIf="facility.status.state === 'closed'">
-            <div class="col-12">
-                <label>
-                    Closure Reason:
-                </label>
-                <p>
-                    {{facility.status.stateReason}}
-                </p>
-            </div>
-        </div>
-        <div class="row"
             *ngIf="facility?.bookingTimes.AM">
             <div class="col-md-6">
                 <label>
-                    AM Capacity:
+                    <strong>
+                        AM Capacity:
+                    </strong>
                 </label>
                 <p>
                     {{facility?.bookingTimes.AM.max}}
@@ -46,7 +63,9 @@
             </div>
             <div class="col-md-6">
                 <label>
-                    AM Reservation Count:
+                    <strong>
+                        AM Reservation Count:
+                    </strong>
                 </label>
                 <p>
                     {{facility?.bookingTimes.AM.currentCount}}
@@ -57,7 +76,9 @@
             *ngIf="facility?.bookingTimes.PM">
             <div class="col-md-6">
                 <label>
-                    PM Capacity:
+                    <strong>
+                        PM Capacity:
+                    </strong>
                 </label>
                 <p>
                     {{facility?.bookingTimes.PM.max}}
@@ -65,7 +86,9 @@
             </div>
             <div class="col-md-6">
                 <label>
-                    PM Reservation Count:
+                    <strong>
+                        PM Reservation Count:
+                    </strong>
                 </label>
                 <p>
                     {{facility?.bookingTimes.PM.currentCount}}
@@ -76,7 +99,9 @@
             *ngIf="facility?.bookingTimes.DAY">
             <div class="col-md-6">
                 <label>
-                    All Day Capacity:
+                    <strong>
+                        All Day Capacity:
+                    </strong>
                 </label>
                 <p>
                     {{facility?.bookingTimes.DAY.max}}
@@ -84,7 +109,9 @@
             </div>
             <div class="col-md-6">
                 <label>
-                    All Day Reservation Count:
+                    <strong>
+                        All Day Reservation Count:
+                    </strong>
                 </label>
                 <p>
                     {{facility?.bookingTimes.DAY.currentCount}}
