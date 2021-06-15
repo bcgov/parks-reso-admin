@@ -32,20 +32,31 @@ export class PassService {
     return this.list.asObservable();
   }
 
-  async fetchData(passSk = null, parkSk = null, facilitySk = null, passType = null) {
+  async fetchData(
+    passSk = null,
+    parkSk = null,
+    facilitySk = null,
+    passType = null,
+    ExclusiveStartKeyPK = null,
+    ExclusiveStartKeySK = null
+  ) {
     let res = null;
     try {
       if (!passSk && parkSk && facilitySk && passType) {
         // We are getting list of passes filtered with type
+        let queryObj = {
+          park: parkSk,
+          facilityName: facilitySk,
+          passType: passType
+        };
+        if (ExclusiveStartKeyPK && ExclusiveStartKeySK) {
+          queryObj['ExclusiveStartKeyPK'] = ExclusiveStartKeyPK;
+          queryObj['ExclusiveStartKeySK'] = ExclusiveStartKeySK;
+        }
         res = await this.apiService.get(
           'pass',
-          {
-            park: parkSk,
-            facilityName: facilitySk,
-            passType: passType
-          }
+          queryObj
         );
-        res = res.data;
         this.setListValue(res);
         return res;
       }
