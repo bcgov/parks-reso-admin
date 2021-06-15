@@ -18,8 +18,8 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   public passes;
   public passTypeSelected = 'AM';
 
-  private parkSk;
-  private facilitySk;
+  public parkSk;
+  public facilitySk;
 
   constructor(
     private facilityService: FacilityService,

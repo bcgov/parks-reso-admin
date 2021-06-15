@@ -11,6 +11,16 @@
         [options]="options"></app-list>
 </section>
 
+<div *ngIf="ExclusiveStartKeyPK && ExclusiveStartKeySK"
+    class="d-flex justify-content-center">
+    <button class="btn btn-outline-primary"
+        (click)="loadMore()">
+        Load More
+    </button>
+</div>
+
 <section *ngIf="data.length === 0">
     There are no passes to display.
 </section>
+
+<br>

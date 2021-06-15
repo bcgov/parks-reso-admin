@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { PassService } from 'app/services/pass.service';
 import { IColumnObject } from 'app/shared/components/table-template/table-object';
 import { takeWhile } from 'rxjs/operators';
@@ -10,7 +10,15 @@ import { PassTableRowComponent } from './pass-table-row/pass-table-row.component
   styleUrls: ['./pass-list.component.scss']
 })
 export class PassListComponent implements OnInit, OnDestroy {
+  @Input() parkSk;
+  @Input() facilitySk;
+  @Input() time;
   private alive = true;
+
+  public ExclusiveStartKeyPK = null;
+  public ExclusiveStartKeySK = null;
+  private appendList = false;
+
   // Component
   public loading = true;
   public downloading = false;
@@ -67,14 +75,29 @@ export class PassListComponent implements OnInit, OnDestroy {
       .pipe(takeWhile(() => this.alive))
       .subscribe((res) => {
         if (res) {
-          this.data = res.map(item => {
+          if (res.LastEvaluatedKey) {
+            this.ExclusiveStartKeyPK = res.LastEvaluatedKey.PK.S;
+            this.ExclusiveStartKeySK = res.LastEvaluatedKey.SK.S;
+          }
+          const tempList = res.data.map(item => {
             return { rowData: item };
           });
+          if (this.appendList) {
+            this.data = this.data.concat(tempList);
+            this.appendList = false;
+          } else {
+            this.data = tempList;
+          }
           this.totalListItems = this.data.length;
           this.loading = false;
           this._changeDetectionRef.detectChanges();
         }
       });
+  }
+
+  loadMore() {
+    this.appendList = true;
+    this.passService.fetchData(null, this.parkSk, this.facilitySk, this.time, this.ExclusiveStartKeyPK, this.ExclusiveStartKeySK);
   }
 
   ngOnDestroy() {
