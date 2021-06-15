@@ -22,7 +22,12 @@ export class PassTableRowComponent extends TableRowComponent implements OnInit {
 
   validate(value) {
     if (this.rowData && this.rowData.hasOwnProperty(value)) {
-      return this.rowData[value];
+      if (value === 'date') {
+        const tempDate = new Date(this.rowData[value]).toISOString().slice(0, 10);
+        return tempDate;
+      } else {
+        return this.rowData[value];
+      }
     } else {
       return '-';
     }

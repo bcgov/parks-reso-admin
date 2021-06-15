@@ -24,25 +24,31 @@ export class FacilityListComponent implements OnInit, OnDestroy {
     {
       name: 'Name',
       value: 'name',
-      width: 'col-4',
+      width: 'col-3',
       nosort: true
     },
     {
       name: 'Type',
       value: 'type',
-      width: 'col-4',
+      width: 'col-3',
       nosort: true
     },
     {
       name: 'Status',
       value: 'status',
-      width: 'col-4',
+      width: 'col-2',
+      nosort: true
+    },
+    {
+      name: 'Visible',
+      value: 'visible',
+      width: 'col-2',
       nosort: true
     },
     {
       name: 'Actions',
       value: '',
-      width: 'col-4',
+      width: 'col-2',
       nosort: true
     }
   ];

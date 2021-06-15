@@ -8,7 +8,9 @@
         <div class="row">
             <div class="col-md-6">
                 <label>
-                    Status:
+                    <strong>
+                        Status:
+                    </strong>
                 </label>
                 <p>
                     {{park.status}}
@@ -16,7 +18,9 @@
             </div>
             <div class="col-md-6">
                 <label>
-                    Capacity:
+                    <strong>
+                        Capacity:
+                    </strong>
                 </label>
                 <p>
                     {{park.capacity ? park.capacity : 'Not set'}}
@@ -24,21 +28,36 @@
             </div>
         </div>
         <div class="row mb-4">
-            <div class="col-12">
-                <label>
-                    BC Parks Link:
-                </label>
+            <div class="col-md-6">
+                <strong>
+                    <label>
+                        BC Parks Link:
+                    </label>
+                </strong>
                 <br>
                 <a href="{{park.bcParksLink}}">
                     {{park.bcParksLink}}
                 </a>
             </div>
+            <div class="col-md-6">
+                <strong>
+                    <label>
+                        Visible:
+                    </label>
+                </strong>
+                <br>
+                <p>
+                    {{park.visible}}
+                </p>
+            </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <label>
-                    Description:
-                </label>
+                <strong>
+                    <label>
+                        Description:
+                    </label>
+                </strong>
                 <p>
                     {{park.description}}
                 </p>

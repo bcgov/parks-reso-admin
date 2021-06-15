@@ -7,11 +7,13 @@
 <td data-label="Controls"
     scope="row"
     class="col-2">
+
     <div class="btn-group btn-block"
         role="group"
         aria-label="Basic example">
         <button type="button"
             class="btn btn-outline-secondary"
+            title="Details for {{validate('name')}}"
             (click)="navigate('details')">
             <span class="material-icons">
                 library_books
@@ -19,6 +21,7 @@
         </button>
         <button type="button"
             class="btn btn-outline-secondary"
+            title="Edit {{validate('name')}}"
             (click)="navigate('edit')">
             <span class="material-icons">
                 edit
