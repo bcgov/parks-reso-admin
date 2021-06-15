@@ -17,6 +17,15 @@ export class FacilityListComponent implements OnInit, OnDestroy {
   // This will be changed to service.
   public data = [];
   public totalListItems = 0;
+  public options = {
+    showHeader: true,
+    showPagination: true,
+    showPageSizePicker: false,
+    showPageCountDisplay: false,
+    disableRowHighlight: false,
+    showTopControls: true,
+    rowSpacing: 0
+  };
   public tableRowComponent = FacilityTableRowComponent;
 
   // Table

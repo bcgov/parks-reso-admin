@@ -15,6 +15,15 @@ export class ParkListComponent implements OnInit, OnDestroy {
   public loading = true;
   public data = [];
   public totalListItems = 0;
+  public options = {
+    showHeader: true,
+    showPagination: true,
+    showPageSizePicker: false,
+    showPageCountDisplay: false,
+    disableRowHighlight: false,
+    showTopControls: true,
+    rowSpacing: 0
+  };
 
   public tableRowComponent = ParkTableRowComponent;
 

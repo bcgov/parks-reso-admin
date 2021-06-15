@@ -9,7 +9,8 @@
         <app-list [tableRowComponent]="tableRowComponent"
             [tableColumns]="tableColumns"
             [data]="data"
-            [totalListItems]=totalListItems></app-list>
+            [totalListItems]=totalListItems
+            [options]="options"></app-list>
     </section>
 
     <section *ngIf="data.length === 0">
