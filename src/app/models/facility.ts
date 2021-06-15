@@ -6,7 +6,7 @@ export class Facility {
     status: object;
     type: string;
     visible: boolean;
-    bookingTimes: Object;
+    bookingTimes: any;
     constructor(obj?: any) {
         this.pk = obj && obj.pk || null;
         this.sk = obj && obj.sk || null;
@@ -29,9 +29,8 @@ export class PostFacility {
     status: object;
     type: string;
     visible: boolean;
-    bookingTimes: Object;
+    bookingTimes: any;
     parkName: string;
-    reservations: Object;
     constructor(obj?: any) {
         this.name = obj && obj.name || null;
         this.status = obj && obj.status || null;
@@ -44,7 +43,6 @@ export class PostFacility {
         this.bookingTimes = obj && obj.bookingTimes || {};
         this.status = obj && obj.status || {};
         this.parkName = obj && obj.parkName || null;
-        this.reservations = obj && obj.reservations || {};
     }
 }
 
@@ -56,8 +54,7 @@ export class PutFacility {
     status: object;
     type: string;
     visible: boolean;
-    bookingTimes: Object;
-    reservations: Object;
+    bookingTimes: any;
 
     parkName: string;
     constructor(obj?: any) {
@@ -75,6 +72,5 @@ export class PutFacility {
         this.bookingTimes = obj && obj.bookingTimes || {};
         this.status = obj && obj.status || {};
         this.parkName = obj && obj.parkName || null;
-        this.reservations = obj && obj.reservations || {};
     }
 }

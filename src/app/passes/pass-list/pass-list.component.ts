@@ -79,7 +79,7 @@ export class PassListComponent implements OnInit, OnDestroy {
     this.passService.getListValue()
       .pipe(takeWhile(() => this.alive))
       .subscribe((res) => {
-        if (res) {
+        if (res && res.data) {
           if (res.LastEvaluatedKey) {
             this.ExclusiveStartKeyPK = res.LastEvaluatedKey.PK.S;
             this.ExclusiveStartKeySK = res.LastEvaluatedKey.SK.S;

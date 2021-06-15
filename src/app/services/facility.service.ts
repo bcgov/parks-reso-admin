@@ -80,6 +80,7 @@ export class FacilityService {
       }
       let postObj = new PostFacility(obj);
       postObj.parkName = parkSk;
+      postObj.bookingTimes['reservations'] = {};
       res = await this.apiService.post('facility', postObj);
     } catch (e) {
       console.log('ERROR', e);
