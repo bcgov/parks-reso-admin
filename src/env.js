@@ -6,9 +6,9 @@
   window.__env.debugMode = true;
 
   // Environment name
-  window.__env.ENVIRONMENT = 'local';  // local | dev | test | prod
-  window.__env.API_LOCATION = 'https://pkqlwkdzka.execute-api.ca-central-1.amazonaws.com';
-  window.__env.API_PATH = '/dev';
+  window.__env.ENVIRONMENT = 'test';  // local | dev | test | prod
+  window.__env.API_LOCATION = 'https://idk06gtie9.execute-api.ca-central-1.amazonaws.com';
+  window.__env.API_PATH = '/test';
   window.__env.KEYCLOAK_CLIENT_ID = 'nrpti-admin';
   window.__env.KEYCLOAK_URL = 'https://oidc.gov.bc.ca/auth';
   window.__env.KEYCLOAK_REALM = '3l5nw6dk';
