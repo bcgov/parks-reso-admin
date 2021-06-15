@@ -18,8 +18,13 @@ export class PassListComponent implements OnInit, OnDestroy {
   public data = [];
   public totalListItems = 0;
   public options = {
+    showHeader: true,
+    showPagination: true,
     showPageSizePicker: false,
-    showHeader: true
+    showPageCountDisplay: true,
+    disableRowHighlight: false,
+    showTopControls: true,
+    rowSpacing: 0
   };
   public tableRowComponent = PassTableRowComponent;
 
