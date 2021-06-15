@@ -6,7 +6,7 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { Constants } from '../shared/utils/constants';
 import { takeWhile } from 'rxjs/operators';
 import { FacilityService } from 'app/services/facility.service';
-import { Facility } from 'app/models/facility';
+import { PostFacility, PutFacility } from 'app/models/facility';
 import { ParkService } from 'app/services/park.service';
 
 @Component({
@@ -230,15 +230,16 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
           try {
             if (this.isNewFacility) {
               // Post
-              let postObj = new Facility();
+              let postObj = new PostFacility();
               this.validateFields(postObj);
               await this.facilityService.createFacility(postObj, this.park.sk);
               this.facilityService.fetchData(null, this.park.sk);
             } else {
               // Put
-              let putObj = new Facility();
+              let putObj = new PutFacility();
               putObj.pk = this.facility.pk;
               putObj.sk = this.facility.sk;
+              putObj.reservations = this.facility.reservations;
               this.validateFields(putObj);
 
               // Dont allow name change on edit.
