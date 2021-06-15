@@ -239,7 +239,7 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
               let putObj = new PutFacility();
               putObj.pk = this.facility.pk;
               putObj.sk = this.facility.sk;
-              putObj.reservations = this.facility.reservations;
+              putObj.bookingTimes['reservations'] = this.facility.bookingTimes.reservations;
               this.validateFields(putObj);
 
               // Dont allow name change on edit.
