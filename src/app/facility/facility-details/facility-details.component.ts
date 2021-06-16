@@ -55,7 +55,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeWhile(() => this.alive))
       .subscribe((res) => {
         if (res) {
-          this.passes = res;
+          this.passes = res.data;
           this.loadingPasses = false;
           this._changeDetectionRef.detectChanges();
         }
@@ -70,6 +70,37 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   exportCsv(): void {
     PassUtils.exportToCsv(this.passes);
+  }
+
+  print(): void {
+    this._changeDetectionRef.detectChanges();
+    const printContent = document.getElementById('print-area');
+    const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+    WindowPrt.document.write(
+      `<style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+      </style>`
+    );
+    WindowPrt.document.write(`<h4>${this.passTypeSelected} passes for ${this.facility.name}</h4>`);
+    WindowPrt.document.write(printContent.innerHTML);
+    WindowPrt.document.close();
+    WindowPrt.focus();
+    WindowPrt.print();
+    WindowPrt.close();
+  }
+
+  convertDate(date) {
+    return new Date(date).toISOString().slice(0, 10);
   }
 
   ngOnDestroy() {
