@@ -45,4 +45,20 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SOURCE_DIR: 'dist'
-          TARGET_DIR: 'v0.0.0/admin'
+          TARGET_DIR: '${process.env.GITHUB_RUN_NUMBER}/'
+
+     - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          cli_config_credentials_token: ${{ secrets.TFC_TEAM_TOKEN }}
+
+      - uses: peter-murray/terragrunt-github-action@v1.0.0
+        with:
+          terragrunt_version: ${{ env.TG_VERSION }}
+
+      - name: Terragrunt Apply
+        working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
+        env:
+          app_version: ${{ process.env.GITHUB_RUN_NUMBER }}
+          s3_bucket: ${{ secrets.AWS_S3_BUCKET }}
+        run: terragrunt apply-all --terragrunt-non-interactive
