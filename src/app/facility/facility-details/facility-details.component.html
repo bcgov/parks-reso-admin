@@ -133,6 +133,10 @@
                 <button [disabled]="loadingPasses"
                     class="btn btn-primary"
                     (click)="exportCsv()">Export to .csv</button>
+                &nbsp;
+                <button [disabled]="loadingPasses"
+                    class="btn btn-primary"
+                    (click)="print()">Print</button>
             </div>
             <div class="col-md-4 mt-4 mt-md-0">
                 <div class="btn-group btn-group-toggle d-flex justify-content-end"
@@ -169,4 +173,33 @@
     <app-pass-list [parkSk]="parkSk"
         [facilitySk]="facilitySk"
         [time]="passTypeSelected"></app-pass-list>
+</div>
+
+<div id="print-area">
+    <table>
+        <thead>
+            <tr style="border: 1px solid black;">
+                <th scope="col">Reg #</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Facility</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pass of passes">
+                <td>{{pass.registrationNumber}}</td>
+                <td>{{pass.firstName}}</td>
+                <td>{{pass.lastName}}</td>
+                <td>{{pass.email}}</td>
+                <td>{{pass.phoneNumber}}</td>
+                <td>{{pass.facilityType}}</td>
+                <td>{{convertDate(pass.date)}}</td>
+                <td>{{pass.passStatus}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
