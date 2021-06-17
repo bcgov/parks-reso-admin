@@ -7,11 +7,17 @@ on:
       - ".github/workflows/deploy-*.yaml"
       - "!**/README.md"
 
+env:
+  TF_VERSION: 0.14.7
+  TG_VERSION: 0.26.7
+  TG_SRC_PATH: terraform
+  TFC_WORKSPACE: dev
+
 jobs:
-  environment: dev
   ci:
     name: ci
     runs-on: ubuntu-20.04
+    environment: dev
 
     steps:
       - name: Check out the repo

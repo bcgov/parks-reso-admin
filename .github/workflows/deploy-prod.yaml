@@ -13,10 +13,10 @@ env:
   TFC_WORKSPACE: prod
 
 jobs:
-  environment: prod
   cd:
     name: cd
     runs-on: ubuntu-20.04
+    environment: prod
 
     steps:
       - name: Check out the repo

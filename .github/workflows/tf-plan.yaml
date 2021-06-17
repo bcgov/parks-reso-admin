@@ -8,7 +8,6 @@ on:
       - completed
 
 env:
-
   TF_VERSION: 0.13.5
   TG_VERSION: 0.28.7
   TG_SRC_PATH: terraform
