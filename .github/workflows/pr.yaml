@@ -12,6 +12,9 @@ jobs:
   pr:
     name: pr
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [10.x]
 
     steps:
       - name: Check out the repo

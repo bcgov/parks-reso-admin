@@ -1,5 +1,5 @@
 
-name: Deploy Test
+name: Deploy Prod
 on:
    push:
     tags: ["*"]
