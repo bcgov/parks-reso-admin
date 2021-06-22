@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PostFacility, PutFacility } from 'app/models/facility';
+import { Constants } from 'app/shared/utils/constants';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +16,10 @@ export class FacilityService {
 
   constructor(
     private apiService: ApiService,
-    private eventService: EventService
+    private eventService: EventService,
+    private toastService: ToastService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.item = new BehaviorSubject(null);
     this.list = new BehaviorSubject(null);
@@ -35,30 +41,36 @@ export class FacilityService {
 
   async fetchData(facilitySk = null, parkSk = null) {
     let res = null;
+    let errorSubject = '';
     try {
       if (!facilitySk && parkSk) {
         // We are getting a facilities of a given park.
+        errorSubject = 'facilities';
         res = await this.apiService.get('facility', { park: parkSk, facilities: true });
         this.setListValue(res);
       } else if (facilitySk && parkSk) {
+        errorSubject = 'facility';
         // we're getting a single item for a given park
         res = await this.apiService.get('facility', { facilityName: facilitySk, park: parkSk });
         res = res[0];
         this.setItemValue(res);
       } else {
         // We're getting a list
+        errorSubject = 'facilities';
         res = await this.apiService.get('facility');
         this.setListValue(res);
       }
     } catch (e) {
-      console.log('ERROR', e);
+      this.toastService.addMessage(`An error has occured while getting ${errorSubject}.`, 'Facility Service', Constants.ToastTypes.ERROR);
       this.eventService.setError(
         new EventObject(
           EventKeywords.ERROR,
           e,
-          'Park Service'
+          'Facility Service'
         )
       );
+      this.router.navigate(['../', { relativeTo: this.route }]);
+      throw e;
     }
     return res;
   }
@@ -83,14 +95,15 @@ export class FacilityService {
       postObj.bookingTimes['reservations'] = {};
       res = await this.apiService.post('facility', postObj);
     } catch (e) {
-      console.log('ERROR', e);
+      this.toastService.addMessage(`An error has occured while creating facility.`, 'Facility Service', Constants.ToastTypes.ERROR);
       this.eventService.setError(
         new EventObject(
           EventKeywords.ERROR,
           e,
-          'Park Service'
+          'Faciltiy Service'
         )
       );
+      this.router.navigate(['../', { relativeTo: this.route }]);
       throw e;
     }
     return res;
@@ -116,14 +129,15 @@ export class FacilityService {
 
       res = await this.apiService.put('facility', putObj);
     } catch (e) {
-      console.log('ERROR', e);
+      this.toastService.addMessage(`An error has occured while editing facility.`, 'Faciltiy Service', Constants.ToastTypes.ERROR);
       this.eventService.setError(
         new EventObject(
           EventKeywords.ERROR,
           e,
-          'Park Service'
+          'Facility Service'
         )
       );
+      this.router.navigate(['../', { relativeTo: this.route }]);
       throw e;
     }
     return res;

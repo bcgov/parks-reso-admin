@@ -58,7 +58,6 @@ export class ParkListComponent implements OnInit, OnDestroy {
     this.parkService.getListValue()
       .pipe(takeWhile(() => this.alive))
       .subscribe((res) => {
-        this.loading = true;
         if (res) {
           this.data = res.map(item => {
             return { rowData: item };

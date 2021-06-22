@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
 import { PassService } from 'app/services/pass.service';
+import { ToastService } from 'app/services/toast.service';
 import { TableRowComponent } from 'app/shared/components/table-template/table-row-component';
+import { Constants } from 'app/shared/utils/constants';
 import { DialogService } from 'ng2-bootstrap-modal';
 
 @Component({
@@ -11,9 +13,12 @@ import { DialogService } from 'ng2-bootstrap-modal';
 })
 export class PassTableRowComponent extends TableRowComponent implements OnInit {
 
+  public cancelLoading = false;
+
   constructor(
     private dialogService: DialogService,
-    private passService: PassService
+    private passService: PassService,
+    private toastService: ToastService
   ) {
     super();
   }
@@ -76,9 +81,12 @@ export class PassTableRowComponent extends TableRowComponent implements OnInit {
             { backdropColor: 'rgba(0, 0, 0, 0.5)' }
           ).subscribe(async result => {
             if (result) {
+              this.cancelLoading = true;
               // TODO: create toast if this blows up.
               await this.passService.cancelPass(this.rowData.sk, this.rowData.pk.replace('pass::', ''));
+              this.toastService.addMessage('Pass successfully.', 'Cancel Pass', Constants.ToastTypes.SUCCESS);
               this.rowData.passStatus = 'cancelled';
+              this.cancelLoading = false;
             }
           });
         break;

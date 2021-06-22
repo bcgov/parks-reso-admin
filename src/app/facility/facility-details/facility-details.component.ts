@@ -13,7 +13,9 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   private alive = true;
 
   public loadingFacility = true;
-  public loadingPasses = true;
+  public loadingAM = true;
+  public loadingPM = true;
+  public loadingDAY = true;
   public facility;
   public passes;
   public passTypeSelected = 'AM';
@@ -56,14 +58,28 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         if (res) {
           this.passes = res.data;
-          this.loadingPasses = false;
+          this.loadingAM = false;
+          this.loadingPM = false;
+          this.loadingDAY = false;
           this._changeDetectionRef.detectChanges();
         }
       });
   }
 
   fetchPassTable(time) {
-    this.loadingPasses = true;
+    switch (time) {
+      case 'AM':
+        this.loadingAM = true;
+        break;
+      case 'PM':
+        this.loadingPM = true;
+        break;
+      case 'DAY':
+        this.loadingDAY = true;
+        break;
+      default:
+        break;
+    }
     this.passTypeSelected = time;
     this.passService.fetchData(null, this.parkSk, this.facilitySk, time);
   }

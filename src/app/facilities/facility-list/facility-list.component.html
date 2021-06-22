@@ -4,14 +4,15 @@
     </div>
 </section>
 
-<section *ngIf="data.length > 0">
-    <app-list [tableRowComponent]="tableRowComponent"
+<section *ngIf="!loading">
+    <app-list *ngIf="data.length > 0"
+        [tableRowComponent]="tableRowComponent"
         [tableColumns]="tableColumns"
         [totalListItems]="totalListItems"
         [data]="data"
         [options]="options"></app-list>
-</section>
 
-<section *ngIf="data.length === 0">
-    There are no facilities associated with the park.
+    <div *ngIf="data.length === 0">
+        There are no facilities associated with the park.
+    </div>
 </section>

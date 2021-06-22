@@ -8,6 +8,7 @@ import { takeWhile } from 'rxjs/operators';
 import { FacilityService } from 'app/services/facility.service';
 import { PostFacility, PutFacility } from 'app/models/facility';
 import { ParkService } from 'app/services/park.service';
+import { ToastService } from 'app/services/toast.service';
 
 @Component({
   selector: 'app-facility-form',
@@ -18,6 +19,7 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
   private alive = true;
 
   public loading = true;
+  public saving = false;
   public isNewFacility = true;
   public types = Constants.FacilityTypesList;
 
@@ -45,7 +47,8 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dialogService: DialogService,
     private facilityService: FacilityService,
-    private parkService: ParkService
+    private parkService: ParkService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -225,36 +228,32 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
         },
         { backdropColor: 'rgba(0, 0, 0, 0.5)' }
       ).subscribe(async result => {
-        this.loading = true;
+        this.saving = true;
         if (result) {
-          try {
-            if (this.isNewFacility) {
-              // Post
-              let postObj = new PostFacility();
-              this.validateFields(postObj);
-              await this.facilityService.createFacility(postObj, this.park.sk);
-              this.facilityService.fetchData(null, this.park.sk);
-            } else {
-              // Put
-              let putObj = new PutFacility();
-              putObj.pk = this.facility.pk;
-              putObj.sk = this.facility.sk;
-              putObj.bookingTimes['reservations'] = this.facility.bookingTimes.reservations;
-              this.validateFields(putObj);
+          if (this.isNewFacility) {
+            // Post
+            let postObj = new PostFacility();
+            this.validateFields(postObj);
+            await this.facilityService.createFacility(postObj, this.park.sk);
+            this.toastService.addMessage('Faciltiy successfully created.', 'Add Faciltiy', Constants.ToastTypes.SUCCESS);
+            this.facilityService.fetchData(null, this.park.sk);
+          } else {
+            // Put
+            let putObj = new PutFacility();
+            putObj.pk = this.facility.pk;
+            putObj.sk = this.facility.sk;
+            putObj.bookingTimes['reservations'] = this.facility.bookingTimes.reservations;
+            this.validateFields(putObj);
 
-              // Dont allow name change on edit.
-              putObj.name = this.facility.name;
-              await this.facilityService.editFacility(putObj, this.park.sk);
-              this.facilityService.fetchData(this.facility.sk, this.park.sk);
-            }
-          } catch (error) {
-            // TODO: Use toast service to make this look nicer.
-            alert('An error as occured.');
+            // Dont allow name change on edit.
+            putObj.name = this.facility.name;
+            await this.facilityService.editFacility(putObj, this.park.sk);
+            this.toastService.addMessage('Facility successfully edited.', 'Edit Facility', Constants.ToastTypes.SUCCESS);
+            this.facilityService.fetchData(this.facility.sk, this.park.sk);
           }
-          // TODO: Success toast.
           this.router.navigate(['../details'], { relativeTo: this.route });
         }
-        this.loading = false;
+        this.saving = false;
       });
   }
 
