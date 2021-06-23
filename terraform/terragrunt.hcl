@@ -21,14 +21,6 @@ terraform {
 EOF
 }
 
-generate "tfvars" {
-  path              = "terragrunt.auto.tfvars"
-  if_exists         = "overwrite"
-  disable_signature = true
-  contents          = <<-EOF
-EOF
-}
-
 generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite"
