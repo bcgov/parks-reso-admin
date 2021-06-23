@@ -57,7 +57,15 @@ export class AppComponent implements OnInit, OnDestroy {
             this.toastr.info(msg.body, msg.title);
           } break;
           case Constants.ToastTypes.ERROR: {
-            this.toastr.error(msg.body, msg.title);
+            this.toastr.error(
+              msg.body,
+              msg.title,
+              {
+                extendedTimeOut: 0,
+                timeOut: 0,
+                closeButton: true
+              }
+            );
           } break;
         }
         // Remove message from memory
