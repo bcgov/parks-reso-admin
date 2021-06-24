@@ -4,9 +4,18 @@
 <td data-label="Email"
     scope="row"
     class="col-3">{{validate('email')}}</td>
+
+<td *ngIf="rowData.facilityType === 'Trail'"
+    data-label="Guests"
+    scope="row"
+    class="col-1">{{validate('numberOfGuests')}}</td>
+<td *ngIf="rowData.facilityType === 'Parking'"
+    data-label="Guests"
+    scope="row"
+    class="col-1">{{validate('license')}}</td>
 <td data-label="Date"
     scope="row"
-    class="col-3">{{validate('date')}}</td>
+    class="col-2">{{validate('date')}}</td>
 <td data-label="Status"
     scope="row"
     class="col-2">{{validate('passStatus')}}</td>

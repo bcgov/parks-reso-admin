@@ -69,7 +69,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   }
 
   exportCsv(): void {
-    PassUtils.exportToCsv(this.passes);
+    PassUtils.exportToCsv(this.passes, this.facility.type);
   }
 
   print(): void {

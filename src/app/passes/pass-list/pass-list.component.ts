@@ -51,9 +51,15 @@ export class PassListComponent implements OnInit, OnDestroy {
       nosort: true
     },
     {
+      name: 'Guests',
+      value: 'numberOfGuests',
+      width: 'col-1',
+      nosort: true
+    },
+    {
       name: 'Date',
       value: 'date',
-      width: 'col-3',
+      width: 'col-2',
       nosort: true
     },
     {
@@ -94,6 +100,46 @@ export class PassListComponent implements OnInit, OnDestroy {
             this.data = tempList;
           }
           this.totalListItems = this.data.length;
+          if (this.totalListItems > 0 && this.data[0].rowData.facilityType === 'Parking') {
+            this.tableColumns = [
+              {
+                name: 'Reg #',
+                value: 'registrationNumber',
+                width: 'col-2',
+                nosort: true
+              },
+              {
+                name: 'Email',
+                value: 'email',
+                width: 'col-3',
+                nosort: true
+              },
+              {
+                name: 'License',
+                value: 'license',
+                width: 'col-1',
+                nosort: true
+              },
+              {
+                name: 'Date',
+                value: 'date',
+                width: 'col-2',
+                nosort: true
+              },
+              {
+                name: 'Status',
+                value: 'passStatus',
+                width: 'col-2',
+                nosort: true
+              },
+              {
+                name: 'Actions',
+                value: '',
+                width: 'col-2',
+                nosort: true
+              }
+            ];
+          }
           this.loading = false;
           this._changeDetectionRef.detectChanges();
         }
