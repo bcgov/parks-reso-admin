@@ -144,15 +144,26 @@
             <div class="col-md-10 mt-3 mt-md-0">
                 <div class="d-flex justify-content-md-end">
                     <button class='btn btn-danger mr-1'
-                        (click)="cancel()">Cancel</button>
+                        [disabled]="saving"
+                        (click)="cancel()">
+                        Cancel
+                    </button>
                     <button class='btn btn-secondary mx-1'
-                        [disabled]="parkForm.pristine"
-                        (click)="resetForm()">Reset
-                        Form</button>
+                        [disabled]="parkForm.pristine || saving"
+                        (click)="resetForm()">
+                        Reset Form
+                    </button>
                     <button class='btn btn-primary ml-1'
-                        [disabled]="parkForm.invalid"
-                        (click)="submitForm()">Save
-                        Park</button>
+                        [disabled]="parkForm.invalid || saving"
+                        (click)="submitForm()">
+                        <span *ngIf="!saving">
+                            Save Park
+                        </span>
+                        <span *ngIf="saving"
+                            class="material-icons rotating">
+                            autorenew
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>

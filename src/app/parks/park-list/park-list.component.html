@@ -1,11 +1,11 @@
-<div class="container-fluid-padding-without-header">
-    <section *ngIf="loading">
-        <div class="spinner-container">
-            <div class="spinner-new rotating"></div>
-        </div>
-    </section>
-
-    <section *ngIf="!loading && data.length > 0">
+<section *ngIf="loading">
+    <div class="spinner-container">
+        <div class="spinner-new rotating"></div>
+    </div>
+</section>
+<div *ngIf="!loading"
+    class="container-fluid-padding-without-header">
+    <section *ngIf="data.length > 0">
         <app-list [tableRowComponent]="tableRowComponent"
             [tableColumns]="tableColumns"
             [data]="data"

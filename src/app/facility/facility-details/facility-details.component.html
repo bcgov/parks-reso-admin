@@ -1,9 +1,9 @@
+<section *ngIf="loadingFacility">
+    <div class="spinner-container">
+        <div class="spinner-new rotating"></div>
+    </div>
+</section>
 <div class="container-fluid-padding-without-header">
-    <section *ngIf="loadingFacility || loadingPasses">
-        <div class="spinner-container">
-            <div class="spinner-new rotating"></div>
-        </div>
-    </section>
     <section *ngIf="!loadingFacility">
         <div class="row">
             <div class="col-md-6">
@@ -130,41 +130,53 @@
         <br>
         <div class="row">
             <div class="col-md-8">
-                <button [disabled]="loadingPasses"
+                <button [disabled]="loadingAM || loadingPM || loadingDay || passes.length === 0"
                     class="btn btn-primary"
                     (click)="exportCsv()">Export to .csv</button>
                 &nbsp;
-                <button [disabled]="loadingPasses"
+                <button [disabled]="loadingAM || loadingPM || loadingDay || passes.length === 0"
                     class="btn btn-primary"
                     (click)="print()">Print</button>
             </div>
             <div class="col-md-4 mt-4 mt-md-0">
                 <div class="btn-group btn-group-toggle d-flex justify-content-end"
                     facility-toggle="buttons">
-                    <label *ngIf="facility?.bookingTimes.AM"
-                        class="btn btn-outline-secondary"
-                        [ngClass]="{'active': passTypeSelected === 'AM'}">
-                        <input type="radio"
-                            name="options"
-                            id="option1"
-                            (click)="fetchPassTable('AM')"> AM
-                    </label>
-                    <label *ngIf="facility?.bookingTimes.PM"
-                        class="btn btn-outline-secondary"
-                        [ngClass]="{'active': passTypeSelected === 'PM'}">
-                        <input type="radio"
-                            name="options"
-                            id="option2"
-                            (click)="fetchPassTable('PM')"> PM
-                    </label>
-                    <label *ngIf="facility?.bookingTimes.DAY"
-                        class="btn btn-outline-secondary"
-                        [ngClass]="{'active': passTypeSelected === 'DAY'}">
-                        <input type="radio"
-                            name="options"
-                            id="option3"
-                            (click)="fetchPassTable('DAY')"> All Day
-                    </label>
+                    <button *ngIf="facility?.bookingTimes.AM"
+                        class="btn btn-primary"
+                        [disabled]="loadingAM || passTypeSelected === 'AM'"
+                        (click)="fetchPassTable('AM')">
+                        <span *ngIf="!loadingAM">
+                            AM
+                        </span>
+                        <span *ngIf="loadingAM"
+                            class="material-icons rotating">
+                            autorenew
+                        </span>
+                    </button>
+                    <button *ngIf="facility?.bookingTimes.PM"
+                        class="btn btn-primary"
+                        [disabled]="loadingPM || passTypeSelected === 'PM'"
+                        (click)="fetchPassTable('PM')">
+                        <span *ngIf="!loadingPM">
+                            PM
+                        </span>
+                        <span *ngIf="loadingPM"
+                            class="material-icons rotating">
+                            autorenew
+                        </span>
+                    </button>
+                    <button *ngIf="facility?.bookingTimes.DAY"
+                        class="btn btn-primary"
+                        [disabled]="loadingDAY || passTypeSelected === 'DAY'"
+                        (click)="fetchPassTable('DAY')">
+                        <span *ngIf="!loadingDAY">
+                            Day
+                        </span>
+                        <span *ngIf="loadingDAY"
+                            class="material-icons rotating">
+                            autorenew
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>

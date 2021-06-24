@@ -1,10 +1,9 @@
+<section *ngIf="loading">
+    <div class="spinner-container">
+        <div class="spinner-new rotating"></div>
+    </div>
+</section>
 <div class="container-fluid-padding-without-header">
-    <section *ngIf="loading">
-        <div class="spinner-container">
-            <div class="spinner-new rotating"></div>
-        </div>
-    </section>
-
     <section *ngIf="!loading">
         <div class="d-flex flex-column flex-sm-row justify-content-sm-between heading-bar">
             <div>
@@ -20,8 +19,8 @@
             Changes to facility information will be reflected in the BC Parks Day Pass Reservation System public
             site.
         </p>
+        <hr>
     </section>
-    <hr>
 
     <section *ngIf="!loading">
         <form [formGroup]="facilityForm"
@@ -233,15 +232,23 @@
             </div> -->
             <div class="d-flex justify-content-md-end">
                 <button class='btn btn-danger m-1'
+                    [disabled]="saving"
                     (click)="cancel()">Cancel</button>
                 <button class='btn btn-secondary m-1'
-                    [disabled]="facilityForm.pristine"
+                    [disabled]="facilityForm.pristine || saving"
                     (click)="resetForm()">Reset
                     Form</button>
                 <button class='btn btn-primary m-1'
-                    [disabled]="facilityForm.invalid"
-                    (click)="submitForm()">Save
-                    Facility</button>
+                    [disabled]="facilityForm.invalid || saving"
+                    (click)="submitForm()">
+                    <span *ngIf="!saving">
+                        SaveFacility
+                    </span>
+                    <span *ngIf="saving"
+                        class="material-icons rotating">
+                        autorenew
+                    </span>
+                </button>
             </div>
         </div>
     </section>

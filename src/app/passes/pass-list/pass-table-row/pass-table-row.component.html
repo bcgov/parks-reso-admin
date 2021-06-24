@@ -25,12 +25,17 @@
             </span>
         </button>
         <button type="button"
-            [disabled]="rowData?.passStatus !== 'active'"
+            [disabled]="rowData?.passStatus !== 'active' || cancelLoading"
             class="btn btn-outline-danger"
             title="Cancel {{validate('registrationNumber')}}"
             (click)="navigate('cancel')">
-            <span class="material-icons">
+            <span *ngIf="!cancelLoading"
+                class="material-icons">
                 cancel
+            </span>
+            <span *ngIf="cancelLoading"
+                class="material-icons rotating">
+                autorenew
             </span>
         </button>
     </div>

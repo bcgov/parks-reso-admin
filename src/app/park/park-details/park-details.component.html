@@ -1,10 +1,11 @@
-<div class="container-fluid-padding-without-header">
-    <section *ngIf="loading">
-        <div class="spinner-container">
-            <div class="spinner-new rotating"></div>
-        </div>
-    </section>
-    <section *ngIf="!loading">
+<section *ngIf="loading">
+    <div class="spinner-container">
+        <div class="spinner-new rotating"></div>
+    </div>
+</section>
+<div *ngIf="!loading"
+    class="container-fluid-padding-without-header">
+    <section>
         <div class="row">
             <div class="col-md-6">
                 <label>
@@ -75,7 +76,7 @@
                     <label class="btn btn-outline-dark">
                         <input type="radio"
                             name="options"
-                            id="option1"
+                            id="park-options"
                             (click)="addParkFacility()"> Add Facility
                     </label>
                 </div>
@@ -91,13 +92,12 @@
                     <label class="btn btn-outline-secondary">
                         <input type="radio"
                             name="options"
-                            id="option1"
+                            id="park-options"
                             (click)="addParkFacility()"> Add Facility
                     </label>
                 </div>
             </div>
         </div>
-        <br>
-        <app-facility-list></app-facility-list>
     </section>
+    <app-facility-list></app-facility-list>
 </div>

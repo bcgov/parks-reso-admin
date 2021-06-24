@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Constants } from 'app/shared/utils/constants';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,10 @@ export class PassService {
 
   constructor(
     private apiService: ApiService,
-    private eventService: EventService
+    private eventService: EventService,
+    private toastService: ToastService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.item = new BehaviorSubject(null);
     this.list = new BehaviorSubject(null);
@@ -41,9 +47,11 @@ export class PassService {
     ExclusiveStartKeySK = null
   ) {
     let res = null;
+    let errorSubject = '';
     try {
       if (!passSk && parkSk && facilitySk && passType) {
         // We are getting list of passes filtered with type
+        errorSubject = 'passes';
         let queryObj = {
           park: parkSk,
           facilityName: facilitySk,
@@ -61,7 +69,7 @@ export class PassService {
         return res;
       }
     } catch (e) {
-      console.log('ERROR', e);
+      this.toastService.addMessage(`An error has occured while getting ${errorSubject}.`, 'Pass Service', Constants.ToastTypes.ERROR);
       this.eventService.setError(
         new EventObject(
           EventKeywords.ERROR,
@@ -69,6 +77,7 @@ export class PassService {
           'Pass Service'
         )
       );
+      this.router.navigate(['../', { relativeTo: this.route }]);
     }
   }
 
@@ -85,7 +94,7 @@ export class PassService {
       res = await this.apiService.delete('pass', { passId: passId, park: parkSk });
       this.setItemValue(res);
     } catch (e) {
-      console.log('ERROR', e);
+      this.toastService.addMessage(`An error has occured while canceling Pass.`, 'Pass Service', Constants.ToastTypes.ERROR);
       this.eventService.setError(
         new EventObject(
           EventKeywords.ERROR,
@@ -93,6 +102,7 @@ export class PassService {
           'Pass Service'
         )
       );
+      throw e;
     }
   }
 }

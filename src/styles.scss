@@ -38,11 +38,11 @@
 @import "assets/styles/components/tab-nav.scss";
 @import "assets/styles/components/table.scss";
 
-
-
 // Third-party Components
 // Required for Angular Material styling: (ref: https://material.angular.io/guide/theming)
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 // For the ng-select multiselect component.
 @import "~@ng-select/ng-select/themes/default.theme.css";
+
+@import "~ngx-toastr/toastr";

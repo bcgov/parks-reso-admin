@@ -32,6 +32,8 @@ import { ConfigService } from './services/config.service';
 import { KeycloakService } from './services/keycloak.service';
 import { TokenInterceptor } from './shared/utils/token-interceptor';
 import { ParkService } from './services/park.service';
+import { ToastService } from './services/toast.service';
+import { ToastrModule } from 'ngx-toastr';
 
 export function initConfig(configService: ConfigService, keycloakService: KeycloakService) {
   return async () => {
@@ -68,6 +70,7 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
     MetricsModule,
     SharedModule,
     ParksModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     {
@@ -84,7 +87,8 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
     CookieService,
     ConfigService,
     KeycloakService,
-    ParkService
+    ParkService,
+    ToastService
   ],
   entryComponents: [
     ConfirmComponent

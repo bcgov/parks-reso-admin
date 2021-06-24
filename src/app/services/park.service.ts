@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ParkSubObject, PostPark, PutPark } from 'app/models/park';
+import { Constants } from 'app/shared/utils/constants';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +16,10 @@ export class ParkService {
 
   constructor(
     private apiService: ApiService,
-    private eventService: EventService
+    private eventService: EventService,
+    private toastService: ToastService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.item = new BehaviorSubject(null);
     this.list = new BehaviorSubject(null);
@@ -35,21 +41,24 @@ export class ParkService {
 
   async fetchData(sk = null) {
     let res = null;
+    let errorSubject = '';
     try {
       if (sk) {
         // we're getting a single item
+        errorSubject = 'park';
         res = await this.apiService.get('park', { park: sk });
         res = res[0];
         // TODO: checks before sending back item.
         this.setItemValue(res);
 
       } else {
+        errorSubject = 'parks';
         // We're getting a list
         res = await this.apiService.get('park');
         this.setListValue(res);
       }
     } catch (e) {
-      console.log('ERROR', e);
+      this.toastService.addMessage(`An error has occured while getting ${errorSubject}.`, 'Park Service', Constants.ToastTypes.ERROR);
       this.eventService.setError(
         new EventObject(
           EventKeywords.ERROR,
@@ -57,6 +66,8 @@ export class ParkService {
           'Park Service'
         )
       );
+      this.router.navigate(['../', { relativeTo: this.route }]);
+      throw e;
     }
     return res;
   }
@@ -72,17 +83,15 @@ export class ParkService {
     let res = null;
     try {
       // Remove non-valid fields and verify field types.
-      console.log(obj);
       this.checkManditoryFields(obj);
 
       let postObj = new PostPark(obj);
       postObj.park = new ParkSubObject(obj);
-      console.log(postObj);
 
       postObj['facilities'] = [];
       res = await this.apiService.post('park', postObj);
     } catch (e) {
-      console.log('ERROR', e);
+      this.toastService.addMessage(`An error has occured while creating park.`, 'Park Service', Constants.ToastTypes.ERROR);
       this.eventService.setError(
         new EventObject(
           EventKeywords.ERROR,
@@ -90,6 +99,7 @@ export class ParkService {
           'Park Service'
         )
       );
+      this.router.navigate(['../', { relativeTo: this.route }]);
       throw e;
     }
     return res;
@@ -112,7 +122,7 @@ export class ParkService {
       putObj['facilities'] = [];
       res = await this.apiService.put('park', putObj);
     } catch (e) {
-      console.log('ERROR', e);
+      this.toastService.addMessage(`An error has occured while editing park.`, 'Park Service', Constants.ToastTypes.ERROR);
       this.eventService.setError(
         new EventObject(
           EventKeywords.ERROR,
@@ -120,6 +130,7 @@ export class ParkService {
           'Park Service'
         )
       );
+      this.router.navigate(['../', { relativeTo: this.route }]);
       throw e;
     }
     return res;

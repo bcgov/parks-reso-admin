@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import 'rxjs/add/operator/takeUntil';
 
@@ -8,16 +8,13 @@ import 'rxjs/add/operator/takeUntil';
   styleUrls: ['./home.component.scss']
 })
 
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute
   ) {
   }
 
-  ngOnInit() {
-
-  }
 
   navigate(nav) {
     this.router.navigate([nav], { relativeTo: this.route });

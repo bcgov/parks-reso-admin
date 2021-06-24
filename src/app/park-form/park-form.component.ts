@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
 import { Park } from 'app/models/park';
 import { ParkService } from 'app/services/park.service';
+import { ToastService } from 'app/services/toast.service';
+import { Constants } from 'app/shared/utils/constants';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { takeWhile } from 'rxjs/operators';
 
@@ -18,6 +20,7 @@ export class ParkFormComponent implements OnInit, OnDestroy {
   public isNewPark = true;
   public descriptionCharacterLimit = 500;
   public loading = true;
+  public saving = false;
 
   public park = null;
 
@@ -38,7 +41,8 @@ export class ParkFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private dialogService: DialogService,
-    private parkService: ParkService
+    private parkService: ParkService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -102,36 +106,32 @@ export class ParkFormComponent implements OnInit, OnDestroy {
         },
         { backdropColor: 'rgba(0, 0, 0, 0.5)' }
       ).subscribe(async result => {
-        this.loading = true;
+        this.saving = true;
         if (result) {
-          try {
-            if (this.isNewPark) {
-              // Post
-              const postObj = new Park();
-              this.validateFields(postObj);
-              await this.parkService.createPark(postObj);
-              this.parkService.fetchData();
-            } else {
-              // Put
-              const putObj = new Park();
-              putObj.pk = this.park.pk;
-              putObj.sk = this.park.sk;
-              this.validateFields(putObj);
+          if (this.isNewPark) {
+            // Post
+            const postObj = new Park();
+            this.validateFields(postObj);
+            await this.parkService.createPark(postObj);
+            this.toastService.addMessage('Park successfully created.', 'Add Park', Constants.ToastTypes.SUCCESS);
+            this.parkService.fetchData();
+          } else {
+            // Put
+            let putObj = new Park();
+            putObj.pk = this.park.pk;
+            putObj.sk = this.park.sk;
+            this.validateFields(putObj);
 
-              // Dont allow name change on edit.
-              putObj.name = this.park.name;
+            // Dont allow name change on edit.
+            putObj.name = this.park.name;
 
-              await this.parkService.editPark(putObj);
-              this.parkService.fetchData(this.park.sk);
-            }
-          } catch (error) {
-            // TODO: Use toast service to make this look nicer.
-            alert('An error as occured.');
+            await this.parkService.editPark(putObj);
+            this.toastService.addMessage('Park successfully edited.', 'Edit Park', Constants.ToastTypes.SUCCESS);
+            this.parkService.fetchData(this.park.sk);
           }
-          // TODO: Success toast.
           this.router.navigate(['parks']);
         }
-        this.loading = false;
+        this.saving = false;
       });
   }
 
