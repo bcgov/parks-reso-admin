@@ -5,11 +5,11 @@
     scope="row"
     class="col-3">{{validate('email')}}</td>
 
-<td *ngIf="rowData.facilityType === 'Trail'"
+<td *ngIf="rowData?.facilityType === 'Trail'"
     data-label="Guests"
     scope="row"
     class="col-1">{{validate('numberOfGuests')}}</td>
-<td *ngIf="rowData.facilityType === 'Parking'"
+<td *ngIf="rowData?.facilityType === 'Parking'"
     data-label="Guests"
     scope="row"
     class="col-1">{{validate('license')}}</td>
