@@ -16,7 +16,7 @@ generate "dev_tfvars" {
   if_exists         = "overwrite"
   disable_signature = true
   contents          = <<-EOF
-app_version = ${local.app_version}
-s3_bucket = ${local.s3_bucket}
+app_version = "${local.app_version}"
+s3_bucket = "${local.s3_bucket}"
 EOF
 }
