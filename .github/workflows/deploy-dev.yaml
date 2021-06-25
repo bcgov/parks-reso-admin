@@ -23,10 +23,12 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
 
-      - name: build
+      - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: 10
+
+      - name: Install and run build
         run: |
           npm i
           npm run build
