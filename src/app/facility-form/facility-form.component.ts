@@ -243,7 +243,6 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
             let putObj = new PutFacility();
             putObj.pk = this.facility.pk;
             putObj.sk = this.facility.sk;
-            putObj.bookingTimes['reservations'] = this.facility.bookingTimes.reservations;
             this.validateFields(putObj);
 
             // Dont allow name change on edit.
@@ -274,19 +273,16 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     let bookingObj = {};
     if (this.facilityForm.get('availabilityAM').value) {
       bookingObj['AM'] = {
-        currentCount: 0,
         max: this.facilityForm.get('capacityAM').value
       };
     }
     if (this.facilityForm.get('availabilityPM').value) {
       bookingObj['PM'] = {
-        currentCount: 0,
         max: this.facilityForm.get('capacityPM').value
       };
     }
     if (this.facilityForm.get('availabilityDAY').value) {
       bookingObj['DAY'] = {
-        currentCount: 0,
         max: this.facilityForm.get('capacityDAY').value
       };
     }
