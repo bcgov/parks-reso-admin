@@ -3,9 +3,6 @@ name: Push
 on:
   push:
     branches: [main]
-    paths:
-      - ".github/workflows/deploy-*.yaml"
-      - "!**/README.md"
 
 env:
   TF_VERSION: 0.14.7
@@ -23,10 +20,12 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
 
-      - name: build
+      - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: 10
+
+      - name: Install and run build
         run: |
           npm i
           npm run build
@@ -53,7 +52,7 @@ jobs:
           TARGET_DIR: '${process.env.GITHUB_RUN_NUMBER}/'
 
       - name: setup terraform
-      - uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ env.TF_VERSION }}
           cli_config_credentials_token: ${{ secrets.TFC_TEAM_TOKEN }}
