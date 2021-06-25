@@ -130,11 +130,11 @@
         <br>
         <div class="row">
             <div class="col-md-8">
-                <button [disabled]="loadingAM || loadingPM || loadingDay || passes.length === 0"
+                <button [disabled]="loadingAM || loadingPM || loadingDAY || passes.length === 0"
                     class="btn btn-primary"
                     (click)="exportCsv()">Export to .csv</button>
                 &nbsp;
-                <button [disabled]="loadingAM || loadingPM || loadingDay || passes.length === 0"
+                <button [disabled]="loadingAM || loadingPM || loadingDAY || passes.length === 0"
                     class="btn btn-primary"
                     (click)="print()">Print</button>
             </div>
