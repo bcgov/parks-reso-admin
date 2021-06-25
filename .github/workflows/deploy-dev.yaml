@@ -52,7 +52,7 @@ jobs:
           TARGET_DIR: '${process.env.GITHUB_RUN_NUMBER}/'
 
       - name: setup terraform
-      - uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ env.TF_VERSION }}
           cli_config_credentials_token: ${{ secrets.TFC_TEAM_TOKEN }}
