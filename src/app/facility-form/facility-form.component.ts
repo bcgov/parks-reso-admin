@@ -65,6 +65,7 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
           }
         });
       this.facilityForm.get('name').disable();
+      this.facilityForm.get('type').disable();
     } else {
       this.facilityForm.get('capacityAM').disable();
       this.facilityForm.get('capacityPM').disable();

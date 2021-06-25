@@ -196,6 +196,12 @@
                 <th scope="col">Last</th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
+
+                <th *ngIf="facility?.type === 'Trail'"
+                    scope="col">Guests</th>
+                <th *ngIf="facility?.type === 'Facility'"
+                    scope="col">License</th>
+
                 <th scope="col">Facility</th>
                 <th scope="col">Date</th>
                 <th scope="col">Status</th>
@@ -208,6 +214,11 @@
                 <td>{{pass.lastName}}</td>
                 <td>{{pass.email}}</td>
                 <td>{{pass.phoneNumber}}</td>
+
+                <td *ngIf="facility?.type === 'Trail'">{{pass.numberOfGuests}}</td>
+                <td *ngIf="facility?.type === 'Facility'">{{pass.license}}</td>
+
+
                 <td>{{pass.facilityType}}</td>
                 <td>{{convertDate(pass.date)}}</td>
                 <td>{{pass.passStatus}}</td>

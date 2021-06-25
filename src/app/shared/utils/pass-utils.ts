@@ -2,9 +2,9 @@ import { Pass } from 'app/models/pass';
 
 export class PassUtils {
 
-    static exportToCsv(data: any[]): void {
+    static exportToCsv(data: any[], facilityType): void {
         // TODO: format to match pass schema when finalized
-        const csvHeaders = [
+        let csvHeaders = [
             'Pass Status',
             'Reservation Number',
             'First Name',
@@ -13,10 +13,14 @@ export class PassUtils {
             'Park',
             'Facility',
             'Date',
-            'Time',
-            'Number of Guests',
-            'License Plate'
+            'Time'
         ];
+
+        if (facilityType === 'Parking') {
+            csvHeaders.push('License');
+        } else {
+            csvHeaders.push('Guests');
+        }
 
         let output = '';
         output = `${csvHeaders.join(',')}\n`;
@@ -32,8 +36,12 @@ export class PassUtils {
             line.push(escapeCsvString(pass.facilityName));
             line.push(escapeCsvString(pass.date));
             line.push(escapeCsvString(pass.type));
-            line.push(escapeCsvString(pass.numberOfGuests));
-            line.push(escapeCsvString(pass.license));
+
+            if (facilityType === 'Parking') {
+                line.push(escapeCsvString(pass.license));
+            } else {
+                line.push(escapeCsvString(pass.numberOfGuests));
+            }
 
             output += `${line.join(',')}\n`;
         }
