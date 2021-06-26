@@ -92,7 +92,6 @@ export class FacilityService {
       }
       let postObj = new PostFacility(obj);
       postObj.parkName = parkSk;
-      postObj.bookingTimes['reservations'] = {};
       res = await this.apiService.post('facility', postObj);
     } catch (e) {
       this.toastService.addMessage(`An error has occured while creating facility.`, 'Facility Service', Constants.ToastTypes.ERROR);
