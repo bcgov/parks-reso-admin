@@ -57,18 +57,6 @@ jobs:
           role-session-name: parks-reso-admin-prod-gh-action
           role-skip-session-tagging: true
 
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --follow-symlinks --delete
-        env:
-          AWS_S3_BUCKET: "${{ secrets.AWS_S3_BUCKET }}-prod"
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SOURCE_DIR: 'dist'
-          TARGET_DIR: '${{ steps.extract_branch.outputs.branch }}/'
-
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ env.TF_VERSION }}
@@ -84,3 +72,7 @@ jobs:
           app_version: ${{ steps.extract_branch.outputs.branch }}
           s3_bucket: ${{ secrets.AWS_S3_BUCKET }}
         run: terragrunt apply-all --terragrunt-non-interactive
+
+      - name: Deploy to DEV S3
+        run: |
+          aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }}-dev/${github.run_number}/
