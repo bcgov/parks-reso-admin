@@ -75,7 +75,7 @@ jobs:
 
       - name: Deploy to S3
         env:
-          s3_bucket: "${{ secrets.AWS_S3_BUCKET }}-dev"
-          dir_name: ${github.run_number}
+          s3_bucket: "${{ secrets.AWS_S3_BUCKET }}-test"
+          dir_name: ${{github.run_number}}
         run: |
           aws s3 sync dist/ s3://$s3_bucket/$dir_name/
