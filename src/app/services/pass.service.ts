@@ -44,7 +44,8 @@ export class PassService {
     facilitySk = null,
     passType = null,
     ExclusiveStartKeyPK = null,
-    ExclusiveStartKeySK = null
+    ExclusiveStartKeySK = null,
+    queryParams = null
   ) {
     let res = null;
     let errorSubject = '';
@@ -61,6 +62,13 @@ export class PassService {
           queryObj['ExclusiveStartKeyPK'] = ExclusiveStartKeyPK;
           queryObj['ExclusiveStartKeySK'] = ExclusiveStartKeySK;
         }
+
+        if (queryParams) {
+          Object.keys(queryParams).forEach(key => {
+            queryObj[key] = queryParams[key];
+          });
+        }
+
         res = await this.apiService.get(
           'pass',
           queryObj

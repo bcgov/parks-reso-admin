@@ -21,6 +21,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TableRowDirective } from './components/table-template/table-row.directive';
 import { TableTemplateComponent } from './components/table-template/table-template.component';
 import { ListComponent } from './components/list/list.component';
+import { SearchWidgetComponent } from './components/search-widget/search-widget.component';
 
 @NgModule({
   imports: [
@@ -49,7 +50,8 @@ import { ListComponent } from './components/list/list.component';
     DatePickerComponent,
     TableRowDirective,
     TableTemplateComponent,
-    ListComponent
+    ListComponent,
+    SearchWidgetComponent
   ],
   entryComponents: [
   ],
@@ -64,7 +66,8 @@ import { ListComponent } from './components/list/list.component';
     DatePickerComponent,
     TableRowDirective,
     TableTemplateComponent,
-    ListComponent
+    ListComponent,
+    SearchWidgetComponent
   ],
   providers: [
     TableTemplate,
