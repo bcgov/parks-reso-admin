@@ -2,9 +2,7 @@
 name: Deploy Prod
 on:
    push:
-    tags: ["*"]
-    branches:
-      - "v[0-9].[0-9]+.[0-9]+"
+    tags: ["v[0-9].[0-9]+.[0-9]+"]
 
 env:
   TF_VERSION: 0.14.7
@@ -24,7 +22,7 @@ jobs:
 
       - name: Extract branch name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "##[set-output name=tag;]$(echo ${GITHUB_REF#refs/tags/})"
         id: extract_branch
 
       - name: Setup node
@@ -69,13 +67,13 @@ jobs:
       - name: Terragrunt Apply
         working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
         env:
-          app_version: ${{ steps.extract_branch.outputs.branch }}
+          app_version: ${{ steps.extract_branch.outputs.tag }}
           s3_bucket: ${{ secrets.AWS_S3_BUCKET }}
         run: terragrunt apply-all --terragrunt-non-interactive
 
       - name: Deploy to DEV S3
         env:
           s3_bucket: "${{ secrets.AWS_S3_BUCKET }}-prod"
-          dir_name: ${{github.run_number}}
+          dir_name: ${{ steps.extract_branch.outputs.tag }}
         run: |
           aws s3 sync dist/ s3://$s3_bucket/$dir_name/
