@@ -20,12 +20,37 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   public passes;
   public passTypeSelected = 'AM';
 
+  public loadingSearch = false;
+
+  public showSearch = false;
+
   public parkSk;
   public facilitySk;
 
+  public datePickerArray = [
+    {
+      label: 'Date',
+      value: 'date'
+    }
+  ];
+  public textSearchArray = [
+    {
+      label: 'First Name',
+      value: 'firstName'
+    },
+    {
+      label: 'Last Name',
+      value: 'lastName'
+    },
+    {
+      label: 'Reservation Number',
+      value: 'reservationNumber'
+    }
+  ];
+
   constructor(
     private facilityService: FacilityService,
-    private passService: PassService,
+    public passService: PassService,
     private _changeDetectionRef: ChangeDetectorRef,
   ) { }
 
@@ -61,6 +86,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
           this.loadingAM = false;
           this.loadingPM = false;
           this.loadingDAY = false;
+          this.loadingSearch = false;
           this._changeDetectionRef.detectChanges();
         }
       });
@@ -117,6 +143,11 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   convertDate(date) {
     return new Date(date).toISOString().slice(0, 10);
+  }
+
+  filterPasses(params) {
+    this.loadingSearch = true;
+    this.passService.fetchData(null, this.parkSk, this.facilitySk, this.passTypeSelected, null, null, params);
   }
 
   ngOnDestroy() {

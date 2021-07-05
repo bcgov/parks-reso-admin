@@ -181,7 +181,39 @@
             </div>
         </div>
     </section>
+
     <br>
+
+    <section>
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-primary"
+                    (click)="showSearch = !showSearch">
+                    Search & Filter
+                    <span *ngIf="!showSearch"
+                        class="material-icons align-middle">
+                        expand_less
+                    </span>
+                    <span *ngIf="showSearch"
+                        class="material-icons align-middle">
+                        expand_more
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div *ngIf="showSearch"
+            class="row mt-3">
+            <div class="col-12">
+                <app-search-widget [loadingStatus]="loadingSearch"
+                    [datePickerArray]="datePickerArray"
+                    [textSearchArray]="textSearchArray"
+                    (submitEvent)="filterPasses($event)"></app-search-widget>
+            </div>
+        </div>
+    </section>
+
+    <br>
+
     <app-pass-list [parkSk]="parkSk"
         [facilitySk]="facilitySk"
         [time]="passTypeSelected"></app-pass-list>
