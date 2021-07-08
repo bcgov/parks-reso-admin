@@ -61,16 +61,6 @@
                     {{facility?.bookingTimes.AM.max}}
                 </p>
             </div>
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        AM Reservation Count:
-                    </strong>
-                </label>
-                <p>
-                    {{facility?.bookingTimes.AM.currentCount}}
-                </p>
-            </div>
         </div>
         <div class="row"
             *ngIf="facility?.bookingTimes.PM">
@@ -84,16 +74,6 @@
                     {{facility?.bookingTimes.PM.max}}
                 </p>
             </div>
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        PM Reservation Count:
-                    </strong>
-                </label>
-                <p>
-                    {{facility?.bookingTimes.PM.currentCount}}
-                </p>
-            </div>
         </div>
         <div class="row"
             *ngIf="facility?.bookingTimes.DAY">
@@ -105,16 +85,6 @@
                 </label>
                 <p>
                     {{facility?.bookingTimes.DAY.max}}
-                </p>
-            </div>
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        All Day Reservation Count:
-                    </strong>
-                </label>
-                <p>
-                    {{facility?.bookingTimes.DAY.currentCount}}
                 </p>
             </div>
         </div>
