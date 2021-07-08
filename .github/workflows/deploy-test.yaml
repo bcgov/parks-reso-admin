@@ -58,7 +58,7 @@ jobs:
         env:
           app_version: ${{ github.run_number }}
           s3_bucket: ${{ secrets.AWS_S3_BUCKET }}
-        run: terragrunt destroy --terragrunt-non-interactive
+        run: terragrunt destroy -auto-approve --terragrunt-non-interactive
 
       # - name: Terragrunt Apply
       #   working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
