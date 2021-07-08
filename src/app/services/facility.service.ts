@@ -126,6 +126,9 @@ export class FacilityService {
       let putObj = new PutFacility(obj);
       putObj.parkName = parkSk;
 
+      // We must tell API that we are editing faciltiy.
+      // This is to prevent reservations object from being overwritten.
+      putObj['mode'] = 'editFacililty';
       res = await this.apiService.put('facility', putObj);
     } catch (e) {
       this.toastService.addMessage(`An error has occured while editing facility.`, 'Faciltiy Service', Constants.ToastTypes.ERROR);
