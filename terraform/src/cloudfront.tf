@@ -55,6 +55,14 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     target_origin_id       = var.api_gateway_origin_id
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      query_string = false
+
+      cookies {
+        forward = "none"
+      }
+    }
   }
 
   enabled             = true
