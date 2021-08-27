@@ -12,7 +12,7 @@ env:
 
 jobs:
   ci:
-    name: ci
+    name: Deploy Dev
     runs-on: ubuntu-20.04
     environment: dev
 
@@ -39,23 +39,6 @@ jobs:
           name: deploy_dist
           path: dist
 
-      - name: setup terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: ${{ env.TF_VERSION }}
-          cli_config_credentials_token: ${{ secrets.TFC_TEAM_TOKEN }}
-
-      - uses: peter-murray/terragrunt-github-action@v1.0.0
-        with:
-          terragrunt_version: ${{ env.TG_VERSION }}
-
-      - name: Terragrunt Apply
-        working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
-        env:
-          app_version: ${{ github.run_number }}
-          s3_bucket: ${{ secrets.AWS_S3_BUCKET }}
-        run: terragrunt apply-all --terragrunt-non-interactive
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -73,3 +56,20 @@ jobs:
           dir_name: ${{github.run_number}}
         run: |
           aws s3 sync dist/ s3://$s3_bucket/$dir_name/
+
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          cli_config_credentials_token: ${{ secrets.TFC_TEAM_TOKEN }}
+
+      - uses: peter-murray/terragrunt-github-action@v1.0.0
+        with:
+          terragrunt_version: ${{ env.TG_VERSION }}
+
+      - name: Terragrunt Apply
+        working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
+        env:
+          app_version: ${{ github.run_number }}
+          s3_bucket: ${{ secrets.AWS_S3_BUCKET }}
+        run: terragrunt apply-all --terragrunt-non-interactive
