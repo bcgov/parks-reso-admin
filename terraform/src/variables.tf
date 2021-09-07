@@ -19,10 +19,10 @@ variable "s3_bucket_name" {
   default     = "BC Parks Day Pass Admin"
 }
 
-variable "s3_origin_id" {
-  description = "S3 Origin Id"
+variable "origin_id" {
+  description = "Origin Id"
   type        = string
-  default     = "parks-admin-s3-origin"
+  default     = "parks-admin"
 }
 
 variable "budget_amount" {
@@ -45,11 +45,6 @@ variable "app_version" {
 variable "s3_bucket" {
   description = "S3 Bucket containing static web files for CloudFront distribution"
   type        = string
-}
-variable "domain_name" {
-  description = "Domain name for CloudFront distribution"
-  type        = string
-  default     = "example.domain.foo"
 }
 
 variable "api_gateway_origin_domain" {

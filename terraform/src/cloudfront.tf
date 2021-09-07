@@ -27,7 +27,7 @@ resource "aws_cloudfront_origin_access_identity" "parks-reso-admin-oai" {
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = aws_s3_bucket.bcgov-parks-reso-admin.bucket_regional_domain_name
-    origin_id   = var.s3_origin_id
+    origin_id   = "${var.origin_id}-${var.target_env}"
     origin_path = "/${var.app_version}"
 
     s3_origin_config {
@@ -90,7 +90,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.s3_origin_id
+    target_origin_id = "${var.origin_id}-${var.target_env}"
 
     forwarded_values {
       query_string = false
@@ -111,7 +111,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     path_pattern     = "/${var.app_version}/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.s3_origin_id
+    target_origin_id = "${var.origin_id}-${var.target_env}"
 
     forwarded_values {
       query_string = false
