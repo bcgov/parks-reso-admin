@@ -37,7 +37,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   # This origin is for setting up the api to be accessible from the front-end domain
   origin {
-    domain_name = var.api_gateway_domain
+    domain_name = var.api_gateway_origin_domain
     origin_id   = var.api_gateway_origin_id
 
     custom_origin_config {
@@ -46,6 +46,28 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       origin_protocol_policy = "http-only"
       origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
     }
+  }
+
+  enabled             = true
+  is_ipv6_enabled     = true
+  default_root_object = "index.html"
+
+  logging_config {
+    include_cookies = false
+    bucket          = aws_s3_bucket.parks-reso-admin-logs.bucket_domain_name
+    prefix          = "logs"
+  }
+
+  custom_error_response {
+    error_code    = 404
+    response_code = 200
+    response_page_path = "/index.html"
+  }
+
+  custom_error_response {
+    error_code    = 403
+    response_code = 200
+    response_page_path = "/index.html"
   }
 
   ordered_cache_behavior {
@@ -63,31 +85,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
         forward = "none"
       }
     }
-  }
-
-  enabled             = true
-  is_ipv6_enabled     = true
-  default_root_object = "index.html"
-
-  logging_config {
-    include_cookies = false
-    bucket          = aws_s3_bucket.parks-reso-admin-logs.bucket_domain_name
-    prefix          = "logs"
-  }
-
-  # uncomment when we have a domain name to use
-  # aliases = [ var.domain_name ]
-
-  custom_error_response {
-    error_code    = 404
-    response_code = 200
-    response_page_path = "/index.html"
-  }
-
-  custom_error_response {
-    error_code    = 403
-    response_code = 200
-    response_page_path = "/index.html"
   }
 
   default_cache_behavior {

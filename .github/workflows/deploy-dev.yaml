@@ -9,6 +9,7 @@ env:
   TG_VERSION: 0.26.7
   TG_SRC_PATH: terraform
   TFC_WORKSPACE: dev
+  TARGET_ENV: dev
 
 jobs:
   ci:
