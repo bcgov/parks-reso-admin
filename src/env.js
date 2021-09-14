@@ -9,7 +9,7 @@
   window.__env.configEndpoint = false;
 
   // Environment name
-  window.__env.ENVIRONMENT = 'test';  // local | dev | test | prod
+  window.__env.ENVIRONMENT = 'local';  // local | dev | test | prod
 
   window.__env.API_LOCATION = 'http://localhost:3000';
   window.__env.API_PATH = '/api';
