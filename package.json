@@ -10,7 +10,7 @@
     "pretest": "",
     "test": "echo 'Test suite should be run with \"`npm run tests` or npm `run tests-ci`\"'",
     "tests": "ng test --watch=false",
-    "tests-ci": "ng test --watch=false",
+    "test-ci": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint --format=stylish",
     "e2e": "ng e2e"
   },
