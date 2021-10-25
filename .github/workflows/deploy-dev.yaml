@@ -45,7 +45,6 @@ jobs:
           node-version: '14'
           cache: 'npm'
       - run: npm ci --ignore-scripts
-      - run: export CHROME_BIN=/usr/bin/google-chrome
       - run: npm run test-ci
       - name: Cancelling workflow due to error
         if: ${{ failure() }}
