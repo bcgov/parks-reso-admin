@@ -13,9 +13,9 @@
 
   window.__env.API_LOCATION = 'http://localhost:3000';
   window.__env.API_PATH = '/api';
-  window.__env.KEYCLOAK_CLIENT_ID = 'nrpti-admin';
+  window.__env.KEYCLOAK_CLIENT_ID = 'parking-pass';
   window.__env.KEYCLOAK_URL = 'https://oidc.gov.bc.ca/auth';
-  window.__env.KEYCLOAK_REALM = '3l5nw6dk';
+  window.__env.KEYCLOAK_REALM = 'g7v0xlf4';
   window.__env.KEYCLOAK_ENABLED = true;
 
   // Add any feature-toggles
