@@ -40,12 +40,17 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome', 'ChromeHeadless', 'ChromeHeadlessCI'],
+    browser: 'Chrome_without_security',
     customLaunchers: {
-      ChromeHeadlessCI: {
+      Chrome_without_security: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
-      }
-    }
+        flags: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-gpu',
+          '--remote-debugging-port=9222',
+        ],
+      },
+    },
   });
 };
