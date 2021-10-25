@@ -1,8 +1,11 @@
 name: Deploy Test
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      releaseTag:
+        description: 'Tag of version to be promoted to test'     
+        required: true
 
 env:
   TF_VERSION: 0.14.7
@@ -12,14 +15,19 @@ env:
   TARGET_ENV: test
 
 jobs:
-  ci:
-    name: Deploy Test
+  terragrunt:
+    name: Run Terragrunt
     runs-on: ubuntu-20.04
     environment: test
-
+    strategy:
+      matrix:
+        node-version: [14.x]
     steps:
-      ### Get environment variables from AWS Parameter Store ###
+      - uses: actions/checkout@v2
+        with:
+            ref: ${{ github.event.inputs.releaseTag }}
 
+      ### Get environment variables from AWS Parameter Store ###
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -54,64 +62,82 @@ jobs:
         with:
           ssm_parameter: /parks-reso-api/gateway-path-pattern
           env_variable_name: "API_GATEWAY_PATH_PATTERN"
-          
-    ### Upload functions to S3 ###
 
-      - name: Check out the repo
-        uses: actions/checkout@v2
-
-      - name: Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 10
-
-      - name: Setting configEndpoint to true
-        run: sed 's@localConfigEndpoint@'true'@g' src/env.js.template > src/env.js
-
-      - name: Install and run build
-        run: |
-          npm i
-          npm run build
-        env:
-          CI: true
-
-      - name: Archive build
-        if: success()
-        uses: actions/upload-artifact@v1
-        with:
-          name: deploy_dist
-          path: dist
-
-      - name: Get release version
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-
-      - name: Deploy to Test S3
-        env:
-          s3_bucket: "${{ env.S3_BUCKET }}-${{ env.TARGET_ENV }}"
-          dir_name: ${{ env.RELEASE_VERSION }}
-        run: |
-          aws s3 sync dist/ s3://$s3_bucket/$dir_name/
-
-
-      ### Run Terragrunt ###
-
-      - name: setup terraform
+      - name: Setup Terrafrom
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ env.TF_VERSION }}
           cli_config_credentials_token: ${{ secrets.TFC_TEAM_TOKEN }}
 
-      - uses: peter-murray/terragrunt-github-action@v1.0.0
+      - name: Setup terragrunt
+        uses: peter-murray/terragrunt-github-action@v1.0.0
         with:
           terragrunt_version: ${{ env.TG_VERSION }}
 
       - name: Terragrunt Apply
         working-directory: ${{ env.TG_SRC_PATH }}/${{ env.TFC_WORKSPACE }}
         env:
-          app_version: ${{ env.RELEASE_VERSION }}
+          app_version: ${{ github.event.inputs.releaseTag }}
           s3_bucket: ${{ env.S3_BUCKET }}
+          s3_bucket_assets: ${{ env.S3_BUCKET_ASSETS }}
           origin_id: ${{ env.ORIGIN_ID }}
           api_gateway_origin_domain: ${{ env.API_GATEWAY_ORIGIN_DOMAIN }}
           api_gateway_origin_id: ${{ env.API_GATEWAY_ORIGIN_ID }}
           api_gateway_path_pattern: ${{ env.API_GATEWAY_PATH_PATTERN }}
+          origin_id_assets: ${{ env.ORIGIN_ID_ASSETS }}
         run: terragrunt apply-all --terragrunt-non-interactive
+
+  s3:
+    name: Upload to S3
+    needs: terragrunt
+    runs-on: ubuntu-20.04
+    environment: test
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_SANDBOX }}
+          role-duration-seconds: 900
+          role-session-name: parks-reso-admin-sandbox-gh-action
+          role-skip-session-tagging: true
+
+      - uses: "marvinpinto/action-inject-ssm-secrets@v1.2.1"
+        with:
+          ssm_parameter: "/parks-reso-sandbox/s3-bucket-admin-artifacts"
+          env_variable_name: "S3_BUCKET_ARTIFACTS"
+
+      - name: Copy from s3 sandbox
+        env:
+          s3_bucket: "${{ env.S3_BUCKET_ARTIFACTS }}"
+          dir_name: ${{ github.sha }}
+        run: |
+          aws s3 sync s3://$s3_bucket/$dir_name/ dist/parks-reso-admin
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 900
+          role-session-name: parks-reso-admin-test-gh-action
+          role-skip-session-tagging: true
+
+      - uses: "marvinpinto/action-inject-ssm-secrets@v1.2.1"
+        with:
+          ssm_parameter: "/parks-reso-admin/s3-bucket"
+          env_variable_name: "S3_BUCKET"
+
+      - name: Deploy to Test S3
+        env:
+          s3_bucket: "${{ env.S3_BUCKET }}-${{ env.TARGET_ENV }}"
+          dir_name: ${{ github.event.inputs.releaseTag }}
+        run: |
+          aws s3 sync dist/parks-reso-admin s3://$s3_bucket/$dir_name/
