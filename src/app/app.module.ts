@@ -35,6 +35,9 @@ import { ParkService } from './services/park.service';
 import { ToastService } from './services/toast.service';
 import { ToastrModule } from 'ngx-toastr';
 
+import { AuthGuard } from './guards/auth.guard';
+import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+
 export function initConfig(configService: ConfigService, keycloakService: KeycloakService) {
   return async () => {
     await configService.init();
@@ -53,6 +56,7 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
     ConfirmComponent,
     ReservationsComponent,
     BreadcrumbComponent,
+    NotAuthorizedComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -88,14 +92,12 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
     ConfigService,
     KeycloakService,
     ParkService,
-    ToastService
+    ToastService,
+    AuthGuard
   ],
-  entryComponents: [
-    ConfirmComponent
-  ],
-  bootstrap: [AppComponent],
+  entryComponents: [ConfirmComponent],
+  bootstrap: [AppComponent]
 })
-
 export class AppModule {
   constructor(applicationRef: ApplicationRef) {
     Object.defineProperty(applicationRef, '_rootComponents', { get: () => applicationRef['components'] });
