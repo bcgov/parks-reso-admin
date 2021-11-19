@@ -10,15 +10,24 @@ import { ReservationsComponent } from './reservations/reservations.component';
 import { ParksRoutes } from './parks/parks-routes';
 import { ParksComponent } from './parks/parks.component';
 
+import { AuthGuard } from './guards/auth.guard';
+import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 
 const routes: Routes = [
   {
+    path: 'unauthorized',
+    pathMatch: 'full',
+    component: NotAuthorizedComponent
+  },
+  {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'parks',
     component: ParksComponent,
+    canActivate: [AuthGuard],
     data: {
       breadcrumb: 'Parks'
     },
@@ -27,16 +36,18 @@ const routes: Routes = [
   {
     path: 'reservations',
     component: ReservationsComponent,
+    canActivate: [AuthGuard],
     data: {
-      breadcrumb: 'Reservations',
-    },
+      breadcrumb: 'Reservations'
+    }
   },
   {
     path: 'metrics',
     component: MetricsComponent,
+    canActivate: [AuthGuard],
     data: {
       breadcrumb: 'Site Metrics'
-    },
+    }
   },
   {
     // wildcard route
@@ -47,14 +58,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes)
-  ],
-  exports: [
-    RouterModule
-  ],
-  providers: [
-  ]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+  providers: []
 })
-
-export class AppRoutingModule { }
+export class AppRoutingModule {}

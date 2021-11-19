@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd, PRIMARY_OUTLET, Params } from '@angular/router';
+import { KeycloakService } from 'app/services/keycloak.service';
 import { filter } from 'rxjs/operators';
 
 export interface IBreadcrumb {
@@ -19,20 +20,22 @@ export class BreadcrumbComponent implements OnInit {
   public breadcrumbs: IBreadcrumb[];
   public activeBreadcrumb: IBreadcrumb;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private keycloakService: KeycloakService
+  ) {
     this.breadcrumbs = [];
   }
 
   public ngOnInit() {
     // Subscribe to the NavigationEnd event
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        // Set breadcrumbs
-        const root: ActivatedRoute = this.activatedRoute.root;
-        this.breadcrumbs = this.getBreadcrumbs(root);
-        this.activeBreadcrumb = this.breadcrumbs.pop();
-      });
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+      // Set breadcrumbs
+      const root: ActivatedRoute = this.activatedRoute.root;
+      this.breadcrumbs = this.getBreadcrumbs(root);
+      this.activeBreadcrumb = this.breadcrumbs.pop();
+    });
   }
 
   /**
@@ -117,5 +120,9 @@ export class BreadcrumbComponent implements OnInit {
       url: url,
       params: params
     });
+  }
+
+  public isAuthenticated() {
+    return this.keycloakService.isAuthenticated();
   }
 }

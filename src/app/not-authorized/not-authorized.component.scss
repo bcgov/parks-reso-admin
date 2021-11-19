@@ -1,0 +1,20 @@
+@import '~assets/styles/base/base.scss';
+
+:host {
+  display: block;
+  /* fill the entire viewport and offset the fixed header and footer height (68px + 61px = 129px;) */
+  min-height: calc(100vh - 129px);
+  background-position: center -8rem;
+  background-size: 250%;
+  background-repeat: no-repeat;
+}
+
+.title-container {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+
+  h1 {
+    font-size: 2.8rem;
+    line-height: 2.5rem;
+  }
+}
