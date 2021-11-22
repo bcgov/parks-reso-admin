@@ -141,6 +141,10 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     WindowPrt.close();
   }
 
+  copyEmails(): void {
+    PassUtils.copyEmailToClipboard(this.passes);
+  }
+
   convertDate(date) {
     return new Date(date).toISOString().slice(0, 10);
   }

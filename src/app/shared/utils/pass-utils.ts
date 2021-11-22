@@ -48,6 +48,17 @@ export class PassUtils {
         let today = new Date().toISOString().slice(0, 10).replace(/-/g, '-');
         download(`bcparks-daypass-export-${today}.csv`, output);
     }
+
+    static copyEmailToClipboard(data: any[]) {
+        const emails = new Set();
+
+        for (const row of data) {
+            const pass = new Pass(row);
+            emails.add(pass.email);
+        }
+
+        return navigator.clipboard.writeText(Array.from(emails).join('; '));
+    }
 }
 
 function escapeCsvString(csvField: any): string {
