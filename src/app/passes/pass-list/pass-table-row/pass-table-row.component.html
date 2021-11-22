@@ -34,7 +34,7 @@
             </span>
         </button>
         <button type="button"
-            [disabled]="rowData?.passStatus !== 'active' || cancelLoading"
+            [disabled]="rowData?.passStatus === 'cancelled' || rowData?.passStatus === 'expired' || cancelLoading"
             class="btn btn-outline-danger"
             title="Cancel {{validate('registrationNumber')}}"
             (click)="navigate('cancel')">
