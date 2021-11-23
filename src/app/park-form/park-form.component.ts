@@ -18,7 +18,6 @@ export class ParkFormComponent implements OnInit, OnDestroy {
   private alive = true;
 
   public isNewPark = true;
-  public descriptionCharacterLimit = 500;
   public loading = true;
   public saving = false;
 
@@ -28,7 +27,6 @@ export class ParkFormComponent implements OnInit, OnDestroy {
     name: new FormControl('', Validators.required),
     capacity: new FormControl(''),
     description: new FormControl('', [
-      Validators.maxLength(this.descriptionCharacterLimit),
       Validators.required
     ]),
     status: new FormControl(false),

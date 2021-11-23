@@ -11,7 +11,6 @@ import { MatMenuModule, MatTabsModule } from '@angular/material';
 
 // modules
 import { AppRoutingModule } from 'app/app-routing.module';
-import { EditorModule } from '@tinymce/tinymce-angular';
 
 // Modules
 import { ParksModule } from './parks/parks.module';
@@ -37,6 +36,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { AuthGuard } from './guards/auth.guard';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 export function initConfig(configService: ConfigService, keycloakService: KeycloakService) {
   return async () => {
@@ -64,7 +64,6 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    EditorModule,
     AppRoutingModule, // <-- module import order matters - https://angular.io/guide/router#module-import-order-matters
     NgbModule,
     BootstrapModalModule.forRoot({ container: document.body }),
@@ -74,6 +73,7 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
     MetricsModule,
     SharedModule,
     ParksModule,
+    EditorModule,
     ToastrModule.forRoot()
   ],
   providers: [
@@ -88,6 +88,7 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
       useClass: TokenInterceptor,
       multi: true
     },
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
     CookieService,
     ConfigService,
     KeycloakService,

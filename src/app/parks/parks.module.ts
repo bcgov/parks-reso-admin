@@ -12,6 +12,7 @@ import { ParkFormComponent } from '../park-form/park-form.component';
 import { ParkModule } from 'app/park/park.module';
 import { ParksRoutes } from './parks-routes';
 import { ParksResolverService } from './parks-resolver.service';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 @NgModule({
   declarations: [
@@ -25,9 +26,11 @@ import { ParksResolverService } from './parks-resolver.service';
     SharedModule,
     RouterModule.forRoot(ParksRoutes),
     ReactiveFormsModule,
-    ParkModule
+    ParkModule,
+    EditorModule
   ],
   providers: [
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
     ParksResolverService
   ],
   entryComponents: [

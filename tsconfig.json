@@ -8,6 +8,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "skipLibCheck": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
@@ -19,10 +20,10 @@
     ],
     "module": "es2015",
     /* replaces deprecated no-use-before-declare */
-    "noUnusedLocals": true,     /* Report errors on unused locals. */
-    "noUnusedParameters": true  /* Report errors on unused parameters. */
+    "noUnusedLocals": true, /* Report errors on unused locals. */
+    "noUnusedParameters": true /* Report errors on unused parameters. */
   },
   "angularCompilerOptions": {
-    "enableIvy": false          /* Must be false until we replace ng-zorro https://github.com/NG-ZORRO/ng-zorro-antd/issues/3975 */
+    "enableIvy": false /* Must be false until we replace ng-zorro https://github.com/NG-ZORRO/ng-zorro-antd/issues/3975 */
   }
 }
