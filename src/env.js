@@ -18,6 +18,12 @@
   window.__env.KEYCLOAK_REALM = 'g7v0xlf4';
   window.__env.KEYCLOAK_ENABLED = true;
 
+  // Number of days in advance a pass is available
+  window.__env.ADVANCE_BOOKING_LIMIT = 3;
+
+  // Hour of day that booking limit advances by 1 day
+  window.__env.ADVANCE_BOOKING_HOUR = 7;
+  
   // Add any feature-toggles
   // window.__env.coolFeatureActive = false;
 }(this));

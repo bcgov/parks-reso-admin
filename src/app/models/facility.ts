@@ -7,6 +7,10 @@ export class Facility {
     type: string;
     visible: boolean;
     bookingTimes: any;
+
+    bookingOpeningHour: number;
+    bookingDaysAhead: number;
+
     constructor(obj?: any) {
         this.pk = obj && obj.pk || null;
         this.sk = obj && obj.sk || null;
@@ -21,6 +25,9 @@ export class Facility {
         }
         this.bookingTimes = obj && obj.bookingTimes || {};
         this.status = obj && obj.status || {};
+
+        this.bookingOpeningHour = obj && obj.bookingOpeningHour || null;
+        this.bookingDaysAhead = obj && obj.bookingDaysAhead || null;
     }
 }
 
@@ -31,6 +38,10 @@ export class PostFacility {
     visible: boolean;
     bookingTimes: any;
     parkName: string;
+
+    bookingOpeningHour: number;
+    bookingDaysAhead: number;
+
     constructor(obj?: any) {
         this.name = obj && obj.name || null;
         this.status = obj && obj.status || null;
@@ -43,6 +54,9 @@ export class PostFacility {
         this.bookingTimes = obj && obj.bookingTimes || {};
         this.status = obj && obj.status || {};
         this.parkName = obj && obj.parkName || null;
+
+        this.bookingOpeningHour = obj && obj.bookingOpeningHour || null;
+        this.bookingDaysAhead = obj && obj.bookingDaysAhead || null;
     }
 }
 
@@ -57,6 +71,10 @@ export class PutFacility {
     bookingTimes: any;
 
     parkName: string;
+
+    bookingOpeningHour: number;
+    bookingDaysAhead: number;
+
     constructor(obj?: any) {
         this.pk = obj && obj.pk || null;
         this.sk = obj && obj.sk || null;
@@ -72,5 +90,8 @@ export class PutFacility {
         this.bookingTimes = obj && obj.bookingTimes || {};
         this.status = obj && obj.status || {};
         this.parkName = obj && obj.parkName || null;
+
+        this.bookingOpeningHour = obj && obj.bookingOpeningHour || null;
+        this.bookingDaysAhead = obj && obj.bookingDaysAhead || null;
     }
 }

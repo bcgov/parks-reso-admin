@@ -5,6 +5,7 @@ import { ConfirmComponent } from 'app/confirm/confirm.component';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { Constants } from '../shared/utils/constants';
 import { takeWhile } from 'rxjs/operators';
+import { ConfigService } from 'app/services/config.service';
 import { FacilityService } from 'app/services/facility.service';
 import { PostFacility, PutFacility } from 'app/models/facility';
 import { ParkService } from 'app/services/park.service';
@@ -38,13 +39,16 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     availabilityDAY: new FormControl(false),
     capacityAM: new FormControl(),
     capacityPM: new FormControl(),
-    capacityDAY: new FormControl()
+    capacityDAY: new FormControl(),
+    bookingOpeningHour: new FormControl(null, Validators.compose([Validators.min(0), Validators.max(23)])),
+    bookingDaysAhead: new FormControl(null, Validators.min(0)),
   });
 
   constructor(
     private _changeDetectionRef: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute,
+    private configService: ConfigService,
     private dialogService: DialogService,
     private facilityService: FacilityService,
     private parkService: ParkService,
@@ -148,7 +152,9 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
       availabilityPM: false,
       capacityPM: null,
       availabilityDAY: false,
-      capacityDAY: null
+      capacityDAY: null,
+      bookingOpeningHour: this.facility.bookingOpeningHour || null,
+      bookingDaysAhead: this.facility.bookingDaysAhead || null,
     });
 
     if (this.facilityForm.get('status')) {
@@ -209,6 +215,12 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     }
     message += `</br><strong>visible:</strong></br>` + this.getInfoString('visible');
     message += `</br><strong>Type:</strong></br>` + this.facilityForm.get('type').value;
+    if (this.facilityForm.get('bookingOpeningHour').value) {
+      message += `</br><strong>Booking Opening Time:</strong></br>` + this.facilityForm.get('bookingOpeningHour').value;
+    }
+    if (this.facilityForm.get('bookingDaysAhead').value) {
+      message += `</br><strong>Booking Days Ahead:</strong></br>` + this.facilityForm.get('bookingDaysAhead').value;
+    }
     if (this.facilityForm.get('availabilityAM').value) {
       message += `</br><strong>AM Capacity:</strong></br>` + this.facilityForm.get('capacityAM').value;
     }
@@ -287,6 +299,8 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
       };
     }
     obj.bookingTimes = bookingObj;
+    obj.bookingOpeningHour = this.facilityForm.get('bookingOpeningHour').value || null;
+    obj.bookingDaysAhead = this.facilityForm.get('bookingDaysAhead').value || null;
   }
 
   cancel() {
@@ -324,5 +338,13 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.alive = false;
+  }
+
+  get defaultBookingOpeningHour() {
+    return this.configService.config['ADVANCE_BOOKING_HOUR'] || null;
+  }
+
+  get defaultBookingDaysAhead() {
+    return this.configService.config['ADVANCE_BOOKING_LIMIT'] || null;
   }
 }

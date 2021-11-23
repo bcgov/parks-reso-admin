@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ConfigService } from 'app/services/config.service';
 import { FacilityService } from 'app/services/facility.service';
 import { PassService } from 'app/services/pass.service';
 import { PassUtils } from 'app/shared/utils/pass-utils';
@@ -49,6 +50,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
+    private configService: ConfigService,
     private facilityService: FacilityService,
     public passService: PassService,
     private _changeDetectionRef: ChangeDetectorRef,
@@ -152,6 +154,14 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   filterPasses(params) {
     this.loadingSearch = true;
     this.passService.fetchData(null, this.parkSk, this.facilitySk, this.passTypeSelected, null, null, params);
+  }
+
+  get defaultBookingOpeningHour() {
+    return this.configService.config['ADVANCE_BOOKING_HOUR'] || null;
+  }
+
+  get defaultBookingDaysAhead() {
+    return this.configService.config['ADVANCE_BOOKING_LIMIT'] || null;
   }
 
   ngOnDestroy() {
