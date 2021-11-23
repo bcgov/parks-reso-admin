@@ -25,23 +25,25 @@
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce",
+                "output": "/tinymce/"
               }
             ],
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/tinymce/skins/ui/oxide/skin.min.css",
-              "node_modules/tinymce/skins/ui/oxide/content.min.css",
               "node_modules/leaflet/dist/leaflet.css",
               "src/assets/fonts/BCSans.css",
               "src/ant-design-custom.less"
             ],
             "scripts": [
-              "node_modules/tinymce/tinymce.min.js",
               "node_modules/moment/min/moment.min.js",
               "node_modules/moment-timezone/builds/moment-timezone-with-data.min.js",
               "node_modules/keycloak-js/dist/keycloak.min.js",
-              "node_modules/tinymce/themes/silver/theme.min.js"
+              "node_modules/tinymce/tinymce.min.js"
             ]
           },
           "configurations": {
@@ -93,20 +95,22 @@
               "node_modules/moment/min/moment.min.js",
               "node_modules/moment-timezone/builds/moment-timezone-with-data.min.js",
               "node_modules/keycloak-js/dist/keycloak.min.js",
-              "node_modules/tinymce/tinymce.min.js",
-              "node_modules/tinymce/themes/silver/theme.min.js"
+              "node_modules/tinymce/tinymce.min.js"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/tinymce/skins/ui/oxide/skin.min.css",
-              "node_modules/tinymce/skins/ui/oxide/content.min.css",
               "node_modules/leaflet/dist/leaflet.css",
               "src/styles.scss"
             ],
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/env.js"
+              "src/env.js",
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce",
+                "output": "/tinymce/"
+              }
             ]
           }
         },

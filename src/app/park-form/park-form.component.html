@@ -116,19 +116,23 @@
                     <div class='col-6'>
                         <label for="description">Description <span class="text-danger">*</span></label>
                     </div>
-                    <div class='col-1 text-right mr-5'>
-                        <label
-                            [ngClass]="{'text-danger' : parkForm.get('description').value?.length > descriptionCharacterLimit}"
-                            for="description">{{ parkForm.get('description').value?.length }}/{{
-                            descriptionCharacterLimit }}</label>
-                    </div>
                 </div>
-                <textarea rows="5"
-                    type="text"
-                    class='form-control'
-                    id="description"
-                    formControlName="description"
-                    placeholder="Enter park description ({{ descriptionCharacterLimit }} character limit)"></textarea>
+                <editor formControlName="description"
+                    [init]="{
+                      base_url: '/tinymce',
+                      suffix: '.min',
+                      height: 500,
+                      menubar: false,
+                      plugins: [
+                        'advlist autolink lists link image charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code help wordcount link'
+                      ],
+                      toolbar:
+                        'undo redo | formatselect | bold italic backcolor | \
+                        alignleft aligncenter alignright alignjustify | link | \
+                        bullist numlist outdent indent | removeformat | help'
+                    }"></editor>
             </div>
         </form>
 
