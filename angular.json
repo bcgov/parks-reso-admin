@@ -106,6 +106,7 @@
               "src/assets",
               "src/favicon.ico",
               "src/env.js",
+              "src/snowplow.js",
               {
                 "glob": "**/*",
                 "input": "node_modules/tinymce",
