@@ -73,8 +73,7 @@ export class ApiService {
 
   put(pk, obj, queryParamsObject = null): Promise<any> {
     let queryString = this.generateQueryString(queryParamsObject);
-    // This is not a mistake, we use post to edit in AWS.
-    return this.http.post<any>(`${this.apiPath}/${pk}?${queryString}`, obj, {}).toPromise();
+    return this.http.put<any>(`${this.apiPath}/${pk}?${queryString}`, obj, {}).toPromise();
   }
 
   post(pk, obj, queryParamsObject = null): Promise<any> {
