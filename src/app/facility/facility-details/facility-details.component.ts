@@ -4,6 +4,7 @@ import { FacilityService } from 'app/services/facility.service';
 import { PassService } from 'app/services/pass.service';
 import { PassUtils } from 'app/shared/utils/pass-utils';
 import { takeWhile } from 'rxjs/operators';
+import { Utils } from 'app/shared/utils/utils';
 
 @Component({
   selector: 'app-facility-details',
@@ -54,6 +55,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     private facilityService: FacilityService,
     public passService: PassService,
     private _changeDetectionRef: ChangeDetectorRef,
+    private utils: Utils,
   ) { }
 
   ngOnInit() {
@@ -156,12 +158,31 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     this.passService.fetchData(null, this.parkSk, this.facilitySk, this.passTypeSelected, null, null, params);
   }
 
-  get defaultBookingOpeningHour() {
-    return this.configService.config['ADVANCE_BOOKING_HOUR'] || null;
+  get bookingOpeningHourText() {
+    const facilityBookingOpeningHour = this.facility ? this.facility.bookingOpeningHour : null;
+    const advanceBookingHour = facilityBookingOpeningHour || parseInt(this.configService.config['ADVANCE_BOOKING_HOUR'], 10);
+    const { hour, amPm } = this.utils.convert24hTo12hTime(advanceBookingHour);
+
+    if (hour && amPm) {
+      return `${hour} ${amPm}`;
+    }
+    return '';
   }
 
-  get defaultBookingDaysAhead() {
-    return this.configService.config['ADVANCE_BOOKING_LIMIT'] || null;
+  get bookingDaysAheadText() {
+    let advanceBookingDays = this.facility ? this.facility.bookingDaysAhead : null;
+    if (advanceBookingDays !== 0 && !advanceBookingDays) {
+      advanceBookingDays = parseInt(this.configService.config['ADVANCE_BOOKING_LIMIT'], 10);
+    }
+
+    if (advanceBookingDays === 0) {
+      return 'Same Day';
+    }
+    if (advanceBookingDays === 1) {
+      return '1 day';
+    }
+
+    return `${advanceBookingDays} days`;
   }
 
   ngOnDestroy() {

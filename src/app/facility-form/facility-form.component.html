@@ -115,34 +115,64 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="booking-opening-time">Booking Opening Time</label>
-                    <div class="input-group">
-                        <input type="number"
-                            class="form-control"
-                            [ngClass]="{ 'is-invalid': facilityForm.controls.bookingOpeningHour.dirty && facilityForm.controls.bookingOpeningHour.invalid }"
-                            id="booking-opening-time"
-                            formControlName="bookingOpeningHour">
-                        <div class="input-group-append"><span class="input-group-text">:00</span></div>
-                        <div class="invalid-feedback" *ngIf="facilityForm.controls.bookingOpeningHour.dirty && facilityForm.controls.bookingOpeningHour.invalid">
-                            Please enter an hour between 0 and 23.
+                    <div class="form-inline">
+                        <div>
+                            <input type="number"
+                                class="form-control mr-3"
+                                id="booking-opening-time-hour"
+                                [ngClass]="{ 'is-invalid': facilityForm.controls.bookingOpeningHour.dirty && facilityForm.controls.bookingOpeningHour.invalid }"
+                                formControlName="bookingOpeningHour">
+                            <div class="invalid-feedback" *ngIf="facilityForm.controls.bookingOpeningHour.dirty && facilityForm.controls.bookingOpeningHour.invalid">
+                                Please enter a valid hour.
+                            </div>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input
+                                class="form-check-input"
+                                type="radio" 
+                                name="bookingOpeningAmPm"
+                                id="booking-opening-time-am"
+                                formControlName="bookingOpeningAmPm"
+                                [ngClass]="{ 'is-invalid': facilityForm.controls.bookingOpeningAmPm.dirty && facilityForm.controls.bookingOpeningAmPm.invalid }"
+                                value="AM">
+                            <label class="form-check-label" for="booking-opening-time-am">AM</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                name="bookingOpeningAmPm"
+                                id="booking-opening-time-pm"
+                                formControlName="bookingOpeningAmPm"
+                                [ngClass]="{ 'is-invalid': facilityForm.controls.bookingOpeningAmPm.dirty && facilityForm.controls.bookingOpeningAmPm.invalid }"
+                                value="PM">
+                            <label class="form-check-label" for="booking-opening-time-pm">PM</label>
                         </div>
                     </div>
                     <small class="form-text text-muted">
-                        If left blank, the default value of {{ defaultBookingOpeningHour }}:00 will be used.
+                        If left blank, the default value of {{ defaultBookingOpeningHourText }} will be used.
                     </small>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="booking-days-ahead">Booking Days Ahead</label>
-                    <input type="number"
+                    <select
                         class="form-control"
+                        id="booking-days-ahead" 
                         [ngClass]="{ 'is-invalid': facilityForm.controls.bookingDaysAhead.dirty && facilityForm.controls.bookingDaysAhead.invalid }"
-                        id="booking-days-ahead"
                         formControlName="bookingDaysAhead">
+                    >
+                        <option [ngValue]="null">Default (Same day + {{ defaultBookingDaysAheadText }})</option>
+                        <option [ngValue]="0">Same day only</option>
+                        <option [ngValue]="1">1 day in advance</option>
+                        <option [ngValue]="2">2 days in advance</option>
+                        <option [ngValue]="3">3 days in advance</option>
+                        <option [ngValue]="4">4 days in advance</option>
+                        <option [ngValue]="5">5 days in advance</option>
+
+                    </select>
                     <div class="invalid-feedback" *ngIf="facilityForm.controls.bookingDaysAhead.dirty && facilityForm.controls.bookingDaysAhead.invalid">
-                        Please enter zero or more days.
+                        Please select a valid choice.
                     </div>
-                    <small class="form-text text-muted">
-                        If left blank, the default value of {{ defaultBookingDaysAhead }} {{ defaultBookingDaysAhead === 1 ? 'day' : 'days' }} will be used.
-                    </small>
                 </div>
             </div>
 

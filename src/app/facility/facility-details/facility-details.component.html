@@ -57,7 +57,7 @@
                     </strong>
                 </label>
                 <p>
-                    {{ facility.bookingOpeningHour || defaultBookingOpeningHour }}:00
+                    {{ bookingOpeningHourText }}
                     <small *ngIf="facility.bookingOpeningHour === null">(default)</small>
                 </p>
             </div>
@@ -68,7 +68,7 @@
                     </strong>
                 </label>
                 <p>
-                    {{ facility.bookingDaysAhead || defaultBookingDaysAhead }}
+                    {{ bookingDaysAheadText }}
                     <small *ngIf="facility.bookingDaysAhead === null">(default)</small>
                 </p>
             </div>
