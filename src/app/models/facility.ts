@@ -91,7 +91,15 @@ export class PutFacility {
         this.status = obj && obj.status || {};
         this.parkName = obj && obj.parkName || null;
 
-        this.bookingOpeningHour = obj && obj.bookingOpeningHour || null;
-        this.bookingDaysAhead = obj && obj.bookingDaysAhead || null;
+        if (obj && (obj.bookingOpeningHour || obj.bookingOpeningHour === 0)) {
+            this.bookingOpeningHour = obj.bookingOpeningHour;
+        } else {
+            this.bookingOpeningHour = null;
+        }
+        if (obj && (obj.bookingDaysAhead || obj.bookingDaysAhead === 0)) {
+            this.bookingDaysAhead = obj.bookingDaysAhead;
+        } else {
+            this.bookingDaysAhead = null;
+        }
     }
 }

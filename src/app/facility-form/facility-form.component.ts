@@ -10,6 +10,7 @@ import { FacilityService } from 'app/services/facility.service';
 import { PostFacility, PutFacility } from 'app/models/facility';
 import { ParkService } from 'app/services/park.service';
 import { ToastService } from 'app/services/toast.service';
+import { Utils } from 'app/shared/utils/utils';
 
 @Component({
   selector: 'app-facility-form',
@@ -40,7 +41,8 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     capacityAM: new FormControl(),
     capacityPM: new FormControl(),
     capacityDAY: new FormControl(),
-    bookingOpeningHour: new FormControl(null, Validators.compose([Validators.min(0), Validators.max(23)])),
+    bookingOpeningHour: new FormControl(null, Validators.compose([Validators.min(1), Validators.max(12)])),
+    bookingOpeningAmPm: new FormControl(null),
     bookingDaysAhead: new FormControl(null, Validators.min(0)),
   });
 
@@ -52,7 +54,8 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     private facilityService: FacilityService,
     private parkService: ParkService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private utils: Utils,
   ) { }
 
   ngOnInit() {
@@ -141,6 +144,12 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
   }
 
   populateParkDetails() {
+    const { hour, amPm } = this.utils.convert24hTo12hTime(this.facility.bookingOpeningHour);
+    let bookingDaysAhead = this.facility.bookingDaysAhead;
+    if (!bookingDaysAhead && bookingDaysAhead !== 0) {
+      bookingDaysAhead = null;
+    }
+
     this.facilityForm.setValue({
       name: this.facility.name,
       status: this.facility.status.state === 'open' ? true : false,
@@ -153,8 +162,9 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
       capacityPM: null,
       availabilityDAY: false,
       capacityDAY: null,
-      bookingOpeningHour: this.facility.bookingOpeningHour || null,
-      bookingDaysAhead: this.facility.bookingDaysAhead || null,
+      bookingOpeningHour: hour,
+      bookingOpeningAmPm: amPm,
+      bookingDaysAhead: bookingDaysAhead,
     });
 
     if (this.facilityForm.get('status')) {
@@ -215,10 +225,10 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     }
     message += `</br><strong>visible:</strong></br>` + this.getInfoString('visible');
     message += `</br><strong>Type:</strong></br>` + this.facilityForm.get('type').value;
-    if (this.facilityForm.get('bookingOpeningHour').value) {
-      message += `</br><strong>Booking Opening Time:</strong></br>` + this.facilityForm.get('bookingOpeningHour').value;
+    if (this.facilityForm.get('bookingOpeningHour').value && this.facilityForm.get('bookingOpeningAmPm').value) {
+      message += `</br><strong>Booking Opening Time:</strong></br>` + this.facilityForm.get('bookingOpeningHour').value + ' ' + this.facilityForm.get('bookingOpeningAmPm').value;
     }
-    if (this.facilityForm.get('bookingDaysAhead').value) {
+    if (this.facilityForm.get('bookingDaysAhead').value !== null && this.facilityForm.get('bookingDaysAhead').value !== '') {
       message += `</br><strong>Booking Days Ahead:</strong></br>` + this.facilityForm.get('bookingDaysAhead').value;
     }
     if (this.facilityForm.get('availabilityAM').value) {
@@ -299,8 +309,19 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
       };
     }
     obj.bookingTimes = bookingObj;
-    obj.bookingOpeningHour = this.facilityForm.get('bookingOpeningHour').value || null;
-    obj.bookingDaysAhead = this.facilityForm.get('bookingDaysAhead').value || null;
+
+    let bookingDaysAhead = this.facilityForm.get('bookingDaysAhead').value;
+    if (!bookingDaysAhead && bookingDaysAhead !== 0) {
+      bookingDaysAhead = null;
+    }
+    obj.bookingDaysAhead = bookingDaysAhead;
+
+    const bookingOpeningHour = this.facilityForm.get('bookingOpeningHour').value;
+    const bookingOpeningAmPm = this.facilityForm.get('bookingOpeningAmPm').value;
+
+    if (bookingOpeningHour && bookingOpeningAmPm) {
+      obj.bookingOpeningHour = this.utils.convert12hTo24hTime(bookingOpeningHour, bookingOpeningAmPm);
+    }
   }
 
   cancel() {
@@ -340,11 +361,22 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     this.alive = false;
   }
 
-  get defaultBookingOpeningHour() {
-    return this.configService.config['ADVANCE_BOOKING_HOUR'] || null;
+  get defaultBookingOpeningHourText() {
+    const advanceBookingHour = parseInt(this.configService.config['ADVANCE_BOOKING_HOUR'], 10);
+    const { hour, amPm } = this.utils.convert24hTo12hTime(advanceBookingHour);
+
+    if (hour && amPm) {
+      return `${hour} ${amPm}`;
+    }
+    return '';
   }
 
-  get defaultBookingDaysAhead() {
-    return this.configService.config['ADVANCE_BOOKING_LIMIT'] || null;
+  get defaultBookingDaysAheadText() {
+    const advanceBookingDays = parseInt(this.configService.config['ADVANCE_BOOKING_LIMIT'], 10);
+    if (advanceBookingDays === 1) {
+      return '1 day';
+    }
+
+    return `${advanceBookingDays} days`;
   }
 }
