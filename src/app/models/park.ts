@@ -4,6 +4,7 @@ export class Park {
     name: string;
     description: string;
     bcParksLink: string;
+    mapLink: string;
     status: string;
     visible: boolean;
     capacity: number;
@@ -13,6 +14,7 @@ export class Park {
         this.name = obj && obj.name || null;
         this.description = obj && obj.description || null;
         this.bcParksLink = obj && obj.bcParksLink || null;
+        this.mapLink = obj && obj.mapLink || null;
         this.status = obj && obj.status || null;
         this.capacity = obj && obj.capacity || null;
         if (obj && typeof obj.visible === 'boolean') {
@@ -60,12 +62,14 @@ export class PostPark {
 export class ParkSubObject {
     name: string;
     bcParksLink: string;
+    mapLink: string;
     status: string;
     capacity: number;
 
     constructor(obj?: any) {
         this.name = obj && obj.name || null;
         this.bcParksLink = obj && obj.bcParksLink || null;
+        this.mapLink = obj && obj.mapLink || null;
         this.status = obj && obj.status || null;
         this.capacity = obj && obj.capacity || null;
     }

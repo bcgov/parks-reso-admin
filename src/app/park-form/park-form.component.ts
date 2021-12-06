@@ -31,7 +31,8 @@ export class ParkFormComponent implements OnInit, OnDestroy {
     ]),
     status: new FormControl(false),
     visible: new FormControl(false),
-    bcParksLink: new FormControl('')
+    bcParksLink: new FormControl(''),
+    mapLink: new FormControl(''),
   });
 
   constructor(
@@ -68,7 +69,8 @@ export class ParkFormComponent implements OnInit, OnDestroy {
       description: this.park.description,
       status: this.park.status === 'open' ? true : false,
       visible: this.park.visible,
-      bcParksLink: this.park.bcParksLink ? this.park.bcParksLink : ''
+      bcParksLink: this.park.bcParksLink ? this.park.bcParksLink : '',
+      mapLink: this.park.mapLink ? this.park.mapLink : ''
     });
     if (!this.isNewPark) {
       this.parkForm.get('name').disable();
@@ -92,7 +94,8 @@ export class ParkFormComponent implements OnInit, OnDestroy {
       `</br></br><strong>Visibility:</strong></br>` + this.getParkInfoString('visible') +
       `</br></br><strong>Capacity:</strong></br>` + this.parkForm.get('capacity').value +
       `</br></br><strong>Link to BC Parks Site:</strong></br>` + this.parkForm.get('bcParksLink').value +
-      `</br></br><strong>Description:</strong></br>` + this.parkForm.get('description').value;
+      `</br></br><strong>Description:</strong></br>` + this.parkForm.get('description').value +
+      `</br></br><strong>Link to map:</strong></br>` + this.parkForm.get('mapLink').value;
 
     this.dialogService
       .addDialog(
@@ -155,10 +158,19 @@ export class ParkFormComponent implements OnInit, OnDestroy {
     } else {
       delete obj.capacity;
     }
+    if (this.parkForm.get('mapLink').value) {
+      obj.mapLink = this.parkForm.get('mapLink').value;
+    } else {
+      obj.mapLink = '';
+    }
   }
 
   testLink() {
     window.open(this.parkForm.get('bcParksLink').value);
+  }
+
+  testMapLink() {
+    window.open(this.parkForm.get('mapLink').value);
   }
 
   cancel() {
