@@ -18,39 +18,37 @@ jobs:
     environment: dev
     strategy:
       matrix:
-        node-version: [14.x]
+        node: ['14']
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          node-version: ${{ matrix.node }}
+          cache: 'yarn'
 
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
-      
+
       - run: yarn lint
       - name: Cancelling workflow due to error
         if: ${{ failure() }}
         uses: andymckay/cancel-action@0.2
-  
+
   test:
     name: Test
     runs-on: ubuntu-20.04
     environment: dev
     strategy:
       matrix:
-        node-version: [14.x]
+        node: ['14']
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          node-version: ${{ matrix.node }}
+          cache: 'yarn'
 
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
       - run: yarn test-ci
@@ -65,16 +63,15 @@ jobs:
     environment: dev
     strategy:
       matrix:
-        node-version: [14.x]
+        node: ['14']
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          node-version: ${{ matrix.node }}
+          cache: 'yarn'
 
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
       - name: Setting configEndpoint to true
@@ -93,18 +90,18 @@ jobs:
           role-session-name: parks-reso-admin-sandbox-gh-action
           role-skip-session-tagging: true
 
-      - uses: "marvinpinto/action-inject-ssm-secrets@v1.2.1"
+      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
         with:
-          ssm_parameter: "/parks-reso-sandbox/s3-bucket-admin-artifacts"
-          env_variable_name: "S3_BUCKET_ARTIFACTS"
+          ssm_parameter: '/parks-reso-sandbox/s3-bucket-admin-artifacts'
+          env_variable_name: 'S3_BUCKET_ARTIFACTS'
 
       - name: Save artifact to S3
         env:
-          s3_bucket: "${{ env.S3_BUCKET_ARTIFACTS }}"
+          s3_bucket: '${{ env.S3_BUCKET_ARTIFACTS }}'
           dir_name: ${{ github.sha }}
         run: |
           aws s3 sync dist/parks-reso-admin s3://$s3_bucket/$dir_name/
-      
+
       - name: Cancelling workflow due to error
         if: ${{ failure() }}
         uses: andymckay/cancel-action@0.2
@@ -115,7 +112,7 @@ jobs:
     environment: dev
     strategy:
       matrix:
-        node-version: [14.x]
+        node: ['14']
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -133,28 +130,28 @@ jobs:
           role-skip-session-tagging: true
 
       # Admin variables
-      - uses: "marvinpinto/action-inject-ssm-secrets@v1.2.1"
+      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
         with:
-          ssm_parameter: "/parks-reso-admin/s3-bucket"
-          env_variable_name: "S3_BUCKET"
-      - uses: "marvinpinto/action-inject-ssm-secrets@v1.2.1"
+          ssm_parameter: '/parks-reso-admin/s3-bucket'
+          env_variable_name: 'S3_BUCKET'
+      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
         with:
-          ssm_parameter: "/parks-reso-admin/origin-id"
-          env_variable_name: "ORIGIN_ID"
+          ssm_parameter: '/parks-reso-admin/origin-id'
+          env_variable_name: 'ORIGIN_ID'
 
       # API variables
-      - uses: "marvinpinto/action-inject-ssm-secrets@v1.2.1"
+      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
         with:
           ssm_parameter: /parks-reso-api/origin-domain
-          env_variable_name: "API_GATEWAY_ORIGIN_DOMAIN"
-      - uses: "marvinpinto/action-inject-ssm-secrets@v1.2.1"
+          env_variable_name: 'API_GATEWAY_ORIGIN_DOMAIN'
+      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
         with:
           ssm_parameter: /parks-reso-api/origin-id
-          env_variable_name: "API_GATEWAY_ORIGIN_ID"
-      - uses: "marvinpinto/action-inject-ssm-secrets@v1.2.1"
+          env_variable_name: 'API_GATEWAY_ORIGIN_ID'
+      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
         with:
           ssm_parameter: /parks-reso-api/gateway-path-pattern
-          env_variable_name: "API_GATEWAY_PATH_PATTERN"
+          env_variable_name: 'API_GATEWAY_PATH_PATTERN'
 
       - name: Setup Terrafrom
         uses: hashicorp/setup-terraform@v1
@@ -179,7 +176,7 @@ jobs:
           api_gateway_path_pattern: ${{ env.API_GATEWAY_PATH_PATTERN }}
           origin_id_assets: ${{ env.ORIGIN_ID_ASSETS }}
         run: terragrunt apply-all --terragrunt-non-interactive
-      
+
       - name: Cancelling workflow due to error
         if: ${{ failure() }}
         uses: andymckay/cancel-action@0.2
@@ -191,7 +188,7 @@ jobs:
     environment: dev
     strategy:
       matrix:
-        node-version: [14.x]
+        node: ['14']
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -204,14 +201,14 @@ jobs:
           role-session-name: parks-reso-admin-sandbox-gh-action
           role-skip-session-tagging: true
 
-      - uses: "marvinpinto/action-inject-ssm-secrets@v1.2.1"
+      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
         with:
-          ssm_parameter: "/parks-reso-sandbox/s3-bucket-admin-artifacts"
-          env_variable_name: "S3_BUCKET_ARTIFACTS"
+          ssm_parameter: '/parks-reso-sandbox/s3-bucket-admin-artifacts'
+          env_variable_name: 'S3_BUCKET_ARTIFACTS'
 
       - name: Copy from s3 sandbox
         env:
-          s3_bucket: "${{ env.S3_BUCKET_ARTIFACTS }}"
+          s3_bucket: '${{ env.S3_BUCKET_ARTIFACTS }}'
           dir_name: ${{ github.sha }}
         run: |
           aws s3 sync s3://$s3_bucket/$dir_name/ dist/parks-reso-admin
@@ -227,14 +224,14 @@ jobs:
           role-session-name: parks-reso-admin-dev-gh-action
           role-skip-session-tagging: true
 
-      - uses: "marvinpinto/action-inject-ssm-secrets@v1.2.1"
+      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
         with:
-          ssm_parameter: "/parks-reso-admin/s3-bucket"
-          env_variable_name: "S3_BUCKET"
+          ssm_parameter: '/parks-reso-admin/s3-bucket'
+          env_variable_name: 'S3_BUCKET'
 
       - name: Deploy to Dev S3
         env:
-          s3_bucket: "${{ env.S3_BUCKET }}-${{ env.TARGET_ENV }}"
+          s3_bucket: '${{ env.S3_BUCKET }}-${{ env.TARGET_ENV }}'
           dir_name: ${{ github.sha }}
         run: |
           aws s3 sync dist/parks-reso-admin s3://$s3_bucket/$dir_name/
