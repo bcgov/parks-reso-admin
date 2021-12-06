@@ -106,8 +106,65 @@ jobs:
         if: ${{ failure() }}
         uses: andymckay/cancel-action@0.2
 
+  s3:
+    name: Upload to S3 Dev
+    needs: [build]
+    runs-on: ubuntu-20.04
+    environment: dev
+    strategy:
+      matrix:
+        node: ['14']
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_SANDBOX }}
+          role-duration-seconds: 900
+          role-session-name: parks-reso-admin-sandbox-gh-action
+          role-skip-session-tagging: true
+
+      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
+        with:
+          ssm_parameter: '/parks-reso-sandbox/s3-bucket-admin-artifacts'
+          env_variable_name: 'S3_BUCKET_ARTIFACTS'
+
+      - name: Copy from s3 sandbox
+        env:
+          s3_bucket: '${{ env.S3_BUCKET_ARTIFACTS }}'
+          dir_name: ${{ github.sha }}
+        run: |
+          aws s3 sync s3://$s3_bucket/$dir_name/ dist/parks-reso-admin
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 900
+          role-session-name: parks-reso-admin-dev-gh-action
+          role-skip-session-tagging: true
+
+      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
+        with:
+          ssm_parameter: '/parks-reso-admin/s3-bucket'
+          env_variable_name: 'S3_BUCKET'
+
+      - name: Deploy to Dev S3
+        env:
+          s3_bucket: '${{ env.S3_BUCKET }}-${{ env.TARGET_ENV }}'
+          dir_name: ${{ github.sha }}
+        run: |
+          aws s3 sync dist/parks-reso-admin s3://$s3_bucket/$dir_name/
+
   terragrunt:
     name: Run Terragrunt
+    needs: ['s3']
+
     runs-on: ubuntu-20.04
     environment: dev
     strategy:
@@ -180,58 +237,3 @@ jobs:
       - name: Cancelling workflow due to error
         if: ${{ failure() }}
         uses: andymckay/cancel-action@0.2
-
-  s3:
-    name: Upload to S3 Dev
-    needs: [build, terragrunt]
-    runs-on: ubuntu-20.04
-    environment: dev
-    strategy:
-      matrix:
-        node: ['14']
-    steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_SANDBOX }}
-          role-duration-seconds: 900
-          role-session-name: parks-reso-admin-sandbox-gh-action
-          role-skip-session-tagging: true
-
-      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
-        with:
-          ssm_parameter: '/parks-reso-sandbox/s3-bucket-admin-artifacts'
-          env_variable_name: 'S3_BUCKET_ARTIFACTS'
-
-      - name: Copy from s3 sandbox
-        env:
-          s3_bucket: '${{ env.S3_BUCKET_ARTIFACTS }}'
-          dir_name: ${{ github.sha }}
-        run: |
-          aws s3 sync s3://$s3_bucket/$dir_name/ dist/parks-reso-admin
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-duration-seconds: 900
-          role-session-name: parks-reso-admin-dev-gh-action
-          role-skip-session-tagging: true
-
-      - uses: 'marvinpinto/action-inject-ssm-secrets@v1.2.1'
-        with:
-          ssm_parameter: '/parks-reso-admin/s3-bucket'
-          env_variable_name: 'S3_BUCKET'
-
-      - name: Deploy to Dev S3
-        env:
-          s3_bucket: '${{ env.S3_BUCKET }}-${{ env.TARGET_ENV }}'
-          dir_name: ${{ github.sha }}
-        run: |
-          aws s3 sync dist/parks-reso-admin s3://$s3_bucket/$dir_name/
