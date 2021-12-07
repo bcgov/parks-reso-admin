@@ -111,6 +111,26 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="form-group col-12">
+                    <label for="mapLink">Link to Map</label>
+                    <div class="input-group">
+                        <input id="mapLink"
+                            formControlName="mapLink"
+                            class="form-control"
+                            type="text"
+                            placeholder="Paste link here">
+                        <div class="input-group-append">
+                            <button (click)="testMapLink()"
+                                [disabled]="!parkForm.get('mapLink').value"
+                                class="btn btn-primary"
+                                type="button">Test Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <div class="row justify-content-between">
                     <div class='col-6'>
