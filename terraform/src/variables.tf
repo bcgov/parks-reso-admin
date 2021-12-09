@@ -64,3 +64,18 @@ variable "api_gateway_path_pattern" {
   type        = string
   default     = "/dev/*"
 }
+
+variable "enable_vanity_domain" {
+  description = "Enable public vanity domain"
+  default     = false
+}
+
+variable "vanity_domain" {
+  description = "Public vanity domain"
+  default     = []
+}
+
+variable "vanity_domain_certs_arn" {
+  description = "Public vanity domain certs ARN"
+  default     = ""
+}
