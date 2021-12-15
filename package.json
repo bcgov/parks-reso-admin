@@ -4,8 +4,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
-    "prestart": "",
-    "start": "ng serve -o --base-href /dayuse/ --deploy-url /dayuse/",
+    "start": "ng serve",
     "build": "node --max_old_space_size=4096 node_modules/@angular/cli/bin/ng build --prod",
     "pretest": "",
     "test": "echo 'Test suite should be run with \"`npm run tests` or npm `run tests-ci`\"'",
