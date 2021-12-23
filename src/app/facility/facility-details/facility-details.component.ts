@@ -18,16 +18,25 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   public loadingAM = true;
   public loadingPM = true;
   public loadingDAY = true;
+
   public facility;
   public passes;
+
   public passTypeSelected = 'AM';
 
   public loadingSearch = false;
-
   public showSearch = false;
+  public searchParams = null;
 
   public parkSk;
   public facilitySk;
+
+  public bookingTimeSummary = {
+    capPercent: 0,
+    reserved: null,
+    capacity: null,
+    style: 'bg-success'
+  };
 
   public datePickerArray = [
     {
@@ -55,13 +64,14 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     private facilityService: FacilityService,
     public passService: PassService,
     private _changeDetectionRef: ChangeDetectorRef,
-    private utils: Utils,
-  ) { }
+    private utils: Utils
+  ) {}
 
   ngOnInit() {
-    this.facilityService.getItemValue()
+    this.facilityService
+      .getItemValue()
       .pipe(takeWhile(() => this.alive))
-      .subscribe((res) => {
+      .subscribe(res => {
         if (res) {
           this.facility = res;
           this.facilitySk = res.sk;
@@ -82,11 +92,15 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
           this._changeDetectionRef.detectChanges();
         }
       });
-    this.passService.getListValue()
+    this.passService
+      .getListValue()
       .pipe(takeWhile(() => this.alive))
-      .subscribe((res) => {
+      .subscribe(res => {
         if (res) {
           this.passes = res.data;
+
+          this.calculateCapacityLevels(res.summary);
+
           this.loadingAM = false;
           this.loadingPM = false;
           this.loadingDAY = false;
@@ -111,7 +125,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
         break;
     }
     this.passTypeSelected = time;
-    this.passService.fetchData(null, this.parkSk, this.facilitySk, time);
+    this.passService.fetchData(null, this.parkSk, this.facilitySk, time, null, null, this.searchParams);
   }
 
   exportCsv(): void {
@@ -155,12 +169,22 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   filterPasses(params) {
     this.loadingSearch = true;
-    this.passService.fetchData(null, this.parkSk, this.facilitySk, this.passTypeSelected, null, null, params);
+    this.searchParams = params;
+    this.passService.fetchData(
+      null,
+      this.parkSk,
+      this.facilitySk,
+      this.passTypeSelected,
+      null,
+      null,
+      this.searchParams
+    );
   }
 
   get bookingOpeningHourText() {
     const facilityBookingOpeningHour = this.facility ? this.facility.bookingOpeningHour : null;
-    const advanceBookingHour = facilityBookingOpeningHour || parseInt(this.configService.config['ADVANCE_BOOKING_HOUR'], 10);
+    const advanceBookingHour =
+      facilityBookingOpeningHour || parseInt(this.configService.config['ADVANCE_BOOKING_HOUR'], 10);
     const { hour, amPm } = this.utils.convert24hTo12hTime(advanceBookingHour);
 
     if (hour && amPm) {
@@ -187,5 +211,63 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.alive = false;
+  }
+
+  public calculateCapacityLevels(summary) {
+    // Show capacity data.
+    // This is triggered by filtering by date.
+    if (summary) {
+      switch (this.passTypeSelected) {
+        case 'AM':
+          this.bookingTimeSummary = {
+            capPercent: ((summary.amReserved ? summary.amReserved : 0) / summary.amCapacity) * 100,
+            reserved: summary.amReserved ? summary.amReserved : 0,
+            capacity: summary.amCapacity,
+            style: this.calculateProgressBarColour(
+              ((summary.amReserved ? summary.amReserved : 0) / summary.amCapacity) * 100
+            )
+          };
+          break;
+        case 'PM':
+          this.bookingTimeSummary = {
+            capPercent: ((summary.pmReserved ? summary.pmReserved : 0) / summary.pmCapacity) * 100,
+            reserved: summary.pmReserved ? summary.pmReserved : 0,
+            capacity: summary.pmCapacity,
+            style: this.calculateProgressBarColour(
+              ((summary.pmReserved ? summary.pmReserved : 0) / summary.pmCapacity) * 100
+            )
+          };
+          break;
+        case 'DAY':
+          this.bookingTimeSummary = {
+            capPercent: ((summary.dayReserved ? summary.dayReserved : 0) / summary.dayCapacity) * 100,
+            reserved: summary.dayReserved ? summary.dayReserved : 0,
+            capacity: summary.dayCapacity,
+            style: this.calculateProgressBarColour(
+              ((summary.dayReserved ? summary.dayReserved : 0) / summary.dayCapacity) * 100
+            )
+          };
+          break;
+        default:
+          break;
+      }
+    } else {
+      this.bookingTimeSummary = {
+        capPercent: 0,
+        reserved: null,
+        capacity: null,
+        style: 'bg-success'
+      };
+    }
+  }
+
+  public calculateProgressBarColour(capPercent) {
+    if (capPercent < 25) {
+      return 'bg-success';
+    } else if (capPercent < 75) {
+      return 'bg-warning';
+    } else {
+      return 'bg-danger';
+    }
   }
 }
