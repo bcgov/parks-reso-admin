@@ -86,6 +86,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
             } else if (this.facility.bookingTimes.DAY) {
               this.passTypeSelected = 'DAY';
             }
+            this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
           }
 
           this.loadingFacility = false;
@@ -98,8 +99,6 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res) {
           this.passes = res.data;
-
-          this.calculateCapacityLevels(res.summary);
 
           this.loadingAM = false;
           this.loadingPM = false;
@@ -125,6 +124,8 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
         break;
     }
     this.passTypeSelected = time;
+    this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
+    this.calculateCapacityLevels();
     this.passService.fetchData(null, this.parkSk, this.facilitySk, time, null, null, this.searchParams);
   }
 
@@ -170,6 +171,9 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   filterPasses(params) {
     this.loadingSearch = true;
     this.searchParams = params;
+
+    this.calculateCapacityLevels();
+
     this.passService.fetchData(
       null,
       this.parkSk,
@@ -213,51 +217,24 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     this.alive = false;
   }
 
-  public calculateCapacityLevels(summary) {
-    // Show capacity data.
-    // This is triggered by filtering by date.
-    if (summary) {
-      switch (this.passTypeSelected) {
-        case 'AM':
-          this.bookingTimeSummary = {
-            capPercent: ((summary.amReserved ? summary.amReserved : 0) / summary.amCapacity) * 100,
-            reserved: summary.amReserved ? summary.amReserved : 0,
-            capacity: summary.amCapacity,
-            style: this.calculateProgressBarColour(
-              ((summary.amReserved ? summary.amReserved : 0) / summary.amCapacity) * 100
-            )
-          };
-          break;
-        case 'PM':
-          this.bookingTimeSummary = {
-            capPercent: ((summary.pmReserved ? summary.pmReserved : 0) / summary.pmCapacity) * 100,
-            reserved: summary.pmReserved ? summary.pmReserved : 0,
-            capacity: summary.pmCapacity,
-            style: this.calculateProgressBarColour(
-              ((summary.pmReserved ? summary.pmReserved : 0) / summary.pmCapacity) * 100
-            )
-          };
-          break;
-        case 'DAY':
-          this.bookingTimeSummary = {
-            capPercent: ((summary.dayReserved ? summary.dayReserved : 0) / summary.dayCapacity) * 100,
-            reserved: summary.dayReserved ? summary.dayReserved : 0,
-            capacity: summary.dayCapacity,
-            style: this.calculateProgressBarColour(
-              ((summary.dayReserved ? summary.dayReserved : 0) / summary.dayCapacity) * 100
-            )
-          };
-          break;
-        default:
-          break;
+  public calculateCapacityLevels() {
+    if (this.searchParams && this.searchParams.date) {
+      const formattedDate = new Date(this.searchParams.date).toLocaleDateString('en-CA');
+      if (
+        this.facility.reservations[formattedDate] &&
+        this.facility.reservations[formattedDate][this.passTypeSelected]
+      ) {
+        this.bookingTimeSummary.reserved = this.facility.reservations[formattedDate][this.passTypeSelected];
+      } else {
+        this.bookingTimeSummary.reserved = 0;
       }
+
+      this.bookingTimeSummary.capPercent = (this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100;
+      this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
+      console.log(this.bookingTimeSummary);
     } else {
-      this.bookingTimeSummary = {
-        capPercent: 0,
-        reserved: null,
-        capacity: null,
-        style: 'bg-success'
-      };
+      this.bookingTimeSummary.reserved = null;
+      this.bookingTimeSummary.capPercent = 0;
     }
   }
 

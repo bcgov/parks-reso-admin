@@ -189,8 +189,8 @@
     <label>
       <strong>Capacity Levels:</strong>
     </label>
-    <p *ngIf="!bookingTimeSummary.capacity">To display capacity levels, you must filter by a date.</p>
-    <p *ngIf="bookingTimeSummary.capacity">
+    <p *ngIf="bookingTimeSummary.reserved === null">To display capacity levels, you must filter by a date.</p>
+    <p *ngIf="bookingTimeSummary.reserved !== null">
       {{ bookingTimeSummary.reserved }}/{{ bookingTimeSummary.capacity }} passes reserved
     </p>
     <div class="progress">
