@@ -87,8 +87,8 @@ export class PassListComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         if (res && res.data) {
           if (res.LastEvaluatedKey) {
-            this.ExclusiveStartKeyPK = res.LastEvaluatedKey.PK.S;
-            this.ExclusiveStartKeySK = res.LastEvaluatedKey.SK.S;
+            this.ExclusiveStartKeyPK = res.LastEvaluatedKey.pk.S;
+            this.ExclusiveStartKeySK = res.LastEvaluatedKey.sk.S;
           }
           const tempList = res.data.map(item => {
             return { rowData: item };
