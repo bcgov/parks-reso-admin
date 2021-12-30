@@ -38,7 +38,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     capPercent: 0,
     reserved: null,
     capacity: null,
-    style: 'bg-success'
+    style: 'success'
   };
 
   // Default to today's date on page load
@@ -249,7 +249,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
         this.bookingTimeSummary.reserved = 0;
       }
 
-      this.bookingTimeSummary.capPercent = (this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100;
+      this.bookingTimeSummary.capPercent = Math.floor((this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100);
       this.bookingTimeSummary.style = this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
     } else {
       this.bookingTimeSummary.reserved = null;
@@ -259,11 +259,11 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   public calculateProgressBarColour(capPercent) {
     if (capPercent < 25) {
-      return 'bg-success';
+      return 'success';
     } else if (capPercent < 75) {
-      return 'bg-warning';
+      return 'warning';
     } else {
-      return 'bg-danger';
+      return 'danger';
     }
   }
 }

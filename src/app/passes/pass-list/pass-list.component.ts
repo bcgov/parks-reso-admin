@@ -97,7 +97,6 @@ export class PassListComponent implements OnInit, OnDestroy {
             item.date = moment(item.date).local().toDate();
             return { rowData: item };
           });
-          console.log(tempList);
           if (this.appendList) {
             this.data = this.data.concat(tempList);
             this.appendList = false;

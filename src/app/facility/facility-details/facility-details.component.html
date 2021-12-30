@@ -177,17 +177,12 @@
     <p *ngIf="bookingTimeSummary.reserved !== null">
       {{ bookingTimeSummary.reserved }}/{{ bookingTimeSummary.capacity }} passes reserved
     </p>
-    <div class="progress">
-      <div
-        class="progress-bar progress-bar-striped"
-        role="progressbar"
-        [ngClass]="bookingTimeSummary.style"
-        [attr.aria-valuenow]="bookingTimeSummary.capPercent"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        [style.width]="bookingTimeSummary.capPercent + '%'"
-      ></div>
-    </div>
+    <ngb-progressbar
+      [showValue]="true"
+      type="{{ bookingTimeSummary.style }}"
+      [value]="bookingTimeSummary.capPercent"
+      height="1.5rem"
+    ></ngb-progressbar>
   </div>
 
   <br />
