@@ -5,7 +5,6 @@
     "module": "es2015",
     "baseUrl": "",
     "types": [
-      "arcgis-js-api",
       "node"
     ],
     "paths": {

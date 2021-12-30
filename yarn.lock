@@ -1087,11 +1087,6 @@
   dependencies:
     tslib "^1.10.0"
 
-"@types/arcgis-js-api@4.6.0":
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/@types/arcgis-js-api/-/arcgis-js-api-4.6.0.tgz#8224849e9ab38d55faf1a09ca997287f5afc554e"
-  integrity sha512-zWiQxA2Cnn47tfksLCw4W6oabNAbVdpUdWfbirp8HqQ+Z2fNdArIT85km407x3NqbmrvvG5dlxIH60DjEfso0g==
-
 "@types/component-emitter@^1.2.10":
   version "1.2.11"
   resolved "https://registry.yarnpkg.com/@types/component-emitter/-/component-emitter-1.2.11.tgz#50d47d42b347253817a39709fef03ce66a108506"
