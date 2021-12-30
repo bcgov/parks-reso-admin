@@ -8,7 +8,6 @@ import { SearchWidgetObject } from './search-widget-object';
   templateUrl: './search-widget.component.html',
   styleUrls: ['./search-widget.component.scss']
 })
-
 export class SearchWidgetComponent implements OnInit {
   @Input() datePickerArray: Array<SearchWidgetObject> = [];
   @Input() textSearchArray: Array<SearchWidgetObject> = [];
@@ -19,17 +18,21 @@ export class SearchWidgetComponent implements OnInit {
 
   private datePickerKeys = [];
 
-  constructor(
-    private utils: Utils
-  ) { }
+  constructor(private utils: Utils) {}
 
   ngOnInit() {
     let controls = {};
     this.datePickerArray.forEach(obj => {
       controls[obj.value] = new FormControl();
+      if (obj.initialValue !== undefined) {
+        controls[obj.value].setValue(this.utils.convertJSDateToNGBDate(new Date(obj.initialValue)));
+      }
     });
     this.textSearchArray.forEach(obj => {
       controls[obj.value] = new FormControl('');
+      if (obj.initialValue !== undefined) {
+        controls[obj.value].setValue(obj.initialValue);
+      }
     });
     this.form = new FormGroup(controls);
 

@@ -8,19 +8,12 @@ import { FacilityDetailsComponent } from './facility-details/facility-details.co
 import { PassesModule } from 'app/passes/passes.module';
 import { FacilityEditComponent } from './facility-edit/facility-edit.component';
 import { FacilityRoutes } from './facility-routes';
+import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [
-    FacilityComponent,
-    FacilityDetailsComponent,
-    FacilityEditComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    RouterModule.forRoot(FacilityRoutes),
-    PassesModule,
-  ],
+  declarations: [FacilityComponent, FacilityDetailsComponent, FacilityEditComponent],
+  imports: [CommonModule, SharedModule, RouterModule.forRoot(FacilityRoutes), PassesModule, FormsModule, NgbModule],
   entryComponents: []
 })
-export class FacilityModule { }
+export class FacilityModule {}

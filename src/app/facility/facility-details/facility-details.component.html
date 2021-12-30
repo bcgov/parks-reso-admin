@@ -126,34 +126,27 @@
         </button>
       </div>
       <div class="col-md-4 mt-4 mt-md-0">
-        <div class="btn-group btn-group-toggle d-flex justify-content-end" facility-toggle="buttons">
-          <button
-            *ngIf="facility?.bookingTimes.AM"
-            class="btn btn-primary"
-            [disabled]="loadingAM || passTypeSelected === 'AM'"
-            (click)="fetchPassTable('AM')"
-          >
+        <div
+          class="btn-group btn-group-toggle d-flex justify-content-end"
+          ngbRadioGroup
+          name="radioBasic"
+          [(ngModel)]="passTypeSelected"
+        >
+          <label ngbButtonLabel class="btn-primary" *ngIf="facility?.bookingTimes.AM" (click)="fetchPassTable('AM')">
+            <input ngbButton type="radio" value="AM" />
             <span *ngIf="!loadingAM">AM</span>
             <span *ngIf="loadingAM" class="material-icons rotating">autorenew</span>
-          </button>
-          <button
-            *ngIf="facility?.bookingTimes.PM"
-            class="btn btn-primary"
-            [disabled]="loadingPM || passTypeSelected === 'PM'"
-            (click)="fetchPassTable('PM')"
-          >
+          </label>
+          <label ngbButtonLabel class="btn-primary" *ngIf="facility?.bookingTimes.PM" (click)="fetchPassTable('PM')">
+            <input ngbButton type="radio" value="PM" />
             <span *ngIf="!loadingPM">PM</span>
             <span *ngIf="loadingPM" class="material-icons rotating">autorenew</span>
-          </button>
-          <button
-            *ngIf="facility?.bookingTimes.DAY"
-            class="btn btn-primary"
-            [disabled]="loadingDAY || passTypeSelected === 'DAY'"
-            (click)="fetchPassTable('DAY')"
-          >
+          </label>
+          <label ngbButtonLabel class="btn-primary" *ngIf="facility?.bookingTimes.DAY" (click)="fetchPassTable('DAY')">
+            <input ngbButton type="radio" [value]="DAY" />
             <span *ngIf="!loadingDAY">Day</span>
             <span *ngIf="loadingDAY" class="material-icons rotating">autorenew</span>
-          </button>
+          </label>
         </div>
       </div>
     </div>
@@ -162,16 +155,7 @@
   <br />
 
   <section>
-    <div class="row">
-      <div class="col-12">
-        <button class="btn btn-primary" (click)="showSearch = !showSearch">
-          Search & Filter
-          <span *ngIf="!showSearch" class="material-icons align-middle">expand_less</span>
-          <span *ngIf="showSearch" class="material-icons align-middle">expand_more</span>
-        </button>
-      </div>
-    </div>
-    <div *ngIf="showSearch" class="row mt-3">
+    <div class="row mt-3">
       <div class="col-12">
         <app-search-widget
           [loadingStatus]="loadingSearch"
@@ -193,17 +177,12 @@
     <p *ngIf="bookingTimeSummary.reserved !== null">
       {{ bookingTimeSummary.reserved }}/{{ bookingTimeSummary.capacity }} passes reserved
     </p>
-    <div class="progress">
-      <div
-        class="progress-bar progress-bar-striped progress-bar-animated"
-        role="progressbar"
-        [ngClass]="bookingTimeSummary.style"
-        [attr.aria-valuenow]="bookingTimeSummary.capPercent"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        [style.width]="bookingTimeSummary.capPercent + '%'"
-      ></div>
-    </div>
+    <ngb-progressbar
+      [showValue]="true"
+      type="{{ bookingTimeSummary.style }}"
+      [value]="bookingTimeSummary.capPercent"
+      height="1.5rem"
+    ></ngb-progressbar>
   </div>
 
   <br />
