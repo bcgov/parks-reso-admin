@@ -12,6 +12,15 @@ import { ToastService } from './toast.service';
 export class PassService {
   private item: BehaviorSubject<any>;
   private list: BehaviorSubject<any>;
+  public lastSearchParams = {
+    passSk: null,
+    parkSk: null,
+    facilitySk: null,
+    passType: null,
+    ExclusiveStartKeyPK: null,
+    ExclusiveStartKeySK: null,
+    queryParams: null
+  };
 
   constructor(
     private apiService: ApiService,
@@ -69,22 +78,26 @@ export class PassService {
           });
         }
 
-        res = await this.apiService.get(
-          'pass',
-          queryObj
-        );
+        res = await this.apiService.get('pass', queryObj);
         this.setListValue(res);
+        this.lastSearchParams = {
+          passSk: passSk,
+          parkSk: parkSk,
+          facilitySk: facilitySk,
+          passType: passType,
+          ExclusiveStartKeyPK: ExclusiveStartKeyPK,
+          ExclusiveStartKeySK: ExclusiveStartKeySK,
+          queryParams: queryParams
+        };
         return res;
       }
     } catch (e) {
-      this.toastService.addMessage(`An error has occured while getting ${errorSubject}.`, 'Pass Service', Constants.ToastTypes.ERROR);
-      this.eventService.setError(
-        new EventObject(
-          EventKeywords.ERROR,
-          e,
-          'Pass Service'
-        )
+      this.toastService.addMessage(
+        `An error has occured while getting ${errorSubject}.`,
+        'Pass Service',
+        Constants.ToastTypes.ERROR
       );
+      this.eventService.setError(new EventObject(EventKeywords.ERROR, e, 'Pass Service'));
       this.router.navigate(['../', { relativeTo: this.route }]);
     }
   }
@@ -102,14 +115,12 @@ export class PassService {
       res = await this.apiService.delete('pass', { passId: passId, park: parkSk });
       this.setItemValue(res);
     } catch (e) {
-      this.toastService.addMessage(`An error has occured while canceling Pass.`, 'Pass Service', Constants.ToastTypes.ERROR);
-      this.eventService.setError(
-        new EventObject(
-          EventKeywords.ERROR,
-          e,
-          'Pass Service'
-        )
+      this.toastService.addMessage(
+        `An error has occured while canceling Pass.`,
+        'Pass Service',
+        Constants.ToastTypes.ERROR
       );
+      this.eventService.setError(new EventObject(EventKeywords.ERROR, e, 'Pass Service'));
       throw e;
     }
   }

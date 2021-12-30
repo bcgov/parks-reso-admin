@@ -25,8 +25,11 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   public passTypeSelected = 'AM';
 
   public loadingSearch = false;
-  public showSearch = false;
-  public searchParams = null;
+
+  // Default to today's date on page load
+  public searchParams = {
+    date: new Date()
+  };
 
   public parkSk;
   public facilitySk;
@@ -38,24 +41,29 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     style: 'bg-success'
   };
 
+  // Default to today's date on page load
   public datePickerArray = [
     {
       label: 'Date',
-      value: 'date'
+      value: 'date',
+      initialValue: new Date()
     }
   ];
   public textSearchArray = [
     {
       label: 'First Name',
-      value: 'firstName'
+      value: 'firstName',
+      initialValue: undefined
     },
     {
       label: 'Last Name',
-      value: 'lastName'
+      value: 'lastName',
+      initialValue: undefined
     },
     {
       label: 'Reservation Number',
-      value: 'reservationNumber'
+      value: 'reservationNumber',
+      initialValue: undefined
     }
   ];
 
@@ -89,6 +97,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
             this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
           }
 
+          this.calculateCapacityLevels();
           this.loadingFacility = false;
           this._changeDetectionRef.detectChanges();
         }
@@ -110,6 +119,9 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   }
 
   fetchPassTable(time) {
+    if (time === this.passTypeSelected) {
+      return;
+    }
     switch (time) {
       case 'AM':
         this.loadingAM = true;
@@ -126,7 +138,15 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     this.passTypeSelected = time;
     this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
     this.calculateCapacityLevels();
-    this.passService.fetchData(null, this.parkSk, this.facilitySk, time, null, null, this.searchParams);
+    this.passService.fetchData(
+      null,
+      this.parkSk,
+      this.facilitySk,
+      time,
+      null,
+      null,
+      this.passService.lastSearchParams.queryParams
+    );
   }
 
   exportCsv(): void {
@@ -230,7 +250,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       }
 
       this.bookingTimeSummary.capPercent = (this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100;
-      this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
+      this.bookingTimeSummary.style = this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
     } else {
       this.bookingTimeSummary.reserved = null;
       this.bookingTimeSummary.capPercent = 0;
