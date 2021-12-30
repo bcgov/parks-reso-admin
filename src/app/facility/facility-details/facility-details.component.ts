@@ -18,16 +18,25 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   public loadingAM = true;
   public loadingPM = true;
   public loadingDAY = true;
+
   public facility;
   public passes;
+
   public passTypeSelected = 'AM';
 
   public loadingSearch = false;
-
   public showSearch = false;
+  public searchParams = null;
 
   public parkSk;
   public facilitySk;
+
+  public bookingTimeSummary = {
+    capPercent: 0,
+    reserved: null,
+    capacity: null,
+    style: 'bg-success'
+  };
 
   public datePickerArray = [
     {
@@ -55,13 +64,14 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     private facilityService: FacilityService,
     public passService: PassService,
     private _changeDetectionRef: ChangeDetectorRef,
-    private utils: Utils,
-  ) { }
+    private utils: Utils
+  ) {}
 
   ngOnInit() {
-    this.facilityService.getItemValue()
+    this.facilityService
+      .getItemValue()
       .pipe(takeWhile(() => this.alive))
-      .subscribe((res) => {
+      .subscribe(res => {
         if (res) {
           this.facility = res;
           this.facilitySk = res.sk;
@@ -76,17 +86,20 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
             } else if (this.facility.bookingTimes.DAY) {
               this.passTypeSelected = 'DAY';
             }
+            this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
           }
 
           this.loadingFacility = false;
           this._changeDetectionRef.detectChanges();
         }
       });
-    this.passService.getListValue()
+    this.passService
+      .getListValue()
       .pipe(takeWhile(() => this.alive))
-      .subscribe((res) => {
+      .subscribe(res => {
         if (res) {
           this.passes = res.data;
+
           this.loadingAM = false;
           this.loadingPM = false;
           this.loadingDAY = false;
@@ -111,7 +124,9 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
         break;
     }
     this.passTypeSelected = time;
-    this.passService.fetchData(null, this.parkSk, this.facilitySk, time);
+    this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
+    this.calculateCapacityLevels();
+    this.passService.fetchData(null, this.parkSk, this.facilitySk, time, null, null, this.searchParams);
   }
 
   exportCsv(): void {
@@ -155,12 +170,25 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   filterPasses(params) {
     this.loadingSearch = true;
-    this.passService.fetchData(null, this.parkSk, this.facilitySk, this.passTypeSelected, null, null, params);
+    this.searchParams = params;
+
+    this.calculateCapacityLevels();
+
+    this.passService.fetchData(
+      null,
+      this.parkSk,
+      this.facilitySk,
+      this.passTypeSelected,
+      null,
+      null,
+      this.searchParams
+    );
   }
 
   get bookingOpeningHourText() {
     const facilityBookingOpeningHour = this.facility ? this.facility.bookingOpeningHour : null;
-    const advanceBookingHour = facilityBookingOpeningHour || parseInt(this.configService.config['ADVANCE_BOOKING_HOUR'], 10);
+    const advanceBookingHour =
+      facilityBookingOpeningHour || parseInt(this.configService.config['ADVANCE_BOOKING_HOUR'], 10);
     const { hour, amPm } = this.utils.convert24hTo12hTime(advanceBookingHour);
 
     if (hour && amPm) {
@@ -187,5 +215,35 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.alive = false;
+  }
+
+  public calculateCapacityLevels() {
+    if (this.searchParams && this.searchParams.date) {
+      const formattedDate = new Date(this.searchParams.date).toLocaleDateString('en-CA');
+      if (
+        this.facility.reservations[formattedDate] &&
+        this.facility.reservations[formattedDate][this.passTypeSelected]
+      ) {
+        this.bookingTimeSummary.reserved = this.facility.reservations[formattedDate][this.passTypeSelected];
+      } else {
+        this.bookingTimeSummary.reserved = 0;
+      }
+
+      this.bookingTimeSummary.capPercent = (this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100;
+      this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
+    } else {
+      this.bookingTimeSummary.reserved = null;
+      this.bookingTimeSummary.capPercent = 0;
+    }
+  }
+
+  public calculateProgressBarColour(capPercent) {
+    if (capPercent < 25) {
+      return 'bg-success';
+    } else if (capPercent < 75) {
+      return 'bg-warning';
+    } else {
+      return 'bg-danger';
+    }
   }
 }

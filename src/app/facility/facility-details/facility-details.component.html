@@ -1,256 +1,249 @@
 <section *ngIf="loadingFacility">
-    <div class="spinner-container">
-        <div class="spinner-new rotating"></div>
-    </div>
+  <div class="spinner-container">
+    <div class="spinner-new rotating"></div>
+  </div>
 </section>
 <div class="container-fluid-padding-without-header">
-    <section *ngIf="!loadingFacility">
-        <div class="row">
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        Status:
-                    </strong>
-                </label>
-                <p>
-                    {{facility.status.state}}
-                </p>
-            </div>
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        Visible:
-                    </strong>
-                </label>
-                <p>
-                    {{facility.visible || '-'}}
-                </p>
-            </div>
+  <section *ngIf="!loadingFacility">
+    <div class="row">
+      <div class="col-md-6">
+        <label>
+          <strong>Status:</strong>
+        </label>
+        <p>
+          {{ facility.status.state }}
+        </p>
+      </div>
+      <div class="col-md-6">
+        <label>
+          <strong>Visible:</strong>
+        </label>
+        <p>
+          {{ facility.visible || '-' }}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label>
+          <strong>Closure Reason:</strong>
+        </label>
+        <p>
+          {{ facility.status.stateReason || '-' }}
+        </p>
+      </div>
+      <div class="col-md-6">
+        <label>
+          <strong>Type:</strong>
+        </label>
+        <p>
+          {{ facility.type }}
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label>
+          <strong>Booking Opening Time:</strong>
+        </label>
+        <p>
+          {{ bookingOpeningHourText }}
+          <small *ngIf="facility.bookingOpeningHour === null">(default)</small>
+        </p>
+      </div>
+      <div class="col-md-6">
+        <label>
+          <strong>Booking Days Ahead:</strong>
+        </label>
+        <p>
+          {{ bookingDaysAheadText }}
+          <small *ngIf="facility.bookingDaysAhead === null">(default)</small>
+        </p>
+      </div>
+    </div>
+    <div class="row" *ngIf="facility?.bookingTimes.AM">
+      <div class="col-md-6">
+        <label>
+          <strong>AM Capacity:</strong>
+        </label>
+        <p>
+          {{ facility?.bookingTimes.AM.max }}
+        </p>
+      </div>
+    </div>
+    <div class="row" *ngIf="facility?.bookingTimes.PM">
+      <div class="col-md-6">
+        <label>
+          <strong>PM Capacity:</strong>
+        </label>
+        <p>
+          {{ facility?.bookingTimes.PM.max }}
+        </p>
+      </div>
+    </div>
+    <div class="row" *ngIf="facility?.bookingTimes.DAY">
+      <div class="col-md-6">
+        <label>
+          <strong>All Day Capacity:</strong>
+        </label>
+        <p>
+          {{ facility?.bookingTimes.DAY.max }}
+        </p>
+      </div>
+    </div>
+    <hr />
+    <br />
+  </section>
+  <section>
+    <div class="row passes-header-bg-colour px-3 pt-4">
+      <div class="col-md-7 col-sm-12">
+        <h3>Passes</h3>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-md-8">
+        <button
+          [disabled]="loadingAM || loadingPM || loadingDAY || passes.length === 0"
+          class="btn btn-primary mr-1"
+          (click)="exportCsv()"
+        >
+          Export to .csv
+        </button>
+        <button
+          [disabled]="loadingAM || loadingPM || loadingDAY || passes.length === 0"
+          class="btn btn-primary mr-1"
+          (click)="print()"
+        >
+          Print
+        </button>
+        <button
+          [disabled]="loadingAM || loadingPM || loadingDAY || passes.length === 0"
+          class="btn btn-primary"
+          (click)="copyEmails()"
+        >
+          Copy Emails
+        </button>
+      </div>
+      <div class="col-md-4 mt-4 mt-md-0">
+        <div class="btn-group btn-group-toggle d-flex justify-content-end" facility-toggle="buttons">
+          <button
+            *ngIf="facility?.bookingTimes.AM"
+            class="btn btn-primary"
+            [disabled]="loadingAM || passTypeSelected === 'AM'"
+            (click)="fetchPassTable('AM')"
+          >
+            <span *ngIf="!loadingAM">AM</span>
+            <span *ngIf="loadingAM" class="material-icons rotating">autorenew</span>
+          </button>
+          <button
+            *ngIf="facility?.bookingTimes.PM"
+            class="btn btn-primary"
+            [disabled]="loadingPM || passTypeSelected === 'PM'"
+            (click)="fetchPassTable('PM')"
+          >
+            <span *ngIf="!loadingPM">PM</span>
+            <span *ngIf="loadingPM" class="material-icons rotating">autorenew</span>
+          </button>
+          <button
+            *ngIf="facility?.bookingTimes.DAY"
+            class="btn btn-primary"
+            [disabled]="loadingDAY || passTypeSelected === 'DAY'"
+            (click)="fetchPassTable('DAY')"
+          >
+            <span *ngIf="!loadingDAY">Day</span>
+            <span *ngIf="loadingDAY" class="material-icons rotating">autorenew</span>
+          </button>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        Closure Reason:
-                    </strong>
-                </label>
-                <p>
-                    {{facility.status.stateReason || '-'}}
-                </p>
-            </div>
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        Type:
-                    </strong>
-                </label>
-                <p>
-                    {{facility.type}}
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        Booking Opening Time:
-                    </strong>
-                </label>
-                <p>
-                    {{ bookingOpeningHourText }}
-                    <small *ngIf="facility.bookingOpeningHour === null">(default)</small>
-                </p>
-            </div>
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        Booking Days Ahead:
-                    </strong>
-                </label>
-                <p>
-                    {{ bookingDaysAheadText }}
-                    <small *ngIf="facility.bookingDaysAhead === null">(default)</small>
-                </p>
-            </div>
-        </div>
-        <div class="row"
-            *ngIf="facility?.bookingTimes.AM">
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        AM Capacity:
-                    </strong>
-                </label>
-                <p>
-                    {{facility?.bookingTimes.AM.max}}
-                </p>
-            </div>
-        </div>
-        <div class="row"
-            *ngIf="facility?.bookingTimes.PM">
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        PM Capacity:
-                    </strong>
-                </label>
-                <p>
-                    {{facility?.bookingTimes.PM.max}}
-                </p>
-            </div>
-        </div>
-        <div class="row"
-            *ngIf="facility?.bookingTimes.DAY">
-            <div class="col-md-6">
-                <label>
-                    <strong>
-                        All Day Capacity:
-                    </strong>
-                </label>
-                <p>
-                    {{facility?.bookingTimes.DAY.max}}
-                </p>
-            </div>
-        </div>
-        <hr>
-        <br>
-    </section>
-    <section>
-        <div class="row passes-header-bg-colour px-3 pt-4">
-            <div class="col-md-7 col-sm-12">
-                <h3>Passes</h3>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-8">
-                <button [disabled]="loadingAM || loadingPM || loadingDAY || passes.length === 0"
-                    class="btn btn-primary mr-1"
-                    (click)="exportCsv()">Export to .csv</button>
-                <button [disabled]="loadingAM || loadingPM || loadingDAY || passes.length === 0"
-                    class="btn btn-primary mr-1"
-                    (click)="print()">Print</button>
-                <button [disabled]="loadingAM || loadingPM || loadingDAY || passes.length === 0"
-                    class="btn btn-primary"
-                    (click)="copyEmails()">Copy Emails</button>
-            </div>
-            <div class="col-md-4 mt-4 mt-md-0">
-                <div class="btn-group btn-group-toggle d-flex justify-content-end"
-                    facility-toggle="buttons">
-                    <button *ngIf="facility?.bookingTimes.AM"
-                        class="btn btn-primary"
-                        [disabled]="loadingAM || passTypeSelected === 'AM'"
-                        (click)="fetchPassTable('AM')">
-                        <span *ngIf="!loadingAM">
-                            AM
-                        </span>
-                        <span *ngIf="loadingAM"
-                            class="material-icons rotating">
-                            autorenew
-                        </span>
-                    </button>
-                    <button *ngIf="facility?.bookingTimes.PM"
-                        class="btn btn-primary"
-                        [disabled]="loadingPM || passTypeSelected === 'PM'"
-                        (click)="fetchPassTable('PM')">
-                        <span *ngIf="!loadingPM">
-                            PM
-                        </span>
-                        <span *ngIf="loadingPM"
-                            class="material-icons rotating">
-                            autorenew
-                        </span>
-                    </button>
-                    <button *ngIf="facility?.bookingTimes.DAY"
-                        class="btn btn-primary"
-                        [disabled]="loadingDAY || passTypeSelected === 'DAY'"
-                        (click)="fetchPassTable('DAY')">
-                        <span *ngIf="!loadingDAY">
-                            Day
-                        </span>
-                        <span *ngIf="loadingDAY"
-                            class="material-icons rotating">
-                            autorenew
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <br>
+  <br />
 
-    <section>
-        <div class="row">
-            <div class="col-12">
-                <button class="btn btn-primary"
-                    (click)="showSearch = !showSearch">
-                    Search & Filter
-                    <span *ngIf="!showSearch"
-                        class="material-icons align-middle">
-                        expand_less
-                    </span>
-                    <span *ngIf="showSearch"
-                        class="material-icons align-middle">
-                        expand_more
-                    </span>
-                </button>
-            </div>
-        </div>
-        <div *ngIf="showSearch"
-            class="row mt-3">
-            <div class="col-12">
-                <app-search-widget [loadingStatus]="loadingSearch"
-                    [datePickerArray]="datePickerArray"
-                    [textSearchArray]="textSearchArray"
-                    (submitEvent)="filterPasses($event)"></app-search-widget>
-            </div>
-        </div>
-    </section>
+  <section>
+    <div class="row">
+      <div class="col-12">
+        <button class="btn btn-primary" (click)="showSearch = !showSearch">
+          Search & Filter
+          <span *ngIf="!showSearch" class="material-icons align-middle">expand_less</span>
+          <span *ngIf="showSearch" class="material-icons align-middle">expand_more</span>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="showSearch" class="row mt-3">
+      <div class="col-12">
+        <app-search-widget
+          [loadingStatus]="loadingSearch"
+          [datePickerArray]="datePickerArray"
+          [textSearchArray]="textSearchArray"
+          (submitEvent)="filterPasses($event)"
+        ></app-search-widget>
+      </div>
+    </div>
+  </section>
 
-    <br>
+  <br />
 
-    <app-pass-list [parkSk]="parkSk"
-        [facilitySk]="facilitySk"
-        [time]="passTypeSelected"></app-pass-list>
+  <div>
+    <label>
+      <strong>Capacity Levels:</strong>
+    </label>
+    <p *ngIf="bookingTimeSummary.reserved === null">To display capacity levels, you must filter by a date.</p>
+    <p *ngIf="bookingTimeSummary.reserved !== null">
+      {{ bookingTimeSummary.reserved }}/{{ bookingTimeSummary.capacity }} passes reserved
+    </p>
+    <div class="progress">
+      <div
+        class="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar"
+        [ngClass]="bookingTimeSummary.style"
+        [attr.aria-valuenow]="bookingTimeSummary.capPercent"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        [style.width]="bookingTimeSummary.capPercent + '%'"
+      ></div>
+    </div>
+  </div>
+
+  <br />
+
+  <app-pass-list [parkSk]="parkSk" [facilitySk]="facilitySk" [time]="passTypeSelected"></app-pass-list>
 </div>
 
 <div id="print-area">
-    <table>
-        <thead>
-            <tr style="border: 1px solid black;">
-                <th scope="col">Reg #</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
+  <table>
+    <thead>
+      <tr style="border: 1px solid black">
+        <th scope="col">Reg #</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
 
-                <th *ngIf="facility?.type === 'Trail'"
-                    scope="col">Guests</th>
-                <th *ngIf="facility?.type === 'Facility'"
-                    scope="col">License</th>
+        <th *ngIf="facility?.type === 'Trail'" scope="col">Guests</th>
+        <th *ngIf="facility?.type === 'Facility'" scope="col">License</th>
 
-                <th scope="col">Facility</th>
-                <th scope="col">Date</th>
-                <th scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let pass of passes">
-                <td>{{pass.registrationNumber}}</td>
-                <td>{{pass.firstName}}</td>
-                <td>{{pass.lastName}}</td>
-                <td>{{pass.email}}</td>
-                <td>{{pass.phoneNumber}}</td>
+        <th scope="col">Facility</th>
+        <th scope="col">Date</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pass of passes">
+        <td>{{ pass.registrationNumber }}</td>
+        <td>{{ pass.firstName }}</td>
+        <td>{{ pass.lastName }}</td>
+        <td>{{ pass.email }}</td>
+        <td>{{ pass.phoneNumber }}</td>
 
-                <td *ngIf="facility?.type === 'Trail'">{{pass.numberOfGuests}}</td>
-                <td *ngIf="facility?.type === 'Facility'">{{pass.license}}</td>
+        <td *ngIf="facility?.type === 'Trail'">{{ pass.numberOfGuests }}</td>
+        <td *ngIf="facility?.type === 'Facility'">{{ pass.license }}</td>
 
-
-                <td>{{pass.facilityType}}</td>
-                <td>{{convertDate(pass.date)}}</td>
-                <td>{{pass.passStatus}}</td>
-            </tr>
-        </tbody>
-    </table>
+        <td>{{ pass.facilityType }}</td>
+        <td>{{ convertDate(pass.date) }}</td>
+        <td>{{ pass.passStatus }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
