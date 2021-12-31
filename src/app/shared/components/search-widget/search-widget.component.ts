@@ -11,6 +11,7 @@ import { SearchWidgetObject } from './search-widget-object';
 export class SearchWidgetComponent implements OnInit {
   @Input() datePickerArray: Array<SearchWidgetObject> = [];
   @Input() textSearchArray: Array<SearchWidgetObject> = [];
+  @Input() multiSelectArray: Array<SearchWidgetObject> = [];
   @Output() submitEvent: EventEmitter<any> = new EventEmitter();
   @Input() loadingStatus: boolean;
 
@@ -29,6 +30,12 @@ export class SearchWidgetComponent implements OnInit {
       }
     });
     this.textSearchArray.forEach(obj => {
+      controls[obj.value] = new FormControl('');
+      if (obj.initialValue !== undefined) {
+        controls[obj.value].setValue(obj.initialValue);
+      }
+    });
+    this.multiSelectArray.forEach(obj => {
       controls[obj.value] = new FormControl('');
       if (obj.initialValue !== undefined) {
         controls[obj.value].setValue(obj.initialValue);

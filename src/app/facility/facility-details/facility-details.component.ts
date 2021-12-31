@@ -5,6 +5,11 @@ import { PassService } from 'app/services/pass.service';
 import { PassUtils } from 'app/shared/utils/pass-utils';
 import { takeWhile } from 'rxjs/operators';
 import { Utils } from 'app/shared/utils/utils';
+import {
+  FilterObject,
+  FilterType,
+  MultiSelectDefinition
+} from 'app/shared/components/search-filter-template/filter-object';
 
 @Component({
   selector: 'app-facility-details',
@@ -26,6 +31,13 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   public loadingSearch = false;
 
+  public passMultiSelectOptions = new FilterObject(
+    'passStatus',
+    FilterType.MultiSelect,
+    'Pass Status',
+    new MultiSelectDefinition(['active', 'reserved', 'cancelled', 'expired'])
+  );
+
   // Default to today's date on page load
   public searchParams = {
     date: new Date()
@@ -46,24 +58,36 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     {
       label: 'Date',
       value: 'date',
-      initialValue: new Date()
+      initialValue: new Date(),
+      selectOptions: undefined
     }
   ];
   public textSearchArray = [
     {
       label: 'First Name',
       value: 'firstName',
-      initialValue: undefined
+      initialValue: undefined,
+      selectOptions: undefined
     },
     {
       label: 'Last Name',
       value: 'lastName',
-      initialValue: undefined
+      initialValue: undefined,
+      selectOptions: undefined
     },
     {
       label: 'Reservation Number',
       value: 'reservationNumber',
-      initialValue: undefined
+      initialValue: undefined,
+      selectOptions: undefined
+    }
+  ];
+  public multiSelectArray = [
+    {
+      label: 'Pass Status',
+      value: 'passStatus',
+      initialValue: undefined,
+      selectOptions: this.passMultiSelectOptions
     }
   ];
 
@@ -249,7 +273,9 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
         this.bookingTimeSummary.reserved = 0;
       }
 
-      this.bookingTimeSummary.capPercent = Math.floor((this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100);
+      this.bookingTimeSummary.capPercent = Math.floor(
+        (this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100
+      );
       this.bookingTimeSummary.style = this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
     } else {
       this.bookingTimeSummary.reserved = null;

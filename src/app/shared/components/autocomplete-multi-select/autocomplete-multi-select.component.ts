@@ -66,6 +66,8 @@ export class AutoCompleteMultiSelectComponent implements OnInit {
   }
 
   onChange() {
+    this.control.setValue(this.filter.filterDefinition.selectedOptions.toString());
+    this.control.markAsDirty();
     this.changeEvent.emit();
   }
 

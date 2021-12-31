@@ -20,6 +20,14 @@
                 id="{{obj.value}}"
                 formControlName="{{obj.value}}">
         </div>
+        <div *ngFor="let obj of multiSelectArray"
+            class="col-lg-4 col-md-12">
+            <label for="{{obj.value}}">
+                {{obj.label}}
+            </label>
+            <app-autocomplete-multi-select [filter]="obj.selectOptions" [control]="form.controls[obj.value]">
+            </app-autocomplete-multi-select>
+        </div>    
     </div>
     <div class="float-right">
         <button class="btn btn-primary"
