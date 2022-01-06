@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  ChangeDetectorRef,
-  Output,
-  EventEmitter,
-  OnInit
-} from '@angular/core';
+import { Component, Input, ChangeDetectorRef, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FilterObject } from '../search-filter-template/filter-object';
 
@@ -44,7 +37,7 @@ export class AutoCompleteMultiSelectComponent implements OnInit {
 
   @Output() changeEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(public _changeDetectionRef: ChangeDetectorRef) { }
+  constructor(public _changeDetectionRef: ChangeDetectorRef) {}
 
   ngOnInit() {
     if (this.filter.filterDefinition.matchId) {
@@ -66,6 +59,8 @@ export class AutoCompleteMultiSelectComponent implements OnInit {
   }
 
   onChange() {
+    this.control.setValue(this.filter.filterDefinition.selectedOptions.toString());
+    this.control.markAsDirty();
     this.changeEvent.emit();
   }
 

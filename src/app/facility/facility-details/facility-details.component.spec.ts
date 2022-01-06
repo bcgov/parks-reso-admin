@@ -5,6 +5,7 @@ import { FacilitiesModule } from 'app/facilities/facilities.module';
 import { PassesModule } from 'app/passes/passes.module';
 import { ConfigService } from 'app/services/config.service';
 import { KeycloakService } from 'app/services/keycloak.service';
+import { FormGeneratorModule } from 'app/shared/form-generator/form-generator.module';
 
 import { FacilityDetailsComponent } from './facility-details.component';
 
@@ -20,7 +21,8 @@ describe('FacilityDetailsComponent', () => {
         PassesModule,
         ReactiveFormsModule,
         FormsModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        FormGeneratorModule
       ],
       providers: [
         ConfigService,
