@@ -5,6 +5,11 @@ import { PassService } from 'app/services/pass.service';
 import { PassUtils } from 'app/shared/utils/pass-utils';
 import { takeWhile } from 'rxjs/operators';
 import { Utils } from 'app/shared/utils/utils';
+import {
+  FilterObject,
+  FilterType,
+  MultiSelectDefinition
+} from 'app/shared/components/search-filter-template/filter-object';
 
 @Component({
   selector: 'app-facility-details',
@@ -41,26 +46,53 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     style: 'success'
   };
 
-  // Default to today's date on page load
-  public datePickerArray = [
+  public passMultiSelectOptions = new FilterObject(
+    'passStatus',
+    FilterType.MultiSelect,
+    'Pass Status',
+    new MultiSelectDefinition(['active', 'reserved', 'cancelled', 'expired'])
+  );
+
+  public formComponents = [
     {
+      formType: 'select',
+      label: 'Pass Type',
+      value: 'passType',
+      options: []
+    },
+    {
+      formType: 'date',
       label: 'Date',
       value: 'date',
+      // Default to today's date on page load
       initialValue: new Date()
-    }
-  ];
-  public textSearchArray = [
+    },
     {
+      formType: 'autoMultiSelect',
+      label: 'Pass Status',
+      value: 'passStatus',
+      multiSelectOptions: this.passMultiSelectOptions
+    },
+    {
+      formType: 'text',
       label: 'First Name',
       value: 'firstName',
       initialValue: undefined
     },
     {
+      formType: 'text',
       label: 'Last Name',
       value: 'lastName',
       initialValue: undefined
     },
     {
+      formType: 'text',
+      label: 'Email',
+      value: 'email',
+      initialValue: undefined
+    },
+    {
+      formType: 'text',
       label: 'Reservation Number',
       value: 'reservationNumber',
       initialValue: undefined
@@ -87,14 +119,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
           // Default order AM > PM > DAY
           if (this.facility) {
-            if (this.facility.bookingTimes.AM) {
-              this.passTypeSelected = 'AM';
-            } else if (this.facility.bookingTimes.PM) {
-              this.passTypeSelected = 'PM';
-            } else if (this.facility.bookingTimes.DAY) {
-              this.passTypeSelected = 'DAY';
-            }
-            this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
+            this.setInitialPassType(this.facility.bookingTimes);
           }
 
           this.calculateCapacityLevels();
@@ -116,37 +141,6 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
           this._changeDetectionRef.detectChanges();
         }
       });
-  }
-
-  fetchPassTable(time) {
-    if (time === this.passTypeSelected) {
-      return;
-    }
-    switch (time) {
-      case 'AM':
-        this.loadingAM = true;
-        break;
-      case 'PM':
-        this.loadingPM = true;
-        break;
-      case 'DAY':
-        this.loadingDAY = true;
-        break;
-      default:
-        break;
-    }
-    this.passTypeSelected = time;
-    this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
-    this.calculateCapacityLevels();
-    this.passService.fetchData(
-      null,
-      this.parkSk,
-      this.facilitySk,
-      time,
-      null,
-      null,
-      this.passService.lastSearchParams.queryParams
-    );
   }
 
   exportCsv(): void {
@@ -191,8 +185,12 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   filterPasses(params) {
     this.loadingSearch = true;
     this.searchParams = params;
-
-    this.calculateCapacityLevels();
+    if (this.searchParams['passType']) {
+      this.passTypeSelected = this.searchParams['passType'];
+      delete this.searchParams['passType'];
+      this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
+      this.calculateCapacityLevels();
+    }
 
     this.passService.fetchData(
       null,
@@ -233,10 +231,6 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     return `${advanceBookingDays} days`;
   }
 
-  ngOnDestroy() {
-    this.alive = false;
-  }
-
   public calculateCapacityLevels() {
     if (this.searchParams && this.searchParams.date) {
       const formattedDate = new Date(this.searchParams.date).toLocaleDateString('en-CA');
@@ -249,7 +243,9 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
         this.bookingTimeSummary.reserved = 0;
       }
 
-      this.bookingTimeSummary.capPercent = Math.floor((this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100);
+      this.bookingTimeSummary.capPercent = Math.floor(
+        (this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100
+      );
       this.bookingTimeSummary.style = this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
     } else {
       this.bookingTimeSummary.reserved = null;
@@ -265,5 +261,39 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     } else {
       return 'danger';
     }
+  }
+
+  private setInitialPassType(bookingTimes) {
+    // Default select to first item
+    const initSelect = 0;
+
+    let passTypes = [];
+
+    if ('AM' in bookingTimes) {
+      passTypes.push('AM');
+    }
+    if ('PM' in bookingTimes) {
+      passTypes.push('PM');
+    }
+    if ('DAY' in bookingTimes) {
+      passTypes.push('DAY');
+    }
+
+    for (let i = 0; i < passTypes.length; i++) {
+      this.formComponents[0].options.push({
+        selectValue: passTypes[i],
+        selectLabel: passTypes[i],
+        initialValue: false
+      });
+      if (i === initSelect) {
+        this.passTypeSelected = passTypes[i];
+        this.formComponents[0].options[i].initialValue = true;
+      }
+    }
+    this.bookingTimeSummary.capacity = bookingTimes[this.passTypeSelected].max;
+  }
+
+  ngOnDestroy() {
+    this.alive = false;
   }
 }
