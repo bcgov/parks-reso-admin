@@ -15,7 +15,7 @@
     ></app-list>
   </section>
 
-  <div *ngIf="ExclusiveStartKeyPK && ExclusiveStartKeySK" class="d-flex justify-content-center">
+  <div *ngIf="ExclusiveStartKeyPK && ExclusiveStartKeySK && data.length > 0" class="d-flex justify-content-center">
     <button class="btn btn-outline-primary" (click)="loadMore()" [disabled]="loadingMore">
       <span *ngIf="!loadingMore">Load More</span>
       <span *ngIf="loadingMore" class="material-icons rotating">autorenew</span>
