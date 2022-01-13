@@ -1,51 +1,41 @@
-<td data-label="Reg #"
-    scope="row"
-    class="col-2">{{validate('registrationNumber')}}</td>
-<td data-label="Email"
-    scope="row"
-    class="col-3">{{validate('email')}}</td>
+<td data-label="Reg #" scope="row" class="col-2 pointer" (click)="navigate('details')">
+  {{ validate('registrationNumber') }}
+</td>
+<td data-label="Email" scope="row" class="col-4 pointer" (click)="navigate('details')">{{ validate('email') }}</td>
 
-<td *ngIf="rowData?.facilityType === 'Trail'"
-    data-label="Guests"
-    scope="row"
-    class="col-1">{{validate('numberOfGuests')}}</td>
-<td *ngIf="rowData?.facilityType === 'Parking'"
-    data-label="Guests"
-    scope="row"
-    class="col-1">{{validate('license')}}</td>
-<td data-label="Date"
-    scope="row"
-    class="col-2">{{validate('date')}}</td>
-<td data-label="Status"
-    scope="row"
-    class="col-2">{{validate('passStatus')}}</td>
-<td data-label="Controls"
-    scope="row"
-    class="col-2">
-    <div class="btn-group btn-block"
-        role="group"
-        aria-label="Basic example">
-        <button type="button"
-            class="btn btn-outline-secondary"
-            title="Details for {{validate('registrationNumber')}}"
-            (click)="navigate('details')">
-            <span class="material-icons">
-                library_books
-            </span>
-        </button>
-        <button type="button"
-            [disabled]="rowData?.passStatus === 'cancelled' || rowData?.passStatus === 'expired' || cancelLoading"
-            class="btn btn-outline-danger"
-            title="Cancel {{validate('registrationNumber')}}"
-            (click)="navigate('cancel')">
-            <span *ngIf="!cancelLoading"
-                class="material-icons">
-                cancel
-            </span>
-            <span *ngIf="cancelLoading"
-                class="material-icons rotating">
-                autorenew
-            </span>
-        </button>
-    </div>
+<td
+  *ngIf="rowData?.facilityType === 'Trail'"
+  data-label="Guests"
+  scope="row"
+  class="col-2 pointer"
+  (click)="navigate('details')"
+>
+  {{ validate('numberOfGuests') }}
+</td>
+<td
+  *ngIf="rowData?.facilityType === 'Parking'"
+  data-label="Guests"
+  scope="row"
+  class="col-2 pointer"
+  (click)="navigate('details')"
+>
+  {{ validate('license') }}
+</td>
+<td data-label="Date" scope="row" class="col-2 pointer" (click)="navigate('details')">{{ validate('date') }}</td>
+<td data-label="Status" scope="row" class="col-1 pointer" (click)="navigate('details')">
+  {{ validate('passStatus') }}
+</td>
+<td data-label="Controls" scope="row" class="col-1">
+  <div class="d-flex justify-content-center">
+    <button
+      type="button"
+      [disabled]="rowData?.passStatus === 'cancelled' || rowData?.passStatus === 'expired' || cancelLoading"
+      class="btn btn-outline-danger btn-sm"
+      title="Cancel {{ validate('registrationNumber') }}"
+      (click)="navigate('cancel')"
+    >
+      <span *ngIf="!cancelLoading" class="material-icons">cancel</span>
+      <span *ngIf="cancelLoading" class="material-icons rotating">autorenew</span>
+    </button>
+  </div>
 </td>

@@ -1,36 +1,18 @@
-<td data-label="Park Name"
-    scope="row"
-    class="col-3">{{rowData?.name}}</td>
-<td data-label="Type"
-    scope="row"
-    class="col-3">{{rowData?.type}}</td>
-<td data-label="Status"
-    scope="row"
-    class="col-2">{{rowData?.status?.state}}</td>
-<td data-label="Status"
-    scope="row"
-    class="col-2">{{rowData?.visible}}</td>
-<td data-label="Controls"
-    scope="row"
-    class="col-2">
-    <div class="btn-group btn-block"
-        role="group"
-        aria-label="Basic example">
-        <button type="button"
-            class="btn btn-outline-secondary"
-            title="Details for {{rowData?.name}}"
-            (click)="navigate('details')">
-            <span class="material-icons">
-                library_books
-            </span>
-        </button>
-        <button type="button"
-            class="btn btn-outline-secondary"
-            title="Edit {{rowData?.name}}"
-            (click)="navigate('edit')">
-            <span class="material-icons">
-                edit
-            </span>
-        </button>
-    </div>
+<td data-label="Park Name" scope="row" class="col-4 pointer" (click)="navigate('details')">{{ rowData?.name }}</td>
+<td data-label="Type" scope="row" class="col-3 pointer" (click)="navigate('details')">{{ rowData?.type }}</td>
+<td data-label="Status" scope="row" class="col-2 pointer" (click)="navigate('details')">
+  {{ rowData?.status?.state }}
+</td>
+<td data-label="Status" scope="row" class="col-2 pointer" (click)="navigate('details')">{{ rowData?.visible }}</td>
+<td data-label="Controls" scope="row" class="col-1">
+  <div class="d-flex justify-content-center">
+    <button
+      type="button"
+      class="btn btn-outline-secondary btn-sm"
+      title="Edit {{ rowData?.name }}"
+      (click)="navigate('edit')"
+    >
+      <span class="material-icons">edit</span>
+    </button>
+  </div>
 </td>

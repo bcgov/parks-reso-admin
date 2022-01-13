@@ -32,7 +32,7 @@ export class ParkListComponent implements OnInit, OnDestroy {
     {
       name: 'Name',
       value: 'name',
-      width: 'col-5',
+      width: 'col-6',
       nosort: true
     },
     {
@@ -42,9 +42,9 @@ export class ParkListComponent implements OnInit, OnDestroy {
       nosort: true
     },
     {
-      name: 'Actions',
+      name: '',
       value: '',
-      width: 'col-2',
+      width: 'col-1',
       nosort: true
     }
   ];
