@@ -49,13 +49,13 @@ export class PassListComponent implements OnInit, OnDestroy {
     {
       name: 'Email',
       value: 'email',
-      width: 'col-3',
+      width: 'col-4',
       nosort: true
     },
     {
       name: 'Guests',
       value: 'numberOfGuests',
-      width: 'col-1',
+      width: 'col-2',
       nosort: true
     },
     {
@@ -67,13 +67,13 @@ export class PassListComponent implements OnInit, OnDestroy {
     {
       name: 'Status',
       value: 'passStatus',
-      width: 'col-2',
+      width: 'col-1',
       nosort: true
     },
     {
-      name: 'Actions',
+      name: '',
       value: '',
-      width: 'col-2',
+      width: 'col-1',
       nosort: true
     }
   ];
@@ -115,13 +115,13 @@ export class PassListComponent implements OnInit, OnDestroy {
               {
                 name: 'Email',
                 value: 'email',
-                width: 'col-3',
+                width: 'col-4',
                 nosort: true
               },
               {
                 name: 'License',
                 value: 'license',
-                width: 'col-1',
+                width: 'col-2',
                 nosort: true
               },
               {
@@ -133,13 +133,13 @@ export class PassListComponent implements OnInit, OnDestroy {
               {
                 name: 'Status',
                 value: 'passStatus',
-                width: 'col-2',
+                width: 'col-1',
                 nosort: true
               },
               {
-                name: 'Actions',
+                name: '',
                 value: '',
-                width: 'col-2',
+                width: 'col-1',
                 nosort: true
               }
             ];

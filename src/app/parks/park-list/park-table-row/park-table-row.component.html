@@ -1,31 +1,14 @@
-<td data-label="Park Name"
-    scope="row"
-    class="col-5">{{validate('name')}}</td>
-<td data-label="Status"
-    scope="row"
-    class="col-5">{{validate('status')}}</td>
-<td data-label="Controls"
-    scope="row"
-    class="col-2">
-
-    <div class="btn-group btn-block"
-        role="group"
-        aria-label="Basic example">
-        <button type="button"
-            class="btn btn-outline-secondary"
-            title="Details for {{validate('name')}}"
-            (click)="navigate('details')">
-            <span class="material-icons">
-                library_books
-            </span>
-        </button>
-        <button type="button"
-            class="btn btn-outline-secondary"
-            title="Edit {{validate('name')}}"
-            (click)="navigate('edit')">
-            <span class="material-icons">
-                edit
-            </span>
-        </button>
-    </div>
+<td data-label="Park Name" scope="row" class="col-6 pointer" (click)="navigate('details')">{{ validate('name') }}</td>
+<td data-label="Status" scope="row" class="col-5 pointer" (click)="navigate('details')">{{ validate('status') }}</td>
+<td data-label="Controls" scope="row" class="col-1 pointer" (click)="navigate('details')">
+  <div class="d-flex justify-content-center">
+    <button
+      type="button"
+      class="btn btn-outline-secondary btn-sm"
+      title="Edit {{ validate('name') }}"
+      (click)="navigate('edit')"
+    >
+      <span class="material-icons">edit</span>
+    </button>
+  </div>
 </td>

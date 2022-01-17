@@ -33,7 +33,7 @@ export class FacilityListComponent implements OnInit, OnDestroy {
     {
       name: 'Name',
       value: 'name',
-      width: 'col-3',
+      width: 'col-4',
       nosort: true
     },
     {
@@ -55,9 +55,9 @@ export class FacilityListComponent implements OnInit, OnDestroy {
       nosort: true
     },
     {
-      name: 'Actions',
+      name: '',
       value: '',
-      width: 'col-2',
+      width: 'col-1',
       nosort: true
     }
   ];
