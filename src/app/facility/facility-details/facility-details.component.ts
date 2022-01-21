@@ -3,6 +3,7 @@ import { ConfigService } from 'app/services/config.service';
 import { FacilityService } from 'app/services/facility.service';
 import { PassService } from 'app/services/pass.service';
 import { PassUtils } from 'app/shared/utils/pass-utils';
+import { Constants } from 'app/shared/utils/constants';
 import { takeWhile } from 'rxjs/operators';
 import { Utils } from 'app/shared/utils/utils';
 import {
@@ -10,6 +11,8 @@ import {
   FilterType,
   MultiSelectDefinition
 } from 'app/shared/components/search-filter-template/filter-object';
+import { ApiService } from 'app/services/api.service';
+import { ToastService } from 'app/services/toast.service';
 
 @Component({
   selector: 'app-facility-details',
@@ -101,6 +104,8 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private configService: ConfigService,
+    private apiService: ApiService,
+    private toastService: ToastService,
     private facilityService: FacilityService,
     public passService: PassService,
     private _changeDetectionRef: ChangeDetectorRef,
@@ -143,8 +148,24 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  exportCsv(): void {
-    PassUtils.exportToCsv(this.passes, this.facility.type);
+  async exportCsv() {
+    try {
+      let obj = {
+        facilityName: this.facilitySk,
+        park: this.parkSk,
+        email: this.searchParams['email'],
+        date: this.searchParams['date'],
+        firstName: this.searchParams['firstName'],
+        lastName: this.searchParams['lastName'],
+        passStatus: this.searchParams['passStatus'],
+        reservationNumber: this.searchParams['reservationNumber']
+      };
+      Object.keys(obj).forEach(key => (obj[key] === undefined ? delete obj[key] : {}));
+      const res = await this.apiService.get('export-pass', obj);
+      window.open(res.signedURL, '_blank').focus();
+    } catch (e) {
+      this.toastService.addMessage('Failed Exporting Passes:' + e.msg, 'Export Passes', Constants.ToastTypes.SUCCESS);
+    }
   }
 
   print(): void {
