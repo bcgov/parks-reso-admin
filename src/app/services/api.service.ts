@@ -22,8 +22,7 @@ export class ApiService {
     private logger: LoggerService,
     private keycloakService: KeycloakService
   ) {
-    this.apiPath = this.configService.config['API_LOCATION']
-      + this.configService.config['API_PATH'];
+    this.apiPath = this.configService.config['API_LOCATION'] + this.configService.config['API_PATH'];
     this.env = this.configService.config['ENVIRONMENT'];
   }
 
