@@ -104,14 +104,16 @@ export class KeycloakService {
 
     const jwt = JwtUtil.decodeToken(token);
 
-    if (!(jwt && jwt.realm_access && jwt.realm_access.roles)) {
-      return false;
-    }
+    if (!(jwt && jwt.resource_access
+              && jwt.resource_access["parking-pass"]
+              && jwt.resource_access["parking-pass"].roles)) {
+        return false;
+      }
 
-    // Make sure they have at least one instance of including a role in the ROLE array
-    return Object.keys(Constants.ApplicationRoles).some(role => {
-      return jwt.realm_access.roles.includes(Constants.ApplicationRoles[role]);
-    });
+      // Make sure they have at least one instance of including a role in the ROLE array
+      return Object.keys(Constants.ApplicationRoles).some(role => {
+        return jwt.resource_access["parking-pass"].roles.includes(Constants.ApplicationRoles[role]);
+      });
   }
 
   /**
