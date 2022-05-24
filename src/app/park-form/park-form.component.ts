@@ -31,7 +31,7 @@ export class ParkFormComponent implements OnInit, OnDestroy {
     ]),
     status: new FormControl(false),
     visible: new FormControl(false),
-    bcParksLink: new FormControl(''),
+    bcParksLink: new FormControl('', Validators.required),
     mapLink: new FormControl(''),
   });
 
