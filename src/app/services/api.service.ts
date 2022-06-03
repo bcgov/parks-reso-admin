@@ -43,7 +43,7 @@ export class ApiService {
       return '';
     }
 
-    return `Hello ${jwt.displayName}`;
+    return `Hello ${jwt.name}`;
   }
 
   handleError(error: any): Observable<never> {
