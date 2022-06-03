@@ -8,6 +8,7 @@ import { NgModule, ApplicationRef, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatMenuModule, MatTabsModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
 
 // modules
 import { AppRoutingModule } from 'app/app-routing.module';
@@ -36,6 +37,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { AuthGuard } from './guards/auth.guard';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+import { LoginComponent } from './login/login.component';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 export function initConfig(configService: ConfigService, keycloakService: KeycloakService) {
@@ -56,7 +58,8 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
     ConfirmComponent,
     ReservationsComponent,
     BreadcrumbComponent,
-    NotAuthorizedComponent
+    NotAuthorizedComponent,
+    LoginComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -68,6 +71,7 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
     NgbModule,
     BootstrapModalModule.forRoot({ container: document.body }),
     NgSelectModule,
+    MatIconModule,
     MatMenuModule,
     MatTabsModule,
     MetricsModule,

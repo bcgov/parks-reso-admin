@@ -4,7 +4,7 @@
       <span class="fake-anchor-tag" href="javascript:void(0);" (click)="emitBreadcrumb('', null)">Home</span>
     </li>
     <li *ngIf="!activeBreadcrumb" class="breadcrumb-item active" aria-current="page">
-      {{ isAuthenticated() ? 'Home' : 'Unauthorized' }}
+      {{ isAuthorized() ? 'Home' : 'Unauthorized' }}
     </li>
     <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs">
       <span class="fake-anchor-tag" (click)="emitBreadcrumb(breadcrumb.url, breadcrumb.params)">

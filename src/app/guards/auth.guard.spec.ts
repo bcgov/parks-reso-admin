@@ -39,11 +39,23 @@ describe('AuthGuard', () => {
     expect(result).toEqual(true);
   });
 
-  it('should return redirect to unauthorized page if the user is not authenticated', () => {
+  it('should return redirect to login page if the user is not authenticated', () => {
     const routerMock = TestBed.get(Router);
     routerMock.parseUrl.calls.reset();
 
     mockKeycloakService.isAuthenticated.and.returnValue(false);
+
+    const guard = TestBed.get(AuthGuard);
+    guard.canActivate();
+
+    expect(routerMock.parseUrl).toHaveBeenCalledWith('/login');
+  });
+
+  it('should return redirect to unauthorized page if the user is not authorized', () => {
+    const routerMock = TestBed.get(Router);
+    routerMock.parseUrl.calls.reset();
+
+    mockKeycloakService.isAuthorized.and.returnValue(false);
 
     const guard = TestBed.get(AuthGuard);
     guard.canActivate();

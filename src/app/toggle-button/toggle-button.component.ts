@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SideBarService } from 'app/services/sidebar.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { SideBarService } from 'app/services/sidebar.service';
 })
 
 export class ToggleButtonComponent {
+  @Input() disabled: boolean = false;
 
   public loading = true;
   public classApplied = false;
@@ -17,8 +18,10 @@ export class ToggleButtonComponent {
   ) { }
 
   toggleSideNav() {
-    this.sidebarService.toggle();
-    this.classApplied = !this.classApplied;
+    if (!this.disabled) {
+      this.sidebarService.toggle();
+      this.classApplied = !this.classApplied;
+    }
   }
 
 }

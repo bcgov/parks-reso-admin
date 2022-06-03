@@ -11,6 +11,7 @@
     <button class="navbar-toggler"
       type="button"
       title="Toggle Main Navigation"
+      *ngIf="showSideBar"
       aria-controls="navbarText"
       aria-expanded="false"
       aria-label="Toggle navigation"
@@ -23,7 +24,7 @@
       id="mainNav">
       <ul class="navbar-nav">
         <!-- LOGGED IN -->
-        <li *ngIf="isAuthenticated"
+        <li *ngIf="isAuthorized"
           class="nav-item"
           placement="bottom-right">
           <a class="nav-link"

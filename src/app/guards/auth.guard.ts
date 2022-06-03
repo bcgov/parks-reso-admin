@@ -8,11 +8,19 @@ import { KeycloakService } from 'app/services/keycloak.service';
 export class AuthGuard implements CanActivate {
   constructor(private readonly keycloakService: KeycloakService, private readonly router: Router) {}
 
-  canActivate(): true | UrlTree {
-    if (this.keycloakService.isAuthenticated()) {
-      return true;
+  canActivate(): boolean | UrlTree {
+    if (!this.keycloakService.isAuthenticated()) {
+      if (!this.keycloakService.triedAutoLogin) {
+        this.keycloakService.tryAutoLogin();
+        return false;
+      }
+      return this.router.parseUrl('/login');
     }
 
-    return this.router.parseUrl('/unauthorized');
+    if (!this.keycloakService.isAuthorized()) {
+      return this.router.parseUrl('/unauthorized');
+    }
+
+    return true;
   }
 }
