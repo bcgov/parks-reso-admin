@@ -3,7 +3,7 @@ import { PassService } from 'app/services/pass.service';
 import { IColumnObject } from 'app/shared/components/table-template/table-object';
 import { takeWhile } from 'rxjs/operators';
 import { PassTableRowComponent } from './pass-table-row/pass-table-row.component';
-const moment = require('moment-timezone');
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-pass-list',
@@ -94,7 +94,7 @@ export class PassListComponent implements OnInit, OnDestroy {
             this.ExclusiveStartKeySK = null;
           }
           const tempList = res.data.map(item => {
-            item.date = moment(item.date).local().toDate();
+            item.date = DateTime.fromISO(item.date).setZone('America/Vancouver').toJSDate();
             return { rowData: item };
           });
           if (this.appendList) {
