@@ -54,7 +54,7 @@ export class KeycloakService {
         };
 
         this.keycloakAuth.onAuthLogout = () => {
-          // console.log('onAuthLogout');
+          console.log('onAuthLogout');
         };
 
         // Try to get refresh tokens in the background
@@ -71,7 +71,7 @@ export class KeycloakService {
 
         // Initialize.
         this.keycloakAuth
-          .init({})
+          .init({ checkLoginIframe: false })
           .success(auth => {
             // console.log('KC Refresh Success?:', this.keycloakAuth.authServerUrl);
             this.logger.log(`KC Success: ${auth}`);
