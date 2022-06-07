@@ -13,9 +13,6 @@
     "lint": "ng lint --format=stylish",
     "e2e": "ng e2e"
   },
-  "pre-push": [
-    "lint"
-  ],
   "private": true,
   "dependencies": {
     "@angular/animations": "~8.2.14",
@@ -78,8 +75,6 @@
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.1",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "pre-push": "~0.1.1",
-    "protractor": "~5.4.3",
     "puppeteer": "~12.0.1",
     "tree-kill": "~1.2.2",
     "ts-node": "7.0.1",

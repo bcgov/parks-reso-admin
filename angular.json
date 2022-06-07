@@ -132,11 +132,6 @@
       "projectType": "application",
       "targets": {
         "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "base-app2:serve"
-          }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
