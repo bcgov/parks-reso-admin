@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ConfigService } from 'app/services/config.service';
 import { FacilityService } from 'app/services/facility.service';
 import { PassService } from 'app/services/pass.service';
+import { RescountService } from 'app/services/rescount.service';
 import { PassUtils } from 'app/shared/utils/pass-utils';
 import { Constants } from 'app/shared/utils/constants';
 import { takeWhile } from 'rxjs/operators';
@@ -29,6 +30,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   public facility;
   public passes;
+  public reservations;
 
   public passTypeSelected = 'AM';
 
@@ -108,6 +110,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     private toastService: ToastService,
     private facilityService: FacilityService,
     public passService: PassService,
+    public rescountService: RescountService,
     private _changeDetectionRef: ChangeDetectorRef,
     private utils: Utils
   ) {}
@@ -143,6 +146,16 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
           this.loadingPM = false;
           this.loadingDAY = false;
           this.loadingSearch = false;
+          this._changeDetectionRef.detectChanges();
+        }
+      });
+    this.rescountService
+      .getItemValue()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(res => {
+        if (res) {
+          this.reservations = res;
+          this.calculateCapacityLevels();
           this._changeDetectionRef.detectChanges();
         }
       });
@@ -222,6 +235,12 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       null,
       this.searchParams
     );
+
+    this.rescountService.fetchData(
+      this.parkSk,
+      this.facilitySk,
+      new Date(this.searchParams.date).toLocaleDateString('en-CA')
+    );
   }
 
   get bookingOpeningHourText() {
@@ -254,12 +273,8 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   public calculateCapacityLevels() {
     if (this.searchParams && this.searchParams.date) {
-      const formattedDate = new Date(this.searchParams.date).toLocaleDateString('en-CA');
-      if (
-        this.facility.reservations[formattedDate] &&
-        this.facility.reservations[formattedDate][this.passTypeSelected]
-      ) {
-        this.bookingTimeSummary.reserved = this.facility.reservations[formattedDate][this.passTypeSelected];
+      if (this.reservations && this.reservations[this.passTypeSelected]) {
+        this.bookingTimeSummary.reserved = this.reservations[this.passTypeSelected];
       } else {
         this.bookingTimeSummary.reserved = 0;
       }
