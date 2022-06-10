@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Constants } from 'app/shared/utils/constants';
 import { JwtUtil } from 'app/shared/utils/jwt-utils';
 import { Observable } from 'rxjs';
 import { ConfigService } from './config.service';
@@ -110,10 +109,7 @@ export class KeycloakService {
         return false;
       }
 
-      // Make sure they have at least one instance of including a role in the ROLE array
-      return Object.keys(Constants.ApplicationRoles).some(role => {
-        return jwt.resource_access['parking-pass'].roles.includes(Constants.ApplicationRoles[role]);
-      });
+      return jwt.resource_access['parking-pass'].roles.length >= 1;
   }
 
   /**

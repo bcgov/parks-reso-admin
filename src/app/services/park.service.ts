@@ -138,7 +138,10 @@ export class ParkService {
 
   private checkManditoryFields(obj) {
     if (obj.name === '' || !obj.name) {
-      throw ('You must provide a park name');
+      throw 'You must provide a park name';
+    }
+    if (obj.orcs === '' || !obj.orcs) {
+      throw ('You must provide a park orcs');
     }
     if (obj.description === '' || !obj.description) {
       throw ('You must provide a park description');

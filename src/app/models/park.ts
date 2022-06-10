@@ -60,17 +60,19 @@ export class PostPark {
 }
 
 export class ParkSubObject {
-    name: string;
-    bcParksLink: string;
-    mapLink: string;
-    status: string;
-    capacity: number;
+  name: string;
+  orcs: string;
+  bcParksLink: string;
+  mapLink: string;
+  status: string;
+  capacity: number;
 
-    constructor(obj?: any) {
-        this.name = obj && obj.name || null;
-        this.bcParksLink = obj && obj.bcParksLink || null;
-        this.mapLink = obj && obj.mapLink || null;
-        this.status = obj && obj.status || null;
-        this.capacity = obj && obj.capacity || null;
-    }
+  constructor(obj?: any) {
+    this.name = (obj && obj.name) || null;
+    this.orcs = (obj && obj.orcs) || null;
+    this.bcParksLink = (obj && obj.bcParksLink) || null;
+    this.mapLink = (obj && obj.mapLink) || null;
+    this.status = (obj && obj.status) || null;
+    this.capacity = (obj && obj.capacity) || null;
+  }
 }
