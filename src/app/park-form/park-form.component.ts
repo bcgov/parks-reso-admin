@@ -25,14 +25,13 @@ export class ParkFormComponent implements OnInit, OnDestroy {
 
   public parkForm = new FormGroup({
     name: new FormControl('', Validators.required),
+    orcs: new FormControl('', Validators.required),
     capacity: new FormControl(''),
-    description: new FormControl('', [
-      Validators.required
-    ]),
+    description: new FormControl('', [Validators.required]),
     status: new FormControl(false),
     visible: new FormControl(false),
     bcParksLink: new FormControl('', Validators.required),
-    mapLink: new FormControl(''),
+    mapLink: new FormControl('')
   });
 
   constructor(
@@ -42,14 +41,15 @@ export class ParkFormComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     private parkService: ParkService,
     private toastService: ToastService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.isNewPark = this.route.snapshot.data.component === 'add';
     if (!this.isNewPark) {
-      this.parkService.getItemValue()
+      this.parkService
+        .getItemValue()
         .pipe(takeWhile(() => this.alive))
-        .subscribe((res) => {
+        .subscribe(res => {
           if (res) {
             this.park = res;
             this.populateParkDetails();
@@ -65,6 +65,7 @@ export class ParkFormComponent implements OnInit, OnDestroy {
   populateParkDetails() {
     this.parkForm.setValue({
       name: this.park.name,
+      orcs: this.park.sk,
       capacity: this.park.capacity ? this.park.capacity : null,
       description: this.park.description,
       status: this.park.status === 'open' ? true : false,
@@ -89,13 +90,21 @@ export class ParkFormComponent implements OnInit, OnDestroy {
   }
 
   async submitForm() {
-    const message = `<strong>Name:</strong></br>` + this.parkForm.get('name').value +
-      `</br></br><strong>Status:</strong></br>` + this.getParkInfoString('status') +
-      `</br></br><strong>Visibility:</strong></br>` + this.getParkInfoString('visible') +
-      `</br></br><strong>Capacity:</strong></br>` + this.parkForm.get('capacity').value +
-      `</br></br><strong>Link to BC Parks Site:</strong></br>` + this.parkForm.get('bcParksLink').value +
-      `</br></br><strong>Description:</strong></br>` + this.parkForm.get('description').value +
-      `</br></br><strong>Link to map:</strong></br>` + this.parkForm.get('mapLink').value;
+    const message =
+      `<strong>Name:</strong></br>` +
+      this.parkForm.get('name').value +
+      `</br></br><strong>Status:</strong></br>` +
+      this.getParkInfoString('status') +
+      `</br></br><strong>Visibility:</strong></br>` +
+      this.getParkInfoString('visible') +
+      `</br></br><strong>Capacity:</strong></br>` +
+      this.parkForm.get('capacity').value +
+      `</br></br><strong>Link to BC Parks Site:</strong></br>` +
+      this.parkForm.get('bcParksLink').value +
+      `</br></br><strong>Description:</strong></br>` +
+      this.parkForm.get('description').value +
+      `</br></br><strong>Link to map:</strong></br>` +
+      this.parkForm.get('mapLink').value;
 
     this.dialogService
       .addDialog(
@@ -106,7 +115,8 @@ export class ParkFormComponent implements OnInit, OnDestroy {
           okOnly: false
         },
         { backdropColor: 'rgba(0, 0, 0, 0.5)' }
-      ).subscribe(async result => {
+      )
+      .subscribe(async result => {
         this.saving = true;
         if (result) {
           if (this.isNewPark) {
@@ -138,6 +148,7 @@ export class ParkFormComponent implements OnInit, OnDestroy {
 
   private validateFields(obj) {
     // Manditory fields
+    obj.orcs = this.parkForm.get('orcs').value;
     obj.name = this.parkForm.get('name').value;
     if (this.parkForm.get('status').value) {
       obj.status = 'open';
@@ -191,7 +202,8 @@ export class ParkFormComponent implements OnInit, OnDestroy {
           okOnly: false
         },
         { backdropColor: 'rgba(0, 0, 0, 0.5)' }
-      ).subscribe(result => {
+      )
+      .subscribe(result => {
         if (result) {
           this.router.navigate(['parks']);
         }
