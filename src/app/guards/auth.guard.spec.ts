@@ -6,7 +6,11 @@ import { KeycloakService } from 'app/services/keycloak.service';
 import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard', () => {
-  const mockKeycloakService = jasmine.createSpyObj('KeycloakService', ['isAuthenticated']);
+  const mockKeycloakService = jasmine.createSpyObj('KeycloakService', [
+    'isAuthenticated',
+    'isAuthorized',
+    'triedAutoLogin'
+  ]);
   const mockRouter = jasmine.createSpyObj('Router', ['parseUrl']);
 
   beforeEach(() => {
@@ -31,6 +35,7 @@ describe('AuthGuard', () => {
 
   it('should return true if the user is authenticated', () => {
     mockKeycloakService.isAuthenticated.and.returnValue(true);
+    mockKeycloakService.isAuthorized.and.returnValue(true);
 
     const guard = TestBed.get(AuthGuard);
 
@@ -44,6 +49,7 @@ describe('AuthGuard', () => {
     routerMock.parseUrl.calls.reset();
 
     mockKeycloakService.isAuthenticated.and.returnValue(false);
+    mockKeycloakService.triedAutoLogin.and.returnValue(true);
 
     const guard = TestBed.get(AuthGuard);
     guard.canActivate();
@@ -55,7 +61,9 @@ describe('AuthGuard', () => {
     const routerMock = TestBed.get(Router);
     routerMock.parseUrl.calls.reset();
 
+    mockKeycloakService.isAuthenticated.and.returnValue(true);
     mockKeycloakService.isAuthorized.and.returnValue(false);
+    mockKeycloakService.triedAutoLogin.and.returnValue(true);
 
     const guard = TestBed.get(AuthGuard);
     guard.canActivate();
