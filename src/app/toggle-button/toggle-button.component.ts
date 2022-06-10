@@ -6,16 +6,13 @@ import { SideBarService } from 'app/services/sidebar.service';
   templateUrl: './toggle-button.component.html',
   styleUrls: ['./toggle-button.component.scss']
 })
-
 export class ToggleButtonComponent {
-  @Input() disabled: boolean = false;
+  @Input() disabled = false;
 
   public loading = true;
   public classApplied = false;
 
-  constructor(
-    private sidebarService: SideBarService
-  ) { }
+  constructor(private sidebarService: SideBarService) {}
 
   toggleSideNav() {
     if (!this.disabled) {
@@ -23,5 +20,4 @@ export class ToggleButtonComponent {
       this.classApplied = !this.classApplied;
     }
   }
-
 }

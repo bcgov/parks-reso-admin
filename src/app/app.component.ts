@@ -20,8 +20,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.sidebarcontrol')
   isOpen = false;
-  showSideBar: boolean = false;
-  showBreadCrumb: boolean = false;
+  showSideBar = false;
+  showBreadCrumb = false;
   toastSubscription: Subscription;
 
   constructor(

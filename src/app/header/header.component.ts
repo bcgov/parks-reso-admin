@@ -31,7 +31,7 @@ import { KeycloakService } from 'app/services/keycloak.service';
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
-  @Input() showSideBar: boolean = true;
+  @Input() showSideBar = true;
 
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 

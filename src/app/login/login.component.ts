@@ -8,11 +8,11 @@ import { KeycloakService } from '../services/keycloak.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(private keycloakService: KeycloakService, private router: Router) {}
+  public idirLoginUrl = '';
+  public bceidLoginUrl = '';
+  public bcscLoginUrl = '';
 
-  public idirLoginUrl: string = '';
-  public bceidLoginUrl: string = '';
-  public bcscLoginUrl: string = '';
+  constructor(private keycloakService: KeycloakService, private router: Router) {}
 
   ngOnInit() {
     if (this.keycloakService.isAuthorized()) {
