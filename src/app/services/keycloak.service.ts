@@ -3,7 +3,6 @@ import { JwtUtil } from 'app/shared/utils/jwt-utils';
 import { Observable } from 'rxjs';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
-import { CookieService } from 'ngx-cookie-service';
 
 declare let Keycloak: any;
 
@@ -14,13 +13,10 @@ export class KeycloakService {
   private keycloakUrl: string;
   private keycloakRealm: string;
 
-  AUTOLOGIN_COOKIE_NAME = 'KEYCLOAK_TRIED_AUTOLOGIN';
+  private AUTOLOGIN_VAR_NAME = 'kc-last-tried-autologin';
+  private AUTOLOGIN_NORETRY_SECONDS = 15;
 
-  constructor(
-    private configService: ConfigService,
-    private logger: LoggerService,
-    private cookieService: CookieService
-  ) {}
+  constructor(private configService: ConfigService, private logger: LoggerService) {}
 
   async init() {
     // Load up the config service data
@@ -187,27 +183,31 @@ export class KeycloakService {
    * Tries to log into Keycloak without a login prompt, so we don't
    * show the login screen again when a keycloak session is already active.
    *
-   * @param {number} minWaitSeconds min. seconds before another auto login (default 10)
    * @memberof KeycloakService
    */
-  tryAutoLogin(minWaitSeconds?: number) {
+  tryAutoLogin() {
     if (!this.triedAutoLogin) {
-      const cookieExpireSeconds = minWaitSeconds || 10;
-      const expireDate = new Date();
-      expireDate.setTime(expireDate.getTime() + cookieExpireSeconds * 1000);
-      this.cookieService.set(this.AUTOLOGIN_COOKIE_NAME, '1', expireDate, '/');
+      localStorage.setItem(this.AUTOLOGIN_VAR_NAME, new Date().toString());
       // this redirects to Keycloak, but there is no login prompt
       return this.keycloakAuth && this.keycloakAuth.login({ prompt: 'none' });
     }
   }
 
   /**
-   * Checks if the 'KEYCLOAK_TRIED_AUTOLOGIN' cookie exists.
-   * By default the cookie expires after 10 seconds unless minWaitSeconds is specified
+   * Uses localstorage to determine if autologin has already been attempted by this
+   * browser in the past 15 seconds.
    *
    * @memberof KeycloakService
    */
   get triedAutoLogin(): boolean {
-    return this.cookieService.check(this.AUTOLOGIN_COOKIE_NAME);
+    const lastTriedAutoLogin = localStorage.getItem(this.AUTOLOGIN_VAR_NAME);
+    if (!lastTriedAutoLogin) {
+      return false;
+    }
+    // get the value from localStorage
+    const retryTime = new Date(lastTriedAutoLogin);
+    // add 15 seconds
+    retryTime.setTime(retryTime.getTime() + this.AUTOLOGIN_NORETRY_SECONDS * 1000);
+    return new Date().getTime() < retryTime.getTime();
   }
 }
