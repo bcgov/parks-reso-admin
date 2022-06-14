@@ -6,19 +6,29 @@ import { KeycloakService } from 'app/services/keycloak.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  public static LAST_IDP_TRIED = 'kc-last-idp-tried';
+  public static LAST_IDP_AUTHENTICATED = 'kc-last-idp-authenticated';
+
   constructor(private readonly keycloakService: KeycloakService, private readonly router: Router) {}
 
   canActivate(): boolean | UrlTree {
+    const idpTried = sessionStorage.getItem(AuthGuard.LAST_IDP_TRIED);
+    const idpThatWorked = sessionStorage.getItem(AuthGuard.LAST_IDP_AUTHENTICATED);
+
     if (!this.keycloakService.isAuthenticated()) {
-      if (!this.keycloakService.triedAutoLogin) {
-        this.keycloakService.tryAutoLogin();
-        return false;
+      if (!idpThatWorked) {
+        return this.router.parseUrl('/login');
       }
-      return this.router.parseUrl('/login');
+      this.keycloakService.login(idpThatWorked);
+      return false;
     }
 
     if (!this.keycloakService.isAuthorized()) {
       return this.router.parseUrl('/unauthorized');
+    }
+
+    if (idpTried !== idpThatWorked) {
+      sessionStorage.setItem(AuthGuard.LAST_IDP_AUTHENTICATED, idpTried);
     }
 
     return true;

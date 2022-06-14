@@ -14,8 +14,6 @@ export class KeycloakService {
   private keycloakEnabled: boolean;
   private keycloakUrl: string;
   private keycloakRealm: string;
-  private AUTOLOGIN_VAR_NAME = 'kc-last-tried-autologin';
-  private AUTOLOGIN_NORETRY_SECONDS = 15;
 
   constructor(
     private configService: ConfigService,
@@ -122,12 +120,9 @@ export class KeycloakService {
 
     const jwt = JwtUtil.decodeToken(token);
 
-    if (
-        !(jwt && 
-        jwt.resource_access 
-        && jwt.resource_access['parking-pass'] 
-        && jwt.resource_access['parking-pass'].roles)
-      ) {
+    if (!(jwt && jwt.resource_access
+      && jwt.resource_access['parking-pass']
+      && jwt.resource_access['parking-pass'].roles)) {
       return false;
     }
 
@@ -170,44 +165,13 @@ export class KeycloakService {
   }
 
   /**
-   * Gets the login URL for keycloak
+   * Redirects to keycloak and logs in
+   * idpHint options:
    *
-   * @param {object} options optional object for passing in idpHint, etc.
-   * @returns {string} keycloak login url.
+   * @param {string} idpHint which identity provider to use
    * @memberof KeycloakService
    */
-  createLoginUrl(options?: any) {
-    return this.keycloakAuth && this.keycloakAuth.createLoginUrl(options);
-  }
-
-  /**
-   * Tries to log into Keycloak without a login prompt, so we don't
-   * show the login screen again when a keycloak session is already active.
-   *
-   * @memberof KeycloakService
-   */
-  tryAutoLogin() {
-    if (!this.triedAutoLogin) {
-      localStorage.setItem(this.AUTOLOGIN_VAR_NAME, new Date().toString());
-      // this redirects to Keycloak, but there is no login prompt
-      return this.keycloakAuth && this.keycloakAuth.login({ prompt: 'none' });
-    }
-  }
-
-  /**
-   * Uses localstorage to determine if autologin has already been attempted by this
-   * browser in the past 15 seconds.
-   *
-   * @memberof KeycloakService
-   */
-  get triedAutoLogin(): boolean {
-    const lastTriedAutoLogin = localStorage.getItem(this.AUTOLOGIN_VAR_NAME);
-    if (!lastTriedAutoLogin) {
-      return false;
-    }
-    // add 15 seconds to the timestamp from localStorage
-    const retryTime = new Date(lastTriedAutoLogin);
-    retryTime.setTime(retryTime.getTime() + this.AUTOLOGIN_NORETRY_SECONDS * 1000);
-    return new Date().getTime() < retryTime.getTime();
+  login(idpHint: string) {
+    return this.keycloakAuth && this.keycloakAuth.login({ idpHint: idpHint });
   }
 }

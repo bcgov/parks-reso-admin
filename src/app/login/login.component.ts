@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthGuard } from 'app/guards/auth.guard';
 import { Router } from '@angular/router';
 import { KeycloakService } from '../services/keycloak.service';
 
@@ -8,9 +9,11 @@ import { KeycloakService } from '../services/keycloak.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  public idirLoginUrl = '';
-  public bceidLoginUrl = '';
-  public bcscLoginUrl = '';
+  public readonly idpHintEnum = {
+    BCEID: 'bceid-basic-and-business',
+    BCSC: 'bcsc',
+    IDIR: 'idir'
+  };
 
   constructor(private keycloakService: KeycloakService, private router: Router) {}
 
@@ -23,8 +26,10 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/unauthorized']);
       return;
     }
-    this.idirLoginUrl = this.keycloakService.createLoginUrl({ idpHint: 'idir' });
-    this.bceidLoginUrl = this.keycloakService.createLoginUrl({ idpHint: 'bceid-basic-and-business' });
-    this.bcscLoginUrl = this.keycloakService.createLoginUrl({ idpHint: 'bcsc' });
+  }
+
+  handleLogin(idpHint: string) {
+    sessionStorage.setItem(AuthGuard.LAST_IDP_TRIED, idpHint);
+    this.keycloakService.login(idpHint);
   }
 }

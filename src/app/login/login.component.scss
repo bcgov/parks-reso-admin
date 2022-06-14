@@ -8,7 +8,7 @@
   background-repeat: no-repeat;
 }
 
-a.btn {
+button.btn {
   background: $login-page-button-bg;
   color: $login-page-button-color;
   text-align: center;
@@ -16,10 +16,14 @@ a.btn {
   font-size: 0.95em;
 }
 
-a.btn,
+button.btn,
 a.reg-link {
   width: 16rem;
   max-width: 100%;
+
+  &:hover {
+    opacity: 0.9;
+  }  
 }
 
 a.reg-link {
@@ -30,8 +34,4 @@ a.reg-link {
   text-decoration: underline;
   margin-top: 0.25rem;
   font-size: 0.88em;
-
-  &:hover {
-    color: $primary;
-  }
 }
