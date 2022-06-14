@@ -10,6 +10,8 @@ declare let Keycloak: any;
 
 @Injectable()
 export class KeycloakService {
+  public LAST_IDP_TRIED = 'kc-last-idp-tried';
+  public LAST_IDP_AUTHENTICATED = 'kc-last-idp-authenticated';
   private keycloakAuth: any;
   private keycloakEnabled: boolean;
   private keycloakUrl: string;

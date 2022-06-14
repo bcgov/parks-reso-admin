@@ -6,14 +6,12 @@ import { KeycloakService } from 'app/services/keycloak.service';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  public static LAST_IDP_TRIED = 'kc-last-idp-tried';
-  public static LAST_IDP_AUTHENTICATED = 'kc-last-idp-authenticated';
 
   constructor(private readonly keycloakService: KeycloakService, private readonly router: Router) {}
 
   canActivate(): boolean | UrlTree {
-    const idpTried = sessionStorage.getItem(AuthGuard.LAST_IDP_TRIED);
-    const idpThatWorked = sessionStorage.getItem(AuthGuard.LAST_IDP_AUTHENTICATED);
+    const idpTried = sessionStorage.getItem(this.keycloakService.LAST_IDP_TRIED);
+    const idpThatWorked = sessionStorage.getItem(this.keycloakService.LAST_IDP_AUTHENTICATED);
 
     if (!this.keycloakService.isAuthenticated()) {
       if (!idpThatWorked) {
@@ -28,7 +26,7 @@ export class AuthGuard implements CanActivate {
     }
 
     if (idpTried !== idpThatWorked) {
-      sessionStorage.setItem(AuthGuard.LAST_IDP_AUTHENTICATED, idpTried);
+      sessionStorage.setItem(this.keycloakService.LAST_IDP_AUTHENTICATED, idpTried);
     }
 
     return true;

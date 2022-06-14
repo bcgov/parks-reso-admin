@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthGuard } from 'app/guards/auth.guard';
 import { Router } from '@angular/router';
 import { KeycloakService } from '../services/keycloak.service';
 
@@ -29,7 +28,7 @@ export class LoginComponent implements OnInit {
   }
 
   handleLogin(idpHint: string) {
-    sessionStorage.setItem(AuthGuard.LAST_IDP_TRIED, idpHint);
+    sessionStorage.setItem(this.keycloakService.LAST_IDP_TRIED, idpHint);
     this.keycloakService.login(idpHint);
   }
 }
