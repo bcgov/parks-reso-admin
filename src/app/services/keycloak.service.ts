@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { JwtUtil } from 'app/shared/utils/jwt-utils';
+import { JwtUtil } from '../shared/utils/jwt-utils';
+import { Constants } from '../shared/utils/constants';
 import { Observable } from 'rxjs';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
@@ -81,7 +82,7 @@ export class KeycloakService {
           })
           .error(err => {
             this.toastSerice.addMessage(
-              'Failed to initialize Keycloak.',
+              `Failed to initialize Keycloak.`,
               'Keycloak Service',
               Constants.ToastTypes.ERROR
             );
