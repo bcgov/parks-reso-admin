@@ -70,7 +70,7 @@ export class FormGeneratorComponent implements OnInit {
     Object.keys(this.form.controls).forEach(key => {
       if (this.form.get(key).dirty) {
         if (this.datePickerKeys.includes(key)) {
-          let jsDate = this.utils.convertFormGroupNGBDateToJSDate(this.form.get(key).value);
+          let jsDate = this.utils.convertFormGroupNGBDateToISODate(this.form.get(key).value);
           if (jsDate) {
             paramsObj[key] = jsDate;
           }
