@@ -12,7 +12,6 @@ export class KeycloakService {
   private keycloakEnabled: boolean;
   private keycloakUrl: string;
   private keycloakRealm: string;
-
   private AUTOLOGIN_VAR_NAME = 'kc-last-tried-autologin';
   private AUTOLOGIN_NORETRY_SECONDS = 15;
 
@@ -94,19 +93,7 @@ export class KeycloakService {
    * @memberof KeycloakService
    */
   isAuthenticated(): boolean {
-    const token = this.getToken();
-
-    if (!token) {
-      return false;
-    }
-
-    const jwt = JwtUtil.decodeToken(token);
-
-    if (!(jwt && jwt.preferred_username)) {
-      return false;
-    }
-
-    return true;
+    return this.keycloakAuth && this.keycloakAuth.authenticated === true;
   }
 
   /**
@@ -124,13 +111,13 @@ export class KeycloakService {
 
     const jwt = JwtUtil.decodeToken(token);
 
-    if (!(jwt && jwt.resource_access
-              && jwt.resource_access['parking-pass']
-              && jwt.resource_access['parking-pass'].roles)) {
-        return false;
-      }
+    if (
+      !(jwt && jwt.resource_access && jwt.resource_access['parking-pass'] && jwt.resource_access['parking-pass'].roles)
+    ) {
+      return false;
+    }
 
-      return jwt.resource_access['parking-pass'].roles.length >= 1;
+    return jwt.resource_access['parking-pass'].roles.length >= 1;
   }
 
   /**
@@ -164,7 +151,7 @@ export class KeycloakService {
           observer.error();
         });
 
-      return { unsubscribe() { } };
+      return { unsubscribe() {} };
     });
   }
 
