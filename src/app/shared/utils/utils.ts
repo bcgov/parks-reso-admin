@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ISearchResults } from 'app/shared/models/search';
+import { DateTime } from 'luxon';
 
 const encode = encodeURIComponent;
 window['encodeURIComponent'] = (component: string) => {
@@ -65,6 +66,35 @@ export class Utils {
     } else {
       return new Date(nGBDate.year, nGBDate.month - 1, nGBDate.day, nGBTime.hour, nGBTime.minute);
     }
+  }
+
+  public convertFormGroupNGBDateToISODate(nGBDate, nGBTime = null) {
+    if (!nGBDate) {
+      return null;
+    }
+
+    let datetime = DateTime.fromObject(
+      {
+        year: nGBDate.year,
+        month: nGBDate.month,
+        day: nGBDate.day,
+        hour: 12
+      },
+      {
+        zone: 'America/Vancouver'
+      }
+    );
+
+    if (nGBTime) {
+      datetime.set(
+        {
+          hour: nGBTime.hour,
+          minute: nGBTime.minute
+        }
+      );
+    }
+
+    return datetime.toISO();
   }
 
   public convert24hTo12hTime(hour: number): { hour: string, amPm: string } {
