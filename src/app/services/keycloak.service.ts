@@ -3,6 +3,7 @@ import { JwtUtil } from 'app/shared/utils/jwt-utils';
 import { Observable } from 'rxjs';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
+import { ToastService } from './toast.service';
 
 declare let Keycloak: any;
 
@@ -15,7 +16,7 @@ export class KeycloakService {
   private AUTOLOGIN_VAR_NAME = 'kc-last-tried-autologin';
   private AUTOLOGIN_NORETRY_SECONDS = 15;
 
-  constructor(private configService: ConfigService, private logger: LoggerService) {}
+  constructor(private configService: ConfigService, private logger: LoggerService, private toastSerice: ToastService) {}
 
   async init() {
     // Load up the config service data
@@ -79,6 +80,11 @@ export class KeycloakService {
             resolve();
           })
           .error(err => {
+            this.toastSerice.addMessage(
+              'Failed to initialize Keycloak.',
+              'Keycloak Service',
+              Constants.ToastTypes.ERROR
+            );
             this.logger.log(`KC error: ${err}`);
             reject();
           });
