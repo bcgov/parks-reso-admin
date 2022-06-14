@@ -17,7 +17,11 @@ export class KeycloakService {
   private AUTOLOGIN_VAR_NAME = 'kc-last-tried-autologin';
   private AUTOLOGIN_NORETRY_SECONDS = 15;
 
-  constructor(private configService: ConfigService, private logger: LoggerService, private toastSerice: ToastService) {}
+  constructor(
+    private configService: ConfigService,
+    private logger: LoggerService,
+    private toastService: ToastService
+  ) {}
 
   async init() {
     // Load up the config service data
@@ -81,7 +85,7 @@ export class KeycloakService {
             resolve();
           })
           .error(err => {
-            this.toastSerice.addMessage(
+            this.toastService.addMessage(
               `Failed to initialize Keycloak.`,
               'Keycloak Service',
               Constants.ToastTypes.ERROR
@@ -201,9 +205,8 @@ export class KeycloakService {
     if (!lastTriedAutoLogin) {
       return false;
     }
-    // get the value from localStorage
+    // add 15 seconds to the timestamp from localStorage
     const retryTime = new Date(lastTriedAutoLogin);
-    // add 15 seconds
     retryTime.setTime(retryTime.getTime() + this.AUTOLOGIN_NORETRY_SECONDS * 1000);
     return new Date().getTime() < retryTime.getTime();
   }
