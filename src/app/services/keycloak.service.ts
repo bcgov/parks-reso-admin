@@ -112,8 +112,11 @@ export class KeycloakService {
     const jwt = JwtUtil.decodeToken(token);
 
     if (
-      !(jwt && jwt.resource_access && jwt.resource_access['parking-pass'] && jwt.resource_access['parking-pass'].roles)
-    ) {
+        !(jwt && 
+        jwt.resource_access 
+        && jwt.resource_access['parking-pass'] 
+        && jwt.resource_access['parking-pass'].roles)
+      ) {
       return false;
     }
 
