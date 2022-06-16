@@ -3,7 +3,9 @@
     <h1>Day Use Pass Admin</h1>
     <p>Select the ID you want to use to log into the Day Use Pass Admin system.</p>
     <p>
-      <button type="button" (click)="handleLogin(idpHintEnum.BCSC)" class="btn">Log in with BC Services Card</button>
+      <button type="button" (click)="handleLogin(keycloakService.idpHintEnum.BCSC)" class="btn">
+        Log in with BC Services Card
+      </button>
       <br />
       <a
         href="https://www2.gov.bc.ca/gov/content/governments/government-id/bcservicescardapp/setup"
@@ -15,7 +17,9 @@
       </a>
     </p>
     <p>
-      <button type="button" (click)="handleLogin(idpHintEnum.BCEID)" class="btn">Log in with BCeID</button>
+      <button type="button" (click)="handleLogin(keycloakService.idpHintEnum.BCEID)" class="btn">
+        Log in with BCeID
+      </button>
       <br />
       <a
         href="https://www.bceid.ca/directories/bluepages/details.aspx?serviceId=7852&eServiceType=all"
@@ -27,7 +31,9 @@
       </a>
     </p>
     <p>
-      <button type="button" (click)="handleLogin(idpHintEnum.IDIR)" class="btn">Log in with IDIR</button>
+      <button type="button" (click)="handleLogin(keycloakService.idpHintEnum.IDIR)" class="btn">
+        Log in with IDIR
+      </button>
     </p>
   </div>
 </div>

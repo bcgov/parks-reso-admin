@@ -10,12 +10,17 @@ declare let Keycloak: any;
 
 @Injectable()
 export class KeycloakService {
-  public LAST_IDP_TRIED = 'kc-last-idp-tried';
   public LAST_IDP_AUTHENTICATED = 'kc-last-idp-authenticated';
   private keycloakAuth: any;
   private keycloakEnabled: boolean;
   private keycloakUrl: string;
   private keycloakRealm: string;
+
+  public readonly idpHintEnum = {
+    BCEID: 'bceid-basic-and-business',
+    BCSC: 'bcsc',
+    IDIR: 'idir'
+  };
 
   constructor(
     private configService: ConfigService,
@@ -104,6 +109,10 @@ export class KeycloakService {
    * @memberof KeycloakService
    */
   isAuthenticated(): boolean {
+    const token = this.getToken();
+    if (!token) {
+      return false;
+    }
     return this.keycloakAuth && this.keycloakAuth.authenticated === true;
   }
 
@@ -174,6 +183,51 @@ export class KeycloakService {
    * @memberof KeycloakService
    */
   login(idpHint: string) {
-    return this.keycloakAuth && this.keycloakAuth.login({ idpHint: idpHint });
+    let redirectUri = window.location.href;
+    // by default keycloak login will want to redirect back to the login page
+    // redirect to '/dayuse' instead
+    if (redirectUri.endsWith('/login')) {
+      redirectUri = redirectUri.slice(0, redirectUri.lastIndexOf('/'));
+    }
+    return this.keycloakAuth && this.keycloakAuth.login({ idpHint: idpHint, redirectUri: redirectUri });
+  }
+
+  /**
+   * Infers the identity provider from the JWT token
+   *
+   * @memberof KeycloakService
+   */
+  getIdpFromToken(): string {
+    const token = this.getToken();
+
+    if (!token) {
+      return '';
+    }
+
+    const jwt = JwtUtil.decodeToken(token);
+
+    // idir users have an idir_userid property
+    if (jwt.idir_userid !== undefined) {
+      return this.idpHintEnum.IDIR;
+    }
+
+    // if extra steps are completed in the keycloak config
+    // bceid users will have a bceid_userid property
+    if (jwt.bceid_userid !== undefined) {
+      return this.idpHintEnum.BCEID;
+    }
+
+    const preferredUsernameParts = jwt.preferred_username.split('@');
+    if (preferredUsernameParts.length > 1) {
+      const domainPart = preferredUsernameParts[1].toLowerCase();
+      // the preferred_username for BCEID users is `username@bceid-basic-and-business`
+      if (domainPart.startsWith('bceid')) {
+        return this.idpHintEnum.BCEID;
+      }
+    }
+
+    // BCSC users have no distinguishing traits, but BCSC is asssumed
+    // if it's not BCeID or IDIR
+    return this.idpHintEnum.BCSC;
   }
 }

@@ -8,27 +8,23 @@ import { KeycloakService } from '../services/keycloak.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  public readonly idpHintEnum = {
-    BCEID: 'bceid-basic-and-business',
-    BCSC: 'bcsc',
-    IDIR: 'idir'
-  };
-
   constructor(private keycloakService: KeycloakService, private router: Router) {}
 
   ngOnInit() {
-    if (this.keycloakService.isAuthorized()) {
-      this.router.navigate(['/']);
-      return;
-    }
     if (this.keycloakService.isAuthenticated()) {
-      this.router.navigate(['/unauthorized']);
-      return;
+      if (this.keycloakService.isAuthorized()) {
+        console.log('login::authorized && authenticated');
+        this.router.navigate(['/']);
+        return;
+      } else {
+        console.log('login::not authorized');
+        this.router.navigate(['/unauthorized']);
+        return;
+      }
     }
   }
 
   handleLogin(idpHint: string) {
-    sessionStorage.setItem(this.keycloakService.LAST_IDP_TRIED, idpHint);
     this.keycloakService.login(idpHint);
   }
 }
