@@ -8,7 +8,6 @@ import { NgModule, ApplicationRef, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatMenuModule, MatTabsModule } from '@angular/material';
-import { MatIconModule } from '@angular/material/icon';
 
 // modules
 import { AppRoutingModule } from 'app/app-routing.module';
@@ -71,7 +70,6 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
     NgbModule,
     BootstrapModalModule.forRoot({ container: document.body }),
     NgSelectModule,
-    MatIconModule,
     MatMenuModule,
     MatTabsModule,
     MetricsModule,

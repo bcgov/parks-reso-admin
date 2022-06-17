@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { KeycloakService } from 'app/services/keycloak.service';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
@@ -8,7 +9,7 @@ import { JwtUtil } from '../shared/utils/jwt-utils';
 describe('KeycloakService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [KeycloakService, { provide: ConfigService }, { provide: LoggerService }, { provide: ToastService }]
+      providers: [KeycloakService, ConfigService, LoggerService, ToastService, HttpClient, HttpHandler]
     });
   });
 

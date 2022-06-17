@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { SideBarService } from 'app/services/sidebar.service';
 
 @Component({
@@ -6,18 +6,19 @@ import { SideBarService } from 'app/services/sidebar.service';
   templateUrl: './toggle-button.component.html',
   styleUrls: ['./toggle-button.component.scss']
 })
+
 export class ToggleButtonComponent {
-  @Input() disabled = false;
 
   public loading = true;
   public classApplied = false;
 
-  constructor(private sidebarService: SideBarService) {}
+  constructor(
+    private sidebarService: SideBarService
+  ) { }
 
   toggleSideNav() {
-    if (!this.disabled) {
-      this.sidebarService.toggle();
-      this.classApplied = !this.classApplied;
-    }
+    this.sidebarService.toggle();
+    this.classApplied = !this.classApplied;
   }
+
 }
