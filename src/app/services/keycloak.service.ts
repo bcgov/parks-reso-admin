@@ -66,7 +66,7 @@ export class KeycloakService {
         };
 
         this.keycloakAuth.onAuthLogout = () => {
-          console.log('onAuthLogout');
+          // console.log('onAuthLogout');
         };
 
         // Try to get refresh tokens in the background
@@ -91,7 +91,7 @@ export class KeycloakService {
           })
           .error(err => {
             this.toastService.addMessage(
-              `Failed to initialize Keycloak.`,
+              'Failed to initialize Keycloak.',
               'Keycloak Service',
               Constants.ToastTypes.ERROR
             );
@@ -177,9 +177,8 @@ export class KeycloakService {
 
   /**
    * Redirects to keycloak and logs in
-   * idpHint options:
    *
-   * @param {string} idpHint which identity provider to use
+   * @param {string} idpHint see idpHintEnum for valid values
    * @memberof KeycloakService
    */
   login(idpHint: string) {
@@ -194,6 +193,11 @@ export class KeycloakService {
 
   /**
    * Infers the identity provider from the JWT token
+   *
+   * @remarks
+   * If IDIR and BCEID users are being redirected to the BCSC login
+   * page to re-authenticate, it means the client mappers in Keycloak
+   * (idir_userid and bceid_userid) haven't been properly setup.
    *
    * @memberof KeycloakService
    */
@@ -211,19 +215,9 @@ export class KeycloakService {
       return this.idpHintEnum.IDIR;
     }
 
-    // if extra steps are completed in the keycloak config
     // bceid users will have a bceid_userid property
     if (jwt.bceid_userid !== undefined) {
       return this.idpHintEnum.BCEID;
-    }
-
-    const preferredUsernameParts = jwt.preferred_username.split('@');
-    if (preferredUsernameParts.length > 1) {
-      const domainPart = preferredUsernameParts[1].toLowerCase();
-      // the preferred_username for BCEID users is `username@bceid-basic-and-business`
-      if (domainPart.startsWith('bceid')) {
-        return this.idpHintEnum.BCEID;
-      }
     }
 
     // BCSC users have no distinguishing traits, but BCSC is asssumed
