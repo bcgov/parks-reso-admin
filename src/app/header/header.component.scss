@@ -273,6 +273,15 @@
     height: auto !important;
     flex-grow: 0;
   }
+
+  .align-no-sidebar {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    &:first-child > span { margin-right: auto; }
+    &:last-child  > span { margin-left: auto;  }
+  }
 }
 
 // Navbar Brand
