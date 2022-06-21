@@ -20,6 +20,12 @@ export class AuthGuard implements CanActivate {
       }
       // If an identity provider was already selected and successfully authenticated
       // then do a keycloak login with that identity provider.
+
+      // remove the sessionStorage value first, so if this authentication attempt,
+      // fails then the user will get the login page next time.
+      sessionStorage.removeItem(this.keycloakService.LAST_IDP_AUTHENTICATED);
+
+      // log in using the last identity provider that worked
       this.keycloakService.login(lastIdp);
       return false;
     }
