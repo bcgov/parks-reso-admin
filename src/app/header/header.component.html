@@ -7,7 +7,7 @@
     <div [ngClass]="{ 'align-no-sidebar': !showSideBar }">
       <span class="navbar-environment" *ngIf="environment !== 'prod'">{{ environment }}</span>
     </div>
-    <ng-template *ngIf="showSideBar">
+    <ng-container *ngIf="showSideBar">
       <button
         class="navbar-toggler"
         type="button"
@@ -30,7 +30,7 @@
           </li>
         </ul>
       </div>
-    </ng-template>
+    </ng-container>
     <div *ngIf="!showSideBar" class="align-no-sidebar d-none d-md-block">
       <span></span>
     </div>
