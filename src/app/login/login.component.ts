@@ -8,7 +8,7 @@ import { KeycloakService } from '../services/keycloak.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(private keycloakService: KeycloakService, private router: Router) {}
+  constructor(public keycloakService: KeycloakService, private router: Router) {}
 
   ngOnInit() {
     if (this.keycloakService.isAuthenticated()) {
