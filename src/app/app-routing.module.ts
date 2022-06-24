@@ -12,12 +12,20 @@ import { ParksComponent } from './parks/parks.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
+    path: 'login',
+    pathMatch: 'full',
+    component: LoginComponent,
+    data: { showSideBar: false, showBreadCrumb: false }
+  },
+  {
     path: 'unauthorized',
     pathMatch: 'full',
-    component: NotAuthorizedComponent
+    component: NotAuthorizedComponent,
+    data: { showSideBar: false, showBreadCrumb: false }
   },
   {
     path: '',

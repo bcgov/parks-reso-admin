@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Router } from '@angular/router';
 import { DialogService } from 'ng2-bootstrap-modal';
@@ -31,11 +31,13 @@ import { KeycloakService } from 'app/services/keycloak.service';
 })
 
 export class HeaderComponent implements OnInit, OnDestroy {
+  @Input() showSideBar = true;
+
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
   public isNavMenuOpen = false;
   public welcomeMsg: String;
-  public isAuthenticated: boolean;
+  public isAuthorized: boolean;
   public environment: string;
 
   constructor(
@@ -45,7 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private keycloakService: KeycloakService,
   ) {
     router.events.subscribe(() => {
-      this.isAuthenticated = this.keycloakService.isAuthenticated();
+      this.isAuthorized = this.keycloakService.isAuthorized();
       this.welcomeMsg = this.apiService.getWelcomeMessage();
     });
 

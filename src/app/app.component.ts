@@ -1,5 +1,5 @@
 import { Component, OnInit, HostBinding, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { IBreadcrumb } from './breadcrumb/breadcrumb.component';
@@ -20,11 +20,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.sidebarcontrol')
   isOpen = false;
+  showSideBar = false;
+  showBreadCrumb = false;
   toastSubscription: Subscription;
 
   constructor(
     private sideBarService: SideBarService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private toastr: ToastrService,
     private toastService: ToastService
   ) {
@@ -39,6 +42,12 @@ export class AppComponent implements OnInit, OnDestroy {
     });
     this.watchForToast();
 
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.showSideBar = this.activatedRoute.firstChild.snapshot.data.showSideBar !== false;
+        this.showBreadCrumb = this.activatedRoute.firstChild.snapshot.data.showBreadCrumb !== false;
+      }
+    });
   }
 
   private watchForToast() {

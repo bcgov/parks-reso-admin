@@ -36,6 +36,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { AuthGuard } from './guards/auth.guard';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+import { LoginComponent } from './login/login.component';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 export function initConfig(configService: ConfigService, keycloakService: KeycloakService) {
@@ -56,7 +57,8 @@ export function initConfig(configService: ConfigService, keycloakService: Keyclo
     ConfirmComponent,
     ReservationsComponent,
     BreadcrumbComponent,
-    NotAuthorizedComponent
+    NotAuthorizedComponent,
+    LoginComponent
   ],
   imports: [
     BrowserAnimationsModule,

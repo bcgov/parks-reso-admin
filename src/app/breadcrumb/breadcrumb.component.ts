@@ -122,7 +122,7 @@ export class BreadcrumbComponent implements OnInit {
     });
   }
 
-  public isAuthenticated() {
-    return this.keycloakService.isAuthenticated();
+  public isAuthorized() {
+    return this.keycloakService.isAuthorized();
   }
 }
