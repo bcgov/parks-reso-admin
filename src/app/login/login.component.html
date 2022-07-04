@@ -1,9 +1,14 @@
-<div class="outer-container">
-  <div class="inner-container">
+<div class="login-container d-md-flex justify-content-center pt-md-5">
+<div class="login-form p-2 p-md-4">
+  <div class="text-center">
     <h1>Day Use Pass Admin</h1>
     <p>Select the ID you want to use to log into the Day Use Pass Admin system.</p>
     <p>
-      <button type="button" (click)="handleLogin(keycloakService.idpHintEnum.BCSC)" class="btn">
+      <button
+        type="button"
+        (click)="handleLogin(keycloakService.idpHintEnum.BCSC)"
+        class="btn btn-login"
+      >
         Log in with BC Services Card
       </button>
       <br />
@@ -13,11 +18,15 @@
         target="_blank"
       >
         <span class="material-icons">launch</span>
-        Set up the BC Services Card App
+        <span>Set up the BC Services Card App</span>
       </a>
     </p>
     <p>
-      <button type="button" (click)="handleLogin(keycloakService.idpHintEnum.BCEID)" class="btn">
+      <button
+        type="button"
+        (click)="handleLogin(keycloakService.idpHintEnum.BCEID)"
+        class="btn btn-login"
+      >
         Log in with BCeID
       </button>
       <br />
@@ -27,13 +36,18 @@
         target="_blank"
       >
         <span class="material-icons">launch</span>
-        Register for a BCeID
+        <span>Register for a BCeID</span>
       </a>
     </p>
     <p>
-      <button type="button" (click)="handleLogin(keycloakService.idpHintEnum.IDIR)" class="btn">
+      <button
+        type="button"
+        (click)="handleLogin(keycloakService.idpHintEnum.IDIR)"
+        class="btn btn-login"
+      >
         Log in with IDIR
       </button>
     </p>
   </div>
+</div>
 </div>

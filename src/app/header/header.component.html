@@ -1,39 +1,38 @@
 <header class="app-header app-header--solid"
   id="header">
   <nav class="navbar navbar-expand-md justify-content-between">
-    <a class="navbar-brand"
-      title="BC Parks"
-      routerLink="/">
+    <a class="navbar-brand" [ngClass]="{ 'align-no-sidebar': !showSideBar }" title="BC Parks" routerLink="/">
       <span class="navbar-brand__title">BC Parks</span>
     </a>
-    <span class="navbar-environment"
-      *ngIf="environment !== 'prod'">{{ environment }}</span>
-    <button class="navbar-toggler"
-      type="button"
-      title="Toggle Main Navigation"
-      *ngIf="showSideBar"
-      aria-controls="navbarText"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-      (click)="toggleNav()">
-      <i class="material-icons">menu</i>
-      <span>MENU</span>
-    </button>
-    <div class="navbar-collapse"
-      [@toggleNav]="isNavMenuOpen ? 'navOpen' : 'navClosed'"
-      id="mainNav">
-      <ul class="navbar-nav">
-        <!-- LOGGED IN -->
-        <li *ngIf="isAuthorized"
-          class="nav-item"
-          placement="bottom-right">
-          <a class="nav-link"
-            id="welcome"
-            tabindex="0">
-            <span>{{ welcomeMsg }}</span>
-          </a>
-        </li>
-      </ul>
+    <div [ngClass]="{ 'align-no-sidebar': !showSideBar }">
+      <span class="navbar-environment" *ngIf="environment !== 'prod'">{{ environment }}</span>
+    </div>
+    <ng-container *ngIf="showSideBar">
+      <button
+        class="navbar-toggler"
+        type="button"
+        title="Toggle Main Navigation"
+        aria-controls="navbarText"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        (click)="toggleNav()"
+      >
+        <i class="material-icons">menu</i>
+        <span>MENU</span>
+      </button>
+      <div class="navbar-collapse" [@toggleNav]="isNavMenuOpen ? 'navOpen' : 'navClosed'" id="mainNav">
+        <ul class="navbar-nav">
+          <!-- LOGGED IN -->
+          <li *ngIf="isAuthorized" class="nav-item" placement="bottom-right">
+            <a class="nav-link" id="welcome" tabindex="0">
+              <span>{{ welcomeMsg }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+    <div *ngIf="!showSideBar" class="align-no-sidebar d-none d-md-block">
+      <span></span>
     </div>
   </nav>
 </header>

@@ -1,19 +1,19 @@
 @import '~assets/styles/base/base.scss';
-@import '~assets/styles/layout/no-sidebar.scss';
 
 :host {
-  display: block;
-  background-position: center -8rem;
-  background-size: 250%;
-  background-repeat: no-repeat;
+  /* fill the entire viewport and offset the fixed header and footer height (68px + 37px = 105px;) */
+  min-height: calc(100vh - 105px);
+}
+
+.not-authorized-container {
+  padding: 2rem;
 }
 
 .title-container {
   margin-bottom: 4rem;
-  text-align: left;
 
   h1 {
     font-size: 2.8rem;
-    line-height: 2.5rem;
+    line-height: 3.5rem;
   }
 }
