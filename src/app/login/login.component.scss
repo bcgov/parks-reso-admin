@@ -2,8 +2,7 @@
 
 .login-container {
   background-color: $white;
-  /* fill the entire viewport and offset the fixed header and footer height (68px + 37px = 105px;) */  
-  min-height: calc(100vh - 105px)
+  padding: 1.4rem 0.6rem;
 }
 
 .login-form {
@@ -15,6 +14,9 @@
 @media screen and (min-width: 768px) {
   .login-container {
     background: $lightgray;
+    /* fill the entire viewport and offset the fixed header and footer height (68px + 37px = 105px;) */
+    min-height: calc(100vh - 105px);
+    padding: 0;
   }
   .login-form {
     border: 1px solid $login-page-form-border;
