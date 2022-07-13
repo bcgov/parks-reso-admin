@@ -94,7 +94,7 @@ export class PassListComponent implements OnInit, OnDestroy {
             this.ExclusiveStartKeySK = null;
           }
           const tempList = res.data.map(item => {
-            item.date = DateTime.fromISO(item.date).setZone('America/Vancouver').toJSDate();
+            item.date = DateTime.fromISO(item.date).setZone('America/Vancouver').toISO();
             return { rowData: item };
           });
           if (this.appendList) {
