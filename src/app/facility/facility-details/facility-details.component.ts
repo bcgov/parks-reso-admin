@@ -13,6 +13,7 @@ import {
 } from 'app/shared/components/search-filter-template/filter-object';
 import { ApiService } from 'app/services/api.service';
 import { ToastService } from 'app/services/toast.service';
+import { DateTime } from 'luxon'
 
 @Component({
   selector: 'app-facility-details',
@@ -200,7 +201,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   }
 
   convertDate(date) {
-    return new Date(date).toISOString().slice(0, 10);
+    return DateTime.fromISO(date).toISODate();
   }
 
   filterPasses(params) {
