@@ -63,6 +63,7 @@ export class KeycloakService {
 
         this.keycloakAuth.onAuthRefreshError = () => {
           // console.log('onAuthRefreshError');
+          window.location.href = 'login';
         };
 
         this.keycloakAuth.onAuthLogout = () => {
