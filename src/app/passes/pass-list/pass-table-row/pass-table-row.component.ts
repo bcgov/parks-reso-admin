@@ -86,7 +86,11 @@ export class PassTableRowComponent extends TableRowComponent implements OnInit {
               try {
                 await this.passService.cancelPass(this.rowData.sk, this.rowData.pk.replace('pass::', ''));
                 let reservationObj = null;
-                this.reservationService.getItemValue().subscribe(event => (reservationObj = event));
+
+                this.reservationService
+                  .getItemValue()
+                  .subscribe(event => (reservationObj = event))
+                  .unsubscribe();
                 if (reservationObj) {
                   reservationObj.capacities[this.rowData.type].availablePasses =
                     reservationObj.capacities[this.rowData.type].availablePasses + this.rowData.numberOfGuests;
