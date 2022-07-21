@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
 import { PassService } from 'app/services/pass.service';
+import { ReservationService } from 'app/services/reservation.service';
 import { ToastService } from 'app/services/toast.service';
 import { TableRowComponent } from 'app/shared/components/table-template/table-row-component';
 import { Constants } from 'app/shared/utils/constants';
@@ -12,18 +13,18 @@ import { DialogService } from 'ng2-bootstrap-modal';
   styleUrls: ['./pass-table-row.component.scss']
 })
 export class PassTableRowComponent extends TableRowComponent implements OnInit {
-
   public cancelLoading = false;
 
   constructor(
     private dialogService: DialogService,
     private passService: PassService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private reservationService: ReservationService
   ) {
     super();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   validate(value) {
     if (this.rowData && this.rowData.hasOwnProperty(value)) {
@@ -56,16 +57,15 @@ export class PassTableRowComponent extends TableRowComponent implements OnInit {
         message += `</br></br><strong>Date:</strong></br>` + this.rowData.date;
         message += `</br></br><strong>Pass Status:</strong></br>` + this.rowData.passStatus;
 
-        this.dialogService
-          .addDialog(
-            ConfirmComponent,
-            {
-              title: 'Details for ' + this.rowData.registrationNumber,
-              message,
-              okOnly: true
-            },
-            { backdropColor: 'rgba(0, 0, 0, 0.5)' }
-          );
+        this.dialogService.addDialog(
+          ConfirmComponent,
+          {
+            title: 'Details for ' + this.rowData.registrationNumber,
+            message,
+            okOnly: true
+          },
+          { backdropColor: 'rgba(0, 0, 0, 0.5)' }
+        );
         break;
       case 'cancel':
         let cancelMessage = `<p>You are about to cancel pass <strong>${this.rowData.registrationNumber}</strong>.</div>`;
@@ -79,13 +79,38 @@ export class PassTableRowComponent extends TableRowComponent implements OnInit {
               okOnly: false
             },
             { backdropColor: 'rgba(0, 0, 0, 0.5)' }
-          ).subscribe(async result => {
+          )
+          .subscribe(async result => {
             if (result) {
               this.cancelLoading = true;
-              // TODO: create toast if this blows up.
-              await this.passService.cancelPass(this.rowData.sk, this.rowData.pk.replace('pass::', ''));
-              this.toastService.addMessage('Pass successfully.', 'Cancel Pass', Constants.ToastTypes.SUCCESS);
-              this.rowData.passStatus = 'cancelled';
+              try {
+                await this.passService.cancelPass(this.rowData.sk, this.rowData.pk.replace('pass::', ''));
+                let reservationObj = null;
+
+                this.reservationService
+                  .getItemValue()
+                  .subscribe(event => (reservationObj = event))
+                  .unsubscribe();
+                if (reservationObj) {
+                  reservationObj.capacities[this.rowData.type].availablePasses =
+                    reservationObj.capacities[this.rowData.type].availablePasses + this.rowData.numberOfGuests;
+                  this.reservationService.setItemValue(reservationObj);
+                }
+                this.toastService.addMessage(
+                  'Pass cancelled successfully.',
+                  'Cancel Pass',
+                  Constants.ToastTypes.SUCCESS
+                );
+                this.rowData.passStatus = 'cancelled';
+              } catch (error) {
+                console.log(error);
+                this.toastService.addMessage(
+                  'Pass failed to cancel. Please refresh the page and try again.',
+                  'Cancel Pass',
+                  Constants.ToastTypes.ERROR
+                );
+              }
+
               this.cancelLoading = false;
             }
           });

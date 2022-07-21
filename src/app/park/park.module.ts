@@ -10,23 +10,12 @@ import { ParkRoutes } from './park-routes';
 import { ParkResolverService } from './park-resolver.service';
 import { FacilityService } from 'app/services/facility.service';
 import { FacilityResolverService } from 'app/facility/facility-resolver.service';
+import { ReservationService } from 'app/services/reservation.service';
 
 @NgModule({
-  declarations: [
-    ParkComponent,
-    ParkDetailsComponent
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    RouterModule.forRoot(ParkRoutes),
-    FacilitiesModule
-  ],
+  declarations: [ParkComponent, ParkDetailsComponent],
+  imports: [CommonModule, SharedModule, RouterModule.forRoot(ParkRoutes), FacilitiesModule],
   entryComponents: [],
-  providers: [
-    ParkResolverService,
-    FacilityService,
-    FacilityResolverService
-  ]
+  providers: [ParkResolverService, FacilityService, FacilityResolverService, ReservationService]
 })
-export class ParkModule { }
+export class ParkModule {}

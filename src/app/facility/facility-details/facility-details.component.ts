@@ -14,6 +14,7 @@ import {
 import { ApiService } from 'app/services/api.service';
 import { ToastService } from 'app/services/toast.service';
 import { DateTime } from 'luxon';
+import { ReservationService } from 'app/services/reservation.service';
 
 @Component({
   selector: 'app-facility-details',
@@ -35,9 +36,11 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
 
   public loadingSearch = false;
 
+  public reservationObj = null;
+
   // Default to today's date on page load
   public searchParams = {
-    date: new Date()
+    date: DateTime.now().setZone('America/Vancouver').toISODate()
   };
 
   public parkSk;
@@ -110,6 +113,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     private facilityService: FacilityService,
     public passService: PassService,
     private _changeDetectionRef: ChangeDetectorRef,
+    private reservationService: ReservationService,
     private utils: Utils
   ) {}
 
@@ -128,7 +132,6 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
             this.setInitialPassType(this.facility.bookingTimes);
           }
 
-          this.calculateCapacityLevels();
           this.loadingFacility = false;
           this._changeDetectionRef.detectChanges();
         }
@@ -144,6 +147,17 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
           this.loadingPM = false;
           this.loadingDAY = false;
           this.loadingSearch = false;
+          this._changeDetectionRef.detectChanges();
+        }
+      });
+
+    this.reservationService
+      .getItemValue()
+      .pipe(takeWhile(() => this.alive))
+      .subscribe(res => {
+        if (res) {
+          this.reservationObj = res;
+          this.calculateCapacityLevels();
           this._changeDetectionRef.detectChanges();
         }
       });
@@ -211,7 +225,16 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       this.passTypeSelected = this.searchParams['passType'];
       delete this.searchParams['passType'];
       this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
-      this.calculateCapacityLevels();
+    }
+
+    this.reservationObj = null;
+    if (this.searchParams.date) {
+      this.searchParams.date = DateTime.fromISO(this.searchParams.date).setZone('America/Vancouver').toISODate();
+      this.reservationService.fetchData(this.parkSk, this.facilitySk, this.searchParams.date);
+    } else {
+      this.bookingTimeSummary.reserved = null;
+      this.bookingTimeSummary.capPercent = 0;
+      this.reservationService.setItemValue(null);
     }
 
     this.passService.fetchData(
@@ -254,25 +277,23 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
   }
 
   public calculateCapacityLevels() {
-    if (this.searchParams && this.searchParams.date) {
-      const formattedDate = new Date(this.searchParams.date).toLocaleDateString('en-CA');
-      if (
-        this.facility.reservations[formattedDate] &&
-        this.facility.reservations[formattedDate][this.passTypeSelected]
-      ) {
-        this.bookingTimeSummary.reserved = this.facility.reservations[formattedDate][this.passTypeSelected];
-      } else {
-        this.bookingTimeSummary.reserved = 0;
-      }
-
-      this.bookingTimeSummary.capPercent = Math.floor(
-        (this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100
-      );
-      this.bookingTimeSummary.style = this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
+    if (
+      this.reservationObj &&
+      this.reservationObj.capacities &&
+      this.reservationObj.capacities[this.passTypeSelected]
+    ) {
+      this.bookingTimeSummary.reserved =
+        this.reservationObj.capacities[this.passTypeSelected].baseCapacity +
+        this.reservationObj.capacities[this.passTypeSelected].capacityModifier -
+        this.reservationObj.capacities[this.passTypeSelected].availablePasses;
     } else {
-      this.bookingTimeSummary.reserved = null;
-      this.bookingTimeSummary.capPercent = 0;
+      this.bookingTimeSummary.reserved = 0;
     }
+
+    this.bookingTimeSummary.capPercent = Math.floor(
+      (this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100
+    );
+    this.bookingTimeSummary.style = this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
   }
 
   public calculateProgressBarColour(capPercent) {

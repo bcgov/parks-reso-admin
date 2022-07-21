@@ -2,13 +2,20 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { FacilityService } from 'app/services/facility.service';
 import { PassService } from 'app/services/pass.service';
+import { ReservationService } from 'app/services/reservation.service';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class FacilityResolverService implements Resolve<void> {
-  constructor(private facilityService: FacilityService, private router: Router, private passService: PassService) {}
+  constructor(
+    private facilityService: FacilityService,
+    private router: Router,
+    private passService: PassService,
+    private reservationService: ReservationService
+  ) {}
 
   async resolve(route: ActivatedRouteSnapshot) {
-    const today = new Date().toISOString();
+    const today = DateTime.now().setZone('America/Vancouver').toISODate();
     if (route.params && route.params.facilityId && route.parent && route.parent.params && route.parent.params.parkId) {
       this.facilityService.clearItemValue();
       const facility = await this.facilityService.fetchData(route.params.facilityId, route.parent.params.parkId);
@@ -26,6 +33,10 @@ export class FacilityResolverService implements Resolve<void> {
           date: today
         });
       }
+
+      // Fetch reservations object
+      this.reservationService.fetchData(route.parent.params.parkId, route.params.facilityId, today);
+
       return facility;
     } else {
       this.router.navigate(['']);

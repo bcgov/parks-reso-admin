@@ -65,24 +65,24 @@ export class ApiService {
     return throwError(error);
   }
 
-  get(pk, queryParamsObject = null): Promise<any> {
+  get(endpoint, queryParamsObject = null): Promise<any> {
     let queryString = this.generateQueryString(queryParamsObject);
-    return this.http.get<any>(`${this.apiPath}/${pk}?${queryString}`, {}).toPromise();
+    return this.http.get<any>(`${this.apiPath}/${endpoint}?${queryString}`, {}).toPromise();
   }
 
-  put(pk, obj, queryParamsObject = null): Promise<any> {
+  put(endpoint, obj, queryParamsObject = null): Promise<any> {
     let queryString = this.generateQueryString(queryParamsObject);
-    return this.http.put<any>(`${this.apiPath}/${pk}?${queryString}`, obj, {}).toPromise();
+    return this.http.put<any>(`${this.apiPath}/${endpoint}?${queryString}`, obj, {}).toPromise();
   }
 
-  post(pk, obj, queryParamsObject = null): Promise<any> {
+  post(endpoint, obj, queryParamsObject = null): Promise<any> {
     let queryString = this.generateQueryString(queryParamsObject);
-    return this.http.post<any>(`${this.apiPath}/${pk}?${queryString}`, obj, {}).toPromise();
+    return this.http.post<any>(`${this.apiPath}/${endpoint}?${queryString}`, obj, {}).toPromise();
   }
 
-  delete(pk, queryParamsObject): Promise<any> {
+  delete(endpoint, queryParamsObject): Promise<any> {
     let queryString = this.generateQueryString(queryParamsObject);
-    return this.http.delete<any>(`${this.apiPath}/${pk}?${queryString}`, {}).toPromise();
+    return this.http.delete<any>(`${this.apiPath}/${endpoint}?${queryString}`, {}).toPromise();
   }
 
   private generateQueryString(queryParamsObject) {
