@@ -224,7 +224,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     if (this.searchParams['passType']) {
       this.passTypeSelected = this.searchParams['passType'];
       delete this.searchParams['passType'];
-      this.bookingTimeSummary.capacity = this.facility.bookingTimes[this.passTypeSelected].max;
+      this.setDefaultCapacity(this.facility.bookingTimes[this.passTypeSelected].max);
     }
 
     this.reservationObj = null;
@@ -282,10 +282,12 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       this.reservationObj.capacities &&
       this.reservationObj.capacities[this.passTypeSelected]
     ) {
-      this.bookingTimeSummary.reserved =
+      const modifiedCapacity =
         this.reservationObj.capacities[this.passTypeSelected].baseCapacity +
-        this.reservationObj.capacities[this.passTypeSelected].capacityModifier -
-        this.reservationObj.capacities[this.passTypeSelected].availablePasses;
+        this.reservationObj.capacities[this.passTypeSelected].capacityModifier;
+      this.bookingTimeSummary.capacity = modifiedCapacity;
+      this.bookingTimeSummary.reserved =
+        modifiedCapacity - this.reservationObj.capacities[this.passTypeSelected].availablePasses;
     } else {
       this.bookingTimeSummary.reserved = 0;
     }
@@ -333,7 +335,15 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
         this.formComponents[0].options[i].initialValue = true;
       }
     }
-    this.bookingTimeSummary.capacity = bookingTimes[this.passTypeSelected].max;
+    this.setDefaultCapacity(bookingTimes[this.passTypeSelected].max);
+  }
+
+  private setDefaultCapacity(facilityCapacity) {
+    // Only use facility capacity as a default. It will get overridden by reservation
+    // object capacity, which contains historical and adjusted daily values
+    if (facilityCapacity && this.bookingTimeSummary.capacity === null) {
+      this.bookingTimeSummary.capacity = facilityCapacity;
+    }
   }
 
   ngOnDestroy() {
