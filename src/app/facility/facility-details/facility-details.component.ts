@@ -224,6 +224,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     if (this.searchParams['passType']) {
       this.passTypeSelected = this.searchParams['passType'];
       delete this.searchParams['passType'];
+      this.bookingTimeSummary.capacity = null;
       this.setDefaultCapacity(this.facility.bookingTimes[this.passTypeSelected].max);
     }
 
