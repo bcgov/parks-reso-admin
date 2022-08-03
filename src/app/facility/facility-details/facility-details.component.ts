@@ -294,7 +294,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     }
 
     this.bookingTimeSummary.capPercent = Math.floor(
-      (this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100
+      (this.bookingTimeSummary.reserved / (this.bookingTimeSummary.capacity || Number.MAX_SAFE_INTEGER)) * 100
     );
     this.bookingTimeSummary.style = this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
   }
