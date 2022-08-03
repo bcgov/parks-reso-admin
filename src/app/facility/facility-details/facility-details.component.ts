@@ -224,6 +224,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     if (this.searchParams['passType']) {
       this.passTypeSelected = this.searchParams['passType'];
       delete this.searchParams['passType'];
+      this.bookingTimeSummary.capacity = null;
       this.setDefaultCapacity(this.facility.bookingTimes[this.passTypeSelected].max);
     }
 
@@ -292,9 +293,9 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       this.bookingTimeSummary.reserved = 0;
     }
 
-    this.bookingTimeSummary.capPercent = Math.floor(
-      (this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100
-    );
+    this.bookingTimeSummary.capPercent = this.bookingTimeSummary.capacity
+      ? Math.floor((this.bookingTimeSummary.reserved / this.bookingTimeSummary.capacity) * 100)
+      : 0;
     this.bookingTimeSummary.style = this.calculateProgressBarColour(this.bookingTimeSummary.capPercent);
   }
 
