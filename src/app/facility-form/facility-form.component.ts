@@ -44,6 +44,10 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     bookingOpeningHour: new FormControl(null, Validators.compose([Validators.min(1), Validators.max(12)])),
     bookingOpeningAmPm: new FormControl(null),
     bookingDaysAhead: new FormControl(null, Validators.min(0)),
+    modifierDate: new FormControl(),
+    modifierAM: new FormControl(),
+    modifierPM: new FormControl(),
+    modifierDAY: new FormControl()
   });
 
   constructor(
@@ -165,6 +169,10 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
       bookingOpeningHour: hour,
       bookingOpeningAmPm: amPm,
       bookingDaysAhead: bookingDaysAhead,
+      modifierDate: null,
+      modifierAM: null,
+      modifierPM: null,
+      modifierDAY: null
     });
 
     if (this.facilityForm.get('status')) {

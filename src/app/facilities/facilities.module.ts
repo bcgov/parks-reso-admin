@@ -10,6 +10,9 @@ import { FacilityModule } from 'app/facility/facility.module';
 import { FacilitiesRoutes } from './facilities-routes';
 import { FacilityFormComponent } from 'app/facility-form/facility-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModifierListComponent } from 'app/facility-form/modifier-list/modifier-list.component';
+import { ModifierTableRowComponent } from 'app/facility-form/modifier-list/modifier-table-row/modifier-table-row.component';
+import { DatePickerModule } from 'app/shared/components/date-picker/date-picker.module';
 
 @NgModule({
   declarations: [
@@ -17,21 +20,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FacilityAddComponent,
     FacilityListComponent,
     FacilityTableRowComponent,
-    FacilityFormComponent
+    FacilityFormComponent,
+    ModifierListComponent,
+    ModifierTableRowComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forRoot(FacilitiesRoutes),
     SharedModule,
+    DatePickerModule,
     FacilityModule,
     ReactiveFormsModule,
     FormsModule
   ],
-  exports: [
-    FacilityListComponent
-  ],
-  entryComponents: [
-    FacilityTableRowComponent
-  ]
+  exports: [FacilityListComponent, ModifierListComponent],
+  entryComponents: [FacilityTableRowComponent, ModifierTableRowComponent]
 })
-export class FacilitiesModule { }
+export class FacilitiesModule {}

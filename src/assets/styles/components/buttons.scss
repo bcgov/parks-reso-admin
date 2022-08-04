@@ -170,6 +170,18 @@ main {
   }
 }
 
+.content-btn-alt.success {
+  color: #063;
+  border-color: #063;
+
+  &:focus,
+  &:hover {
+    color: $white;
+    border-color: #063;
+    background: #063;
+  }
+}
+
 // Scroll Top Button
 .scroll-top-btn {
   position: fixed;

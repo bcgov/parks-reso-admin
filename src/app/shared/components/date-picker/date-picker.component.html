@@ -2,7 +2,7 @@
   [ngClass]="{ 'is-invalid': isValidate && !isValidDate(ngbDate) }">
   <input class="form-control"
     type="text"
-    placeholder="YYYY-MM-DD"
+    [placeholder]="placeholder"
     name="ngbDatepicker"
     navigation="select"
     ngbDatepicker

@@ -285,6 +285,45 @@
                     </div>
                 </div>
             </div>
+            <h4>Capacity Changes</h4>
+            <p>
+              To increase capacity, enter a positive number. To reduce capacity, enter a negative number (e.g., -50). Note
+              that reducing could lead to overbooked passes.
+            </p>
+            <div class="shading-light px-3 pt-3 pb-2 pb-lg-4">
+              <div class="row">
+                <div class="col-lg-3 mt-auto">
+                  <label class="form-label font-weight-bold" for="modifierDate">Date</label>
+                  <lib-date-picker placeholder="Select date" id="modifierDate" [control]="facilityForm.get('modifierDate')"></lib-date-picker>
+                </div>
+                <div class="col-lg-2 font-weight-bold mt-auto">
+                  <label class="form-label" for="modifierAM">AM Change</label>
+                  <input id="modifierAM" type="text" class="form-control" formControlName="modifierAM" />
+                </div>
+                <div class="col-lg-2 font-weight-bold mt-auto">
+                  <label class="form-label" for="modifierPM">PM Change</label>
+                  <input id="modifierPM" type="text" class="form-control" formControlName="modifierPM" />
+                </div>
+                <div class="col-lg-2 font-weight-bold mt-auto">
+                  <label class="form-label" for="modifierDAY">All-Day Change</label>
+                  <input id="modifierDAY" type="text" class="form-control" formControlName="modifierDAY" disabled="disabled" />
+                </div>
+                <div class="col-lg-3 d-flex flex-column mt-auto justify-content-center pt-4">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary btn-sm content-btn-alt success m-lg-auto"
+                    title="Save"
+                    (click)="alert('save')"
+                  >
+                    <span class="material-icons">save</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h5 class="mt-4">Scheduled capacity changes</h5>
+            <section class="modifier-table-section">
+              <app-modifier-list [parkSk]="facility.pk" [facilitySk]="facility.sk"></app-modifier-list>
+            </section>
         </form>
 
         <div class="py-4">

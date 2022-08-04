@@ -1,3 +1,13 @@
 .shading-light {
-    background: #f8f9fa;
+  background: #f8f9fa;
+}
+
+// negative margins on the 'scheduled capacity changes' table to match the form sections above
+.modifier-table-section {
+  margin: 0 -1.5rem;
+}
+
+// make the save icon on the capacity changes form the same height as the text inputs
+.content-btn-alt.success {
+  height: 2.75rem;
 }

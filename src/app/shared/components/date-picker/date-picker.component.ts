@@ -27,6 +27,7 @@ export class DatePickerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() maxDate: Date = null;
   @Input() reset: EventEmitter<any>;
   @Input() required = false;
+  @Input() placeholder = 'YYYY-MM-DD';
 
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 

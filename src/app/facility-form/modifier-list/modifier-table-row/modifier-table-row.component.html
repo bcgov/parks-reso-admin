@@ -1,0 +1,16 @@
+<td data-label="Date" scope="row" class="col-3">{{ getDate() }}</td>
+<td data-label="AM Change" scope="row" class="col-2">{{ getModifier('AM') }}</td>
+<td data-label="PM Change" scope="row" class="col-2">{{ getModifier('PM') }}</td>
+<td data-label="All-Day Change" scope="row" class="col-2">{{ getModifier('DAY') }}</td>
+<td data-label="Controls" scope="row" class="col-3">
+  <div class="d-flex justify-content-center">
+    <button
+      type="button"
+      class="btn btn-outline-secondary btn-sm content-btn-alt danger"
+      title="Delete"
+      (click)="delete('sk')"
+    >
+      <span class="material-icons">delete</span>
+    </button>
+  </div>
+</td>

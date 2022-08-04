@@ -1,0 +1,9 @@
+// NOTE: ViewEncapsulation is set to 'None' to target child components
+app-modifier-list {
+  // adjust the padding on the table cells to match bootstrap row/col padding & margins of the form above
+  td,
+  th {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+}
