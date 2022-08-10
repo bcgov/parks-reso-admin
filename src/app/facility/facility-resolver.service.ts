@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { FacilityService } from 'app/services/facility.service';
+import { ModifierService } from 'app/services/modifier.service';
 import { PassService } from 'app/services/pass.service';
 import { ReservationService } from 'app/services/reservation.service';
 import { DateTime } from 'luxon';
@@ -11,7 +12,8 @@ export class FacilityResolverService implements Resolve<void> {
     private facilityService: FacilityService,
     private router: Router,
     private passService: PassService,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
+    private modifierService: ModifierService
   ) {}
 
   async resolve(route: ActivatedRouteSnapshot) {
@@ -37,6 +39,7 @@ export class FacilityResolverService implements Resolve<void> {
       // Fetch reservations object
       this.reservationService.fetchData(route.parent.params.parkId, route.params.facilityId, today);
 
+      this.modifierService.fetchData(route.parent.params.parkId, route.params.facilityId, today);
       return facility;
     } else {
       this.router.navigate(['']);

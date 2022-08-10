@@ -108,9 +108,17 @@
             <span *ngIf="bookingTimeSummary.reserved === null">
               To display capacity levels, you must filter by a date.
             </span>
-            <span *ngIf="bookingTimeSummary.reserved !== null">
-              {{ bookingTimeSummary.reserved }}/{{ bookingTimeSummary.capacity }} passes reserved
-            </span>
+            <div *ngIf="bookingTimeSummary.reserved !== null">
+              <span>{{ bookingTimeSummary.reserved }}/{{ bookingTimeSummary.capacity }}&nbsp;</span>
+              <span class="text-success" *ngIf="bookingTimeSummary.modifier > 0">
+                (+{{ bookingTimeSummary.modifier }})&nbsp;
+              </span>
+              <span class="text-danger" *ngIf="bookingTimeSummary.modifier < 0">
+                ({{ bookingTimeSummary.modifier }})&nbsp;
+              </span>
+              <span>passes reserved</span>
+            </div>
+            <div *ngIf="bookingTimeSummary.modifier !== 0" class="text-muted"><small>Modifier applied</small></div>
           </strong>
         </label>
         <ngb-progressbar

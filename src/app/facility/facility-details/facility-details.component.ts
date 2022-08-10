@@ -50,6 +50,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
     capPercent: 0,
     reserved: null,
     capacity: null,
+    modifier: 0,
     style: 'success'
   };
 
@@ -225,6 +226,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       this.passTypeSelected = this.searchParams['passType'];
       delete this.searchParams['passType'];
       this.bookingTimeSummary.capacity = null;
+      this.bookingTimeSummary.modifier = null;
       this.setDefaultCapacity(this.facility.bookingTimes[this.passTypeSelected].max);
     }
 
@@ -289,6 +291,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       this.bookingTimeSummary.capacity = modifiedCapacity;
       this.bookingTimeSummary.reserved =
         modifiedCapacity - this.reservationObj.capacities[this.passTypeSelected].availablePasses;
+      this.bookingTimeSummary.modifier = this.reservationObj.capacities[this.passTypeSelected].capacityModifier;
     } else {
       this.bookingTimeSummary.reserved = 0;
     }
