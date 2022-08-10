@@ -28,6 +28,11 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
   public facility = null;
   public park = null;
 
+  public enabledTimeslots = {
+    AM: false,
+    PM: false,
+    DAY: false
+  };
 
   public facilityForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -43,7 +48,7 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     capacityDAY: new FormControl(),
     bookingOpeningHour: new FormControl(null, Validators.compose([Validators.min(1), Validators.max(12)])),
     bookingOpeningAmPm: new FormControl(null),
-    bookingDaysAhead: new FormControl(null, Validators.min(0)),
+    bookingDaysAhead: new FormControl(null, Validators.min(0))
   });
 
   constructor(
@@ -55,15 +60,17 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     private facilityService: FacilityService,
     private parkService: ParkService,
     private toastService: ToastService,
-    private utils: Utils,
-  ) { }
+    private utils: Utils
+  ) {}
 
   ngOnInit() {
-    this.isNewFacility = this.route.snapshot.data.component === 'add' || this.route.snapshot.data.component === 'addFacility';
+    this.isNewFacility =
+      this.route.snapshot.data.component === 'add' || this.route.snapshot.data.component === 'addFacility';
     if (!this.isNewFacility) {
-      this.facilityService.getItemValue()
+      this.facilityService
+        .getItemValue()
         .pipe(takeWhile(() => this.alive))
-        .subscribe((res) => {
+        .subscribe(res => {
           if (res) {
             this.facility = res;
             this.populateParkDetails();
@@ -77,12 +84,16 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
       this.facilityForm.get('capacityAM').disable();
       this.facilityForm.get('capacityPM').disable();
       this.facilityForm.get('capacityDAY').disable();
+      this.enabledTimeslots.AM = false;
+      this.enabledTimeslots.PM = false;
+      this.enabledTimeslots.DAY = false;
       this.loading = false;
     }
 
-    this.parkService.getItemValue()
+    this.parkService
+      .getItemValue()
       .pipe(takeWhile(() => this.alive))
-      .subscribe((res) => {
+      .subscribe(res => {
         if (res) {
           this.park = res;
         }
@@ -91,10 +102,12 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     this.facilityForm.controls['availabilityAM'].valueChanges.subscribe(data => {
       if (data) {
         this.facilityForm.get('capacityAM').enable();
+        this.enabledTimeslots.AM = true;
         this.facilityForm.controls['capacityAM'].setValidators([Validators.required]);
       } else {
         this.facilityForm.get('capacityAM').setValue(null);
         this.facilityForm.get('capacityAM').disable();
+        this.enabledTimeslots.AM = false;
         this.facilityForm.controls['capacityAM'].setValidators([]);
       }
       this.facilityForm.controls['capacityAM'].updateValueAndValidity();
@@ -103,10 +116,12 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     this.facilityForm.controls['availabilityPM'].valueChanges.subscribe(data => {
       if (data) {
         this.facilityForm.get('capacityPM').enable();
+        this.enabledTimeslots.PM = true;
         this.facilityForm.controls['capacityPM'].setValidators([Validators.required]);
       } else {
         this.facilityForm.get('capacityPM').setValue(null);
         this.facilityForm.get('capacityPM').disable();
+        this.enabledTimeslots.PM = false;
         this.facilityForm.controls['capacityPM'].setValidators([]);
       }
       this.facilityForm.controls['capacityPM'].updateValueAndValidity();
@@ -115,10 +130,12 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     this.facilityForm.controls['availabilityDAY'].valueChanges.subscribe(data => {
       if (data) {
         this.facilityForm.get('capacityDAY').enable();
+        this.enabledTimeslots.DAY = true;
         this.facilityForm.controls['capacityDAY'].setValidators([Validators.required]);
       } else {
         this.facilityForm.get('capacityDAY').setValue(null);
         this.facilityForm.get('capacityDAY').disable();
+        this.enabledTimeslots.DAY = false;
         this.facilityForm.controls['capacityDAY'].setValidators([]);
       }
       this.facilityForm.controls['capacityDAY'].updateValueAndValidity();
@@ -134,7 +151,7 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     });
 
     this.facilityForm.setErrors({ availibilityRequired: true });
-    this.facilityForm.valueChanges.subscribe((data) => {
+    this.facilityForm.valueChanges.subscribe(data => {
       if (data.availabilityAM === true || data.availabilityPM === true || data.availabilityDAY === true) {
         this.facilityForm.setErrors(null);
       } else {
@@ -164,7 +181,7 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
       capacityDAY: null,
       bookingOpeningHour: hour,
       bookingOpeningAmPm: amPm,
-      bookingDaysAhead: bookingDaysAhead,
+      bookingDaysAhead: bookingDaysAhead
     });
 
     if (this.facilityForm.get('status')) {
@@ -226,9 +243,16 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     message += `</br><strong>visible:</strong></br>` + this.getInfoString('visible');
     message += `</br><strong>Type:</strong></br>` + this.facilityForm.get('type').value;
     if (this.facilityForm.get('bookingOpeningHour').value && this.facilityForm.get('bookingOpeningAmPm').value) {
-      message += `</br><strong>Booking Opening Time:</strong></br>` + this.facilityForm.get('bookingOpeningHour').value + ' ' + this.facilityForm.get('bookingOpeningAmPm').value;
+      message +=
+        `</br><strong>Booking Opening Time:</strong></br>` +
+        this.facilityForm.get('bookingOpeningHour').value +
+        ' ' +
+        this.facilityForm.get('bookingOpeningAmPm').value;
     }
-    if (this.facilityForm.get('bookingDaysAhead').value !== null && this.facilityForm.get('bookingDaysAhead').value !== '') {
+    if (
+      this.facilityForm.get('bookingDaysAhead').value !== null &&
+      this.facilityForm.get('bookingDaysAhead').value !== ''
+    ) {
       message += `</br><strong>Booking Days Ahead:</strong></br>` + this.facilityForm.get('bookingDaysAhead').value;
     }
     if (this.facilityForm.get('availabilityAM').value) {
@@ -250,7 +274,8 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
           okOnly: false
         },
         { backdropColor: 'rgba(0, 0, 0, 0.5)' }
-      ).subscribe(async result => {
+      )
+      .subscribe(async result => {
         this.saving = true;
         if (result) {
           if (this.isNewFacility) {
@@ -258,7 +283,11 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
             let postObj = new PostFacility();
             this.validateFields(postObj);
             await this.facilityService.createFacility(postObj, this.park.sk);
-            this.toastService.addMessage('Faciltiy successfully created.', 'Add Faciltiy', Constants.ToastTypes.SUCCESS);
+            this.toastService.addMessage(
+              'Faciltiy successfully created.',
+              'Add Faciltiy',
+              Constants.ToastTypes.SUCCESS
+            );
             this.facilityService.fetchData(null, this.park.sk);
           } else {
             // Put
@@ -270,7 +299,11 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
             // Dont allow name change on edit.
             putObj.name = this.facility.name;
             await this.facilityService.editFacility(putObj, this.park.sk);
-            this.toastService.addMessage('Facility successfully edited.', 'Edit Facility', Constants.ToastTypes.SUCCESS);
+            this.toastService.addMessage(
+              'Facility successfully edited.',
+              'Edit Facility',
+              Constants.ToastTypes.SUCCESS
+            );
             this.facilityService.fetchData(this.facility.sk, this.park.sk);
           }
           this.router.navigate(['../details'], { relativeTo: this.route });
@@ -342,7 +375,8 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
           okOnly: false
         },
         { backdropColor: 'rgba(0, 0, 0, 0.5)' }
-      ).subscribe(result => {
+      )
+      .subscribe(result => {
         if (result) {
           this.router.navigate(['../'], { relativeTo: this.route });
         }

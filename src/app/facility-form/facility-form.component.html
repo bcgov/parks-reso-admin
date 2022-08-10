@@ -1,318 +1,327 @@
 <section *ngIf="loading">
-    <div class="spinner-container">
-        <div class="spinner-new rotating"></div>
-    </div>
+  <div class="spinner-container">
+    <div class="spinner-new rotating"></div>
+  </div>
 </section>
 <div class="container-fluid-padding-without-header">
-    <section *ngIf="!loading">
-        <div class="d-flex flex-column flex-sm-row justify-content-sm-between heading-bar">
+  <section *ngIf="!loading">
+    <div class="d-flex flex-column flex-sm-row justify-content-sm-between heading-bar">
+      <div>
+        <h1 *ngIf="isNewFacility" id="name" class="m-0">Add New Facility</h1>
+        <h1 *ngIf="!isNewFacility" id="name" class="m-0">Edit Facility: {{ facility.name }}</h1>
+      </div>
+    </div>
+    <p class="tab-intro">
+      Changes to facility information will be reflected in the BC Parks Day Pass Reservation System public site.
+    </p>
+    <hr />
+  </section>
+
+  <section *ngIf="!loading">
+    <form [formGroup]="facilityForm" (ngSubmit)="submitForm()">
+      <h4>Publishing Details</h4>
+      <div class="shading-light px-3 pt-3">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="status" formControlName="status" />
+              <label class="custom-control-label d-inline-flex" for="status">
+                Status:
+                <div *ngIf="facilityForm.get('status').value" class="mx-1 text-success">Facility is open.</div>
+                <div *ngIf="!facilityForm.get('status').value" class="mx-1 text-secondary">Facility is closed.</div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row pb-4">
+          <div class="col-12">
+            <label for="stateReason">Reason for closure</label>
+            <input
+              type="text"
+              class="form-control"
+              id="stateReason"
+              formControlName="stateReason"
+              placeholder="Enter reason for closure"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="px-3 pt-3">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="visible" formControlName="visible" />
+              <label class="custom-control-label d-inline-flex" for="visible">
+                Visibility:
+                <div *ngIf="facilityForm.get('visible').value" class="mx-1 text-primary">
+                  Facility is visible to the public.
+                </div>
+                <div *ngIf="!facilityForm.get('visible').value" class="mx-1 text-secondary">
+                  Facility is not visible to the public.
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <h4>Facility Details</h4>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="name">
+            Facility Name
+            <span class="text-danger">*</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            formControlName="name"
+            placeholder="Enter facility name"
+            required
+          />
+        </div>
+        <div class="form-group col-md-6">
+          <label for="type">
+            Type
+            <span class="text-danger">*</span>
+          </label>
+          <select id="type" class="form-control" formControlName="type">
+            <option *ngIf="isNewFacility" hidden disabled selected value>-- Select a type --</option>
+            <option [ngValue]="facilityType" *ngFor="let facilityType of types">{{ facilityType }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="booking-opening-time">Booking Opening Time</label>
+          <div class="form-inline">
             <div>
-                <h1 *ngIf="isNewFacility"
-                    id="name"
-                    class="m-0">Add New Facility</h1>
-                <h1 *ngIf="!isNewFacility"
-                    id="name"
-                    class="m-0">Edit Facility: {{ facility.name }}</h1>
+              <input
+                type="number"
+                class="form-control mr-3"
+                id="booking-opening-time-hour"
+                [ngClass]="{
+                  'is-invalid':
+                    facilityForm.controls.bookingOpeningHour.dirty && facilityForm.controls.bookingOpeningHour.invalid
+                }"
+                formControlName="bookingOpeningHour"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  facilityForm.controls.bookingOpeningHour.dirty && facilityForm.controls.bookingOpeningHour.invalid
+                "
+              >
+                Please enter a valid hour.
+              </div>
             </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="bookingOpeningAmPm"
+                id="booking-opening-time-am"
+                formControlName="bookingOpeningAmPm"
+                [ngClass]="{
+                  'is-invalid':
+                    facilityForm.controls.bookingOpeningAmPm.dirty && facilityForm.controls.bookingOpeningAmPm.invalid
+                }"
+                value="AM"
+              />
+              <label class="form-check-label" for="booking-opening-time-am">AM</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="bookingOpeningAmPm"
+                id="booking-opening-time-pm"
+                formControlName="bookingOpeningAmPm"
+                [ngClass]="{
+                  'is-invalid':
+                    facilityForm.controls.bookingOpeningAmPm.dirty && facilityForm.controls.bookingOpeningAmPm.invalid
+                }"
+                value="PM"
+              />
+              <label class="form-check-label" for="booking-opening-time-pm">PM</label>
+            </div>
+          </div>
+          <small class="form-text text-muted">
+            If left blank, the default value of {{ defaultBookingOpeningHourText }} will be used.
+          </small>
         </div>
-        <p class="tab-intro">
-            Changes to facility information will be reflected in the BC Parks Day Pass Reservation System public
-            site.
-        </p>
-        <hr>
-    </section>
-
-    <section *ngIf="!loading">
-        <form [formGroup]="facilityForm"
-            (ngSubmit)="submitForm()">
-
-            <h4>Publishing Details</h4>
-            <div class="shading-light px-3 pt-3">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group custom-control custom-switch">
-                            <input type="checkbox"
-                                class="custom-control-input"
-                                id="status"
-                                formControlName="status">
-                            <label class="custom-control-label d-inline-flex"
-                                for="status">
-                                Status:
-                                <div *ngIf="facilityForm.get('status').value"
-                                    class="mx-1 text-success">Facility is open.</div>
-                                <div *ngIf="!facilityForm.get('status').value"
-                                    class="mx-1 text-secondary">Facility is closed.
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row pb-4">
-                    <div class="col-12">
-                        <label for="stateReason">Reason for closure</label>
-                        <input type="text"
-                            class='form-control'
-                            id="stateReason"
-                            formControlName="stateReason"
-                            placeholder="Enter reason for closure">
-                    </div>
-                </div>
-            </div>
-
-            <div class="px-3 pt-3">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group custom-control custom-switch">
-                            <input type="checkbox"
-                                class="custom-control-input"
-                                id="visible"
-                                formControlName="visible">
-                            <label class="custom-control-label d-inline-flex"
-                                for="visible">
-                                Visibility:
-                                <div *ngIf="facilityForm.get('visible').value"
-                                    class="mx-1 text-primary">
-                                    Facility is visible to the public.
-                                </div>
-                                <div *ngIf="!facilityForm.get('visible').value"
-                                    class="mx-1 text-secondary">
-                                    Facility is not visible to the public.
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <hr>
-
-            <h4>Facility Details</h4>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="name">Facility Name <span class="text-danger">*</span></label>
-                    <input type="text"
-                        class='form-control'
-                        id="name"
-                        formControlName="name"
-                        placeholder="Enter facility name"
-                        required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="type">Type <span class="text-danger">*</span></label>
-                    <select id="type"
-                        class='form-control'
-                        formControlName="type">
-                        <option *ngIf="isNewFacility"
-                            hidden
-                            disabled
-                            selected
-                            value> -- Select a type -- </option>
-                        <option [ngValue]="facilityType"
-                            *ngFor="let facilityType of types">{{ facilityType }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="booking-opening-time">Booking Opening Time</label>
-                    <div class="form-inline">
-                        <div>
-                            <input type="number"
-                                class="form-control mr-3"
-                                id="booking-opening-time-hour"
-                                [ngClass]="{ 'is-invalid': facilityForm.controls.bookingOpeningHour.dirty && facilityForm.controls.bookingOpeningHour.invalid }"
-                                formControlName="bookingOpeningHour">
-                            <div class="invalid-feedback" *ngIf="facilityForm.controls.bookingOpeningHour.dirty && facilityForm.controls.bookingOpeningHour.invalid">
-                                Please enter a valid hour.
-                            </div>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input
-                                class="form-check-input"
-                                type="radio" 
-                                name="bookingOpeningAmPm"
-                                id="booking-opening-time-am"
-                                formControlName="bookingOpeningAmPm"
-                                [ngClass]="{ 'is-invalid': facilityForm.controls.bookingOpeningAmPm.dirty && facilityForm.controls.bookingOpeningAmPm.invalid }"
-                                value="AM">
-                            <label class="form-check-label" for="booking-opening-time-am">AM</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input
-                                class="form-check-input"
-                                type="radio"
-                                name="bookingOpeningAmPm"
-                                id="booking-opening-time-pm"
-                                formControlName="bookingOpeningAmPm"
-                                [ngClass]="{ 'is-invalid': facilityForm.controls.bookingOpeningAmPm.dirty && facilityForm.controls.bookingOpeningAmPm.invalid }"
-                                value="PM">
-                            <label class="form-check-label" for="booking-opening-time-pm">PM</label>
-                        </div>
-                    </div>
-                    <small class="form-text text-muted">
-                        If left blank, the default value of {{ defaultBookingOpeningHourText }} will be used.
-                    </small>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="booking-days-ahead">Booking Days Ahead</label>
-                    <select
-                        class="form-control"
-                        id="booking-days-ahead" 
-                        [ngClass]="{ 'is-invalid': facilityForm.controls.bookingDaysAhead.dirty && facilityForm.controls.bookingDaysAhead.invalid }"
-                        formControlName="bookingDaysAhead">
-                    >
-                        <option [ngValue]="null">Default (Same day + {{ defaultBookingDaysAheadText }})</option>
-                        <option [ngValue]="0">Same day only</option>
-                        <option [ngValue]="1">1 day in advance</option>
-                        <option [ngValue]="2">2 days in advance</option>
-                        <option [ngValue]="3">3 days in advance</option>
-                        <option [ngValue]="4">4 days in advance</option>
-                        <option [ngValue]="5">5 days in advance</option>
-
-                    </select>
-                    <div class="invalid-feedback" *ngIf="facilityForm.controls.bookingDaysAhead.dirty && facilityForm.controls.bookingDaysAhead.invalid">
-                        Please select a valid choice.
-                    </div>
-                </div>
-            </div>
-
-            <hr>
-
-            <h4>Booking Details</h4>
-            <p class="text-secondary">You must select at least one booking time <span class="text-danger">*</span>
-            </p>
-            <div class="shading-light px-3 pt-3">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group custom-control custom-switch">
-                            <input type="checkbox"
-                                class="custom-control-input"
-                                id="availabilityAM"
-                                formControlName="availabilityAM">
-                            <label class="custom-control-label d-inline-flex"
-                                for="availabilityAM">
-                                AM Availability:
-                                <div *ngIf="facilityForm.get('availabilityAM').value"
-                                    class="mx-1 text-primary">
-                                    AM passes are available to the public.
-                                </div>
-                                <div *ngIf="!facilityForm.get('availabilityAM').value"
-                                    class="mx-1 text-secondary">
-                                    AM passes are not available to the public.
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="capacityAM">AM Capacity <span class="text-danger">*</span></label>
-                        <input type="number"
-                            class='form-control'
-                            id="capacityAM"
-                            formControlName="capacityAM"
-                            placeholder="Enter AM capacity">
-                    </div>
-                </div>
-            </div>
-
-            <div class="px-3 pt-3">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group custom-control custom-switch">
-                            <input type="checkbox"
-                                class="custom-control-input"
-                                id="availabilityPM"
-                                formControlName="availabilityPM">
-                            <label class="custom-control-label d-inline-flex"
-                                for="availabilityPM">
-                                PM Availability:
-                                <div *ngIf="facilityForm.get('availabilityPM').value"
-                                    class="mx-1 text-primary">
-                                    PM passes are available to the public.
-                                </div>
-                                <div *ngIf="!facilityForm.get('availabilityPM').value"
-                                    class="mx-1 text-secondary">
-                                    PM passes are not available to the public.
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="capacityPM">PM Capacity <span class="text-danger">*</span></label>
-                        <input type="number"
-                            class='form-control'
-                            id="capacityPM"
-                            formControlName="capacityPM"
-                            placeholder="Enter PM capacity">
-                    </div>
-                </div>
-            </div>
-
-            <div class="shading-light px-3 pt-3">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group custom-control custom-switch">
-                            <input type="checkbox"
-                                class="custom-control-input"
-                                id="availabilityDAY"
-                                formControlName="availabilityDAY">
-                            <label class="custom-control-label d-inline-flex"
-                                for="availabilityDAY">
-                                All Day Availability:
-                                <div *ngIf="facilityForm.get('availabilityDAY').value"
-                                    class="mx-1 text-primary">
-                                    All day passes are available to the public.
-                                </div>
-                                <div *ngIf="!facilityForm.get('availabilityDAY').value"
-                                    class="mx-1 text-secondary">
-                                    All day passes are not available to the public.
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="capacityDAY">All Day Capacity <span class="text-danger">*</span></label>
-                        <input type="number"
-                            class='form-control'
-                            id="capacityDAY"
-                            formControlName="capacityDAY"
-                            placeholder="Enter all day capacity">
-                    </div>
-                </div>
-            </div>
-        </form>
-
-        <div class="py-4">
-            <!-- <div *ngIf="!isNewFacility"
-                class="col-md-2">
-                <button class="btn btn-danger"
-                    (click)="delete()"><i class="material-icons mr-1">delete</i>Delete</button>
-            </div> -->
-            <div class="d-flex justify-content-md-end">
-                <button class='btn btn-danger m-1'
-                    [disabled]="saving"
-                    (click)="cancel()">Cancel</button>
-                <button class='btn btn-secondary m-1'
-                    [disabled]="facilityForm.pristine || saving"
-                    (click)="resetForm()">Reset
-                    Form</button>
-                <button class='btn btn-primary m-1'
-                    [disabled]="facilityForm.invalid || saving"
-                    (click)="submitForm()">
-                    <span *ngIf="!saving">
-                        Save Facility
-                    </span>
-                    <span *ngIf="saving"
-                        class="material-icons rotating">
-                        autorenew
-                    </span>
-                </button>
-            </div>
+        <div class="form-group col-md-6">
+          <label for="booking-days-ahead">Booking Days Ahead</label>
+          <select
+            class="form-control"
+            id="booking-days-ahead"
+            [ngClass]="{
+              'is-invalid':
+                facilityForm.controls.bookingDaysAhead.dirty && facilityForm.controls.bookingDaysAhead.invalid
+            }"
+            formControlName="bookingDaysAhead"
+          >
+            >
+            <option [ngValue]="null">Default (Same day + {{ defaultBookingDaysAheadText }})</option>
+            <option [ngValue]="0">Same day only</option>
+            <option [ngValue]="1">1 day in advance</option>
+            <option [ngValue]="2">2 days in advance</option>
+            <option [ngValue]="3">3 days in advance</option>
+            <option [ngValue]="4">4 days in advance</option>
+            <option [ngValue]="5">5 days in advance</option>
+          </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="facilityForm.controls.bookingDaysAhead.dirty && facilityForm.controls.bookingDaysAhead.invalid"
+          >
+            Please select a valid choice.
+          </div>
         </div>
-    </section>
+      </div>
+
+      <hr />
+
+      <h4>Capacity</h4>
+      <p class="text-secondary">
+        Set the overall capacity and operating dates for the facility. You must select at least one booking time.
+      </p>
+      <div class="shading-light px-3 pt-3">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group custom-control custom-switch">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                id="availabilityAM"
+                formControlName="availabilityAM"
+              />
+              <label class="custom-control-label d-inline-flex" for="availabilityAM">
+                AM Availability:
+                <div *ngIf="facilityForm.get('availabilityAM').value" class="mx-1 text-primary">
+                  AM passes are available to the public.
+                </div>
+                <div *ngIf="!facilityForm.get('availabilityAM').value" class="mx-1 text-secondary">
+                  AM passes are not available to the public.
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="capacityAM">
+              AM Capacity
+              <span class="text-danger">*</span>
+            </label>
+            <input
+              type="number"
+              class="form-control"
+              id="capacityAM"
+              formControlName="capacityAM"
+              placeholder="Enter AM capacity"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="px-3 pt-3">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group custom-control custom-switch">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                id="availabilityPM"
+                formControlName="availabilityPM"
+              />
+              <label class="custom-control-label d-inline-flex" for="availabilityPM">
+                PM Availability:
+                <div *ngIf="facilityForm.get('availabilityPM').value" class="mx-1 text-primary">
+                  PM passes are available to the public.
+                </div>
+                <div *ngIf="!facilityForm.get('availabilityPM').value" class="mx-1 text-secondary">
+                  PM passes are not available to the public.
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="capacityPM">
+              PM Capacity
+              <span class="text-danger">*</span>
+            </label>
+            <input
+              type="number"
+              class="form-control"
+              id="capacityPM"
+              formControlName="capacityPM"
+              placeholder="Enter PM capacity"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="shading-light px-3 pt-3">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group custom-control custom-switch">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                id="availabilityDAY"
+                formControlName="availabilityDAY"
+              />
+              <label class="custom-control-label d-inline-flex" for="availabilityDAY">
+                All Day Availability:
+                <div *ngIf="facilityForm.get('availabilityDAY').value" class="mx-1 text-primary">
+                  All day passes are available to the public.
+                </div>
+                <div *ngIf="!facilityForm.get('availabilityDAY').value" class="mx-1 text-secondary">
+                  All day passes are not available to the public.
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="capacityDAY">
+              All Day Capacity
+              <span class="text-danger">*</span>
+            </label>
+            <input
+              type="number"
+              class="form-control"
+              id="capacityDAY"
+              formControlName="capacityDAY"
+              placeholder="Enter all day capacity"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="facility">
+        <app-modifier-form [facility]="facility"></app-modifier-form>
+      </div>
+    </form>
+
+    <div class="py-4">
+      <div class="d-flex justify-content-md-end">
+        <button class="btn btn-danger m-1" [disabled]="saving" (click)="cancel()">Cancel</button>
+        <button class="btn btn-secondary m-1" [disabled]="facilityForm.pristine || saving" (click)="resetForm()">
+          Reset Form
+        </button>
+        <button class="btn btn-primary m-1" [disabled]="facilityForm.invalid || saving" (click)="submitForm()">
+          <span *ngIf="!saving">Save Facility</span>
+          <span *ngIf="saving" class="material-icons rotating">autorenew</span>
+        </button>
+      </div>
+    </div>
+  </section>
 </div>
