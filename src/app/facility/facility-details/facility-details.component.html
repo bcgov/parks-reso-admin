@@ -118,7 +118,9 @@
               </span>
               <span>passes reserved</span>
             </div>
-            <div *ngIf="bookingTimeSummary.modifier > 0" class="text-muted"><small>Modifier applied</small></div>
+            <div *ngIf="bookingTimeSummary.modifier > 0 || bookingTimeSummary.modifier < 0" class="text-muted">
+              <small>Modifier applied</small>
+            </div>
           </strong>
         </label>
         <ngb-progressbar
