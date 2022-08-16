@@ -69,7 +69,7 @@ export class ModifierFormComponent implements OnInit, OnDestroy {
       let putObj = {
         date: shortDate,
         bookingTimes: {},
-        parkName: this.facility.pk.substring(this.facility.pk.indexOf('::') + 2),
+        parkName: this.parkName,
         facility: this.facility.name
       };
       // Construct BTs
