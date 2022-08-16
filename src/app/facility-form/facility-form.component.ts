@@ -11,6 +11,8 @@ import { PostFacility, PutFacility } from 'app/models/facility';
 import { ParkService } from 'app/services/park.service';
 import { ToastService } from 'app/services/toast.service';
 import { Utils } from 'app/shared/utils/utils';
+import { PassService } from 'app/services/pass.service';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-facility-form',
@@ -60,7 +62,8 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     private facilityService: FacilityService,
     private parkService: ParkService,
     private toastService: ToastService,
-    private utils: Utils
+    private utils: Utils,
+    private passService: PassService
   ) {}
 
   ngOnInit() {
@@ -305,6 +308,18 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
               Constants.ToastTypes.SUCCESS
             );
             this.facilityService.fetchData(this.facility.sk, this.park.sk);
+            const today = DateTime.now().setZone('America/Vancouver').toISODate();
+            let timeslot = '';
+            if (this.facility.bookingTimes.AM) {
+              timeslot = 'AM';
+            } else if (this.facility.bookingTimes.PM) {
+              timeslot = 'PM';
+            } else if (this.facility.bookingTimes.DAY) {
+              timeslot = 'DAY';
+            }
+            this.passService.fetchData(null, this.park.sk, this.facility.sk, timeslot, null, null, {
+              date: today
+            });
           }
           this.router.navigate(['../details'], { relativeTo: this.route });
         }
