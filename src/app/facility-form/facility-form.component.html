@@ -189,123 +189,120 @@
       <p class="text-secondary">
         Set the overall capacity and operating dates for the facility. You must select at least one booking time.
       </p>
-      <div class="shading-light px-3 pt-3">
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group custom-control custom-switch">
-              <input
-                type="checkbox"
-                class="custom-control-input"
-                id="availabilityAM"
-                formControlName="availabilityAM"
-              />
-              <label class="custom-control-label d-inline-flex" for="availabilityAM">
-                AM Availability:
-                <div *ngIf="facilityForm.get('availabilityAM').value" class="mx-1 text-primary">
-                  AM passes are available to the public.
+      <div class="capacity-control">
+        <div class="shading-light px-3 pt-3">
+          <div class="row">
+            <!-- AM Block -->
+            <div class="col-lg-4 col-12">
+              <h5>AM Passes</h5>
+              <div class="period-group">
+                <div class="checkbox-group">
+                  <h6>Available?</h6>
+                  <div class="form-group custom-control custom-switch custom-switch-md">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="availabilityAM"
+                      formControlName="availabilityAM"
+                    />
+                    <label class="custom-control-label adjust-pad" for="availabilityAM">
+                      <div *ngIf="facilityForm.get('availabilityAM').value" class="mx-1 text-primary">
+                        Yes
+                      </div>
+                      <div *ngIf="!facilityForm.get('availabilityAM').value" class="mx-1 text-secondary">
+                        No
+                      </div>
+                    </label>
+                  </div>
                 </div>
-                <div *ngIf="!facilityForm.get('availabilityAM').value" class="mx-1 text-secondary">
-                  AM passes are not available to the public.
+                <div class="input-group">
+                  <h6 class="nowrap">AM Capacity</h6>
+                  <div class="form-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="capacityAM"
+                      formControlName="capacityAM"
+                    />
+                  </div>
                 </div>
-              </label>
+              </div>
+            </div>
+            <!-- PM Block -->
+            <div class="col-lg-4 col-12">
+              <h5>PM Passes</h5>
+              <div class="period-group">
+                <div class="checkbox-group">
+                  <h6>Available?</h6>
+                  <div class="form-group custom-control custom-switch custom-switch-md">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="availabilityPM"
+                      formControlName="availabilityPM"
+                    />
+                    <label class="custom-control-label adjust-pad" for="availabilityPM">
+                      <div *ngIf="facilityForm.get('availabilityPM').value" class="mx-1 text-primary">
+                        Yes
+                      </div>
+                      <div *ngIf="!facilityForm.get('availabilityPM').value" class="mx-1 text-secondary">
+                        No
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <h6 class="nowrap">PM Capacity</h6>
+                  <div class="form-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="capacityPM"
+                      formControlName="capacityPM"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- DAY Block -->
+            <div class="col-lg-4 col-12">
+              <h5>All-Day Passes</h5>
+              <div class="period-group">
+                <div class="checkbox-group">
+                  <h6>Available?</h6>
+                  <div class="form-group custom-control custom-switch custom-switch-md">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input"
+                      id="availabilityDAY"
+                      formControlName="availabilityDAY"
+                    />
+                    <label class="custom-control-label adjust-pad" for="availabilityDAY">
+                      <div *ngIf="facilityForm.get('availabilityDAY').value" class="mx-1 text-primary">
+                        Yes
+                      </div>
+                      <div *ngIf="!facilityForm.get('availabilityDAY').value" class="mx-1 text-secondary">
+                        No
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div class="input-group">
+                  <h6 class="nowrap">All-Day Capacity</h6>
+                  <div class="form-group">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="capacityDAY"
+                      formControlName="capacityDAY"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label for="capacityAM">
-              AM Capacity
-              <span class="text-danger">*</span>
-            </label>
-            <input
-              type="number"
-              class="form-control"
-              id="capacityAM"
-              formControlName="capacityAM"
-              placeholder="Enter AM capacity"
-            />
-          </div>
-        </div>
       </div>
-
-      <div class="px-3 pt-3">
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group custom-control custom-switch">
-              <input
-                type="checkbox"
-                class="custom-control-input"
-                id="availabilityPM"
-                formControlName="availabilityPM"
-              />
-              <label class="custom-control-label d-inline-flex" for="availabilityPM">
-                PM Availability:
-                <div *ngIf="facilityForm.get('availabilityPM').value" class="mx-1 text-primary">
-                  PM passes are available to the public.
-                </div>
-                <div *ngIf="!facilityForm.get('availabilityPM').value" class="mx-1 text-secondary">
-                  PM passes are not available to the public.
-                </div>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label for="capacityPM">
-              PM Capacity
-              <span class="text-danger">*</span>
-            </label>
-            <input
-              type="number"
-              class="form-control"
-              id="capacityPM"
-              formControlName="capacityPM"
-              placeholder="Enter PM capacity"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="shading-light px-3 pt-3">
-        <div class="row">
-          <div class="col-12">
-            <div class="form-group custom-control custom-switch">
-              <input
-                type="checkbox"
-                class="custom-control-input"
-                id="availabilityDAY"
-                formControlName="availabilityDAY"
-              />
-              <label class="custom-control-label d-inline-flex" for="availabilityDAY">
-                All Day Availability:
-                <div *ngIf="facilityForm.get('availabilityDAY').value" class="mx-1 text-primary">
-                  All day passes are available to the public.
-                </div>
-                <div *ngIf="!facilityForm.get('availabilityDAY').value" class="mx-1 text-secondary">
-                  All day passes are not available to the public.
-                </div>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label for="capacityDAY">
-              All Day Capacity
-              <span class="text-danger">*</span>
-            </label>
-            <input
-              type="number"
-              class="form-control"
-              id="capacityDAY"
-              formControlName="capacityDAY"
-              placeholder="Enter all day capacity"
-            />
-          </div>
-        </div>
-      </div>
-
       <div *ngIf="facility">
         <app-modifier-form [facility]="facility"></app-modifier-form>
       </div>
