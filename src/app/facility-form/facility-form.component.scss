@@ -1,14 +1,15 @@
 .period-group {
   display: flex;
   flex-direction: row;
-  padding-right: 15px;
+}
+
+.checkbox-group {
+  width: 5em;
 }
 
 .input-group {
   flex-direction: column;
-  max-width: 200px;
-  padding-left: 15px;
-
+  max-width: 12.5em;
 }
 
 .nowrap {
