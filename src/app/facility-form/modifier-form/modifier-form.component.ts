@@ -21,6 +21,9 @@ export class ModifierFormComponent implements OnInit, OnDestroy {
   public timeslots = ['AM', 'PM', 'DAY'];
   public modifierList = [];
   private alive = true;
+  public AMValue = null;
+  public PMValue = null;
+  public DAYValue = null;
 
   public modifierForm = new FormGroup({
     date: new FormControl(),
