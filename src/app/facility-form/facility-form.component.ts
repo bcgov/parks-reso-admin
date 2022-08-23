@@ -13,6 +13,7 @@ import { ToastService } from 'app/services/toast.service';
 import { Utils } from 'app/shared/utils/utils';
 import { PassService } from 'app/services/pass.service';
 import { DateTime } from 'luxon';
+import { ReservationService } from 'app/services/reservation.service';
 
 @Component({
   selector: 'app-facility-form',
@@ -63,7 +64,8 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     private parkService: ParkService,
     private toastService: ToastService,
     private utils: Utils,
-    private passService: PassService
+    private passService: PassService,
+    private reservationService: ReservationService
   ) {}
 
   ngOnInit() {
@@ -320,6 +322,7 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
             this.passService.fetchData(null, this.park.sk, this.facility.sk, timeslot, null, null, {
               date: today
             });
+            this.reservationService.fetchData(this.park.sk, this.facility.sk, today);
           }
           this.router.navigate(['../details'], { relativeTo: this.route });
         }
