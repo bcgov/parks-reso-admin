@@ -185,10 +185,71 @@
 
       <hr />
 
-      <h4>Capacity</h4>
-      <p class="text-secondary">
-        Set the overall capacity and operating dates for the facility. You must select at least one booking time.
-      </p>
+      <section>
+        <h4>When are passes required?</h4>
+        <p class="text-secondary">Set the operating days, times, and overall capacity dates for the facility.</p>
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="setWeekdays" formControlName="setWeekdays" />
+              <label class="custom-control-label d-inline-flex" for="setWeekdays">
+                <div *ngIf="facilityForm.get('setWeekdays').value" class="mx-1 text-primary">
+                  Passes required on days selected below
+                </div>
+                <div *ngIf="!facilityForm.get('setWeekdays').value" class="mx-1 text-secondary">
+                  Passes required every day
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="facilityForm.get('setWeekdays').value">
+          <div class="row">
+            <form [formGroup]="facilityForm.controls.bookingDays">
+              <div class="form-group d-flex checkbox-group">
+                <div *ngFor="let day of bookingDaysMapper">
+                  <div class="col">
+                    <label class="mb-0 d-flex justify-content-center">
+                      <strong>{{ day.symbol }}</strong>
+                    </label>
+                    <input class="checkbox-day" type="checkbox" id="day.name" formControlName="{{ day.name }}" />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="form-group">
+            <div class="row justify-content-between">
+              <div class="col">
+                <label for="bookingDaysRichText">
+                  <h5>Message to public</h5>
+                  <div class="text-secondary">
+                    The message below will be displayed to the public on days when passes are not required.
+                  </div>
+                </label>
+              </div>
+            </div>
+            <editor
+              formControlName="bookingDaysRichText"
+              [init]="{
+                base_url: '/dayuse/tinymce',
+                suffix: '.min',
+                height: 150,
+                menubar: false,
+                plugins: [
+                  'advlist autolink lists link image charmap print preview anchor',
+                  'searchreplace visualblocks code fullscreen',
+                  'insertdatetime media table paste code help wordcount link'
+                ],
+                toolbar:
+                  'undo redo | formatselect | bold italic backcolor | \
+                      alignleft aligncenter alignright alignjustify | link | \
+                      bullist numlist outdent indent | removeformat | help'
+              }"
+            ></editor>
+          </div>
+        </div>
+      </section>
       <div class="capacity-control">
         <div class="shading-light px-3 pt-3">
           <div class="row">
@@ -206,24 +267,15 @@
                       formControlName="availabilityAM"
                     />
                     <label class="custom-control-label adjust-pad" for="availabilityAM">
-                      <div *ngIf="facilityForm.get('availabilityAM').value" class="mx-1 text-primary">
-                        Yes
-                      </div>
-                      <div *ngIf="!facilityForm.get('availabilityAM').value" class="mx-1 text-secondary">
-                        No
-                      </div>
+                      <div *ngIf="facilityForm.get('availabilityAM').value" class="mx-1 text-primary">Yes</div>
+                      <div *ngIf="!facilityForm.get('availabilityAM').value" class="mx-1 text-secondary">No</div>
                     </label>
                   </div>
                 </div>
                 <div class="input-group pl-3">
                   <h6 class="nowrap">AM Capacity</h6>
                   <div class="form-group">
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="capacityAM"
-                      formControlName="capacityAM"
-                    />
+                    <input type="number" class="form-control" id="capacityAM" formControlName="capacityAM" />
                   </div>
                 </div>
               </div>
@@ -242,24 +294,15 @@
                       formControlName="availabilityPM"
                     />
                     <label class="custom-control-label adjust-pad" for="availabilityPM">
-                      <div *ngIf="facilityForm.get('availabilityPM').value" class="mx-1 text-primary">
-                        Yes
-                      </div>
-                      <div *ngIf="!facilityForm.get('availabilityPM').value" class="mx-1 text-secondary">
-                        No
-                      </div>
+                      <div *ngIf="facilityForm.get('availabilityPM').value" class="mx-1 text-primary">Yes</div>
+                      <div *ngIf="!facilityForm.get('availabilityPM').value" class="mx-1 text-secondary">No</div>
                     </label>
                   </div>
                 </div>
                 <div class="input-group pl-3">
                   <h6 class="nowrap">PM Capacity</h6>
                   <div class="form-group">
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="capacityPM"
-                      formControlName="capacityPM"
-                    />
+                    <input type="number" class="form-control" id="capacityPM" formControlName="capacityPM" />
                   </div>
                 </div>
               </div>
@@ -278,24 +321,15 @@
                       formControlName="availabilityDAY"
                     />
                     <label class="custom-control-label adjust-pad" for="availabilityDAY">
-                      <div *ngIf="facilityForm.get('availabilityDAY').value" class="mx-1 text-primary">
-                        Yes
-                      </div>
-                      <div *ngIf="!facilityForm.get('availabilityDAY').value" class="mx-1 text-secondary">
-                        No
-                      </div>
+                      <div *ngIf="facilityForm.get('availabilityDAY').value" class="mx-1 text-primary">Yes</div>
+                      <div *ngIf="!facilityForm.get('availabilityDAY').value" class="mx-1 text-secondary">No</div>
                     </label>
                   </div>
                 </div>
                 <div class="input-group pl-3">
                   <h6 class="nowrap">All-Day Capacity</h6>
                   <div class="form-group">
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="capacityDAY"
-                      formControlName="capacityDAY"
-                    />
+                    <input type="number" class="form-control" id="capacityDAY" formControlName="capacityDAY" />
                   </div>
                 </div>
               </div>
