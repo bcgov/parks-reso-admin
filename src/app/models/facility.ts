@@ -11,6 +11,10 @@ export class Facility {
     bookingOpeningHour: number;
     bookingDaysAhead: number;
 
+    bookingDays: object;
+    bookingDaysRichText: string;
+    bookableHolidays: string[];
+
     constructor(obj?: any) {
         this.pk = obj && obj.pk || null;
         this.sk = obj && obj.sk || null;
@@ -28,7 +32,23 @@ export class Facility {
 
         this.bookingOpeningHour = obj && obj.bookingOpeningHour || null;
         this.bookingDaysAhead = obj && obj.bookingDaysAhead || null;
+
+        this.bookingDays = obj && obj.bookingDays || defaultBookingDays();
+        this.bookingDaysRichText = obj && obj.bookingDaysRichText || '';
+        this.bookableHolidays = obj && obj.bookableHolidays || [];
     }
+}
+
+function defaultBookingDays() {
+  return {
+    'Sunday': true,
+    'Monday': true,
+    'Tuesday': true,
+    'Wednesday': true,
+    'Thursday': true,
+    'Friday': true,
+    'Saturday': true
+  };
 }
 
 export class PostFacility {
@@ -41,6 +61,10 @@ export class PostFacility {
 
     bookingOpeningHour: number;
     bookingDaysAhead: number;
+
+    bookingDays: object;
+    bookingDaysRichText: string;
+    bookableHolidays: string[];
 
     constructor(obj?: any) {
         this.name = obj && obj.name || null;
@@ -57,6 +81,10 @@ export class PostFacility {
 
         this.bookingOpeningHour = obj && obj.bookingOpeningHour || null;
         this.bookingDaysAhead = obj && obj.bookingDaysAhead || null;
+
+        this.bookingDays = obj && obj.bookingDays || defaultBookingDays();
+        this.bookingDaysRichText = obj && obj.bookingDaysRichText || '';
+        this.bookableHolidays = obj && obj.bookableHolidays || [];
     }
 }
 
@@ -74,6 +102,10 @@ export class PutFacility {
 
     bookingOpeningHour: number;
     bookingDaysAhead: number;
+
+    bookingDays: object;
+    bookingDaysRichText: string;
+    bookableHolidays: string[];
 
     constructor(obj?: any) {
         this.pk = obj && obj.pk || null;
@@ -101,5 +133,9 @@ export class PutFacility {
         } else {
             this.bookingDaysAhead = null;
         }
+
+        this.bookingDays = obj && obj.bookingDays || defaultBookingDays();
+        this.bookingDaysRichText = obj && obj.bookingDaysRichText || '';
+        this.bookableHolidays = obj && obj.bookableHolidays || [];
     }
 }

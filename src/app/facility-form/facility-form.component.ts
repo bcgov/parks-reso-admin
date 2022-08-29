@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
 import { DialogService } from 'ng2-bootstrap-modal';
@@ -11,6 +11,9 @@ import { PostFacility, PutFacility } from 'app/models/facility';
 import { ParkService } from 'app/services/park.service';
 import { ToastService } from 'app/services/toast.service';
 import { Utils } from 'app/shared/utils/utils';
+import { PassService } from 'app/services/pass.service';
+import { DateTime } from 'luxon';
+import { ReservationService } from 'app/services/reservation.service';
 
 @Component({
   selector: 'app-facility-form',
@@ -34,6 +37,19 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     DAY: false
   };
 
+  public bookingDaysFormData = new FormGroup({
+    Sunday: new FormControl(true),
+    Monday: new FormControl(true),
+    Tuesday: new FormControl(true),
+    Wednesday: new FormControl(true),
+    Thursday: new FormControl(true),
+    Friday: new FormControl(true),
+    Saturday: new FormControl(true)
+  });
+
+  // luxon weekdays have 1-based indexing starting on Monday
+  public bookingDaysMapper = Constants.weekdays;
+
   public facilityForm = new FormGroup({
     name: new FormControl('', Validators.required),
     status: new FormControl(false),
@@ -48,8 +64,15 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     capacityDAY: new FormControl(),
     bookingOpeningHour: new FormControl(null, Validators.compose([Validators.min(1), Validators.max(12)])),
     bookingOpeningAmPm: new FormControl(null),
-    bookingDaysAhead: new FormControl(null, Validators.min(0))
+    bookingDaysAhead: new FormControl(null, Validators.min(0)),
+    setWeekdays: new FormControl(false),
+    bookingDays: this.bookingDaysFormData,
+    bookingDaysRichText: new FormControl('')
   });
+
+  get bookingDaysFormArray() {
+    return this.facilityForm.controls.bookingDays as FormArray;
+  }
 
   constructor(
     private _changeDetectionRef: ChangeDetectorRef,
@@ -60,7 +83,9 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     private facilityService: FacilityService,
     private parkService: ParkService,
     private toastService: ToastService,
-    private utils: Utils
+    private utils: Utils,
+    private passService: PassService,
+    private reservationService: ReservationService
   ) {}
 
   ngOnInit() {
@@ -166,6 +191,13 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     if (!bookingDaysAhead && bookingDaysAhead !== 0) {
       bookingDaysAhead = null;
     }
+    let isSetWeekdays = false;
+    for (let day in this.facility.bookingDays) {
+      if (!this.facility.bookingDays[day]) {
+        isSetWeekdays = true;
+        break;
+      }
+    }
 
     this.facilityForm.setValue({
       name: this.facility.name,
@@ -181,7 +213,10 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
       capacityDAY: null,
       bookingOpeningHour: hour,
       bookingOpeningAmPm: amPm,
-      bookingDaysAhead: bookingDaysAhead
+      bookingDaysAhead: bookingDaysAhead,
+      setWeekdays: isSetWeekdays,
+      bookingDays: this.facility.bookingDays,
+      bookingDaysRichText: this.facility.bookingDaysRichText
     });
 
     if (this.facilityForm.get('status')) {
@@ -234,7 +269,7 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  submitForm() {
+  createSubmissionModal() {
     let message = `<strong>Name:</strong></br>` + this.facilityForm.get('name').value;
     message += `</br><strong>Status:</strong></br>` + this.getInfoString('status');
     if (this.facilityForm.get('stateReason').value) {
@@ -249,6 +284,17 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
         ' ' +
         this.facilityForm.get('bookingOpeningAmPm').value;
     }
+    message += `<br><strong>Passes are required on these days:</strong></br>`;
+    let bookingDaysList = [];
+    for (let day of this.bookingDaysMapper) {
+      if (
+        this.facilityForm.controls.bookingDays.get(String(day.name)).value ||
+        !this.facilityForm.get('setWeekdays').value
+      ) {
+        bookingDaysList.push(day.name);
+      }
+    }
+    message += bookingDaysList.join(', ');
     if (
       this.facilityForm.get('bookingDaysAhead').value !== null &&
       this.facilityForm.get('bookingDaysAhead').value !== ''
@@ -264,7 +310,16 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     if (this.facilityForm.get('availabilityDAY').value) {
       message += `</br><strong>All Day Capacity:</strong></br>` + this.facilityForm.get('capacityDAY').value;
     }
+    if (this.facilityForm.get('bookingDaysRichText').value) {
+      message += `<br><strong>Passes-not-required text:</strong></br>`;
+      message += this.facilityForm.get('bookingDaysRichText').value;
+    }
 
+    return message;
+  }
+
+  submitForm() {
+    let message = this.createSubmissionModal();
     this.dialogService
       .addDialog(
         ConfirmComponent,
@@ -284,8 +339,8 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
             this.validateFields(postObj);
             await this.facilityService.createFacility(postObj, this.park.sk);
             this.toastService.addMessage(
-              'Faciltiy successfully created.',
-              'Add Faciltiy',
+              'Facility successfully created.',
+              'Add Facility',
               Constants.ToastTypes.SUCCESS
             );
             this.facilityService.fetchData(null, this.park.sk);
@@ -305,6 +360,19 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
               Constants.ToastTypes.SUCCESS
             );
             this.facilityService.fetchData(this.facility.sk, this.park.sk);
+            const today = DateTime.now().setZone('America/Vancouver').toISODate();
+            let timeslot = '';
+            if (this.facility.bookingTimes.AM) {
+              timeslot = 'AM';
+            } else if (this.facility.bookingTimes.PM) {
+              timeslot = 'PM';
+            } else if (this.facility.bookingTimes.DAY) {
+              timeslot = 'DAY';
+            }
+            this.passService.fetchData(null, this.park.sk, this.facility.sk, timeslot, null, null, {
+              date: today
+            });
+            this.reservationService.fetchData(this.park.sk, this.facility.sk, today);
           }
           this.router.navigate(['../details'], { relativeTo: this.route });
         }
@@ -355,6 +423,23 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     if (bookingOpeningHour && bookingOpeningAmPm) {
       obj.bookingOpeningHour = this.utils.convert12hTo24hTime(bookingOpeningHour, bookingOpeningAmPm);
     }
+
+    // booking specific days of week
+    obj.bookingDays = this.facilityForm.get('bookingDays').value;
+    if (!this.facilityForm.get('setWeekdays').value) {
+      // facility is open every day of the week.
+      obj.bookingDays = {
+        'Sunday': true,
+        'Monday': true,
+        'Tuesday': true,
+        'Wednesday': true,
+        'Thursday': true,
+        'Friday': true,
+        'Saturday': true
+      };
+    }
+
+    obj.bookingDaysRichText = this.facilityForm.get('bookingDaysRichText').value;
   }
 
   cancel() {

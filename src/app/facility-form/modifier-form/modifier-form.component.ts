@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ModifierService } from 'app/services/modifier.service';
 import { takeWhile } from 'rxjs/operators';
 import { DateTime } from 'luxon';
+import { ReservationService } from 'app/services/reservation.service';
 
 @Component({
   selector: 'app-modifier-form',
@@ -21,6 +22,9 @@ export class ModifierFormComponent implements OnInit, OnDestroy {
   public timeslots = ['AM', 'PM', 'DAY'];
   public modifierList = [];
   private alive = true;
+  public AMValue = null;
+  public PMValue = null;
+  public DAYValue = null;
 
   public modifierForm = new FormGroup({
     date: new FormControl(),
@@ -29,7 +33,9 @@ export class ModifierFormComponent implements OnInit, OnDestroy {
     DAY: new FormControl()
   });
 
-  constructor(private modifierService: ModifierService) {}
+  private parkName = '';
+
+  constructor(private modifierService: ModifierService, private reservationService: ReservationService) {}
 
   ngOnInit() {
     this.modifierService
@@ -40,7 +46,7 @@ export class ModifierFormComponent implements OnInit, OnDestroy {
           this.modifierList = res;
         }
       });
-
+    this.parkName = this.facility.pk.substring(this.facility.pk.indexOf('::') + 2);
     this.setTimeslotForms();
   }
 
@@ -66,7 +72,7 @@ export class ModifierFormComponent implements OnInit, OnDestroy {
       let putObj = {
         date: shortDate,
         bookingTimes: {},
-        parkName: this.facility.pk.substring(this.facility.pk.indexOf('::') + 2),
+        parkName: this.parkName,
         facility: this.facility.name
       };
       // Construct BTs
@@ -82,28 +88,32 @@ export class ModifierFormComponent implements OnInit, OnDestroy {
         }
       });
       if (shouldSubmit) {
-        const res = await this.modifierService.setModifier(putObj);
+        await this.modifierService.setModifier(putObj);
         this.modifierForm.reset();
         this.reset.emit();
-        console.log(res);
         this.refreshModifiers();
+        this.refreshReservationService();
       }
     }
   }
 
   async deleteModifier(modifier) {
-    const res = await this.modifierService.deleteModifier(
-      this.facility.pk.substring(this.facility.pk.indexOf('::') + 2),
-      this.facility.name,
-      modifier.sk
-    );
-    console.log(res);
+    await this.modifierService.deleteModifier(this.parkName, this.facility.name, modifier.sk);
     this.refreshModifiers();
+    this.refreshReservationService();
   }
 
   refreshModifiers() {
     this.modifierService.fetchData(
-      this.facility.pk.substring(this.facility.pk.indexOf('::') + 2),
+      this.parkName,
+      this.facility.name,
+      DateTime.now().setZone('America/Vancouver').toISODate()
+    );
+  }
+
+  refreshReservationService() {
+    this.reservationService.fetchData(
+      this.parkName,
       this.facility.name,
       DateTime.now().setZone('America/Vancouver').toISODate()
     );

@@ -22,19 +22,17 @@ export class FacilityResolverService implements Resolve<void> {
       this.facilityService.clearItemValue();
       const facility = await this.facilityService.fetchData(route.params.facilityId, route.parent.params.parkId);
       this.passService.clearListValue();
+      let timeslot = '';
       if (facility.bookingTimes.AM) {
-        this.passService.fetchData(null, route.parent.params.parkId, route.params.facilityId, 'AM', null, null, {
-          date: today
-        });
+        timeslot = 'AM';
       } else if (facility.bookingTimes.PM) {
-        this.passService.fetchData(null, route.parent.params.parkId, route.params.facilityId, 'PM', null, null, {
-          date: today
-        });
+        timeslot = 'PM';
       } else if (facility.bookingTimes.DAY) {
-        this.passService.fetchData(null, route.parent.params.parkId, route.params.facilityId, 'DAY', null, null, {
-          date: today
-        });
+        timeslot = 'DAY';
       }
+      this.passService.fetchData(null, route.parent.params.parkId, route.params.facilityId, timeslot, null, null, {
+        date: today
+      });
 
       // Fetch reservations object
       this.reservationService.fetchData(route.parent.params.parkId, route.params.facilityId, today);

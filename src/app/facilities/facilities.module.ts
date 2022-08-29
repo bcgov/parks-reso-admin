@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModifierFormComponent } from 'app/facility-form/modifier-form/modifier-form.component';
 import { DatePickerModule } from 'app/shared/components/date-picker/date-picker.module';
 import { ModifierService } from 'app/services/modifier.service';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 @NgModule({
   declarations: [
@@ -30,9 +31,13 @@ import { ModifierService } from 'app/services/modifier.service';
     FacilityModule,
     ReactiveFormsModule,
     FormsModule,
-    DatePickerModule
+    DatePickerModule,
+    EditorModule
   ],
-  providers: [ModifierService],
+  providers: [
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+    ModifierService
+  ],
   exports: [FacilityListComponent],
   entryComponents: [FacilityTableRowComponent]
 })

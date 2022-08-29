@@ -328,6 +328,7 @@ export class FacilityDetailsComponent implements OnInit, OnDestroy {
       passTypes.push('DAY');
     }
 
+    this.formComponents[0].options = [];
     for (let i = 0; i < passTypes.length; i++) {
       this.formComponents[0].options.push({
         selectValue: passTypes[i],
