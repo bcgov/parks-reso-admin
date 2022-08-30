@@ -43,7 +43,7 @@ export class AuthGuard implements CanActivate {
     }
 
     // This page is not authorized unless they have a subset of these roles
-    if (!this.keycloakService.isAuthorized(route.data.roles)) {
+    if (!this.keycloakService.isAuthorized(route?.data?.roles)) {
       // login was successful but the user doesn't have necessary Keycloak roles.
       return this.router.parseUrl('/unauthorized');
     }
