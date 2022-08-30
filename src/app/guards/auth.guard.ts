@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, UrlTree, Router } from '@angular/router';
+import { CanActivate, UrlTree, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { KeycloakService } from 'app/services/keycloak.service';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { KeycloakService } from 'app/services/keycloak.service';
 export class AuthGuard implements CanActivate {
   constructor(private readonly keycloakService: KeycloakService, private readonly router: Router) {}
 
-  canActivate(): boolean | UrlTree {
+  canActivate(route: ActivatedRouteSnapshot): boolean | UrlTree {
     // When a successful login occurs, we store the identity provider used in sessionStorage.
     const lastIdp = sessionStorage.getItem(this.keycloakService.LAST_IDP_AUTHENTICATED);
 
@@ -42,8 +42,8 @@ export class AuthGuard implements CanActivate {
       }
     }
 
-    // Not authorized
-    if (!this.keycloakService.isAuthorized()) {
+    // This page is not authorized unless they have a subset of these roles
+    if (!this.keycloakService.isAuthorized(route.data.roles)) {
       // login was successful but the user doesn't have necessary Keycloak roles.
       return this.router.parseUrl('/unauthorized');
     }

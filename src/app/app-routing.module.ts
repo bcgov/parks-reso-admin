@@ -54,7 +54,8 @@ const routes: Routes = [
     component: MetricsComponent,
     canActivate: [AuthGuard],
     data: {
-      breadcrumb: 'Site Metrics'
+      breadcrumb: 'Site Metrics',
+      roles: ['sysadmin']
     }
   },
   {
