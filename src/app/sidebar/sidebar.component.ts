@@ -1,6 +1,7 @@
 import { Component, HostBinding, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { SideBarService } from 'app/services/sidebar.service';
+import { KeycloakService } from '../services/keycloak.service';
 
 import { filter } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
@@ -10,10 +11,10 @@ import { Subject } from 'rxjs/Subject';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-
 export class SidebarComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
+  public isAdmin = false;
   public isNavMenuOpen = false;
   public routerSnapshot = null;
   public isInspectorRole = false;
@@ -31,13 +32,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
   isOpen = false;
   isArchive = false;
 
-  constructor(
-    private router: Router,
-    private sideBarService: SideBarService,
-  ) {
-
-    router.events.pipe(
-      filter(event => event instanceof NavigationEnd))
+  constructor(private router: Router,
+    private keyCloakService: KeycloakService,
+    private sideBarService: SideBarService) {
+    router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
       .takeUntil(this.ngUnsubscribe)
       .subscribe(event => {
         this.routerSnapshot = event;
@@ -46,12 +45,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sideBarService.toggleChange
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(isOpen => {
-        this.isOpen = isOpen;
-      });
-
+    this.isAdmin = this.keyCloakService.isAuthorized(['sysadmin']);
+    this.sideBarService.toggleChange.takeUntil(this.ngUnsubscribe).subscribe(isOpen => {
+      this.isOpen = isOpen;
+    });
   }
 
   /**
