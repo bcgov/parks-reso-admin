@@ -8,7 +8,8 @@
     <a [routerLink]="['reservations']"
       id="reservations"
       (click)="activateLoading(['reservations'])"><i class="material-icons mr-3">book</i>Pass Management</a>
-    <a [routerLink]="['metrics']"
+    <a *ngIf="isAdmin"
+      [routerLink]="['metrics']"
       id="metrics"
       (click)="activateLoading(['metrics'])"><i class="material-icons mr-3">multiline_chart</i>Site Metrics</a>
   </section>
