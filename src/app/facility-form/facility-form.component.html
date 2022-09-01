@@ -186,18 +186,18 @@
       <hr />
 
       <section>
-        <h4>When are passes required?</h4>
-        <p class="text-secondary">Set the operating days, times, and overall capacity dates for the facility.</p>
+        <h4 class="m-0">When are passes required?</h4>
+        <p>Set the days and times passes are required and the capacity for this facility.</p>
         <div class="row">
           <div class="col-12">
-            <div class="form-group custom-control custom-switch">
+            <div class="form-group custom-control custom-switch custom-switch-md">
               <input type="checkbox" class="custom-control-input" id="setWeekdays" formControlName="setWeekdays" />
               <label class="custom-control-label d-inline-flex" for="setWeekdays">
-                <div *ngIf="facilityForm.get('setWeekdays').value" class="mx-1 text-primary">
-                  Passes required on days selected below
+                <div *ngIf="facilityForm.get('setWeekdays').value" class="mx-1 text-dark mt-1">
+                  <strong>Passes required:</strong> On days selected below
                 </div>
-                <div *ngIf="!facilityForm.get('setWeekdays').value" class="mx-1 text-secondary">
-                  Passes required every day
+                <div *ngIf="!facilityForm.get('setWeekdays').value" class="mx-1 text-dark mt-1">
+                  <strong>Passes required:</strong> Every day
                 </div>
               </label>
             </div>

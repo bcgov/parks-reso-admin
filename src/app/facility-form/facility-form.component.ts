@@ -50,6 +50,9 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
   // luxon weekdays have 1-based indexing starting on Monday
   public bookingDaysMapper = Constants.weekdays;
 
+  public defaultBookingRichText =
+    '<p>You don&rsquo;t need a day-use pass for this date and pass type. Passes may be required on other days and at other parks.</p>';
+
   public facilityForm = new FormGroup({
     name: new FormControl('', Validators.required),
     status: new FormControl(false),
@@ -216,7 +219,7 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
       bookingDaysAhead: bookingDaysAhead,
       setWeekdays: isSetWeekdays,
       bookingDays: this.facility.bookingDays,
-      bookingDaysRichText: this.facility.bookingDaysRichText
+      bookingDaysRichText: this.facility.bookingDaysRichText || this.defaultBookingRichText
     });
 
     if (this.facilityForm.get('status')) {
