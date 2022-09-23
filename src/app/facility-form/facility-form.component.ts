@@ -286,6 +286,19 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
         this.facilityForm.get('bookingOpeningHour').value +
         ' ' +
         this.facilityForm.get('bookingOpeningAmPm').value;
+    } else {
+      // Grab the defaults for hour/am/pm and use those if empty
+      let bookingOpeningHour = this.facilityForm.get('bookingOpeningHour').value;
+      if (!bookingOpeningHour) {
+        bookingOpeningHour = parseInt(this.configService.config['ADVANCE_BOOKING_HOUR'], 10);
+      }
+
+      let bookingOpeningAmPm = this.facilityForm.get('bookingOpeningAmPm').value;
+      if (!bookingOpeningAmPm) {
+        bookingOpeningAmPm = 'AM';
+      }
+
+      message += `</br><strong>Booking Opening Time:</strong></br>` + bookingOpeningHour + ' ' + bookingOpeningAmPm;
     }
     message += `<br><strong>Passes are required on these days:</strong></br>`;
     let bookingDaysList = [];
@@ -420,8 +433,16 @@ export class FacilityFormComponent implements OnInit, OnDestroy {
     }
     obj.bookingDaysAhead = bookingDaysAhead;
 
-    const bookingOpeningHour = this.facilityForm.get('bookingOpeningHour').value;
-    const bookingOpeningAmPm = this.facilityForm.get('bookingOpeningAmPm').value;
+    let bookingOpeningHour = this.facilityForm.get('bookingOpeningHour').value;
+    let bookingOpeningAmPm = this.facilityForm.get('bookingOpeningAmPm').value;
+
+    if (!bookingOpeningHour) {
+      bookingOpeningHour = parseInt(this.configService.config['ADVANCE_BOOKING_HOUR'], 10);
+    }
+
+    if (!bookingOpeningAmPm) {
+      bookingOpeningAmPm = 'AM';
+    }
 
     if (bookingOpeningHour && bookingOpeningAmPm) {
       obj.bookingOpeningHour = this.utils.convert12hTo24hTime(bookingOpeningHour, bookingOpeningAmPm);
