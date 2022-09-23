@@ -85,11 +85,11 @@
             <div class="col-md-5 d-none d-sm-block text-right">
                 <div class="btn-group btn-group-toggle"
                     data-toggle="buttons">
-                    <label class="btn btn-outline-dark">
-                        <input type="radio"
+                    <label class="btn btn-outline-dark" *ngIf="isAdmin">
+                        <div type="radio"
                             name="options"
                             id="park-options"
-                            (click)="addParkFacility()"> Add Facility
+                            (click)="addParkFacility()"> Add Facility</div>
                     </label>
                 </div>
             </div>

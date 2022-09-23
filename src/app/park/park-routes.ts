@@ -5,6 +5,7 @@ import { FacilityComponent } from 'app/facility/facility.component';
 import { ParkFormComponent } from 'app/park-form/park-form.component';
 import { ParkDetailsComponent } from './park-details/park-details.component';
 import { FacilityResolverService } from '../facility/facility-resolver.service';
+import { AuthGuard } from '../guards/auth.guard';
 
 export const ParkRoutes: Routes = [
   {
@@ -33,10 +34,12 @@ export const ParkRoutes: Routes = [
   {
     path: 'add-facility',
     component: FacilityFormComponent,
+    canActivate: [AuthGuard],
     data: {
       breadcrumb: 'Add Facility',
       module: 'park',
-      component: 'addFacility'
+      component: 'addFacility',
+      roles: ['sysadmin']
     }
   },
   {
