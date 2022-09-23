@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ParkService } from 'app/services/park.service';
 import { takeWhile } from 'rxjs/operators';
+import { KeycloakService } from '../../services/keycloak.service';
 
 @Component({
   selector: 'app-park-details',
@@ -11,17 +12,20 @@ import { takeWhile } from 'rxjs/operators';
 export class ParkDetailsComponent implements OnInit, OnDestroy {
   private alive = true;
 
+  public isAdmin = false;
   public loading = true;
   public park;
 
   constructor(
     private _changeDetectionRef: ChangeDetectorRef,
     private router: Router,
+    private keyCloakService: KeycloakService,
     private route: ActivatedRoute,
     private parkService: ParkService
   ) { }
 
   ngOnInit() {
+    this.isAdmin = this.keyCloakService.isAuthorized(['sysadmin']);
     this.parkService.getItemValue()
       .pipe(takeWhile(() => this.alive))
       .subscribe((res) => {
