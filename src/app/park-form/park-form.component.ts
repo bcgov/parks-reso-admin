@@ -81,7 +81,7 @@ export class ParkFormComponent implements OnInit, OnDestroy {
   getParkInfoString(info) {
     switch (info) {
       case 'status':
-        return this.parkForm.get('status').value ? 'Open' : 'Closed';
+        return this.parkForm.get('status').value ? 'Passes required' : 'Passes not required';
       case 'visible':
         return this.parkForm.get('visible').value ? 'Visible to public' : 'Not visible to public';
       case 'passRequired':
