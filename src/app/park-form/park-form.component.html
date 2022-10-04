@@ -39,9 +39,9 @@
                             for="status">
                             Status:
                             <div *ngIf="parkForm.get('status').value"
-                                class="mx-1 text-success">Park is open.</div>
+                                class="mx-1 text-success">Passes are required at this park.</div>
                             <div *ngIf="!parkForm.get('status').value"
-                                class="mx-1 text-secondary">Park is closed.
+                                class="mx-1 text-secondary">Passes are not required at this park.
                             </div>
                         </label>
                     </div>

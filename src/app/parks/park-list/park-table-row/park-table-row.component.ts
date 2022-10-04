@@ -21,6 +21,13 @@ export class ParkTableRowComponent extends TableRowComponent implements OnInit {
 
   validate(value) {
     if (this.rowData && this.rowData.hasOwnProperty(value)) {
+      if (value === 'status') {
+        if (this.rowData[value] === 'open') {
+          return 'Passes required';
+        } else {
+          return 'Passes not required';
+        }
+      }
       return this.rowData[value];
     } else {
       return '-';

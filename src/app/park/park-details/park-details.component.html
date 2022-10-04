@@ -13,8 +13,11 @@
                         Status:
                     </strong>
                 </label>
-                <p>
-                    {{park.status}}
+                <p *ngIf="park?.status === 'open'">
+                    Passes are required at this park.
+                </p>
+                <p *ngIf="park?.status !== 'open'">
+                    Passes are not required at this park.
                 </p>
             </div>
             <div class="col-md-6">
