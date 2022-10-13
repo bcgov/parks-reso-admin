@@ -1,6 +1,6 @@
 name: PR Testing
 
-on: [workflow_dispatch]
+on: [pull_request]
 
 jobs:
   test:
@@ -9,17 +9,15 @@ jobs:
     environment: dev
     strategy:
       matrix:
-        node-version: ['16.x']
+        node: ['14']
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/setup-node@v2
         with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
+          node-version: ${{ matrix.node }}
+          cache: 'yarn'
 
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
 
       - run: yarn test-ci
