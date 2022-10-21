@@ -26,6 +26,12 @@ import { InfiniteLoadingBarModule } from './shared/components/infinite-loading-b
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingService } from './services/loading.service';
+import { ParksListComponent } from './parks-list/parks-list.component';
+import { ParkDetailsComponent } from './park-details/park-details.component';
+import { ParkEditComponent } from './park-edit/park-edit.component';
+import { FacilityDetailsComponent } from './facility-details/facility-details.component';
+import { FacilityEditComponent } from './facility-edit/facility-edit.component';
+import { PassDetailsComponent } from './pass-details/pass-details.component';
 
 export function initConfig(
   configService: ConfigService,
@@ -44,7 +50,7 @@ export function initConfig(
 }
 
 @NgModule({
-  declarations: [AppComponent, NotAuthorizedComponent, LoginComponent],
+  declarations: [AppComponent, NotAuthorizedComponent, LoginComponent, ParksListComponent, ParkDetailsComponent, ParkEditComponent, FacilityDetailsComponent, FacilityEditComponent, PassDetailsComponent],
   imports: [
     BrowserModule,
     CommonModule,
