@@ -6,44 +6,49 @@ import {
   ChangeDetectorRef,
   OnInit,
   EventEmitter,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Utils } from '../../utils/utils';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'lib-date-picker',
+  selector: 'app-date-picker',
   templateUrl: './date-picker.component.html',
-  styleUrls: ['./date-picker.component.scss']
+  styleUrls: ['./date-picker.component.scss'],
 })
 export class DatePickerComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() control: FormControl;
+  @Input() control: UntypedFormControl;
   @Input() isValidate = false;
   @Input() isDisabled = false;
-  @Input() minDate: Date = null;
-  @Input() maxDate: Date = null;
+  @Input() minDate: Date = null as any;
+  @Input() maxDate: Date = null as any;
   @Input() reset: EventEmitter<any>;
   @Input() required = false;
 
-  private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+  private subscriptions = new Subscription();
 
-  public ngbDate: NgbDateStruct = null;
-  public minNgbDate: NgbDateStruct = null;
-  public maxNgbDate: NgbDateStruct = null;
+  public ngbDate: NgbDateStruct = null as any;
+  public minNgbDate: NgbDateStruct = null as any;
+  public maxNgbDate: NgbDateStruct = null as any;
 
   public loading = true;
 
-  constructor(private _changeDetectionRef: ChangeDetectorRef, private utils: Utils) { }
+  private utils = new Utils();
+
+  constructor(private _changeDetectionRef: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.minDate && changes.minDate.currentValue) {
-      this.minNgbDate = this.utils.convertJSDateToNGBDate(new Date(changes.minDate.currentValue));
+    if (changes['minDate'] && changes['minDate'].currentValue) {
+      this.minNgbDate = this.utils.convertJSDateToNGBDate(
+        new Date(changes['minDate'].currentValue)
+      ) as any;
     }
-    if (changes.maxDate && changes.maxDate.currentValue) {
-      this.maxNgbDate = this.utils.convertJSDateToNGBDate(new Date(changes.maxDate.currentValue));
+    if (changes['maxDate'] && changes['maxDate'].currentValue) {
+      this.maxNgbDate = this.utils.convertJSDateToNGBDate(
+        new Date(changes['maxDate'].currentValue)
+      ) as any;
     }
 
     this.loading = false;
@@ -53,7 +58,7 @@ export class DatePickerComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.ngbDate = this.control.value || null;
     if (this.reset) {
-      this.reset.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.clearDate());
+      this.subscriptions.add(this.reset.subscribe(() => this.clearDate()));
     }
   }
 
@@ -63,7 +68,7 @@ export class DatePickerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   clearDate() {
-    this.ngbDate = null;
+    this.ngbDate = null as any;
     this.control.setValue(null);
     this.control.markAsDirty();
   }
@@ -72,12 +77,13 @@ export class DatePickerComponent implements OnInit, OnChanges, OnDestroy {
     if (date === null && !this.required) {
       return true;
     } else {
-      return date && !isNaN(date.year) && !isNaN(date.month) && !isNaN(date.day);
+      return (
+        date && !isNaN(date.year) && !isNaN(date.month) && !isNaN(date.day)
+      );
     }
   }
 
   ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.subscriptions.unsubscribe();
   }
 }

@@ -1,16 +1,17 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { KeycloakService } from '../services/keycloak.service';
 
-import { KeycloakService } from 'app/services/keycloak.service';
 import { AuthGuard } from './auth.guard';
 
 describe('AuthGuard', () => {
   const mockKeycloakService = jasmine.createSpyObj('KeycloakService', [
     'isAuthenticated',
     'isAuthorized',
+    'isAllowed',
     'getIdpFromToken',
-    'login'
+    'login',
   ]);
   const mockRouter = jasmine.createSpyObj('Router', ['parseUrl']);
 
@@ -19,9 +20,9 @@ describe('AuthGuard', () => {
       providers: [
         AuthGuard,
         { provide: KeycloakService, useValue: mockKeycloakService },
-        { provide: Router, useValue: mockRouter }
+        { provide: Router, useValue: mockRouter },
       ],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     });
   });
 
@@ -34,15 +35,16 @@ describe('AuthGuard', () => {
     expect(guard).toBeTruthy();
   }));
 
-  it('should return true if the user is authenticated', () => {
+  it('should return false if the user is authenticated but has no roles', () => {
     mockKeycloakService.isAuthenticated.and.returnValue(true);
     mockKeycloakService.isAuthorized.and.returnValue(true);
+    mockKeycloakService.isAllowed.and.returnValue(false);
 
     const guard = TestBed.get(AuthGuard);
 
-    const result = guard.canActivate();
+    const result = guard.canActivate(null, {url: '/export-reports'});
 
-    expect(result).toEqual(true);
+    expect(result).toEqual(undefined);
   });
 
   it('should return redirect to login page if the user is not authenticated and sessionStorage does not contain an idp value', () => {

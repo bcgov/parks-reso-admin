@@ -1,39 +1,37 @@
-import { Injectable } from '@angular/core';
-import { ISearchResults } from 'app/shared/models/search';
-import { DateTime } from 'luxon';
+import * as moment from 'moment';
+import { Constants } from './constants';
 
-const encode = encodeURIComponent;
-window['encodeURIComponent'] = (component: string) => {
-  return encode(component).replace(/[!'()*]/g, (c) => {
-    // Also encode !, ', (, ), and *
-    return '%' + c.charCodeAt(0).toString(16);
-  });
-};
-
-@Injectable()
 export class Utils {
-  constructor() { }
-
-  public encodeString(filename: string, isUrl: boolean) {
-    let safeName;
-    if (isUrl) {
-      safeName = encode(filename).replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\\/g, '_').replace(/\//g, '_').replace(/\%2F/g, '_').replace(/ /g, '_');
-      return safeName;
-    } else {
-      safeName = filename.replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\\/g, '_').replace(/\//g, '_');
-      return safeName;
+  public convertArrayIntoObjForTypeAhead(
+    array,
+    valueToUseAsKey,
+    valueToUseForTypeAhead
+  ) {
+    let obj = { typeAheadData: [] as any[] };
+    for (let i = 0; i < array.length; i++) {
+      const element = array[i];
+      obj[element[valueToUseAsKey]] = element;
+      obj.typeAheadData.push(element[valueToUseForTypeAhead]);
     }
-
+    return obj;
   }
 
-  // This function will take in a ISearchResults of some type and return an array of that same type
-  public extractFromSearchResults<T>(results: ISearchResults<T>[]): T[] {
-    if (!results || !Array.isArray(results)) {
-      return null;
+  public convertArrayIntoObjForSelect(
+    array,
+    valueToUseAsKey,
+    valueToUseForSelectId,
+    valueToUseForSelectLabel
+  ) {
+    let obj = { selectData: [] as any[] };
+    for (let i = 0; i < array.length; i++) {
+      const element = array[i];
+      obj[element[valueToUseAsKey]] = element;
+      obj.selectData.push({
+        id: element[valueToUseForSelectId],
+        label: element[valueToUseForSelectLabel],
+      });
     }
-    const data = results[0].data;
-    if (!data) { return null; }
-    return <T[]>data.searchResults;
+    return obj;
   }
 
   public convertJSDateToNGBDate(jSDate: Date) {
@@ -44,85 +42,38 @@ export class Utils {
     return {
       year: jSDate.getFullYear(),
       month: jSDate.getMonth() + 1,
-      day: jSDate.getDate()
+      day: jSDate.getDate(),
     };
   }
 
-  public convertJSDateToString(jSDate: Date) {
-    if (!jSDate) {
-      return null;
+  public getFiscalYearFromYYYYMM(date) {
+    let year = Number(date.substring(0, 4));
+    const month = Number(date.slice(-2));
+    if (month > Constants.FiscalYearFinalMonth) {
+      year += 1;
     }
-
-    return `${jSDate.getFullYear()}-${jSDate.getMonth() + 1}-${jSDate.getDate()}`;
+    return year;
   }
 
-  public convertFormGroupNGBDateToJSDate(nGBDate, nGBTime = null) {
-    if (!nGBDate) {
-      return null;
-    }
-
-    if (nGBTime === null) {
-      return new Date(nGBDate.year, nGBDate.month - 1, nGBDate.day);
-    } else {
-      return new Date(nGBDate.year, nGBDate.month - 1, nGBDate.day, nGBTime.hour, nGBTime.minute);
-    }
+  public getLatestLockableFiscalYear(dateObj) {
+    let year = dateObj.getFullYear()-1;
+    // JS months are 0-indexed.
+    let month = dateObj.getMonth()+1;
+    let endYear = this.getFiscalYearFromYYYYMM(`${year}${month}`);
+    return new Date(endYear, Constants.FiscalYearFinalMonth, 0, 23, 59, 59, 999);
   }
 
-  public convertFormGroupNGBDateToISODate(nGBDate, nGBTime = null) {
-    if (!nGBDate) {
-      return null;
-    }
+  public convertJSDateToYYYYMM(date: Date) {
+    return moment(date).format('YYYYMM');
+  }
 
-    let datetime = DateTime.fromObject(
-      {
-        year: nGBDate.year,
-        month: nGBDate.month,
-        day: nGBDate.day,
-        hour: 12
-      },
-      {
-        zone: 'America/Vancouver'
-      }
+  public convertYYYYMMToJSDate(date) {
+    return new Date(date.substring(0, 4), date.slice(-2) - 1);
+  }
+
+  public convertYYYYMMToMMMMYYYY(date) {
+    return moment(new Date(date.substring(0, 4), date.slice(-2) - 1)).format(
+      'MMMM YYYY'
     );
-
-    if (nGBTime) {
-      datetime.set(
-        {
-          hour: nGBTime.hour,
-          minute: nGBTime.minute
-        }
-      );
-    }
-
-    return datetime.toISO();
   }
-
-  public convert24hTo12hTime(hour: number): { hour: string, amPm: string } {
-    if (hour === 0) {
-      return { hour: '12', amPm: 'AM' };
-    } else if (hour === 12) {
-      return { hour: '12', amPm: 'PM' };
-    } else if (hour && hour < 12) {
-      return { hour: hour.toString(), amPm: 'AM' };
-    }  else if (hour && hour > 12) {
-      return { hour: (hour - 12).toString(), amPm: 'PM' };
-    } else {
-      return { hour: null, amPm: null };
-    }
-  }
-
-  public convert12hTo24hTime(hour: string, amPm: string): number {
-    if (hour === '12' && amPm === 'AM') {
-      return 0;
-    } else if (hour === '12' && amPm === 'PM') {
-      return 12;
-    } else if (amPm === 'AM') {
-      return parseInt(hour, 10);
-    } else if (amPm === 'PM') {
-      return parseInt(hour, 10) + 12;
-    } else {
-      return null;
-    }
-  }
-
 }

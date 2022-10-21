@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/game-servers'),
+      dir: require('path').join(__dirname, './coverage/bcparks-ar-admin'),
       subdir: '.',
       reporters: [
         { type: 'html' },
@@ -36,9 +36,9 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: true,
+    autoWatch: false,
     browsers: ['ChromeHeadless'],
-    singleRun: false,
+    singleRun: true,
     restartOnFileChange: true
   });
 };

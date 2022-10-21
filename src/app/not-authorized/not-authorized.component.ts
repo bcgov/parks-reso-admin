@@ -8,7 +8,10 @@ import { KeycloakService } from '../services/keycloak.service';
   styleUrls: ['./not-authorized.component.scss']
 })
 export class NotAuthorizedComponent implements OnInit {
-  constructor(private router: Router, private keycloakService: KeycloakService) {}
+  constructor(
+    private router: Router,
+    private keycloakService: KeycloakService
+  ) {}
 
   ngOnInit() {
     if (this.keycloakService.isAuthenticated()) {
@@ -21,4 +24,5 @@ export class NotAuthorizedComponent implements OnInit {
       return;
     }
   }
+
 }

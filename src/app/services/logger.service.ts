@@ -49,7 +49,6 @@ export class LoggerService {
 
   log(msg: any, level: LogLevel = LogLevel.Debug) {
     if (this.shouldLog(level)) {
-
       const logEntry = {
         level: level,
         date: new Date(),
@@ -66,7 +65,7 @@ export class LoggerService {
 
   private shouldLog(level: LogLevel): boolean {
     if ((level >= this.level && level !== LogLevel.Off) ||
-         this.level === LogLevel.All) {
+      this.level === LogLevel.All) {
       return true;
     }
 

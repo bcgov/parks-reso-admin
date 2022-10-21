@@ -1,48 +1,24 @@
-/* You can add global styles to this file, and also import other style files. */
-/* This architecture roughly follows https://sass-guidelin.es/#the-7-1-pattern */
+@import "src/assets/themes/variables";
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "/src/assets/styles/base/base.scss";
 
-//@import "~mygovbc-bootstrap-theme/dist/mygovbc-bootstrap-theme.min.css";
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
 
-@import "~bootstrap/dist/css/bootstrap.css";
+/* Override ngx-boostrap colours */
+.bs-datepicker-body table td.week span {
+  color: $secondary-nav !important;
+}
 
-// Base
-@import "assets/styles/base/base.scss";
+.bs-datepicker-body table td span.selected,
+.bs-datepicker-head,
+.bs-datepicker-head,
+.bs-datepicker button:active,
+.bs-datepicker-body table td.selected span,
+.bs-datepicker-body table td span[class*="select-"]:after,
+.bs-datepicker-body table td[class*="select-"] span:after,
+.bs-datepicker-body table td.active-week span:hover {
+  background-color: $secondary-nav !important;
+}
 
-// Helpers
-@import "~assets/styles/base/helpers.scss";
-
-// Layout
-@import "assets/styles/layout/layout.scss";
-
-// Typography
-@import "~assets/styles/base/typography.scss";
-
-// Icons
-@import "~assets/styles/base/material-icons.scss";
-
-// Components
-@import "assets/styles/components/accordion.scss";
-@import "assets/styles/components/aside.scss";
-@import "assets/styles/components/badge.scss";
-@import "assets/styles/components/buttons.scss";
-@import "assets/styles/components/card.scss";
-@import "assets/styles/components/doc-list.scss";
-@import "assets/styles/components/filter-bar.scss";
-@import "assets/styles/components/form-elements.scss";
-@import "assets/styles/components/lists.scss";
-@import "assets/styles/components/material.scss";
-@import "assets/styles/components/modal.scss";
-@import "assets/styles/components/multi-select.scss";
-@import "assets/styles/components/pagination.scss";
-@import "assets/styles/components/spinner.scss";
-@import "assets/styles/components/tab-nav.scss";
-@import "assets/styles/components/table.scss";
-
-// Third-party Components
-// Required for Angular Material styling: (ref: https://material.angular.io/guide/theming)
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-
-// For the ng-select multiselect component.
-@import "~@ng-select/ng-select/themes/default.theme.css";
-
-@import "~ngx-toastr/toastr";
+@import "node_modules/ngx-toastr/toastr";

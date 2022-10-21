@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export enum EventKeywords {
   ERROR = 'err',
   INFO = 'info',
-  DEBUG = 'debug'
+  DEBUG = 'debug',
 }
 
 export class EventObject {
@@ -33,7 +33,7 @@ this.eventService.setError(
 */
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventService {
   private errorEvent: BehaviorSubject<EventObject>;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { JwtUtil } from '../shared/utils/jwt-utils';
-import { Constants } from '../shared/utils/constants';
 import { Observable } from 'rxjs';
+import { Constants } from '../shared/utils/constants';
+import { JwtUtil } from '../shared/utils/jwt-utils';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { ToastService } from './toast.service';
@@ -19,7 +19,7 @@ export class KeycloakService {
   public readonly idpHintEnum = {
     BCEID: 'bceid-basic-and-business',
     BCSC: 'bcsc',
-    IDIR: 'idir'
+    IDIR: 'idir',
   };
 
   constructor(
@@ -36,13 +36,14 @@ export class KeycloakService {
 
     if (this.keycloakEnabled) {
       // Bootup KC
-      const keycloak_client_id = this.configService.config['KEYCLOAK_CLIENT_ID'];
+      const keycloak_client_id =
+        this.configService.config['KEYCLOAK_CLIENT_ID'];
 
       return new Promise<void>((resolve, reject) => {
         const config = {
           url: this.keycloakUrl,
           realm: this.keycloakRealm,
-          clientId: !keycloak_client_id ? 'nrpti-admin' : keycloak_client_id
+          clientId: !keycloak_client_id ? 'nrpti-admin' : keycloak_client_id,
         };
 
         // console.log('KC Auth init.');
@@ -63,7 +64,6 @@ export class KeycloakService {
 
         this.keycloakAuth.onAuthRefreshError = () => {
           // console.log('onAuthRefreshError');
-          window.location.href = 'login';
         };
 
         this.keycloakAuth.onAuthLogout = () => {
@@ -74,23 +74,23 @@ export class KeycloakService {
         this.keycloakAuth.onTokenExpired = () => {
           this.keycloakAuth
             .updateToken()
-            .success(refreshed => {
+            .then((refreshed) => {
               this.logger.log(`KC refreshed token?: ${refreshed}`);
             })
-            .error(err => {
+            .catch((err) => {
               this.logger.log(`KC refresh error: ${err}`);
             });
         };
 
         // Initialize.
         this.keycloakAuth
-          .init({ checkLoginIframe: false })
-          .success(auth => {
+          .init({})
+          .then((auth) => {
             // console.log('KC Refresh Success?:', this.keycloakAuth.authServerUrl);
             this.logger.log(`KC Success: ${auth}`);
             resolve();
           })
-          .error(err => {
+          .catch((err) => {
             this.toastService.addMessage(
               'Failed to initialize Keycloak.',
               'Keycloak Service',
@@ -118,15 +118,12 @@ export class KeycloakService {
   }
 
   /**
-   * Check if the current user is logged in.  If specificRoles is passed in, it must satisfy all
-   * roles in that array.
+   * Check if the current user is logged in and has admin access.
    *
-   * @param {array} specificRoles ['sysadmin', '0001'] or ['sysadmin']. Defaults to []
    * @returns {boolean} true if the user has access, false otherwise.
    * @memberof KeycloakService
    */
-  isAuthorized(specificRoles = []): boolean {
-    const client = 'parking-pass';
+  isAuthorized(): boolean {
     const token = this.getToken();
 
     if (!token) {
@@ -135,15 +132,40 @@ export class KeycloakService {
 
     const jwt = JwtUtil.decodeToken(token);
 
-    if (!(jwt && jwt.resource_access && jwt.resource_access[client] && jwt.resource_access[client].roles)) {
+    if (
+      !(
+        jwt &&
+        jwt.resource_access &&
+        jwt.resource_access['attendance-and-revenue'] &&
+        jwt.resource_access['attendance-and-revenue'].roles
+      )
+    ) {
       return false;
     }
 
-    if (specificRoles.length === 0) {
-      return jwt.resource_access[client].roles.length >= 1;
-    } else {
-      return !specificRoles.some(role => jwt.resource_access[client].roles.indexOf(role) === -1);
+    return jwt.resource_access['attendance-and-revenue'].roles.length >= 1;
+  }
+
+  /**
+   * Returns whether or not the user has sysadmin role
+   *
+   * @returns {boolean} User is a sysadmin.
+   * @memberof KeycloakService
+   */
+  isAllowed(service): boolean {
+    if (service !== 'export-reports' && service !== 'lock-records') {
+      return true;
     }
+    const token = this.getToken();
+
+    if (!token) {
+      return false;
+    }
+
+    const jwt = JwtUtil.decodeToken(token);
+    return jwt?.resource_access?.['attendance-and-revenue']?.roles.includes(
+      'sysadmin'
+    );
   }
 
   /**
@@ -164,21 +186,36 @@ export class KeycloakService {
    * @memberof KeycloakService
    */
   refreshToken(): Observable<any> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       this.keycloakAuth
         .updateToken(30)
-        .success(refreshed => {
+        .then((refreshed) => {
           this.logger.log(`KC refreshed token?: ${refreshed}`);
           observer.next();
           observer.complete();
         })
-        .error(err => {
+        .catch((err) => {
           this.logger.log(`KC refresh error: ${err}`);
           observer.error();
         });
 
       return { unsubscribe() {} };
     });
+  }
+
+  public getWelcomeMessage(): string {
+    const token = this.getToken();
+
+    if (!token) {
+      return '';
+    }
+
+    const jwt = JwtUtil.decodeToken(token);
+
+    if (!jwt) {
+      return '';
+    }
+    return `${jwt.name}`;
   }
 
   /**
@@ -194,7 +231,10 @@ export class KeycloakService {
     if (redirectUri.endsWith('/login')) {
       redirectUri = redirectUri.slice(0, redirectUri.lastIndexOf('/'));
     }
-    return this.keycloakAuth && this.keycloakAuth.login({ idpHint: idpHint, redirectUri: redirectUri });
+    return (
+      this.keycloakAuth &&
+      this.keycloakAuth.login({ idpHint: idpHint, redirectUri: redirectUri })
+    );
   }
 
   /**

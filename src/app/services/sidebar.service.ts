@@ -1,22 +1,22 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SideBarService {
   @Output() toggleChange: EventEmitter<boolean> = new EventEmitter();
 
-  isOpen = false;
+  public hide = false;
 
-  constructor() { }
+  constructor() {}
 
   toggle() {
-    this.isOpen = !this.isOpen;
-    this.toggleChange.emit(this.isOpen);
+    this.hide = !this.hide;
+    this.toggleChange.emit(this.hide);
   }
 
   close() {
-    this.isOpen = false;
-    this.toggleChange.emit(this.isOpen);
+    this.hide = true;
+    this.toggleChange.emit(this.hide);
   }
 }

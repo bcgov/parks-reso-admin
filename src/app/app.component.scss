@@ -1,48 +1,12 @@
-@import "~assets/styles/base/base.scss";
-
-:host {
-  display: block;
-  @include flex-box();
-  @include flex-direction(column);
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  font-family: "BCSans", "Noto Sans", sans-serif;
+.wrapper {
+  display: flex;
 }
 
-app-header {
-  @include flex(0 0 auto);
+#content {
+  transition: all 0.3s;
 }
 
 app-toggle-button {
-  position: fixed;
-  z-index: 1000;
-  margin-top: 17px;
-  margin-left: 0;
-
-  @media screen and (max-width: 768px) {
-    margin-top: 10px;
-  }
+  position: absolute;
+  margin-top: 0.5rem;
 }
-
-.app-body {
-  @include flex-box();
-  @include flex(1 1 auto);
-  @include flex-direction(column);
-  background: #fff;
-  position: relative;
-  overflow-y: auto;
-  font-family: "BCSans", "Noto Sans", sans-serif;
-
-  @media screen and (min-width: 768px) {
-    margin-top: 68px;
-  }
-}
-
-// @media screen and (max-width: 650px) {
-//   div.content {margin-left: 0;}
-// }
-
-
