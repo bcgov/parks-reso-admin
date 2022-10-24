@@ -4,12 +4,12 @@ import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 import { LoginComponent } from './login/login.component';
-import { ParksListComponent } from './parks-list/parks-list.component';
-import { ParkDetailsComponent } from './park-details/park-details.component';
-import { ParkEditComponent } from './park-edit/park-edit.component';
 import { FacilityEditComponent } from './facility-edit/facility-edit.component';
 import { PassDetailsComponent } from './pass-details/pass-details.component';
 import { FacilityDetailsComponent } from './facility-details/facility-details.component';
+import { ParksListComponent } from './parks/parks-list/parks-list.component';
+import { ParkDetailsComponent } from './parks/park-details/park-details.component';
+import { ParkEditComponent } from './parks/park-edit/park-edit.component';
 
 const routes: Routes = [
   {

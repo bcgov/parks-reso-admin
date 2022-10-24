@@ -10,13 +10,20 @@ export interface columnSchema {
   columnClasses?: string; // injectable column classes
 }
 
+export interface tableSchema {
+  id: string; // unique table identifier
+  tableClasses?: string; // injectable table classes
+  rowClick?: Function; // function to execute on every row
+  columns: columnSchema[]; // table columns
+}
+
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent implements OnChanges {
-  @Input() columnSchema: columnSchema[];
+  @Input() tableSchema: tableSchema;
   @Input() data: any[];
   @Input() emptyTableMsg = 'This table is empty.';
 
@@ -30,13 +37,14 @@ export class TableComponent implements OnChanges {
   }
 
   async parseData() {
-    this.columns = [];
     this.rows = [];
-    this.columns = this.columnSchema.map((id) => id.displayHeader);
     if (this.data && this.data.length > 0) {
       for (const item of this.data) {
         let row: any = {};
-        this.columnSchema.map(async (col) => {
+        if (this.tableSchema.rowClick) {
+          row.onClick = this.tableSchema.rowClick(item);
+        }
+        this.tableSchema.columns.map(async (col) => {
           // we pass the whole row to column functions
           row[col.id] = {
             value: col.mapValue(item),

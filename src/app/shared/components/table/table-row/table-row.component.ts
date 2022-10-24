@@ -35,6 +35,12 @@ export class TableRowComponent implements AfterViewChecked {
     return keys.filter((e) => this.rowData[e].cellTemplate !== undefined);
   }
 
+  onClick() {
+    if (this.rowData.onClick){
+      this.rowData.onClick();
+    }
+  }
+
   // Load components and map them to their respective cells in the row
   loadComponents() {
     if (this.cellTemplateComponents) {

@@ -1,8 +1,8 @@
-<table class="table table-hover">
+<table class="table table-hover" id="tableSchema?.id">
   <thead class="header">
     <tr>
       <th
-        *ngFor="let column of columnSchema"
+        *ngFor="let column of tableSchema?.columns"
         class="{{ column.columnClasses }}"
         [ngStyle]="{ width: column.width }"
       >
@@ -14,7 +14,7 @@
     <tr
       *ngFor="let row of rows"
       app-table-row
-      [columnSchema]="columnSchema"
+      [columnSchema]="tableSchema.columns"
       [rowData]="row"
     ></tr>
   </tbody>

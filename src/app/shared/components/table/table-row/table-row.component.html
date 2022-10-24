@@ -1,7 +1,8 @@
 <td
   *ngFor="let column of columnSchema"
   class="{{ column.columnClasses }} table-cell"
-  (click)="loadComponents()"
+  [class.clickable]="rowData?.onClick"
+  (click)="onClick()"
 >
   <div class="d-flex align-items-center">
     <span *ngIf="rowData[column.id].cellTemplate">

@@ -8,6 +8,6 @@ import { ParkService } from '../services/park.service';
 export class ParkResolver implements Resolve<void> {
   constructor(private parkService: ParkService) {}
   resolve() {
-    this.parkService.fetchEnterDataPark();
+    this.parkService.fetchParksList();
   }
 }
