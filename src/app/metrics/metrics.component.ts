@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MetricService } from 'app/services/metric.service';
 import Chart from 'chart.js/auto';
+import { ApiService } from 'app/services/api.service';
+import { ToastService } from 'app/services/toast.service';
+import { Constants } from 'app/shared/utils/constants';
 
 @Component({
   selector: 'app-metrics',
@@ -11,8 +14,12 @@ export class MetricsComponent implements OnInit {
   passStatusChart;
   canvas: any;
   ctx: any;
+  isGenerating: any = false;
+  statusMessage: any;
+  signedURL: any;
+  buttonText: any = 'Export Pass Data';
 
-  constructor(private metricService: MetricService) {}
+  constructor(private metricService: MetricService, private apiService: ApiService, private toastService: ToastService) {}
 
   async ngOnInit() {
     const payload = await this.metricService.fetchData('passTotals');
@@ -61,5 +68,57 @@ export class MetricsComponent implements OnInit {
         maintainAspectRatio: false
       }
     });
+  }
+
+  async exportPassData() {
+    this.isGenerating = true;
+    this.signedURL = null;
+
+    // Call export all pass api
+    const res = await this.apiService.get('export-all-pass');
+    const self = this;
+    setTimeout(function () {
+      self.statusMessage = res.status;
+      self.getPassExport(res.sk);
+    }, 1000);
+  }
+
+  async getPassExport(sk) {
+    const self = this;
+    const params = {
+      getJob: sk
+    };
+    const res = await this.apiService.get('export-all-pass', params);
+    this.statusMessage = res.status;
+    if (res.status === 'Job not found' || res.jobObj.progressPercentage == -1) {
+      // last job failed
+      this.isGenerating = false;
+      this.buttonText = 'Export Pass Data';
+      this.toastService.addMessage(
+        `Sorry, that didn't work. Please try again.`,
+        'Export Service',
+        Constants.ToastTypes.ERROR
+      );
+    } else if (res.status === 'Job complete') {
+      // Show the DL link.
+      this.isGenerating = false;
+      this.buttonText = 'Export Pass Data';
+      this.signedURL = res.signedURL;
+
+      this.toastService.addMessage(
+        `Your report is downloading.`,
+        'Export Service',
+        Constants.ToastTypes.SUCCESS
+      );
+
+      // Set a delay so they see the toast msg.
+      setTimeout(function() {
+        window.open(self.signedURL, '_blank');
+      }, 5000)
+    } else {
+      setTimeout(function () {
+        self.getPassExport(sk);
+      }, 1000);
+    }
   }
 }
