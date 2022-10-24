@@ -44,13 +44,23 @@ export function initConfig(
     apiService.init();
     await keycloakService.init();
     if (keycloakService.isAuthorized()) {
-      // autoFetchService.run();
+      autoFetchService.run();
     }
   };
 }
 
 @NgModule({
-  declarations: [AppComponent, NotAuthorizedComponent, LoginComponent, ParksListComponent, ParkDetailsComponent, ParkEditComponent, FacilityDetailsComponent, FacilityEditComponent, PassDetailsComponent],
+  declarations: [
+    AppComponent,
+    NotAuthorizedComponent,
+    LoginComponent,
+    ParksListComponent,
+    ParkDetailsComponent,
+    ParkEditComponent,
+    FacilityDetailsComponent,
+    FacilityEditComponent,
+    PassDetailsComponent,
+  ],
   imports: [
     BrowserModule,
     CommonModule,

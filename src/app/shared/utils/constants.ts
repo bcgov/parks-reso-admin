@@ -1,6 +1,7 @@
 export class Constants {
   public static readonly dataIds = {
-    ENTER_DATA_PARK: 'enterDataPark',
+    PARKS_LIST: 'parksList',
+
     ENTER_DATA_SUB_AREA: 'enterDataSubArea',
     ACCORDION_FRONTCOUNTRY_CAMPING: 'accordion-Frontcountry Camping',
     ACCORDION_FRONTCOUNTRY_CABINS: 'accordion-Frontcountry Cabins',

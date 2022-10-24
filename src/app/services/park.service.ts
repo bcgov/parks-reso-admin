@@ -21,22 +21,14 @@ export class ParkService {
   ) {}
   public utils = new Utils();
 
-  async fetchEnterDataPark() {
-    this.loadingService.addToFetchList(Constants.dataIds.ENTER_DATA_PARK);
+  async fetchParksList() {
+    this.loadingService.addToFetchList(Constants.dataIds.PARKS_LIST);
     let res;
     let errorSubject = '';
     try {
-      // we're getting a single item
-      errorSubject = 'park';
-
-      // TODO: Enable this when our endpoint is ready
+      errorSubject = 'parks list';
       res = await firstValueFrom(this.apiService.get('park'));
-      let dataObj = this.utils.convertArrayIntoObjForTypeAhead(
-        res,
-        'parkName',
-        'parkName'
-      );
-      this.dataService.setItemValue(Constants.dataIds.ENTER_DATA_PARK, dataObj);
+      this.dataService.setItemValue(Constants.dataIds.PARKS_LIST, res);
     } catch (e) {
       this.toastService.addMessage(
         `Please refresh the page.`,
@@ -47,8 +39,8 @@ export class ParkService {
         new EventObject(EventKeywords.ERROR, String(e), 'Park Service')
       );
       // TODO: We may want to change this.
-      this.dataService.setItemValue(Constants.dataIds.ENTER_DATA_PARK, 'error');
+      this.dataService.setItemValue(Constants.dataIds.PARKS_LIST, 'error');
     }
-    this.loadingService.removeToFetchList(Constants.dataIds.ENTER_DATA_PARK);
+    this.loadingService.removeToFetchList(Constants.dataIds.PARKS_LIST);
   }
 }

@@ -9,13 +9,15 @@
   window.__env.configEndpoint = false;
 
   // Environment name
-  window.__env.ENVIRONMENT = 'local';  // local | dev | test | prod
+  window.__env.ENVIRONMENT = "local"; // local | dev | test | prod
 
-  window.__env.API_LOCATION = 'http://localhost:3000';
-  window.__env.API_PATH = '/api';
-  window.__env.KEYCLOAK_CLIENT_ID = 'parking-pass';
-  window.__env.KEYCLOAK_URL = 'https://dev.oidc.gov.bc.ca/auth';
-  window.__env.KEYCLOAK_REALM = 'g7v0xlf4';
+  window.__env.API_LOCATION =
+    "https://tvukfg2g0b.execute-api.ca-central-1.amazonaws.com";
+  window.__env.API_PATH = "/api";
+  window.__env.API_PUBLIC_PATH = "/api";
+  window.__env.KEYCLOAK_CLIENT_ID = "parking-pass";
+  window.__env.KEYCLOAK_URL = "https://dev.oidc.gov.bc.ca/auth";
+  window.__env.KEYCLOAK_REALM = "g7v0xlf4";
   window.__env.KEYCLOAK_ENABLED = true;
 
   // Number of days in advance a pass is available
@@ -23,7 +25,7 @@
 
   // Hour of day that booking limit advances by 1 day
   window.__env.ADVANCE_BOOKING_HOUR = 7;
-  
+
   // Add any feature-toggles
   // window.__env.coolFeatureActive = false;
-}(this));
+})(this);

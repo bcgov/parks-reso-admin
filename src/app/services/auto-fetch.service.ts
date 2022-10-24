@@ -8,7 +8,7 @@ import { ParkService } from './park.service';
 export class AutoFetchService {
   // TODO: This should come in from the config service.
   public timeIntevalSeconds = 60 * 60;
-  public fetchQueue = [Constants.dataIds.ENTER_DATA_PARK];
+  public fetchQueue = [Constants.dataIds.PARKS_LIST];
 
   constructor(private parkService: ParkService) {}
 
@@ -21,8 +21,8 @@ export class AutoFetchService {
   runFetches(fetchQueue) {
     for (let i = 0; i < fetchQueue.length; i++) {
       const fetchId = fetchQueue[i];
-      if (fetchId === Constants.dataIds.ENTER_DATA_PARK) {
-        this.parkService.fetchEnterDataPark();
+      if (fetchId === Constants.dataIds.PARKS_LIST) {
+        this.parkService.fetchParksList();
       }
     }
   }
