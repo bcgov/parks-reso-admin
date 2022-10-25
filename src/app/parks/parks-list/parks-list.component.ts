@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
+import { TableEditButtonComponent } from 'src/app/shared/components/table/table-components/edit-button/edit-button.component';
 import { Constants } from 'src/app/shared/utils/constants';
 import { tableSchema } from '../../shared/components/table/table.component';
-import { ParkEditButtonComponent } from './park-edit-button/park-edit-button.component';
 
 @Component({
   selector: 'app-parks-list',
@@ -32,10 +32,10 @@ export class ParksListComponent implements OnInit {
   }
 
   getParkStatus(status) {
-    if (status === 'closed') {
-      return 'Passes Not Required';
-    } else {
+    if (status === 'open') {
       return 'Passes Required';
+    } else {
+      return 'Passes Not Required';
     }
   }
 
@@ -43,8 +43,6 @@ export class ParksListComponent implements OnInit {
     // TODO: create url based on park payload
     this.router.navigate(['/park/' + nav]);
   }
-
-  argumentLess() {}
 
   createTable() {
     this.tableSchema = {
@@ -78,9 +76,9 @@ export class ParksListComponent implements OnInit {
           mapValue: () => null,
           cellTemplate: (row) => {
             return {
-              component: ParkEditButtonComponent,
-              data: {
-                data: row.raw,
+              component: TableEditButtonComponent,
+              inputs: {
+                route: '/park/' + row.name + '/edit',
               },
             };
           },

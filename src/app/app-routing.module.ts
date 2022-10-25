@@ -10,6 +10,7 @@ import { FacilityDetailsComponent } from './facility-details/facility-details.co
 import { ParksListComponent } from './parks/parks-list/parks-list.component';
 import { ParkDetailsComponent } from './parks/park-details/park-details.component';
 import { ParkEditComponent } from './parks/park-edit/park-edit.component';
+import { ParkResolver } from './resolvers/park.resolver';
 
 const routes: Routes = [
   {
@@ -39,6 +40,7 @@ const routes: Routes = [
       module: 'park',
       component: 'main',
     },
+    resolve: [ParkResolver],
     children: [
       {
         path: 'edit',

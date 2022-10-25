@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { FacilityService } from '../services/facility.service';
 import { ParkService } from '../services/park.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ParkResolver implements Resolve<void> {
-  constructor(private parkService: ParkService) {}
-  resolve() {
+  constructor(private parkService: ParkService,
+    private facilityService: FacilityService) {}
+  resolve(route: ActivatedRouteSnapshot) {
+    if (route.params['parkId']) {
+      this.facilityService.fetchFacilityList(route.params['parkId']);
+    }
     this.parkService.fetchParksList();
   }
 }

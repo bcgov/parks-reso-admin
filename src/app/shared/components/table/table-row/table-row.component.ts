@@ -36,7 +36,7 @@ export class TableRowComponent implements AfterViewChecked {
   }
 
   onClick() {
-    if (this.rowData.onClick){
+    if (this.rowData.onClick) {
       this.rowData.onClick();
     }
   }
@@ -55,7 +55,11 @@ export class TableRowComponent implements AfterViewChecked {
           const cellTemplateComponent = vcr.createComponent<
             typeof template.component
           >(template.component);
-          cellTemplateComponent.instance.data = this.rowData;
+          if (template.inputs) {
+            for (const input of Object.keys(template.inputs)) {
+              cellTemplateComponent.instance[input] = template.inputs[input];
+            }
+          }
         }
       );
     }
