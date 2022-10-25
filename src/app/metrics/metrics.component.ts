@@ -90,7 +90,7 @@ export class MetricsComponent implements OnInit {
     };
     const res = await this.apiService.get('export-all-pass', params);
     this.statusMessage = res.status;
-    if (res.status === 'Job not found' || res.jobObj.progressPercentage == -1) {
+    if (res.status === 'Job not found' || res.jobObj.progressPercentage === -1) {
       // last job failed
       this.isGenerating = false;
       this.buttonText = 'Export Pass Data';
@@ -114,7 +114,7 @@ export class MetricsComponent implements OnInit {
       // Set a delay so they see the toast msg.
       setTimeout(function() {
         window.open(self.signedURL, '_blank');
-      }, 5000)
+      }, 5000);
     } else {
       setTimeout(function () {
         self.getPassExport(sk);
