@@ -15,7 +15,6 @@ export class TableEditButtonComponent {
 
   goToParkEdit(event) {
     // in case rowClick is active
-    console.log('this.checkVar:', this.route);
     event.stopPropagation();
     this.router.navigate([this.route])
   }

@@ -16,7 +16,11 @@ export class FacilitiesListComponent implements OnInit {
   public tableSchema: tableSchema;
   public tableRows: any[] = [];
 
-  constructor(protected dataService: DataService, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    protected dataService: DataService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.subscriptions.add(
       dataService
         .getItemValue(Constants.dataIds.FACILITIES_LIST)
@@ -24,14 +28,14 @@ export class FacilitiesListComponent implements OnInit {
           this.tableRows = res;
         })
     );
-}
+  }
 
   ngOnInit(): void {
     this.createTable();
   }
 
   navToFacility(nav) {
-    this.router.navigate([nav], {relativeTo: this.route});
+    this.router.navigate([nav], { relativeTo: this.route });
   }
 
   createTable() {
@@ -74,15 +78,15 @@ export class FacilitiesListComponent implements OnInit {
           width: '10%',
           columnClasses: 'ps-5 pe-3',
           mapValue: () => null,
-          cellTemplate: () => {
+          cellTemplate: (row) => {
             return {
               component: TableEditButtonComponent,
               inputs: {
-                route: this.route.snapshot + '/edit',
+                route: this.router.url + '/' + row.name + '/edit',
               },
             };
           },
-        }
+        },
       ],
     };
   }

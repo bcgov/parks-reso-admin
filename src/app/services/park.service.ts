@@ -21,14 +21,27 @@ export class ParkService {
   ) {}
   public utils = new Utils();
 
-  async fetchParksList() {
-    this.loadingService.addToFetchList(Constants.dataIds.PARKS_LIST);
+  // Get all parks
+  async fetchParks(sk = null) {
+
+    let dataTag = '';
     let res;
     let errorSubject = '';
     try {
-      errorSubject = 'parks list';
-      res = await firstValueFrom(this.apiService.get('park'));
-      this.dataService.setItemValue(Constants.dataIds.PARKS_LIST, res);
+      if (sk) {
+        // we are getting a single park based on sk
+        dataTag = Constants.dataIds.CURRENT_PARK;
+        this.loadingService.addToFetchList(dataTag);
+        errorSubject = 'park';
+        res = await firstValueFrom(this.apiService.get('park', {park: sk}));
+      } else {
+        // we are getting all parks
+        dataTag = Constants.dataIds.PARKS_LIST;
+        this.loadingService.addToFetchList(dataTag);
+        errorSubject = 'parks list';
+        res = await firstValueFrom(this.apiService.get('park'));
+      }
+      this.dataService.setItemValue(dataTag, res);
     } catch (e) {
       this.toastService.addMessage(
         `Please refresh the page.`,
@@ -39,8 +52,8 @@ export class ParkService {
         new EventObject(EventKeywords.ERROR, String(e), 'Park Service')
       );
       // TODO: We may want to change this.
-      this.dataService.setItemValue(Constants.dataIds.PARKS_LIST, 'error');
+      this.dataService.setItemValue(dataTag, 'error');
     }
-    this.loadingService.removeToFetchList(Constants.dataIds.PARKS_LIST);
+    this.loadingService.removeToFetchList(dataTag);
   }
 }

@@ -11,8 +11,9 @@ export class ParkResolver implements Resolve<void> {
     private facilityService: FacilityService) {}
   resolve(route: ActivatedRouteSnapshot) {
     if (route.params['parkId']) {
-      this.facilityService.fetchFacilityList(route.params['parkId']);
+      this.facilityService.fetchFacilities(route.params['parkId']);
+      this.parkService.fetchParks(route.params['parkId'])
     }
-    this.parkService.fetchParksList();
+    this.parkService.fetchParks();
   }
 }

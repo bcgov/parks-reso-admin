@@ -5,6 +5,7 @@ import { ParksListComponent } from './parks-list/parks-list.component';
 import { ParkDetailsComponent } from './park-details/park-details.component';
 import { ParkEditComponent } from './park-edit/park-edit.component';
 import { FacilitiesListComponent } from './park-details/facilities-list/facilities-list.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -13,11 +14,12 @@ import { FacilitiesListComponent } from './park-details/facilities-list/faciliti
     ParksListComponent,
     ParkDetailsComponent,
     ParkEditComponent,
-    FacilitiesListComponent
+    FacilitiesListComponent,
   ],
   imports: [
     CommonModule,
-    TableModule
+    TableModule,
+    RouterModule
   ],
   exports: [
 

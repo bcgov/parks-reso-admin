@@ -21,7 +21,7 @@ export class FacilityService {
   ) {}
   public utils = new Utils();
 
-  async fetchFacilityList(parkSk = null, facilitySk = null) {
+  async fetchFacilities(parkSk = null, facilitySk = null) {
     this.loadingService.addToFetchList(Constants.dataIds.FACILITIES_LIST);
     let res;
     let errorSubject = '';

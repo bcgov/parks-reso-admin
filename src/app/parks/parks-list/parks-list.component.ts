@@ -14,7 +14,6 @@ import { tableSchema } from '../../shared/components/table/table.component';
 export class ParksListComponent implements OnInit {
   private subscriptions = new Subscription();
   public tableSchema: tableSchema;
-  // public columnSchema: columnSchema[] = [];
   public tableRows: any[] = [];
 
   constructor(protected dataService: DataService, private router: Router) {
@@ -41,7 +40,7 @@ export class ParksListComponent implements OnInit {
 
   navToPark(nav) {
     // TODO: create url based on park payload
-    this.router.navigate(['/park/' + nav]);
+    this.router.navigate(['/parks/' + nav]);
   }
 
   createTable() {
@@ -78,7 +77,7 @@ export class ParksListComponent implements OnInit {
             return {
               component: TableEditButtonComponent,
               inputs: {
-                route: '/park/' + row.name + '/edit',
+                route: '/parks/' + row.name + '/edit',
               },
             };
           },
