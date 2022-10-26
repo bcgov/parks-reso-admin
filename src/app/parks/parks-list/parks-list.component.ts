@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
-import { TableEditButtonComponent } from 'src/app/shared/components/table/table-components/edit-button/edit-button.component';
+import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
 import { Constants } from 'src/app/shared/utils/constants';
 import { tableSchema } from '../../shared/components/table/table.component';
 
@@ -16,7 +16,11 @@ export class ParksListComponent implements OnInit {
   public tableSchema: tableSchema;
   public tableRows: any[] = [];
 
-  constructor(protected dataService: DataService, private router: Router) {
+  constructor(
+    protected dataService: DataService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.subscriptions.add(
       dataService
         .getItemValue(Constants.dataIds.PARKS_LIST)
@@ -38,9 +42,12 @@ export class ParksListComponent implements OnInit {
     }
   }
 
-  navToPark(nav) {
-    // TODO: create url based on park payload
-    this.router.navigate(['/parks/' + nav]);
+  navToPark(nav, edit = false) {
+    if (edit) {
+      this.router.navigate([nav + '/edit'], { relativeTo: this.route });
+    } else {
+      this.router.navigate([nav], { relativeTo: this.route });
+    }
   }
 
   createTable() {
@@ -74,10 +81,15 @@ export class ParksListComponent implements OnInit {
           columnClasses: 'ps-5 pe-3',
           mapValue: () => null,
           cellTemplate: (row) => {
+            const self = this;
             return {
-              component: TableEditButtonComponent,
+              component: TableButtonComponent,
               inputs: {
-                route: '/parks/' + row.name + '/edit',
+                buttonClass: 'btn btn-outline-primary',
+                iconClass: 'bi bi-pencil-fill',
+                onClick: function () {
+                  self.navToPark(row.name, true);
+                },
               },
             };
           },

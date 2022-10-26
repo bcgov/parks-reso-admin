@@ -1,5 +1,6 @@
 import {
   AfterViewChecked,
+  ChangeDetectorRef,
   Component,
   Input,
   QueryList,
@@ -24,6 +25,8 @@ export class TableRowComponent implements AfterViewChecked {
 
   @ViewChildren('cellTemplateComponent', { read: ViewContainerRef })
   cellTemplateComponents: QueryList<ViewContainerRef>;
+
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngAfterViewChecked(): void {
     this.loadComponents();
@@ -63,5 +66,6 @@ export class TableRowComponent implements AfterViewChecked {
         }
       );
     }
+    this.cd.detectChanges();
   }
 }

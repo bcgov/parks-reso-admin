@@ -22,26 +22,36 @@ export class FacilityService {
   public utils = new Utils();
 
   async fetchFacilities(parkSk = null, facilitySk = null) {
-    this.loadingService.addToFetchList(Constants.dataIds.FACILITIES_LIST);
     let res;
     let errorSubject = '';
     let dataTag;
     try {
       errorSubject = 'facilities list';
-      dataTag = Constants.dataIds.FACILITIES_LIST;
       if (!facilitySk && parkSk) {
+        dataTag = Constants.dataIds.FACILITIES_LIST;
+        this.loadingService.addToFetchList(dataTag);
         // We are getting all facilities for a given park.
-        res = await firstValueFrom(this.apiService.get('facility', {facilities: true, park: parkSk}));
+        res = await firstValueFrom(
+          this.apiService.get('facility', { facilities: true, park: parkSk })
+        );
         this.dataService.setItemValue(dataTag, res);
       } else if (facilitySk && parkSk) {
         // We are getting a single facility.
-        errorSubject = 'facility';
         dataTag = Constants.dataIds.CURRENT_FACILITY;
-        res = await firstValueFrom(this.apiService.get('facility', {facilityName: facilitySk, park: parkSk}));
+        this.loadingService.addToFetchList(dataTag);
+        errorSubject = 'facility';
+        res = await firstValueFrom(
+          this.apiService.get('facility', {
+            facilityName: facilitySk,
+            park: parkSk,
+          })
+        );
         this.dataService.setItemValue(dataTag, res);
       } else {
-        errorSubject = 'facilities list';
+        // We are getting all facilities
         dataTag = Constants.dataIds.FACILITIES_LIST;
+        this.loadingService.addToFetchList(dataTag);
+        errorSubject = 'facilities list';
         res = await firstValueFrom(this.apiService.get('facility'));
         this.dataService.setItemValue(dataTag, res);
       }
@@ -56,7 +66,7 @@ export class FacilityService {
       );
       // TODO: We may want to change this.
       if (errorSubject === 'facilities list')
-      this.dataService.setItemValue(dataTag, 'error');
+        this.dataService.setItemValue(dataTag, 'error');
     }
     this.loadingService.removeToFetchList(dataTag);
   }

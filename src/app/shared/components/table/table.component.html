@@ -10,7 +10,7 @@
       </th>
     </tr>
   </thead>
-  <tbody *ngIf="rows?.length > 0">
+  <tbody *ngIf="rows?.length > 0 && !loading">
     <tr
       *ngFor="let row of rows"
       app-table-row
@@ -19,7 +19,16 @@
     ></tr>
   </tbody>
 </table>
-<div *ngIf="rows?.length === 0">
+<div *ngIf="loading">
+  <div class="d-flex justify-content-center">
+    <div
+      class="spinner-border spinner-border-lg"
+      role="status"
+      aria-hidden="true"
+    ></div>
+  </div>
+</div>
+<div *ngIf="rows?.length === 0 && !loading">
   <div class="d-flex justify-content-center">
     <div class="text-muted">
       {{ emptyTableMsg }}

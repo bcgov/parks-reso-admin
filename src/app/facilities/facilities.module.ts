@@ -4,9 +4,10 @@ import { FacilityDetailsComponent } from './facility-details/facility-details.co
 import { FacilityEditComponent } from './facility-edit/facility-edit.component';
 import { TableModule } from '../shared/components/table/table.module';
 import { RouterModule } from '@angular/router';
+import { PassesListComponent } from './facility-details/passes-list/passes-list.component';
 
 @NgModule({
-  declarations: [FacilityDetailsComponent, FacilityEditComponent],
+  declarations: [FacilityDetailsComponent, FacilityEditComponent, PassesListComponent],
   imports: [CommonModule, TableModule, RouterModule],
 })
 export class FacilitiesModule {}

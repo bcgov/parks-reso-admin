@@ -1,32 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
+import { FacilityService } from 'src/app/services/facility.service';
 import { Constants } from 'src/app/shared/utils/constants';
 
 @Component({
   selector: 'app-park-details',
   templateUrl: './park-details.component.html',
-  styleUrls: ['./park-details.component.scss']
+  styleUrls: ['./park-details.component.scss'],
 })
 export class ParkDetailsComponent implements OnInit {
   private subscriptions = new Subscription();
   public park;
 
   constructor(
-    protected dataService: DataService
+    protected dataService: DataService,
+    protected facilityService: FacilityService
   ) {
     this.subscriptions.add(
       dataService
         .getItemValue(Constants.dataIds.CURRENT_PARK)
         .subscribe((res) => {
-          if (res && res[0]){
+          if (res && res[0]) {
             this.park = res[0];
+            this.facilityService.fetchFacilities(this.park.sk);
           }
         })
     );
-   }
-
-  ngOnInit(): void {
   }
 
+  ngOnInit(): void {}
 }

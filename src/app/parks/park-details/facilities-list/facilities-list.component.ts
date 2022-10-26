@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
-import { filter, pairwise, Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
-import { TableEditButtonComponent } from 'src/app/shared/components/table/table-components/edit-button/edit-button.component';
+import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
 import { tableSchema } from 'src/app/shared/components/table/table.component';
 import { Constants } from 'src/app/shared/utils/constants';
 
@@ -34,17 +34,21 @@ export class FacilitiesListComponent implements OnInit {
     this.createTable();
   }
 
-  navToFacility(nav) {
-    this.router.navigate([nav], { relativeTo: this.route });
+  navToFacility(nav, edit = false) {
+    if (edit) {
+      this.router.navigate([nav + '/edit'], { relativeTo: this.route });
+    } else {
+      this.router.navigate([nav], { relativeTo: this.route });
+    }
   }
 
   createTable() {
     this.tableSchema = {
       id: 'facilities-list',
-      rowClick: (row) => {
+      rowClick: (facilityObj) => {
         let self = this;
         return function () {
-          self.navToFacility(row.name);
+          self.navToFacility(facilityObj.name);
         };
       },
       columns: [
@@ -52,25 +56,25 @@ export class FacilitiesListComponent implements OnInit {
           id: 'name',
           displayHeader: 'Name',
           columnClasses: 'ps-3 pe-5',
-          mapValue: (row) => row.name,
+          mapValue: (facilityObj) => facilityObj.name,
         },
         {
           id: 'type',
           displayHeader: 'Type',
           columnClasses: 'px-5',
-          mapValue: (row) => row.type,
+          mapValue: (facilityObj) => facilityObj.type,
         },
         {
           id: 'status',
           displayHeader: 'Status',
           columnClasses: 'px-5',
-          mapValue: (row) => row.status?.state,
+          mapValue: (facilityObj) => facilityObj.status?.state,
         },
         {
           id: 'visible',
           displayHeader: 'Visible',
           columnClasses: 'px-5',
-          mapValue: (row) => row.visible,
+          mapValue: (facilityObj) => facilityObj.visible,
         },
         {
           id: 'facility-edit',
@@ -78,11 +82,16 @@ export class FacilitiesListComponent implements OnInit {
           width: '10%',
           columnClasses: 'ps-5 pe-3',
           mapValue: () => null,
-          cellTemplate: (row) => {
+          cellTemplate: (facilityObj) => {
+            const self = this;
             return {
-              component: TableEditButtonComponent,
+              component: TableButtonComponent,
               inputs: {
-                route: this.router.url + '/' + row.name + '/edit',
+                buttonClass: 'btn btn-outline-primary',
+                iconClass: 'bi bi-pencil-fill',
+                onClick: function () {
+                  self.navToFacility(facilityObj.name, true);
+                },
               },
             };
           },

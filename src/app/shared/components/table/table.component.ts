@@ -1,4 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { LoadingService } from 'src/app/services/loading.service';
 
 export interface columnSchema {
   id: string; // unique column identifier
@@ -29,8 +31,16 @@ export class TableComponent implements OnChanges {
 
   public columns;
   public rows: any = [];
+  public loading: boolean = false;
+  private subscriptions = new Subscription();
 
-  constructor() {}
+  constructor(protected loadingService: LoadingService) {
+    this.subscriptions.add(
+      loadingService.getLoadingStatus().subscribe((res) => {
+        this.loading = res;
+      })
+    );
+  }
 
   ngOnChanges() {
     this.parseData();
