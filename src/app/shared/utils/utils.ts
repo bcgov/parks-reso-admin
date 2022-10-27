@@ -1,5 +1,6 @@
 import * as moment from 'moment';
 import { Constants } from './constants';
+import { DateTime } from 'luxon';
 
 export class Utils {
   public convertArrayIntoObjForTypeAhead(
@@ -76,4 +77,9 @@ export class Utils {
       'MMMM YYYY'
     );
   }
+
+  public getTodayAsShortDate(){
+    return DateTime.now().setZone('America/Vancouver').toISODate();
+  }
+
 }

@@ -30,7 +30,6 @@ const routes: Routes = [
       label: 'Parks Management',
       breadcrumb: 'Parks',
     },
-    resolve: [ParkResolver],
     children: [
       {
         path: '',

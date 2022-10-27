@@ -9,9 +9,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { FormService } from 'src/app/services/form.service';
-import { FormulaService } from 'src/app/services/formula.service';
 import { LoadingService } from 'src/app/services/loading.service';
-import { SubAreaService } from 'src/app/services/sub-area.service';
 import { Constants } from 'src/app/shared/utils/constants';
 
 export interface formResult {
@@ -43,15 +41,13 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
     public bFormService: FormService,
     public bRouter: Router,
     public bDataService: DataService,
-    public bSubAreaService: SubAreaService,
-    public bFormulaService: FormulaService,
     public bLoadingService: LoadingService,
     public bChangeDetector: ChangeDetectorRef
   ) {
     this.form = this.bFormBuilder.group({});
     this.subscriptions.add(
       this.bDataService
-        .getItemValue(Constants.dataIds.ENTER_DATA_URL_PARAMS)
+        .watchItem(Constants.dataIds.ENTER_DATA_URL_PARAMS)
         .subscribe((res) => {
           if (res) {
             this.postObj['date'] = res.date;
@@ -108,11 +104,11 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
 
   // delete null fields in preparation for API submission
   trimNullFields(allFields: any) {
-    for (const f of Object.keys(allFields)) {
-      if (!this.bFormulaService.isValidNumber(allFields[f])) {
-        delete allFields[f];
-      }
-    }
+    // for (const f of Object.keys(allFields)) {
+    //   if (!this.bFormulaService.isValidNumber(allFields[f])) {
+    //     delete allFields[f];
+    //   }
+    // }
     return allFields;
   }
 
@@ -152,34 +148,11 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
   async submit() {
     // We want to override loading to be sure everything is disabled.
     this.loading = true;
-    const payload = this.makePayload();
+    // const payload = this.makePayload();
     let res = [];
     // check form validity - do not submit if form is invalid.
     if (this.validate()) {
-      res = await this.bFormService.postActivity(payload);
-
-      // Refresh the accordion with new data.
-      await this.bSubAreaService.fetchActivityDetails(
-        'accordion-' + this.postObj.activity,
-        this.postObj.orcs,
-        this.postObj.subAreaId,
-        this.postObj.activity,
-        this.postObj.date
-      );
-
-      if (res) {
-        this.bRouter.navigate(['/enter-data'], {
-          queryParams: {
-            date: this.postObj.date,
-            orcs: this.postObj.orcs,
-            parkName: this.postObj.parkName,
-            subAreaId: this.postObj.subAreaId,
-          },
-        });
-      } else {
-        // TODO: handle error
-        this.bRouter.navigate(['/']);
-      }
+      // Form is valid
     } else {
       this.loading = false;
       // TODO: handle invalid fields here
@@ -190,10 +163,10 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
       fields: this.collect(),
       isValid: this.validate(),
       result: res,
-      payload: payload,
+      // payload: payload,
       invalidFields: this.getInvalidFields(),
     };
-
+    this.loading = false;
     return fResult;
   }
 

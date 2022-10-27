@@ -1,12 +1,14 @@
 import {
-  AfterViewChecked,
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   Input,
+  OnDestroy,
   QueryList,
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { columnSchema } from '../table.component';
 
 @Component({
@@ -19,17 +21,28 @@ import { columnSchema } from '../table.component';
   templateUrl: './table-row.component.html',
   styleUrls: ['./table-row.component.scss'],
 })
-export class TableRowComponent implements AfterViewChecked {
+export class TableRowComponent implements AfterViewInit, OnDestroy {
   @Input() columnSchema: columnSchema[];
-  @Input() rowData: any;
+  @Input() set rowData(value: any) {
+    this._rowData.next(value);
+  }
+
+  private _rowData = new BehaviorSubject<any>([]);
+
+  get rowData() {
+    return this._rowData.getValue();
+  }
 
   @ViewChildren('cellTemplateComponent', { read: ViewContainerRef })
   cellTemplateComponents: QueryList<ViewContainerRef>;
 
   constructor(private cd: ChangeDetectorRef) {}
 
-  ngAfterViewChecked(): void {
-    this.loadComponents();
+  ngAfterViewInit(): void {
+    // Ensure rowData is loaded before rendering row.
+    this._rowData.subscribe(() => {
+      this.loadComponents();
+    });
   }
 
   getComponentIdList() {
@@ -67,5 +80,9 @@ export class TableRowComponent implements AfterViewChecked {
       );
     }
     this.cd.detectChanges();
+  }
+
+  ngOnDestroy() {
+    this._rowData.unsubscribe();
   }
 }

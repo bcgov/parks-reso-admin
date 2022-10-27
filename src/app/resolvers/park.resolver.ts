@@ -13,8 +13,6 @@ export class ParkResolver implements Resolve<void> {
   resolve(route: ActivatedRouteSnapshot) {
     if (route.params['parkId']) {
       this.parkService.fetchParks(route.params['parkId']);
-    } else {
-      this.parkService.fetchParks()
     }
   }
 }

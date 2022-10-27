@@ -20,9 +20,14 @@ export class DataService {
     this.data[id].next(value);
   }
 
+  public watchItem(id) {
+    this.checkIfDataExists(id) ? null : this.initItem(id);
+    return this.data[id];
+  }
+
   public getItemValue(id) {
     this.checkIfDataExists(id) ? null : this.initItem(id);
-    return this.data[id].asObservable();
+    return this.data[id].value;
   }
 
   clearItemValue(id): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
@@ -11,7 +11,7 @@ import { Constants } from 'src/app/shared/utils/constants';
   templateUrl: './facilities-list.component.html',
   styleUrls: ['./facilities-list.component.scss'],
 })
-export class FacilitiesListComponent implements OnInit {
+export class FacilitiesListComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   public tableSchema: tableSchema;
   public tableRows: any[] = [];
@@ -23,7 +23,7 @@ export class FacilitiesListComponent implements OnInit {
   ) {
     this.subscriptions.add(
       dataService
-        .getItemValue(Constants.dataIds.FACILITIES_LIST)
+        .watchItem(Constants.dataIds.FACILITIES_LIST)
         .subscribe((res) => {
           this.tableRows = res;
         })
@@ -98,5 +98,9 @@ export class FacilitiesListComponent implements OnInit {
         },
       ],
     };
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

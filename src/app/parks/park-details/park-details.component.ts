@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { FacilityService } from 'src/app/services/facility.service';
@@ -9,7 +9,7 @@ import { Constants } from 'src/app/shared/utils/constants';
   templateUrl: './park-details.component.html',
   styleUrls: ['./park-details.component.scss'],
 })
-export class ParkDetailsComponent implements OnInit {
+export class ParkDetailsComponent implements OnDestroy {
   private subscriptions = new Subscription();
   public park;
 
@@ -19,7 +19,7 @@ export class ParkDetailsComponent implements OnInit {
   ) {
     this.subscriptions.add(
       dataService
-        .getItemValue(Constants.dataIds.CURRENT_PARK)
+        .watchItem(Constants.dataIds.CURRENT_PARK)
         .subscribe((res) => {
           if (res && res[0]) {
             this.park = res[0];
@@ -29,5 +29,7 @@ export class ParkDetailsComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 }

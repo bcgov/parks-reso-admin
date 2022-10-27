@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
@@ -11,7 +11,7 @@ import { tableSchema } from '../../shared/components/table/table.component';
   templateUrl: './parks-list.component.html',
   styleUrls: ['./parks-list.component.scss'],
 })
-export class ParksListComponent implements OnInit {
+export class ParksListComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   public tableSchema: tableSchema;
   public tableRows: any[] = [];
@@ -23,7 +23,7 @@ export class ParksListComponent implements OnInit {
   ) {
     this.subscriptions.add(
       dataService
-        .getItemValue(Constants.dataIds.PARKS_LIST)
+        .watchItem(Constants.dataIds.PARKS_LIST)
         .subscribe((res) => {
           this.tableRows = res;
         })
@@ -53,10 +53,10 @@ export class ParksListComponent implements OnInit {
   createTable() {
     this.tableSchema = {
       id: 'parks-list',
-      rowClick: (row) => {
+      rowClick: (parkObj) => {
         let self = this;
         return function () {
-          self.navToPark(row.name);
+          self.navToPark(parkObj.name);
         };
       },
       columns: [
@@ -64,15 +64,15 @@ export class ParksListComponent implements OnInit {
           id: 'name',
           displayHeader: 'Name',
           columnClasses: 'ps-3 pe-5',
-          mapValue: (row) => row.name,
+          mapValue: (parkObj) => parkObj.name,
         },
         {
           id: 'status',
           displayHeader: 'Status',
           columnClasses: 'px-5',
           width: '50%',
-          mapValue: (row) => row.status,
-          mapDisplay: (row) => this.getParkStatus(row.status),
+          mapValue: (parkObj) => parkObj.status,
+          mapDisplay: (parkObj) => this.getParkStatus(parkObj.status),
         },
         {
           id: 'edit-button',
@@ -80,7 +80,7 @@ export class ParksListComponent implements OnInit {
           width: '10%',
           columnClasses: 'ps-5 pe-3',
           mapValue: () => null,
-          cellTemplate: (row) => {
+          cellTemplate: (parkObj) => {
             const self = this;
             return {
               component: TableButtonComponent,
@@ -88,7 +88,7 @@ export class ParksListComponent implements OnInit {
                 buttonClass: 'btn btn-outline-primary',
                 iconClass: 'bi bi-pencil-fill',
                 onClick: function () {
-                  self.navToPark(row.name, true);
+                  self.navToPark(parkObj.name, true);
                 },
               },
             };
@@ -96,5 +96,9 @@ export class ParksListComponent implements OnInit {
         },
       ],
     };
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

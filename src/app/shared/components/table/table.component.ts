@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
 
@@ -24,7 +24,7 @@ export interface tableSchema {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent implements OnChanges {
+export class TableComponent implements OnChanges, OnDestroy {
   @Input() tableSchema: tableSchema;
   @Input() data: any[];
   @Input() emptyTableMsg = 'This table is empty.';
@@ -70,5 +70,9 @@ export class TableComponent implements OnChanges {
         this.rows.push(row);
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

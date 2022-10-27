@@ -33,6 +33,7 @@
     "jquery": "^3.6.0",
     "keycloak-angular": "^12.1.0",
     "keycloak-js": "^19.0.3",
+    "luxon": "^3.0.4",
     "moment": "^2.29.4",
     "ngx-bootstrap": "^9.0.0",
     "ngx-toastr": "^14.3.0",

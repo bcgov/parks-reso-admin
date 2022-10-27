@@ -34,21 +34,17 @@ export class PassService {
     let errorSubject = '';
     let dataTag;
     try {
-      if (
-        !params.passSk &&
-        params.parkSk &&
-        params.facilitySk &&
-        params.passType
-      ) {
+      if (!params.passSk && params.parkSk && params.facilitySk) {
         dataTag = Constants.dataIds.PASSES_LIST;
         this.loadingService.addToFetchList(dataTag);
-        // We are getting a list of passes filtered by type.
+        // Check existing filter presets.
+        let filters = this.dataService.getItemValue(
+          Constants.dataIds.PASS_SEARCH_PARAMS
+        ) ?? {};
+        let queryObj = Object.assign(filters, params)
+        queryObj['park'] = params.parkSk,
+        queryObj['facilityName']  = params.facilitySk,
         errorSubject = 'passes';
-        let queryObj = {
-          park: params.parkSk,
-          facilityName: params.facilitySk,
-          passType: params.passType,
-        };
         if (params.ExclusiveStartKeyPK && params.ExclusiveStartKeySK) {
           // Load more.
           queryObj['ExclusiveStartKeyPK'] = params.ExclusiveStartKeyPK;
@@ -112,4 +108,23 @@ export class PassService {
     }
     this.loadingService.removeToFetchList(dataTag);
   }
+
+  async formatSearchParams(filters) {
+    let filterMap = {
+      date: filters.passDate || null,
+      reservationNumber: filters.passReservationNumber || null,
+      status: filters.passStatus || null,
+      firstName: filters.passFirstName || null,
+      lastName: filters.passLastName || null,
+      email: filters.passEmail || null,
+      passType: filters.passType || null
+    }
+    for (let item of Object.keys(filterMap)){
+      if (!filterMap[item]) {
+        delete filterMap[item];
+      }
+    }
+    this.dataService.setItemValue(Constants.dataIds.PASS_SEARCH_PARAMS, filterMap);
+  }
+
 }
