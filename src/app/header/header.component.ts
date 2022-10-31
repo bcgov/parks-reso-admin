@@ -3,6 +3,7 @@ import { NavigationEnd, Router, Event } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { ConfigService } from '../services/config.service';
 import { KeycloakService } from '../services/keycloak.service';
+import { SideBarService } from '../services/sidebar.service';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,7 @@ import { KeycloakService } from '../services/keycloak.service';
 })
 export class HeaderComponent implements OnDestroy {
   @Input() showSideBar = true;
-  
+
   private subscriptions = new Subscription();
 
   public envName: string;
@@ -25,18 +26,10 @@ export class HeaderComponent implements OnDestroy {
   constructor(
     protected configService: ConfigService,
     protected router: Router,
+    protected sidebarService: SideBarService,
     protected keycloakService: KeycloakService
   ) {
-    this.routes = router.config.filter(function (obj) {
-      if (obj.path === 'export-reports') {
-        return keycloakService.isAllowed('export-reports');
-      } else if (obj.path === 'lock-records') {
-        return keycloakService.isAllowed('lock-records')
-      }
-        {
-        return obj.path !== '**' && obj.path !== 'unauthorized';
-      }
-    });
+    this.routes = sidebarService.routes;
 
     this.subscriptions.add(
       router.events

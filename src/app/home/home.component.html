@@ -1,17 +1,17 @@
-<div class="container pt-4 pt-md-5">
+<div class="pt-4 pt-md-5">
   <div class="home-title-container text-center">
     <h1>
-      <span>BC Parks - Day Pass Reservation System</span>
+      <span>Day-Use Pass Admin System</span>
     </h1>
   </div>
   <div class="row">
     <div class="col-lg-6 col-md-12 mb-4" *ngFor="let card of cardConfig">
-        <app-nav-card
-          [cardHeader]="card.cardHeader"
-          [cardTitle]="card.cardTitle"
-          [cardText]="card.cardText"
-          [navigation]="card.navigation"
-        ></app-nav-card>
+      <app-nav-card
+        [cardHeader]="card.cardHeader"
+        [cardTitle]="card.cardTitle"
+        [cardText]="card.cardText"
+        [navigation]="card.navigation"
+      ></app-nav-card>
     </div>
   </div>
 </div>
