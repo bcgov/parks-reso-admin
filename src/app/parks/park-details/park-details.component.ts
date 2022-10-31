@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { FacilityService } from 'src/app/services/facility.service';
 import { Constants } from 'src/app/shared/utils/constants';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-park-details',
@@ -15,7 +16,9 @@ export class ParkDetailsComponent implements OnDestroy {
 
   constructor(
     protected dataService: DataService,
-    protected facilityService: FacilityService
+    protected facilityService: FacilityService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.subscriptions.add(
       dataService
@@ -27,6 +30,10 @@ export class ParkDetailsComponent implements OnDestroy {
           }
         })
     );
+  }
+
+  navigate(nav) {
+    this.router.navigate([nav], { relativeTo: this.route });
   }
 
   ngOnDestroy(): void {
