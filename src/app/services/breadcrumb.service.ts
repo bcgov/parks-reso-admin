@@ -54,9 +54,25 @@ export class BreadcrumbService {
 
       // Add an element for the current route part
       if (route.data['breadcrumb']) {
+        let label = '';
+        switch (route.data['breadcrumb']) {
+          case 'PARK NAME':
+            label = route.params['parkId'];
+            break;
+          case 'FACILITY NAME':
+            label = route.params['facilityId'];
+            break;
+          case 'PASS NAME':
+            label = route.params['passId'];
+            break;
+          default:
+            label = this.getLabel(route.data);
+            break;
+        }
+
         const breadcrumb = {
-          label: this.getLabel(route.data),
-          url: '/' + routeUrl.join('/'),
+          label: label,
+          url: `/${routeUrl.join('/')}`,
         };
         breadcrumbs.push(breadcrumb);
       }
