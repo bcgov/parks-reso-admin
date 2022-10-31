@@ -1,12 +1,8 @@
-.wrapper {
-  display: flex;
-}
-
-#content {
-  transition: all 0.3s;
-}
-
 app-toggle-button {
   position: absolute;
   margin-top: 0.5rem;
+}
+
+.content {
+  flex: 1;
 }

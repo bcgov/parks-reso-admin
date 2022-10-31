@@ -6,24 +6,6 @@ body {
   margin: 0;
 }
 
-.box {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-}
-
-.box .header {
-  flex: 0 1 auto;
-}
-
-.box .content {
-  flex: 1 1 auto;
-}
-
-.box .footer {
-  flex: 0 1 auto;
-}
-
 .clickable {
   cursor: pointer;
 }
@@ -61,45 +43,5 @@ body {
 
 .invalid-field {
   border: 2px solid $form-invalid;
-  border-radius: 6px
-}
-
-.car-icon {
-  background-image: url('/assets/images/car.svg');
-  background-position: center center;
-  background-size: 26px auto;
-  height: auto;
-  line-height: 1.6;
-  width: 40px;
-  background-repeat: no-repeat;
-}
-
-.bus-icon {
-  background-image: url('/assets/images/bus.svg');
-  background-position: center center;
-  background-size: 24px auto;
-  height: auto;
-  line-height: 1.6;
-  width: 40px;
-  background-repeat: no-repeat;
-}
-
-.boat-icon {
-  background-image: url('/assets/images/boat.svg');
-  background-position: center center;
-  background-size: 24px auto;
-  height: auto;
-  line-height: 1.6;
-  width: 40px;
-  background-repeat: no-repeat;
-}
-
-.picnic-icon {
-  background-image: url('/assets/images/picnic.svg');
-  background-position: center center;
-  background-size: 24px auto;
-  height: auto;
-  line-height: 1.6;
-  width: 40px;
-  background-repeat: no-repeat;
+  border-radius: 6px;
 }
