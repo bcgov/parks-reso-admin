@@ -7,6 +7,8 @@ export class Constants {
     PASSES_LIST: 'passesList',
     PASS_SEARCH_PARAMS: 'passSearchParams',
     CANCELLED_PASS: 'cancelledPass',
+    RESERVATION_OBJECTS_LIST: 'reservationObjectsList',
+    CURRENT_RESERVATIONS_OBJECT: 'currentReservationsObj',
     ENTER_DATA_SUB_AREA: 'enterDataSubArea',
     ACCORDION_FRONTCOUNTRY_CAMPING: 'accordion-Frontcountry Camping',
     ACCORDION_FRONTCOUNTRY_CABINS: 'accordion-Frontcountry Cabins',

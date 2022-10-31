@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { PassService } from 'src/app/services/pass.service';
+import { ReservationService } from 'src/app/services/reservation.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
 
@@ -13,11 +14,16 @@ import { Utils } from 'src/app/shared/utils/utils';
 export class FacilityDetailsComponent implements OnDestroy {
   private subscriptions = new Subscription();
   public facility;
+  public parkSk;
+  public date;
+  public passType;
+  public resObject;
   private utils = new Utils();
 
   constructor(
     protected dataService: DataService,
-    protected passService: PassService
+    protected passService: PassService,
+    protected reservationService: ReservationService
   ) {
     this.subscriptions.add(
       dataService
@@ -28,10 +34,25 @@ export class FacilityDetailsComponent implements OnDestroy {
             // Check for passType and passDate
             // Otherwise the query could be uselessly enormous.
             let passObj = this.checkFilterParams(this.facility);
-            passObj['parkSk'] = this.facility.pk.split('::')[1];
+            this.parkSk = this.facility.pk.split('::')[1];
+            passObj['parkSk'] = this.parkSk;
             passObj['facilitySk'] = this.facility.name;
             this.passService.fetchPasses(passObj);
+
+            // Get reservation object
+            this.reservationService.fetchReservations(
+              this.parkSk,
+              this.facility.name,
+              this.date
+            );
           }
+        })
+    );
+    this.subscriptions.add(
+      dataService
+        .watchItem(Constants.dataIds.CURRENT_RESERVATIONS_OBJECT)
+        .subscribe((res) => {
+          this.resObject = res;
         })
     );
   }
@@ -46,15 +67,17 @@ export class FacilityDetailsComponent implements OnDestroy {
     let filters =
       this.dataService.getItemValue(Constants.dataIds.PASS_SEARCH_PARAMS) ?? {};
     if (filters?.passDate && facility.sk === filters.facilitySk) {
-      params['date'] = filters.passDate;
+      this.date = filters.passDate;
     } else {
-      params['date'] = this.utils.getTodayAsShortDate();
+      this.date = this.utils.getTodayAsShortDate();
     }
+    params['date'] = this.date;
     if (filters?.passType && facility.sk === filters?.facilitySk) {
-      params['passType'] = filters.passType;
+      this.passType = filters.passType;
     } else {
-      params['passType'] = this.getBookingTimesList()[0];
+      this.passType = this.getBookingTimesList()[0];
     }
+    params['passType'] = this.passType;
     return params;
   }
 
