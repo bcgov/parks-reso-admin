@@ -12,7 +12,9 @@
           class="d-none d-lg-inline"
         ></app-toggle-button>
         <app-breadcrumb *ngIf="showBreadCrumb"></app-breadcrumb>
-        <router-outlet></router-outlet>
+        <div class="container-fluid">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </div>
   </div>
