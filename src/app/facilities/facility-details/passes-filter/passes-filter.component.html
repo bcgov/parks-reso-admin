@@ -1,0 +1,21 @@
+<div class="form-header">
+  <h1>Passes</h1>
+</div>
+
+<form [formGroup]="form">
+  <div class="form-section">
+    <app-passes-filter-fields *ngIf="bookingTimesList"
+    [passType]="fields?.passType"
+    [passTypeOptions]="bookingTimesList"
+    [passDate]="fields?.passDate"
+    [passStatus]="fields?.passStatus"
+    [passStatusOptions]="statusesList"
+    [passFirstName]="fields?.passFirstName"
+    [passLastName]="fields?.passLastName"
+    [passEmail]="fields?.passEmail"
+    [passReservationNumber]="fields?.passReservationNumber"
+    >
+    </app-passes-filter-fields>
+    <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+  </div>
+</form>

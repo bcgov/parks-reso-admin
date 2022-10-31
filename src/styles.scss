@@ -2,6 +2,9 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import "/src/assets/styles/base/base.scss";
 
+/* Importing ng-Select (multiselect) SCSS file */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
 /* Importing Datepicker SCSS file. */
 @import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
 

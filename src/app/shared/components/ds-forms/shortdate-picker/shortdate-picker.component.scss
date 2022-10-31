@@ -1,0 +1,21 @@
+@import "src/assets/themes/variables";
+
+.input-group-text {
+  background-color: #fff;
+}
+
+.with-item-left {
+  border-left: none;
+}
+
+.with-item-right {
+  border-right: none;
+}
+
+.clear-button {
+  color: $gray-500;
+  cursor: pointer;
+  & :hover {
+    color: #333;
+  }
+}

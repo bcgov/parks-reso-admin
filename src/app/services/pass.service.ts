@@ -34,13 +34,17 @@ export class PassService {
     let errorSubject = '';
     let dataTag;
     try {
-      if (!params.passSk && params.parkSk && params.facilitySk) {
+      if (!params.passSk && params.parkSk && params.facilitySk && params.passType) {
         dataTag = Constants.dataIds.PASSES_LIST;
         this.loadingService.addToFetchList(dataTag);
         // Check existing filter presets.
         let filters = this.dataService.getItemValue(
           Constants.dataIds.PASS_SEARCH_PARAMS
         ) ?? {};
+         // Clear filters when switching facilities
+        if (!this.checkFilters(filters, params)){
+          filters = {};
+        }
         let queryObj = Object.assign(filters, params)
         queryObj['park'] = params.parkSk,
         queryObj['facilityName']  = params.facilitySk,
@@ -49,12 +53,6 @@ export class PassService {
           // Load more.
           queryObj['ExclusiveStartKeyPK'] = params.ExclusiveStartKeyPK;
           queryObj['ExclusiveStartKeySK'] = params.ExclusiveStartKeySK;
-        }
-        if (params.queryParams) {
-          // append queryParams to queryObj.
-          Object.keys(params.queryParams).forEach((key) => {
-            queryObj[key] = params.queryParams[key];
-          });
         }
         res = await firstValueFrom(this.apiService.get('pass', queryObj));
         this.dataService.setItemValue(dataTag, res.data);
@@ -109,15 +107,23 @@ export class PassService {
     this.loadingService.removeToFetchList(dataTag);
   }
 
-  async formatSearchParams(filters) {
+  checkFilters(filters, params) {
+    if (filters.facilitySk !== params.facilitySk) {
+      return false;
+    }
+    return true;
+  }
+
+  async updateSearchParams(filters, facility) {
     let filterMap = {
       date: filters.passDate || null,
       reservationNumber: filters.passReservationNumber || null,
-      status: filters.passStatus || null,
+      passStatus: filters.passStatus || null,
       firstName: filters.passFirstName || null,
       lastName: filters.passLastName || null,
       email: filters.passEmail || null,
-      passType: filters.passType || null
+      passType: filters.passType || null,
+      facilitySk: facility.sk,
     }
     for (let item of Object.keys(filterMap)){
       if (!filterMap[item]) {
@@ -125,6 +131,7 @@ export class PassService {
       }
     }
     this.dataService.setItemValue(Constants.dataIds.PASS_SEARCH_PARAMS, filterMap);
+    return this.dataService.getItemValue(Constants.dataIds.PASS_SEARCH_PARAMS);
   }
 
 }

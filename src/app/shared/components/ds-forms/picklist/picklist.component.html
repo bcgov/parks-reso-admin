@@ -1,0 +1,27 @@
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2">{{ label }}</label>
+
+<div class="input-group mb-3" [ngClass]="{ 'invalid-field': control?.errors }">
+  <span
+    *ngIf="icon"
+    class="input-group-text"
+    id="{{ ariaDescribedBy }}"
+    [ngClass]="icon"
+    ><i class="bi"></i
+  ></span>
+  <select
+    name="{{ id }}"
+    id="{{ id }}"
+    attr.aria-label="{{ ariaLabel }}"
+    attr.aria-describedby="{{ ariaDescribedBy }}"
+    [class.with-item-left]="icon"
+    class="form-control text-end with-item-right"
+    [formControl]="control"
+  >
+    <option *ngFor="let option of selectOptions; index as i" value="{{option}}">
+      {{ option }}
+    </option>
+  </select>
+  <div class="input-group-text dropdown-caret p-1">
+    <i class="bi bi-caret-down-fill" style="font-size: 0.75rem"></i>
+  </div>
+</div>

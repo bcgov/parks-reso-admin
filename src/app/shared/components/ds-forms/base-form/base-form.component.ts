@@ -10,14 +10,11 @@ import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
-import { Constants } from 'src/app/shared/utils/constants';
 
 export interface formResult {
   form: UntypedFormGroup;
   isValid?: boolean;
-  result: any; // submission result
   fields?: any; // raw key:value pairs
-  payload?: any; // object for API submission
   invalidFields?: any;
 }
 
@@ -45,18 +42,6 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
     public bChangeDetector: ChangeDetectorRef
   ) {
     this.form = this.bFormBuilder.group({});
-    this.subscriptions.add(
-      this.bDataService
-        .watchItem(Constants.dataIds.ENTER_DATA_URL_PARAMS)
-        .subscribe((res) => {
-          if (res) {
-            this.postObj['date'] = res.date;
-            this.postObj['parkName'] = res.parkName;
-            this.postObj['subAreaId'] = res.subAreaId;
-            this.postObj['orcs'] = res.orcs;
-          }
-        })
-    );
     this.subscriptions.add(
       this.bLoadingService.getLoadingStatus().subscribe((res) => {
         this.loading = res;
@@ -102,16 +87,6 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
     return res;
   }
 
-  // delete null fields in preparation for API submission
-  trimNullFields(allFields: any) {
-    // for (const f of Object.keys(allFields)) {
-    //   if (!this.bFormulaService.isValidNumber(allFields[f])) {
-    //     delete allFields[f];
-    //   }
-    // }
-    return allFields;
-  }
-
   // returns form fields that are currently invalid
   getInvalidFields() {
     let res: any = {};
@@ -122,12 +97,6 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
       }
     }
     return res;
-  }
-
-  // merges form data and post object metadata
-  makePayload() {
-    const trimmedFields = this.trimNullFields(this.collect() || null);
-    return { ...this.postObj, ...trimmedFields };
   }
 
   // disable all fields in the form
@@ -148,8 +117,6 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
   async submit() {
     // We want to override loading to be sure everything is disabled.
     this.loading = true;
-    // const payload = this.makePayload();
-    let res = [];
     // check form validity - do not submit if form is invalid.
     if (this.validate()) {
       // Form is valid
@@ -162,8 +129,6 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
       form: this.form,
       fields: this.collect(),
       isValid: this.validate(),
-      result: res,
-      // payload: payload,
       invalidFields: this.getInvalidFields(),
     };
     this.loading = false;

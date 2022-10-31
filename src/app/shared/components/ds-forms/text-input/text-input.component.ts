@@ -11,7 +11,7 @@ export class TextInputComponent implements OnInit {
   @Input() control = new UntypedFormControl;
   @Input() label;
   @Input() icon;
-  @Input() placeholder = "No data";
+  @Input() placeholder;
   @Input() id;
   @Input() ariaLabel;
   @Input() ariaDescribedBy;

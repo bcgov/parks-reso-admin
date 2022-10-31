@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CalculationDisplayComponent } from '../../forms/calculation-display/calculation-display.component';
+import { CalculationDisplayComponent } from '../../ds-forms/calculation-display/calculation-display.component';
 import { summaryLineItem, summarySection, SummarySectionComponent } from './summary-section.component';
 
 describe('SummarySectionComponent', () => {

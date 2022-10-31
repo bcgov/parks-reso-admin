@@ -1,0 +1,28 @@
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2">{{ label }}</label>
+
+<div class="mb-3 input-group" [ngClass]="{ 'invalid-field': control?.errors }">
+  <span
+    *ngIf="icon"
+    class="input-group-text"
+    id="{{ ariaDescribedBy }}"
+    [ngClass]="icon"
+    ><i class="bi"></i
+  ></span>
+  <input
+    title="Select a Date"
+    class="form-control with-item-right"
+    [class.with-item-left]="icon"
+    [disabled]="checkDisabled()"
+    bsDatepicker
+    placeholder="Select date"
+    type="text"
+    name="{{ id }}"
+    [(ngModel)]="modelDate"
+    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+    (ngModelChange)="onDateChange()"
+  />
+
+  <div class="input-group-text clear-button" (click)="clearDate()" title="Clear Date">
+    <i class="bi bi-x-lg"></i>
+  </div>
+</div>

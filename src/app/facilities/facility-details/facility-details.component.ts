@@ -15,7 +15,10 @@ export class FacilityDetailsComponent implements OnDestroy {
   public facility;
   private utils = new Utils();
 
-  constructor(protected dataService: DataService, protected passService: PassService) {
+  constructor(
+    protected dataService: DataService,
+    protected passService: PassService
+  ) {
     this.subscriptions.add(
       dataService
         .watchItem(Constants.dataIds.CURRENT_FACILITY)
@@ -25,29 +28,34 @@ export class FacilityDetailsComponent implements OnDestroy {
             // Check for passType and passDate
             // Otherwise the query could be uselessly enormous.
             let passObj = this.checkFilterParams(this.facility);
-            passObj['parkSk'] = this.facility.pk.split('::')[1],
-            passObj['facilitySk'] = this.facility.name,
+            passObj['parkSk'] = this.facility.pk.split('::')[1];
+            passObj['facilitySk'] = this.facility.name;
             this.passService.fetchPasses(passObj);
           }
         })
     );
   }
 
-  checkFilterParams(facility){
+  getBookingTimesList() {
+    return Object.keys(this.facility.bookingTimes);
+  }
+
+  checkFilterParams(facility) {
     // Get existing filter params:
     let params = {};
-    let filters = this.dataService.getItemValue(Constants.dataIds.PASS_SEARCH_PARAMS) ?? null;
-    if (filters?.passDate){
+    let filters =
+      this.dataService.getItemValue(Constants.dataIds.PASS_SEARCH_PARAMS) ?? {};
+    if (filters?.passDate && facility.sk === filters.facilitySk) {
       params['date'] = filters.passDate;
     } else {
       params['date'] = this.utils.getTodayAsShortDate();
     }
-    if (filters?.passType){
+    if (filters?.passType && facility.sk === filters?.facilitySk) {
       params['passType'] = filters.passType;
     } else {
-      params['passType'] = Object.keys(facility.bookingTimes)[0];
+      params['passType'] = this.getBookingTimesList()[0];
     }
-    return params; 
+    return params;
   }
 
   ngOnDestroy(): void {

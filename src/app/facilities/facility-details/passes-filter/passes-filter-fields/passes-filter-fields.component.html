@@ -1,0 +1,53 @@
+<div class="d-flex justify-content-between section-container">
+  <div class="equal-width d-flex flex-column me-3">
+    <div class="d-flex align-items-end flex-row flex-wrap mt-auto">
+      <div class="input-box">
+        <app-picklist
+          [selectOptions]="passTypeOptions"
+          [label]="'Pass Type'"
+          [control]="passType"
+        ></app-picklist>
+      </div>
+      <div class="input-box">
+        <app-shortdate-picker 
+        [label]="'Pass Date'"
+        [control]="passDate"> </app-shortdate-picker>
+      </div>
+      <div class="input-box">
+        <app-multiselect
+          [label]="'Pass Status'"
+          [control]="passStatus"
+          [multiSelectOptions]="passStatusOptions"
+        ></app-multiselect>
+      </div>
+      <div class="input-box">
+        <app-text-input
+          [label]="'First Name'"
+          [control]="passFirstName"
+          [type]="'text'"
+        ></app-text-input>
+      </div>
+      <div class="input-box">
+        <app-text-input
+          [label]="'Last Name'"
+          [control]="passLastName"
+          [type]="'text'"
+        ></app-text-input>
+      </div>
+      <div class="input-box">
+        <app-text-input
+          [label]="'Email'"
+          [control]="passEmail"
+          [type]="'text'"
+        ></app-text-input>
+      </div>
+      <div class="input-box">
+        <app-text-input
+          [label]="'Reservation Number'"
+          [control]="passReservationNumber"
+          [type]="'text'"
+        ></app-text-input>
+      </div>
+    </div>
+  </div>
+</div>

@@ -45,13 +45,6 @@ export class PassesListComponent implements OnInit, OnDestroy {
           this.tableRows = res;
         })
     );
-    this.subscriptions.add(
-      dataService
-        .watchItem(Constants.dataIds.PASSES_LIST)
-        .subscribe((res) => {
-          this.tableRows = res;
-        })
-    );
   }
 
   ngOnInit(): void {

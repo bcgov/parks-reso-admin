@@ -1,8 +1,11 @@
 .input-group-text {
     background-color: #fff;
-    border-right: none;
 }
 
-.form-control {
+.with-item-left {
     border-left: none;
+}
+  
+.with-item-right {
+    border-right: none;
 }

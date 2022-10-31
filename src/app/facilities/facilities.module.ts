@@ -8,11 +8,9 @@ import { PassesListComponent } from './facility-details/passes-list/passes-list.
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { DsModalModule } from '../shared/components/modal/ds-modal.module';
 import { PassesFilterComponent } from './facility-details/passes-filter/passes-filter.component';
-import { BaseFormModule } from '../shared/components/forms/base-form/base-form.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PassesFilterFieldsComponent } from './facility-details/passes-filter/passes-filter-fields/passes-filter-fields.component';
-import { TextInputModule } from '../shared/components/forms/text-input/text-input.module';
-import { DatePickerModule } from '../shared/components/date-picker/date-picker.module';
+import { DsFormsModule } from '../shared/components/ds-forms/ds-forms.module';
 
 @NgModule({
   declarations: [
@@ -28,10 +26,8 @@ import { DatePickerModule } from '../shared/components/date-picker/date-picker.m
     RouterModule,
     ModalModule,
     DsModalModule,
-    BaseFormModule,
     ReactiveFormsModule,
-    TextInputModule,
-    DatePickerModule,
+    DsFormsModule
   ],
   providers: [BsModalService],
 })

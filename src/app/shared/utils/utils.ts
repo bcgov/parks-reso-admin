@@ -57,11 +57,19 @@ export class Utils {
   }
 
   public getLatestLockableFiscalYear(dateObj) {
-    let year = dateObj.getFullYear()-1;
+    let year = dateObj.getFullYear() - 1;
     // JS months are 0-indexed.
-    let month = dateObj.getMonth()+1;
+    let month = dateObj.getMonth() + 1;
     let endYear = this.getFiscalYearFromYYYYMM(`${year}${month}`);
-    return new Date(endYear, Constants.FiscalYearFinalMonth, 0, 23, 59, 59, 999);
+    return new Date(
+      endYear,
+      Constants.FiscalYearFinalMonth,
+      0,
+      23,
+      59,
+      59,
+      999
+    );
   }
 
   public convertJSDateToYYYYMM(date: Date) {
@@ -78,8 +86,11 @@ export class Utils {
     );
   }
 
-  public getTodayAsShortDate(){
+  public getTodayAsShortDate() {
     return DateTime.now().setZone('America/Vancouver').toISODate();
   }
 
+  public convertJSDateToShortDate(date: Date): string {
+    return DateTime.fromJSDate(date).setZone('America/Vancouver').toISODate()
+  }
 }
