@@ -23,7 +23,7 @@
     "@angular/platform-browser": "^14.2.7",
     "@angular/platform-browser-dynamic": "^14.2.7",
     "@angular/router": "^14.2.7",
-    "@digitalspace/bcparks-bootstrap-theme": "^1.0.6",
+    "@digitalspace/bcparks-bootstrap-theme": "^1.1.0",
     "@ng-bootstrap/ng-bootstrap": "^13.1.0",
     "@ng-select/ng-select": "^9.0.2",
     "@popperjs/core": "^2.11.6",

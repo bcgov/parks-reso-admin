@@ -1397,10 +1397,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/selector-specificity/-/selector-specificity-2.0.2.tgz#1bfafe4b7ed0f3e4105837e056e0a89b108ebe36"
   integrity sha512-IkpVW/ehM1hWKln4fCA3NzJU8KwD+kIOvPZA4cqxoJHtE21CCzjyp+Kxbu0i5I4tBNOlXPL9mjwnWlL0VEG4Fg==
 
-"@digitalspace/bcparks-bootstrap-theme@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@digitalspace/bcparks-bootstrap-theme/-/bcparks-bootstrap-theme-1.0.6.tgz#7728b0f32d52bea2f1e9506b8b2a0fdec592fd12"
-  integrity sha512-oZ+Sq7OhViu5UZBb4W9IFizWR6yUZuLoGFEwVy6h67vj6twa55xe4kKIWv+b12S2j1BqZxF1g9q9b/psIYlnCA==
+"@digitalspace/bcparks-bootstrap-theme@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@digitalspace/bcparks-bootstrap-theme/-/bcparks-bootstrap-theme-1.1.0.tgz#fae2006ecc57c2b7641121468ae841ada7c3877e"
+  integrity sha512-Wvt80Y6l9xLz9Z2m1AWbu1Yh72QtMOVXrLRf5GPh7XjIC6+MVLuGLCaCyEInYY3l7kGbL0P8mgqUr3xnBs+bRA==
   dependencies:
     "@popperjs/core" "^2.10.2"
     bootstrap "^5.1.2"
