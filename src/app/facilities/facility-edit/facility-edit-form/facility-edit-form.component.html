@@ -1,0 +1,26 @@
+<div class="form-header">
+  <h1>Facility Edit</h1>
+</div>
+
+<form [formGroup]="form">
+  <div class="form-section">
+    <app-facility-edit-form-publishing-details
+      [facilityStatus]="fields?.facilityStatus"
+      [facilityClosureReason]="fields?.facilityClosureReason"
+      [facilityVisibility]="fields?.facilityVisibility"
+    >
+    </app-facility-edit-form-publishing-details>
+    <app-facility-edit-form-details
+      [facilityName]="fields?.facilityName"
+      [facilityType]="fields?.facilityType"
+      [facilityBookingOpeningHour]="fields?.facilityBookingOpeningHour"
+      [facilityBookingDaysAhead]="fields?.facilityBookingDaysAhead"
+    >
+    </app-facility-edit-form-details>
+    <app-facility-edit-form-pass-requirements>
+    </app-facility-edit-form-pass-requirements>
+    <app-facility-edit-form-capacity-changes>
+    </app-facility-edit-form-capacity-changes>
+    <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+  </div>
+</form>

@@ -1,0 +1,22 @@
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2">{{ label }}</label>
+
+<div class="input-group mb-3" [ngClass]="{ 'invalid-field': control?.errors }">
+  <span
+    *ngIf="icon"
+    class="input-group-text"
+    id="{{ ariaDescribedBy }}"
+    [ngClass]="icon"
+    ><i class="bi"></i
+  ></span>
+  <timepicker
+    title="Set the facility opening hour"
+    name="{{ id }}"
+    id="{{ id }}"
+    [(ngModel)]="modelTime"
+    (ngModelChange)="onTimeChange()"
+    [showMinutes]="showMinutes"
+    [showSeconds]="showSeconds"
+    [showMeridian]="!is24HTime"
+  >
+  </timepicker>
+</div>

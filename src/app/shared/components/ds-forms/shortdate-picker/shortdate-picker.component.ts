@@ -20,7 +20,6 @@ export class ShortdatePickerComponent implements OnInit, OnDestroy {
   @Input() icon;
   @Input() ariaLabel;
   @Input() ariaDescribedBy;
-  @Input() form: UntypedFormGroup;
   @Input() control: UntypedFormControl;
   @Input() isValidate = false;
   @Input() isDisabled = false;

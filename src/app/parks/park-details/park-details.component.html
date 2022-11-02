@@ -24,32 +24,32 @@
         </div>
         <div class="col-md-6">
             <label><strong>Capacity:</strong></label>
-            <p>{{park.capacity ? park.capacity : 'Not set'}}</p>
+            <p>{{park?.capacity ? park?.capacity : 'Not set'}}</p>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <label><strong>BC Parks Link:</strong></label>
             <br>
-            <a href="{{park.bcParksLink}}">{{park.bcParksLink}}</a>
+            <a href="{{park?.bcParksLink}}">{{park?.bcParksLink}}</a>
         </div>
         <div class="col-md-6">
             <label><strong>Visible:</strong></label>
             <br>
-            <p>{{park.visible}}</p>
+            <p>{{park?.visible}}</p>
         </div>
     </div>
     <div class="row mb-4">
         <div class="col-md-6">
             <label><strong>Map Link:</strong></label>
             <br>
-            <a *ngIf="park.mapLink" href="{{park.mapLink}}">{{park.mapLink}}</a>
+            <a *ngIf="park?.mapLink" href="{{park?.mapLink}}">{{park?.mapLink}}</a>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <label><strong></strong>Description:</label>
-            <p [innerHTML]="park.description"></p>
+            <p [innerHTML]="park?.description"></p>
         </div>
     </div>
     <hr>

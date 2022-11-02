@@ -58,7 +58,11 @@ export class PassesFilterComponent extends BaseFormComponent {
 
   getBookingTimesList() {
     if (this.facility?.bookingTimes){
-      return Object.keys(this.facility.bookingTimes);
+      let list: any[] = [];
+      for (const key of Object.keys(this.facility.bookingTimes)) {
+        list.push({value: key, display: key})
+      }
+      return list;
     }
     return [];
   }

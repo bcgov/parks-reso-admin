@@ -11,6 +11,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MultiselectComponent } from './multiselect/multiselect.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ToggleComponent } from './toggle/toggle.component';
+import { TimepickerComponent } from './timepicker/timepicker.component';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     TextInputComponent,
     ShortdatePickerComponent,
     MultiselectComponent,
+    ToggleComponent,
+    TimepickerComponent,
   ],
   imports: [
     CommonModule,
@@ -28,7 +33,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
     BrowserAnimationsModule,
-    NgSelectModule
+    NgSelectModule,
+    TimepickerModule
   ],
   exports: [
     BaseFormComponent,
@@ -37,7 +43,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
     TextAreaComponent,
     TextInputComponent,
     ShortdatePickerComponent,
-    MultiselectComponent
+    MultiselectComponent,
+    ToggleComponent,
+    TimepickerComponent
   ],
 })
 export class DsFormsModule {}

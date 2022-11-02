@@ -17,8 +17,8 @@
     class="form-control text-end with-item-right"
     [formControl]="control"
   >
-    <option *ngFor="let option of selectOptions; index as i" value="{{option}}">
-      {{ option }}
+    <option *ngFor="let option of selectOptions; index as i" value="{{option?.value}}">
+      {{ option?.display }}
     </option>
   </select>
   <div class="input-group-text dropdown-caret p-1">

@@ -26,12 +26,9 @@ export interface formResult {
 export class BaseFormComponent implements AfterViewChecked, OnDestroy {
   public form: UntypedFormGroup; // the base form.
   public data: any = {}; // existing form data
-  public postObj: any = {}; // post object
   public fields: any = {}; // object linking API fields to form controls & values
   public subscriptions = new Subscription();
-  public alive = true;
   public loading = false;
-  public dataId: any = '';
 
   constructor(
     public bFormBuilder: UntypedFormBuilder,
@@ -66,15 +63,39 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
 
   // subscribe to changes in the form - pass a callback in if necessary.
   subscribeToChanges(callback?) {
-    for (const control of Object.keys(this.form.controls)) {
-      this.subscriptions.add(
-        this.form.get(control)?.valueChanges.subscribe((changes) => {
-          if (callback) {
-            callback(changes);
-          }
-        })
-      );
+    this.subscriptions.add(
+      this.form.valueChanges.subscribe((changes) => {
+        if (callback) {
+          callback(changes);
+        }
+      })
+    );
+  }
+
+  // disable the form
+  disable() {
+    this.form.disable();
+  }
+
+  // enable the form - except for fields that are themselves disabled
+  enable() {
+    this.form.enable();
+    // for (const control of Object.keys(this.form.controls)) {
+    //   if (this.form.controls[control].disabled) {
+    //     console.log(control, 'disabled');
+    //   } else {
+    //     this.form.controls[control].enable();
+    //   }
+    // }
+  }
+
+  checkDisable(conditions = [false]) {
+    for (const condition of conditions) {
+      if (condition) {
+        return true;
+      }
     }
+    return false;
   }
 
   // gather the simplified key:value form data and format for submission
@@ -99,17 +120,17 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
     return res;
   }
 
-  // disable all fields in the form
-  disable() {
-    for (const control of Object.keys(this.form.controls)) {
-      this.form.get(control)?.disable();
-    }
+  // clear the form of all data.
+  clear() {
+    this.form.reset();
   }
 
-  // enable all fields in the form
-  enable() {
-    for (const control of Object.keys(this.form.controls)) {
-      this.form.get(control)?.enable();
+  // check form validity
+  validate() {
+    if (this.form.valid) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -133,20 +154,6 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
     };
     this.loading = false;
     return fResult;
-  }
-
-  // clear the form of all data.
-  clear() {
-    this.form.reset();
-  }
-
-  // check form validity
-  validate() {
-    if (this.form.valid) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   ngOnDestroy() {
