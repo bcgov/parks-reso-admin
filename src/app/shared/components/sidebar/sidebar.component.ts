@@ -1,7 +1,6 @@
 import { Component, HostBinding, OnDestroy } from '@angular/core';
 import { SideBarService } from 'src/app/services/sidebar.service';
-import { Router, Event, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/internal/operators/filter';
+import { Router } from '@angular/router';
 import { SubAreaService } from 'src/app/services/sub-area.service';
 import { Subscription } from 'rxjs';
 import { KeycloakService } from 'src/app/services/keycloak.service';
@@ -26,14 +25,10 @@ export class SidebarComponent implements OnDestroy {
     protected subAreaService: SubAreaService,
     protected keyCloakService: KeycloakService
   ) {
-    this.routes = sideBarService.routes;
-
     this.subscriptions.add(
-      router.events
-        .pipe(filter((event) => event instanceof NavigationEnd))
-        .subscribe((event: Event) => {
-          this.currentRoute = this.getPathFromUrl(event['url']);
-        })
+      sideBarService.routes.subscribe((routes) => {
+        this.routes = routes;
+      })
     );
 
     this.subscriptions.add(

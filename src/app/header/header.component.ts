@@ -1,6 +1,5 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { NavigationEnd, Router, Event } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ConfigService } from '../services/config.service';
 import { KeycloakService } from '../services/keycloak.service';
 import { SideBarService } from '../services/sidebar.service';
@@ -21,22 +20,16 @@ export class HeaderComponent implements OnDestroy {
   public isAuthorized: boolean;
   public isMenuCollapsed = true;
   public routes: any[] = [];
-  public currentRoute: any;
 
   constructor(
     protected configService: ConfigService,
-    protected router: Router,
     protected sidebarService: SideBarService,
     protected keycloakService: KeycloakService
   ) {
-    this.routes = sidebarService.routes;
-
     this.subscriptions.add(
-      router.events
-        .pipe(filter((event) => event instanceof NavigationEnd))
-        .subscribe((event: Event) => {
-          this.currentRoute = event;
-        })
+      sidebarService.routes.subscribe((routes) => {
+        this.routes = routes;
+      })
     );
 
     this.isAuthorized = this.keycloakService.isAuthorized();

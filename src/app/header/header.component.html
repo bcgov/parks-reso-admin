@@ -47,9 +47,7 @@
       <ul class="navbar-nav">
         <li
           class="nav-item"
-          [ngClass]="
-            this.currentRoute?.url === '/' + route.path ? 'active' : ''
-          "
+          [ngClass]="route.active ? 'active' : ''"
           *ngFor="let route of routes"
         >
           <a [routerLink]="[route.path]">{{ route.data.label }}</a>

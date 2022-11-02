@@ -4,7 +4,7 @@
       <ul class="list-unstyled components">
         <li
           *ngFor="let route of routes"
-          [ngClass]="this.currentRoute === '/' + route.path ? 'active' : ''"
+          [ngClass]="route.active ? 'active' : ''"
         >
           <a (click)="onNavigate(route.path)">{{ route.data.label }}</a>
         </li>
