@@ -4,14 +4,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 import { LoginComponent } from './login/login.component';
-import { FacilityEditComponent } from './facilities/facility-edit/facility-edit.component';
-import { PassDetailsComponent } from './pass-details/pass-details.component';
-import { FacilityDetailsComponent } from './facilities/facility-details/facility-details.component';
-import { ParksListComponent } from './parks/parks-list/parks-list.component';
-import { ParkDetailsComponent } from './parks/park-details/park-details.component';
-import { ParkEditComponent } from './parks/park-edit/park-edit.component';
-import { ParkResolver } from './resolvers/park.resolver';
-import { FacilityResolver } from './resolvers/facility.resolver';
+import { ParksManagementComponent } from './parks-management/parks-management.component';
 
 const routes: Routes = [
   {
@@ -26,101 +19,15 @@ const routes: Routes = [
   {
     path: 'parks',
     canActivate: [AuthGuard],
+    component: ParksManagementComponent,
     data: {
       label: 'Parks Management',
       breadcrumb: 'Parks',
     },
-    children: [
-      {
-        path: '',
-        component: ParksListComponent,
-        canActivate: [AuthGuard],
-        data: {
-          breadcrumb: '',
-          module: 'park',
-          component: '',
-        },
-      },
-      {
-        path: ':parkId',
-        canActivate: [AuthGuard],
-        data: {
-          breadcrumb: 'PARK NAME',
-          module: 'park',
-          component: 'main',
-        },
-        resolve: [ParkResolver],
-        children: [
-          {
-            path: '',
-            component: ParkDetailsComponent,
-            canActivate: [AuthGuard],
-            data: {
-              label: '',
-              breadcrumb: '',
-            },
-          },
-          {
-            path: 'edit',
-            component: ParkEditComponent,
-            canActivate: [AuthGuard],
-            data: {
-              label: 'Edit',
-              breadcrumb: 'Edit',
-            },
-          },
-          {
-            path: ':facilityId',
-            canActivate: [AuthGuard],
-            resolve: [FacilityResolver],
-            data: {
-              breadcrumb: 'FACILITY NAME',
-              module: 'facility',
-              component: 'main',
-            },
-            children: [
-              {
-                path: '',
-                component: FacilityDetailsComponent,
-                canActivate: [AuthGuard],
-                data: {
-                  label: '',
-                  breadcrumb: '',
-                },
-              },
-              {
-                path: 'edit',
-                component: FacilityEditComponent,
-                canActivate: [AuthGuard],
-                data: {
-                  label: 'Edit',
-                  breadcrumb: 'Edit',
-                },
-              },
-              {
-                path: ':passId',
-                canActivate: [AuthGuard],
-                data: {
-                  breadcrumb: 'PASS NAME',
-                  module: 'pass',
-                  component: 'main',
-                },
-                children: [
-                  {
-                    path: '',
-                    component: PassDetailsComponent,
-                    canActivate: [AuthGuard],
-                    data: {
-                      breadcrumb: '',
-                    },
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
+    loadChildren: () =>
+      import('./parks-management/parks-management.module').then(
+        (m) => m.ParksManagementModule
+      ),
   },
   {
     path: 'unauthorized',

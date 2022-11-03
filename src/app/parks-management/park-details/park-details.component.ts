@@ -1,26 +1,37 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
-import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
-import { tableSchema } from 'src/app/shared/components/table/table.component';
+import { FacilityService } from 'src/app/services/facility.service';
 import { Constants } from 'src/app/shared/utils/constants';
+import { ActivatedRoute, Router } from '@angular/router';
+import { tableSchema } from 'src/app/shared/components/table/table.component';
+import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
 
 @Component({
-  selector: 'app-facilities-list',
-  templateUrl: './facilities-list.component.html',
-  styleUrls: ['./facilities-list.component.scss'],
+  selector: 'app-park-details',
+  templateUrl: './park-details.component.html',
+  styleUrls: ['./park-details.component.scss'],
 })
-export class FacilitiesListComponent implements OnInit, OnDestroy {
+export class ParkDetailsComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
+  public park;
   public tableSchema: tableSchema;
   public tableRows: any[] = [];
 
   constructor(
     protected dataService: DataService,
+    protected facilityService: FacilityService,
     private router: Router,
     private route: ActivatedRoute
   ) {
+    this.subscriptions.add(
+      dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
+        if (res && res[0]) {
+          this.park = res[0];
+          this.facilityService.fetchFacilities(this.park.sk);
+        }
+      })
+    );
     this.subscriptions.add(
       dataService
         .watchItem(Constants.dataIds.FACILITIES_LIST)
@@ -34,7 +45,7 @@ export class FacilitiesListComponent implements OnInit, OnDestroy {
     this.createTable();
   }
 
-  navToFacility(nav, edit = false) {
+  navigate(nav, edit = false) {
     if (edit) {
       this.router.navigate([nav + '/edit'], { relativeTo: this.route });
     } else {
@@ -48,7 +59,7 @@ export class FacilitiesListComponent implements OnInit, OnDestroy {
       rowClick: (facilityObj) => {
         let self = this;
         return function () {
-          self.navToFacility(facilityObj.name);
+          self.navigate(facilityObj.name);
         };
       },
       columns: [
@@ -90,7 +101,7 @@ export class FacilitiesListComponent implements OnInit, OnDestroy {
                 buttonClass: 'btn btn-outline-primary',
                 iconClass: 'bi bi-pencil-fill',
                 onClick: function () {
-                  self.navToFacility(facilityObj.name, true);
+                  self.navigate(facilityObj.name, true);
                 },
               },
             };
