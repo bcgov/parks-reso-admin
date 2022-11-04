@@ -1,33 +1,28 @@
-<!-- <label>
-  <strong>
-    <span *ngIf="bookingTimeSummary.reserved === null">
-      To display capacity levels, you must filter by a date.
-    </span>
-    <div *ngIf="bookingTimeSummary.reserved !== null">
-      <span
-        >{{ bookingTimeSummary.reserved }}/{{
-          bookingTimeSummary.capacity
-        }}&nbsp;</span
-      >
-      <span class="text-success" *ngIf="bookingTimeSummary.modifier > 0">
-        (+{{ bookingTimeSummary.modifier }})&nbsp;
+<div *ngIf="data">
+  <label>
+    <strong>
+      <span *ngIf="data.reserved === null">
+        To display capacity levels, you must filter by a date.
       </span>
-      <span class="text-danger" *ngIf="bookingTimeSummary.modifier < 0">
-        ({{ bookingTimeSummary.modifier }})&nbsp;
-      </span>
-      <span>passes reserved</span>
-    </div>
-    <div
-      *ngIf="bookingTimeSummary.modifier > 0 || bookingTimeSummary.modifier < 0"
-      class="text-muted"
-    >
-      <small>Modifier applied</small>
-    </div>
-  </strong>
-</label>
-<ngb-progressbar
-  [showValue]="true"
-  type="{{ bookingTimeSummary.style }}"
-  [value]="bookingTimeSummary.capPercent"
-  height="1.5rem"
-></ngb-progressbar> -->
+      <div *ngIf="data.reserved !== null">
+        <span>{{ data.reserved }}/{{ data.capacity }}&nbsp;</span>
+        <span class="text-success" *ngIf="data.modifier > 0">
+          (+{{ data.modifier }})&nbsp;
+        </span>
+        <span class="text-danger" *ngIf="data.modifier < 0">
+          ({{ data.modifier }})&nbsp;
+        </span>
+        <span>passes reserved</span>
+      </div>
+      <div *ngIf="data.modifier > 0 || data.modifier < 0" class="text-muted">
+        <small>Modifier applied</small>
+      </div>
+    </strong>
+  </label>
+  <ngb-progressbar
+    [showValue]="true"
+    type="{{ data.style }}"
+    [value]="data.capPercent"
+    height="1.5rem"
+  ></ngb-progressbar>
+</div>

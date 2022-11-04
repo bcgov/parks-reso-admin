@@ -9,6 +9,7 @@ import { DataService } from 'src/app/services/data.service';
 import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { PassService } from 'src/app/services/pass.service';
+import { ReservationService } from 'src/app/services/reservation.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { Constants } from 'src/app/shared/utils/constants';
 
@@ -30,7 +31,8 @@ export class PassesFilterComponent extends BaseFormComponent {
     protected dataService: DataService,
     protected loadingService: LoadingService,
     protected changeDetectior: ChangeDetectorRef,
-    protected passService: PassService
+    protected passService: PassService,
+    protected reservationService: ReservationService
   ) {
     super(
       formBuilder,
@@ -57,10 +59,10 @@ export class PassesFilterComponent extends BaseFormComponent {
   }
 
   getBookingTimesList() {
-    if (this.facility?.bookingTimes){
+    if (this.facility?.bookingTimes) {
       let list: any[] = [];
       for (const key of Object.keys(this.facility.bookingTimes)) {
-        list.push({value: key, display: key})
+        list.push({ value: key, display: key });
       }
       return list;
     }
@@ -114,12 +116,22 @@ export class PassesFilterComponent extends BaseFormComponent {
   async onSubmit() {
     // Save current search params
     const res = await super.submit();
-    const resFields = await this.passService.updateSearchParams(res.fields, this.facility);
+    const resFields = await this.passService.updateSearchParams(
+      res.fields,
+      this.facility
+    );
     let params = {
       parkSk: this.facility.pk.split('::')[1],
       facilitySk: this.facility.sk,
-      passType: resFields?.passType || null
+      passType: resFields?.passType || null,
     };
     this.passService.fetchData(params);
+
+    this.reservationService.fetchData(
+      this.facility.pk.split('::')[1],
+      this.facility.sk,
+      resFields?.date || null,
+      resFields?.passType || null
+    );
   }
 }

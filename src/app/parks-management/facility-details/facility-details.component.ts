@@ -43,7 +43,8 @@ export class FacilityDetailsComponent implements OnDestroy {
             this.reservationService.fetchData(
               this.parkSk,
               this.facility.name,
-              this.date
+              this.date,
+              this.passType
             );
           }
         })

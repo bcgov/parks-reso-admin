@@ -22,6 +22,7 @@ import { FacilityEditFormPassRequirementsComponent } from './facility-edit/facil
 import { FacilityEditFormPublishingDetailsComponent } from './facility-edit/facility-edit-form/facility-edit-form-publishing-details/facility-edit-form-publishing-details.component';
 import { FacilityEditFormComponent } from './facility-edit/facility-edit-form/facility-edit-form.component';
 import { PassesCapacityBarComponent } from './facility-details/passes-capacity-bar/passes-capacity-bar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { PassesCapacityBarComponent } from './facility-details/passes-capacity-b
     ReactiveFormsModule,
     DsFormsModule,
     ParksManagementRoutingModule,
+    NgbModule,
   ],
   providers: [BsModalService],
 })

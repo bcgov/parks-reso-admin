@@ -9,6 +9,7 @@ export class Constants {
     CANCELLED_PASS: 'cancelledPass',
     RESERVATION_OBJECTS_LIST: 'reservationObjectsList',
     CURRENT_RESERVATIONS_OBJECT: 'currentReservationsObj',
+    CURRENT_CAPACITY_BAR_OBJECT: 'currentCapacityBarObj',
     ENTER_DATA_URL_PARAMS: 'enter-data-url-params',
     MODIFIERS: 'modifiers',
   };

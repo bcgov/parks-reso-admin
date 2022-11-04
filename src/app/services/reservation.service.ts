@@ -19,7 +19,7 @@ export class ReservationService {
     private loadingService: LoadingService
   ) {}
 
-  async fetchData(parkSk, facilitySk, resDate = null) {
+  async fetchData(parkSk, facilitySk, resDate = null, selectedPassType = null) {
     let res;
     let errorSubject = '';
     let dataTag;
@@ -30,18 +30,30 @@ export class ReservationService {
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'facility reservation';
         res = await firstValueFrom(
-          this.apiService.get('reservation', {park: parkSk, facility: facilitySk, date: resDate})
-          );
-        } else {
-          // We are getting a list of reservation objects.
-          dataTag = Constants.dataIds.RESERVATION_OBJECTS_LIST;
-          this.loadingService.addToFetchList(dataTag);
-          errorSubject = 'facility reservations list';
-          res = await firstValueFrom(
-            this.apiService.get('reservation', {park: parkSk, facility: facilitySk})
-            );
-        }
-        this.dataService.setItemValue(dataTag, res);
+          this.apiService.get('reservation', {
+            park: parkSk,
+            facility: facilitySk,
+            date: resDate,
+          })
+        );
+      }
+      this.dataService.setItemValue(dataTag, res);
+
+      if (resDate && selectedPassType) {
+        this.setCapacityBar(res[0], selectedPassType);
+      } else {
+        // Set to initialized but invalid state
+        this.dataService.setItemValue(
+          Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+          {
+            capPercent: 0,
+            reserved: null as any,
+            capacity: null as any,
+            modifier: 0,
+            style: 'success',
+          }
+        );
+      }
     } catch (e) {
       this.toastService.addMessage(
         `Please refresh the page.`,
@@ -56,5 +68,51 @@ export class ReservationService {
         this.dataService.setItemValue(dataTag, 'error');
     }
     this.loadingService.removeToFetchList(dataTag);
+  }
+
+  setCapacityBar(reservationObj, selectedPassType) {
+    let capBarObj = {
+      capPercent: 0,
+      reserved: 0,
+      capacity: 0,
+      modifier: 0,
+      style: 'success',
+    };
+
+    if (
+      reservationObj &&
+      reservationObj.capacities &&
+      reservationObj.capacities[selectedPassType]
+    ) {
+      const modifiedCapacity =
+        reservationObj.capacities[selectedPassType].baseCapacity +
+        reservationObj.capacities[selectedPassType].capacityModifier;
+      capBarObj.capacity = modifiedCapacity;
+      capBarObj.reserved =
+        modifiedCapacity -
+        reservationObj.capacities[selectedPassType].availablePasses;
+      capBarObj.modifier =
+        reservationObj.capacities[selectedPassType].capacityModifier;
+    }
+
+    capBarObj.capPercent = capBarObj.capacity
+      ? Math.floor((capBarObj.reserved / capBarObj.capacity) * 100)
+      : 0;
+    capBarObj.style = this.calculateProgressBarColour(capBarObj.capPercent);
+
+    this.dataService.setItemValue(
+      Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+      capBarObj
+    );
+  }
+
+  public calculateProgressBarColour(capPercent) {
+    if (capPercent < 25) {
+      return 'success';
+    } else if (capPercent < 75) {
+      return 'warning';
+    } else {
+      return 'danger';
+    }
   }
 }

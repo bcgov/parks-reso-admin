@@ -21,7 +21,7 @@ export class FacilityService {
   ) {}
   public utils = new Utils();
 
-  async fetchFacilities(parkSk = null, facilitySk = null) {
+  async fetchData(parkSk = null, facilitySk = null) {
     let res;
     let errorSubject = '';
     let dataTag;

@@ -28,7 +28,7 @@ export class ParkDetailsComponent implements OnInit, OnDestroy {
       dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
         if (res && res[0]) {
           this.park = res[0];
-          this.facilityService.fetchFacilities(this.park.sk);
+          this.facilityService.fetchData(this.park.sk);
         }
       })
     );

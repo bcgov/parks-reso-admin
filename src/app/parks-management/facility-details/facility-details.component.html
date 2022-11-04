@@ -1,3 +1,12 @@
-<h1>{{ facility?.name }}</h1>
-<app-passes-filter [facility]="facility"></app-passes-filter>
-<app-passes-list></app-passes-list>
+<div class="container-fluid">
+  <h1>{{ facility?.name }}</h1>
+
+  <h1>Passes</h1>
+  <div class="row mb-3">
+    <div class="col-12 col-lg-7">
+      <app-passes-capacity-bar></app-passes-capacity-bar>
+    </div>
+  </div>
+  <app-passes-filter [facility]="facility"></app-passes-filter>
+  <app-passes-list></app-passes-list>
+</div>

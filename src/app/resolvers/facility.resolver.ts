@@ -11,7 +11,7 @@ export class FacilityResolver implements Resolve<void> {
   ) {}
   resolve(route: ActivatedRouteSnapshot) {
     if (route.params['parkId'] && route.params['facilityId']) {
-      this.facilityService.fetchFacilities(
+      this.facilityService.fetchData(
         route.params['parkId'],
         route.params['facilityId']
       );
