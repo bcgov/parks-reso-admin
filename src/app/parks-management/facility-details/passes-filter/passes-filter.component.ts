@@ -120,6 +120,6 @@ export class PassesFilterComponent extends BaseFormComponent {
       facilitySk: this.facility.sk,
       passType: resFields?.passType || null
     };
-    this.passService.fetchPasses(params);
+    this.passService.fetchData(params);
   }
 }

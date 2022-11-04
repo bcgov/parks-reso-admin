@@ -19,7 +19,7 @@ export class ReservationService {
     private loadingService: LoadingService
   ) {}
 
-  async fetchReservations(parkSk, facilitySk, resDate = null) {
+  async fetchData(parkSk, facilitySk, resDate = null) {
     let res;
     let errorSubject = '';
     let dataTag;

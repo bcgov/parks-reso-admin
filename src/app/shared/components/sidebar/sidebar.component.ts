@@ -1,7 +1,6 @@
 import { Component, HostBinding, OnDestroy } from '@angular/core';
 import { SideBarService } from 'src/app/services/sidebar.service';
 import { Router } from '@angular/router';
-import { SubAreaService } from 'src/app/services/sub-area.service';
 import { Subscription } from 'rxjs';
 import { KeycloakService } from 'src/app/services/keycloak.service';
 
@@ -22,7 +21,6 @@ export class SidebarComponent implements OnDestroy {
   constructor(
     protected sideBarService: SideBarService,
     protected router: Router,
-    protected subAreaService: SubAreaService,
     protected keyCloakService: KeycloakService
   ) {
     this.subscriptions.add(
@@ -39,13 +37,6 @@ export class SidebarComponent implements OnDestroy {
   }
 
   onNavigate(route) {
-    switch (route) {
-      case 'enter-data':
-        this.subAreaService.clearAccordionCache();
-        break;
-      default:
-        break;
-    }
     this.router.navigate([route]);
   }
 

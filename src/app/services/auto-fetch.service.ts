@@ -22,7 +22,7 @@ export class AutoFetchService {
     for (let i = 0; i < fetchQueue.length; i++) {
       const fetchId = fetchQueue[i];
       if (fetchId === Constants.dataIds.PARKS_LIST) {
-        this.parkService.fetchParks();
+        this.parkService.fetchData();
       }
     }
   }

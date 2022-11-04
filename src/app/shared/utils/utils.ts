@@ -1,5 +1,4 @@
 import * as moment from 'moment';
-import { Constants } from './constants';
 import { DateTime } from 'luxon';
 
 export class Utils {
@@ -47,31 +46,6 @@ export class Utils {
     };
   }
 
-  public getFiscalYearFromYYYYMM(date) {
-    let year = Number(date.substring(0, 4));
-    const month = Number(date.slice(-2));
-    if (month > Constants.FiscalYearFinalMonth) {
-      year += 1;
-    }
-    return year;
-  }
-
-  public getLatestLockableFiscalYear(dateObj) {
-    let year = dateObj.getFullYear() - 1;
-    // JS months are 0-indexed.
-    let month = dateObj.getMonth() + 1;
-    let endYear = this.getFiscalYearFromYYYYMM(`${year}${month}`);
-    return new Date(
-      endYear,
-      Constants.FiscalYearFinalMonth,
-      0,
-      23,
-      59,
-      59,
-      999
-    );
-  }
-
   public convertJSDateToYYYYMM(date: Date) {
     return moment(date).format('YYYYMM');
   }
@@ -91,6 +65,6 @@ export class Utils {
   }
 
   public convertJSDateToShortDate(date: Date): string {
-    return DateTime.fromJSDate(date).setZone('America/Vancouver').toISODate()
+    return DateTime.fromJSDate(date).setZone('America/Vancouver').toISODate();
   }
 }

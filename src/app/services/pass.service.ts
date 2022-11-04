@@ -29,7 +29,7 @@ export class PassService {
   // queryParams:
   // }
 
-  async fetchPasses(params) {
+  async fetchData(params) {
     let res;
     let errorSubject = '';
     let dataTag;
@@ -90,7 +90,7 @@ export class PassService {
       const params = this.dataService.getItemValue(
         Constants.dataIds.PASS_SEARCH_PARAMS
       );
-      this.fetchPasses(params);
+      this.fetchData(params);
     } catch (e) {
       this.toastService.addMessage(
         `Please refresh the page.`,

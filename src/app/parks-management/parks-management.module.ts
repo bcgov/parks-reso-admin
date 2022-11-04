@@ -21,6 +21,7 @@ import { FacilityEditFormDetailsComponent } from './facility-edit/facility-edit-
 import { FacilityEditFormPassRequirementsComponent } from './facility-edit/facility-edit-form/facility-edit-form-pass-requirements/facility-edit-form-pass-requirements.component';
 import { FacilityEditFormPublishingDetailsComponent } from './facility-edit/facility-edit-form/facility-edit-form-publishing-details/facility-edit-form-publishing-details.component';
 import { FacilityEditFormComponent } from './facility-edit/facility-edit-form/facility-edit-form.component';
+import { PassesCapacityBarComponent } from './facility-details/passes-capacity-bar/passes-capacity-bar.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { FacilityEditFormComponent } from './facility-edit/facility-edit-form/fa
     FacilityEditFormDetailsComponent,
     FacilityEditFormPassRequirementsComponent,
     FacilityEditFormCapacityChangesComponent,
+    PassesCapacityBarComponent,
   ],
   imports: [
     CommonModule,

@@ -37,10 +37,10 @@ export class FacilityDetailsComponent implements OnDestroy {
             this.parkSk = this.facility.pk.split('::')[1];
             passObj['parkSk'] = this.parkSk;
             passObj['facilitySk'] = this.facility.name;
-            this.passService.fetchPasses(passObj);
+            this.passService.fetchData(passObj);
 
             // Get reservation object
-            this.reservationService.fetchReservations(
+            this.reservationService.fetchData(
               this.parkSk,
               this.facility.name,
               this.date

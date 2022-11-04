@@ -22,8 +22,7 @@ export class ParkService {
   public utils = new Utils();
 
   // Get all parks
-  async fetchParks(sk = null) {
-
+  async fetchData(sk = null) {
     let dataTag = '';
     let res;
     let errorSubject = '';
@@ -33,7 +32,7 @@ export class ParkService {
         dataTag = Constants.dataIds.CURRENT_PARK;
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'park';
-        res = await firstValueFrom(this.apiService.get('park', {park: sk}));
+        res = await firstValueFrom(this.apiService.get('park', { park: sk }));
       } else {
         // we are getting all parks
         dataTag = Constants.dataIds.PARKS_LIST;

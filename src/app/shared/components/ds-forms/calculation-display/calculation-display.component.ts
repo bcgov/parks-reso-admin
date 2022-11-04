@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormulaService } from 'src/app/services/formula.service';
+import { FormulaService } from '../services/formula.service';
 
 @Component({
   selector: 'app-calculation-display',
