@@ -1,30 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { Component, Input} from '@angular/core';
+import { BaseInputComponent } from '../base-input/base-input.component';
 
 @Component({
   selector: 'app-text-input',
   templateUrl: './text-input.component.html',
   styleUrls: ['./text-input.component.scss'],
 })
-export class TextInputComponent implements OnInit {
+export class TextInputComponent extends BaseInputComponent {
   @Input() type = 'text'; // text, number
-  @Input() control = new UntypedFormControl;
-  @Input() label;
-  @Input() icon;
-  @Input() placeholder;
-  @Input() id;
-  @Input() ariaLabel;
-  @Input() ariaDescribedBy;
   @Input() moneyMode = false;
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  blockInvalidChars(e){
+  blockInvalidChars(e) {
     if (e.key === 'e' || e.key === 'E') {
       e.preventDefault();
     }
   }
-
 }

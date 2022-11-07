@@ -1,21 +1,24 @@
 import {
-  AfterViewChecked,
+  AfterContentInit,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   OnDestroy,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
 
 export interface formResult {
-  form: UntypedFormGroup;
-  isValid?: boolean;
-  fields?: any; // raw key:value pairs
-  invalidFields?: any;
+  form: UntypedFormGroup; // the form object
+  isValid?: boolean; // form validity
+  fields?: any; // raw key:value pairs formatted how form is structured (respects nesting)
+  invalidControls?: any; // list of invalid controls
+  disabledControls?: any[]; // list of disablec controls
+  controlsArray?: any[]; // flattened list of controls
 }
 
 @Component({
@@ -23,12 +26,14 @@ export interface formResult {
   templateUrl: './base-form.component.html',
   styleUrls: ['./base-form.component.scss'],
 })
-export class BaseFormComponent implements AfterViewChecked, OnDestroy {
+export class BaseFormComponent implements OnDestroy, AfterContentInit {
   public form: UntypedFormGroup; // the base form.
   public data: any = {}; // existing form data
-  public fields: any = {}; // object linking API fields to form controls & values
+  public fields: any = {}; // raw key:value pairs of the form inputs.
   public subscriptions = new Subscription();
   public loading = false;
+  public disabledControls: any[] = []; // list of disabled
+  public isSubmitted = false;
 
   constructor(
     public bFormBuilder: UntypedFormBuilder,
@@ -45,87 +50,186 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
         // if enable()/disable() arent wrapped in setTimeout(), race conditions can occur
         // https://github.com/angular/angular/issues/22556
         if (this.loading) {
-          setTimeout(() => {
-            this.disable();
-          });
+          this.disable();
         } else {
-          setTimeout(() => {
-            this.enable();
-          });
+          this.enable();
         }
       })
     );
   }
 
-  ngAfterViewChecked() {
+  ngAfterContentInit() {
     this.bChangeDetector.detectChanges();
   }
 
-  // subscribe to changes in the form - pass a callback in if necessary.
-  subscribeToChanges(callback?) {
+  /**
+   * Adds a specialized disabling rule to a control.
+   * @param control - the `FormControl` that will be affected by the rule.
+   * @param subject  - a `BehaviourSubject` whose changes will be subscribed to.
+   * @param condition - an array of values of `subject` that will disable the control.
+   * Conditions are chained by OR logic, eg `condition=[false, null]` means that `control`
+   * will be disabled if `subject.value === true OR null`
+   */
+  addDisabledRule(control, subject: BehaviorSubject<any>, conditions) {
     this.subscriptions.add(
-      this.form.valueChanges.subscribe((changes) => {
-        if (callback) {
-          callback(changes);
+      subject.subscribe((changes) => {
+        let disableFlag = false;
+        for (const condition of conditions) {
+          if (changes === condition) {
+            this.setControlStatus(control, true);
+            disableFlag = true;
+          }
+        }
+        if (!disableFlag) {
+          this.setControlStatus(control, false);
         }
       })
     );
   }
 
-  // disable the form
-  disable() {
-    this.form.disable();
+  /**
+   * Execute a callback when any changes occur in a control.
+   * @param callback - a callback `Function` to be executed on control changes.
+   */
+  subscribeToControlValueChanges(control, callback) {
+    this.subscriptions.add(
+      control.valueChanges.subscribe((changes) => {
+        callback(changes);
+      })
+    );
   }
 
-  // enable the form - except for fields that are themselves disabled
-  enable() {
-    this.form.enable();
-    // for (const control of Object.keys(this.form.controls)) {
-    //   if (this.form.controls[control].disabled) {
-    //     console.log(control, 'disabled');
-    //   } else {
-    //     this.form.controls[control].enable();
-    //   }
-    // }
+  /**
+   * Execute a callback when any changes occur in the form.
+   * @param callback - a callback `Function` to be executed on form changes.
+   */
+  subscribeToFormValueChanges(callback) {
+    for (const control of this.getControlsArray()) {
+      this.subscribeToControlValueChanges(control, callback);
+    }
   }
 
-  checkDisable(conditions = [false]) {
-    for (const condition of conditions) {
-      if (condition) {
-        return true;
+  /**
+   * Enables/disables a specific control.
+   * @param control - the `FormControl` to enable/disable.
+   * @param disable - set `true` to disable, `false` to enable.
+   */
+  setControlStatus(control, disable: boolean) {
+    if (disable) {
+      if (!control.disabled) {
+        control.disable();
+        if (this.disabledControls.indexOf(control) === -1) {
+          this.disabledControls.push(control);
+        }
+      }
+    } else {
+      if (!control.enabled) {
+        control.enable();
+        const index = this.disabledControls.indexOf(control);
+        if (index > -1) {
+          this.disabledControls.splice(index, 1);
+        }
       }
     }
-    return false;
   }
 
-  // gather the simplified key:value form data and format for submission
+  /**
+   * @returns an array of all controls in the form. Nested controls are flattened.
+   */
+  getControlsArray() {
+    let list: any[] = [];
+    return this.getAllControls(this.form.controls, list);
+  }
+
+  /**
+   * A method that creates an array of every control in the form.
+   * Controls that have their own controls attribute are traversed recursively to surface nested controls.
+   * @param controls - the root list of controls.
+   * @param list - an array of `FormControl` objects.
+   * @returns an array of `FormControl` objects.
+   */
+  // A way to get nested controls via recursion
+  getAllControls(controls, list) {
+    for (const control of Object.keys(controls)) {
+      if (controls[control].hasOwnProperty('controls')) {
+        this.getAllControls(controls[control].controls, list);
+      } else {
+        list.push(controls[control]);
+      }
+    }
+    return list;
+  }
+
+  /**
+   * Disable the entire form.
+   */
+  disable() {
+    setTimeout(() => {
+      this.form.disable();
+    });
+  }
+
+  /**
+   * Enable the entire form - except for controls that have been specifically disabled with `addDisabledRule()`.
+   */
+  // enable the entire form - except for fields that are specifically disabled
+  enable() {
+    setTimeout(() => {
+      for (const control of this.getControlsArray()) {
+        // check for special disabled rules and evaluate them
+        if (this.disabledControls.indexOf(control) > -1) {
+          // Control is specifically disabled, prevent reenabling
+          continue;
+        } else {
+          control.enable();
+        }
+      }
+    });
+  }
+
+  /**
+   * Gathers the key:value form data and creates a object representing the current state of form control values.
+   * @returns - an Object containing the key:value pairs of the form controls.
+   */
   collect() {
     let res: any = {};
-    for (const field of Object.keys(this.fields)) {
-      const value = this.fields[field]?.value;
-      res = { ...res, [field]: value };
+    for (const control of Object.keys(this.form.controls)) {
+      const value = this.form.controls[control]?.getRawValue();
+      res = { ...res, [control]: value };
     }
     return res;
   }
 
-  // returns form fields that are currently invalid
-  getInvalidFields() {
-    let res: any = {};
-    for (const control of Object.keys(this.form.controls)) {
-      let c = this.form.get(control);
-      if (c && !c?.valid) {
-        res = { ...res, [control]: c };
+  clear() {
+    this.data = {};
+    this.isSubmitted = false;
+    for (const control of this.getControlsArray()) {
+      control.reset();
+      control.markAsUntouched();
+      control.markAsPristine();
+      control.updateValueAndValidity();
+      control.setErrors(null);
+    }
+  }
+
+  /**
+   * Collects all invalid controls in the form.
+   * @returns an array of invalid controls.
+   */
+  getInvalidControls() {
+    let list: any[] = [];
+    for (const control of this.getControlsArray()) {
+      if (control.invalid) {
+        list.push(control);
       }
     }
-    return res;
+    return list;
   }
 
-  // clear the form of all data.
-  clear() {
-    this.form.reset();
-  }
-
-  // check form validity
+  /**
+   * Checks the form for validity.
+   * @returns `true` if form is valid, otherwise `false`.
+   */
   validate() {
     if (this.form.valid) {
       return true;
@@ -133,7 +237,10 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
       return false;
     }
   }
-
+  /**
+   * Collects all the data in the form and returns it for post-processing.
+   * @returns {formResult} a `formResult` Promise.
+   */
   // return current state of form
   async submit() {
     // We want to override loading to be sure everything is disabled.
@@ -150,8 +257,11 @@ export class BaseFormComponent implements AfterViewChecked, OnDestroy {
       form: this.form,
       fields: this.collect(),
       isValid: this.validate(),
-      invalidFields: this.getInvalidFields(),
+      invalidControls: this.getInvalidControls(),
+      disabledControls: this.disabledControls,
+      controlsArray: this.getControlsArray(),
     };
+    this.isSubmitted = true;
     this.loading = false;
     return fResult;
   }

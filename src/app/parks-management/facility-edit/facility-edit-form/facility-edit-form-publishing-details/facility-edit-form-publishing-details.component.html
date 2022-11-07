@@ -1,32 +1,27 @@
 <h2>Publishing Details</h2>
-<div class="d-flex justify-content-between section-container">
-<div class="equal-width d-flex flex-column me-3">
-  <div class="d-flex align-items-end flex-row flex-wrap mt-auto">
-    <div class="input-box">
-      <app-toggle
-        [id]="facilityStatus"
-        [control]="facilityStatus"
-        [description]="'Status: '"
-        [trueText]="'Facility is open'"
-        [falseText]="'Facility is closed'"
-      >
-      </app-toggle>
-      <app-text-input
-        [id]="facilityClosureReason"
-        [label]="'Reason for Closure'"
-        [control]="facilityClosureReason"
-        [type]="'text'"
-      >
-      </app-text-input>
-      <app-toggle
-        [id]="facilityVisibility"
-        [control]="facilityVisibility"
-        [description]="'Visibility: '"
-        [trueText]="'Facility is visible to the public'"
-        [falseText]="'Facility is not visible to the public'"
-      >
-      </app-toggle>
-      <hr />
-    </div>
-  </div>
+<div class="input-box">
+  <app-toggle
+    [id]="facilityStatus"
+    [control]="facilityStatus"
+    [description]="'Status: '"
+    [trueText]="'Facility is open'"
+    [falseText]="'Facility is closed'"
+  >
+  </app-toggle>
+  <app-text-input
+    [id]="facilityClosureReason"
+    [label]="'Reason for Closure'"
+    [control]="facilityClosureReason"
+    [type]="'text'"
+    [placeholder]="'Enter reason for closure'"
+  >
+  </app-text-input>
+  <app-toggle
+    [id]="facilityVisibility"
+    [control]="facilityVisibility"
+    [description]="'Visibility: '"
+    [trueText]="'Facility is visible to the public'"
+    [falseText]="'Facility is not visible to the public'"
+  >
+  </app-toggle>
 </div>

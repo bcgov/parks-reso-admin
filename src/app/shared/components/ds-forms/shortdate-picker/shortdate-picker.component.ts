@@ -5,24 +5,19 @@ import {
   EventEmitter,
   OnDestroy,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Utils } from '../../../utils/utils';
 import { Subscription } from 'rxjs';
+import { BaseInputComponent } from '../base-input/base-input.component';
 
 @Component({
   selector: 'app-shortdate-picker',
   templateUrl: './shortdate-picker.component.html',
   styleUrls: ['./shortdate-picker.component.scss'],
 })
-export class ShortdatePickerComponent implements OnInit, OnDestroy {
-  @Input() label;
-  @Input() id;
-  @Input() icon;
-  @Input() ariaLabel;
-  @Input() ariaDescribedBy;
-  @Input() control: UntypedFormControl;
-  @Input() isValidate = false;
-  @Input() isDisabled = false;
+export class ShortdatePickerComponent
+  extends BaseInputComponent
+  implements OnInit, OnDestroy
+{
   @Input() minDate: Date = null as any;
   @Input() maxDate: Date = null as any;
   @Input() reset: EventEmitter<any>;
@@ -41,7 +36,7 @@ export class ShortdatePickerComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkDisabled(){
+  checkDisabled() {
     return this.control?.disabled || false;
   }
 

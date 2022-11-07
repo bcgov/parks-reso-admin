@@ -1,5 +1,5 @@
 <div class="form-header">
-  <h1>Facility Edit</h1>
+  <h1>Facility Edit: {{facility?.name}}</h1>
 </div>
 
 <form [formGroup]="form">
@@ -9,7 +9,8 @@
       [facilityClosureReason]="fields?.facilityClosureReason"
       [facilityVisibility]="fields?.facilityVisibility"
     >
-    </app-facility-edit-form-publishing-details>
+  </app-facility-edit-form-publishing-details>
+  <hr>
     <app-facility-edit-form-details
       [facilityName]="fields?.facilityName"
       [facilityType]="fields?.facilityType"
@@ -17,10 +18,16 @@
       [facilityBookingDaysAhead]="fields?.facilityBookingDaysAhead"
     >
     </app-facility-edit-form-details>
-    <app-facility-edit-form-pass-requirements>
+    <hr>
+    <app-facility-edit-form-pass-requirements
+    [facilityPassesRequired]="fields?.facilityPassesRequired"
+    [facilityBookingDays]="fields?.facilityBookingDays"
+    [facilityBookingTimes]="fields?.facilityBookingTimes"
+    [facilityBookingDaysRichText]="fields?.facilityBookingDaysRichText"
+    >
     </app-facility-edit-form-pass-requirements>
     <app-facility-edit-form-capacity-changes>
     </app-facility-edit-form-capacity-changes>
-    <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="!isFormValid()">Submit</button>
   </div>
 </form>

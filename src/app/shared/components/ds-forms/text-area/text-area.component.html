@@ -1,11 +1,17 @@
-<label for="{{ id }}" class="form-label">{{ label }}</label>
-<textarea
-  class="form-control"
-  id="{{ id }}"
-  rows="3"
-  [formControl]="control"
-  maxlength="{{ charCap }}"
-></textarea>
-<div class="d-flex flex-row-reverse" *ngIf="charCap">
-  <p>{{ getFieldLength() }}/{{ charCap }}</p>
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
+  >{{ label
+  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
+>
+<div class="" [ngClass]="{ 'invalid-field': isInvalid() }">
+  <textarea
+    class="form-control"
+    id="{{ id }}"
+    rows="3"
+    (change)="onInput($event)"
+    [formControl]="control"
+    maxlength="{{ charCap }}"
+  ></textarea>
+  <div class="d-flex flex-row-reverse" *ngIf="charCap">
+    <p>{{ getFieldLength() }}/{{ charCap }}</p>
+  </div>
 </div>

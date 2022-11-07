@@ -1,6 +1,9 @@
-<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2">{{ label }}</label>
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
+  >{{ label
+  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
+>
 
-<div class="mb-3 input-group" [ngClass]="{ 'invalid-field': control?.errors }">
+<div class="mb-3 input-group" [ngClass]="{ 'invalid-field': isInvalid() }">
   <span
     *ngIf="icon"
     class="input-group-text"
@@ -22,7 +25,11 @@
     (ngModelChange)="onDateChange()"
   />
 
-  <div class="input-group-text clear-button" (click)="clearDate()" title="Clear Date">
+  <div
+    class="input-group-text clear-button"
+    (click)="clearDate()"
+    title="Clear Date"
+  >
     <i class="bi bi-x-lg"></i>
   </div>
 </div>

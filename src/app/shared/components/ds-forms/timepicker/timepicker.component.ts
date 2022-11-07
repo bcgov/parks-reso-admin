@@ -1,21 +1,25 @@
-import { Component, Input, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import {
+  Component,
+  Input,
+  OnInit,
+  EventEmitter,
+  OnDestroy,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Utils } from 'src/app/shared/utils/utils';
+import { BaseInputComponent } from '../base-input/base-input.component';
 
 @Component({
   selector: 'app-timepicker',
   templateUrl: './timepicker.component.html',
   styleUrls: ['./timepicker.component.scss'],
 })
-export class TimepickerComponent implements OnInit, OnDestroy {
-  @Input() control = new UntypedFormControl();
-  @Input() label;
-  @Input() icon;
-  @Input() placeholder;
-  @Input() id;
-  @Input() ariaLabel;
-  @Input() ariaDescribedBy;
-  @Input() moneyMode = false;
+// Component control value must be of type NgbTimeStruct:
+// {hour: 24hour, minute: minute, second: second}
+export class TimepickerComponent
+  extends BaseInputComponent
+  implements OnInit, OnDestroy
+{
   @Input() reset: EventEmitter<any>;
   @Input() showSeconds = false;
   @Input() showMinutes = true;
@@ -23,11 +27,15 @@ export class TimepickerComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
   public modelTime;
-
-  constructor() {}
+  public utils = new Utils();
 
   ngOnInit(): void {
-    this.modelTime = this.control?.value || null;
+    this.modelTime = new Date();
+    this.modelTime.setHours(
+      this.control?.value?.hour || 0,
+      this.control?.value?.minute || 0,
+      this.control?.value?.second || 0
+    );
     if (this.reset) {
       this.subscriptions.add(this.reset.subscribe(() => this.clearDate()));
     }
@@ -35,12 +43,9 @@ export class TimepickerComponent implements OnInit, OnDestroy {
 
   onTimeChange() {
     if (this.modelTime) {
-      if (!this.showMinutes && !this.showSeconds){
-        // Just return the 24h time
-        this.control.setValue(this.modelTime.getHours());
-      } else {
-        this.control.setValue(this.modelTime);
-      }
+      this.control.setValue(
+        this.utils.convertJSDateToNgbTimeStruct(this.modelTime)
+      );
     }
   }
 

@@ -1,6 +1,9 @@
-<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2">{{ label }}</label>
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
+  >{{ label
+  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
+>
 
-<div class="input-group mb-3" [ngClass]="{ 'invalid-field': control?.errors }">
+<div class="input-group mb-3" [ngClass]="{ 'invalid-field': isInvalid() }">
   <span
     *ngIf="icon"
     class="input-group-text"
@@ -14,14 +17,17 @@
     attr.aria-label="{{ ariaLabel }}"
     attr.aria-describedby="{{ ariaDescribedBy }}"
     [class.with-item-left]="icon"
-    class="form-control text-end with-item-right"
+    class="form-control text-end"
     [formControl]="control"
   >
-    <option *ngFor="let option of selectOptions; index as i" value="{{option?.value}}">
+    <option selected *ngIf="defaultNullDisplay" value="null">
+      {{ defaultNullDisplay }}
+    </option>
+    <option
+      *ngFor="let option of selectOptions; index as i"
+      value="{{ option?.value }}"
+    >
       {{ option?.display }}
     </option>
   </select>
-  <div class="input-group-text dropdown-caret p-1">
-    <i class="bi bi-caret-down-fill" style="font-size: 0.75rem"></i>
-  </div>
 </div>

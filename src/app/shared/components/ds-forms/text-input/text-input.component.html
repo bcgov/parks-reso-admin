@@ -1,7 +1,14 @@
-<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2">{{ label }}</label>
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
+  >{{ label
+  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
+>
 
 <!-- For type number -->
-<div *ngIf="!moneyMode && type === 'number'" class="input-group mb-3" [ngClass]="{'invalid-field': control?.errors}">
+<div
+  *ngIf="!moneyMode && type === 'number'"
+  class="input-group mb-3"
+  [ngClass]="{ 'invalid-field': isInvalid() }"
+>
   <span
     *ngIf="icon"
     class="input-group-text"
@@ -24,7 +31,11 @@
   />
 </div>
 <!-- For type text -->
-<div *ngIf="!moneyMode && type === 'text'" class="input-group mb-3" [ngClass]="{'invalid-field': control?.errors}">
+<div
+  *ngIf="!moneyMode && type === 'text'"
+  class="input-group mb-3"
+  [ngClass]="{ 'invalid-field': isInvalid() }"
+>
   <span
     *ngIf="icon"
     class="input-group-text"
@@ -45,7 +56,11 @@
 </div>
 
 <!-- For currency -->
-<div *ngIf="moneyMode" class="input-group mb-3" [ngClass]="{'invalid-field': control?.errors}">
+<div
+  *ngIf="moneyMode"
+  class="input-group mb-3"
+  [ngClass]="{ 'invalid-field': isInvalid() }"
+>
   <span class="input-group-text" id="{{ ariaDescribedBy }}"
     ><i class="bi bi-currency-dollar"></i
   ></span>

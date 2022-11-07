@@ -110,7 +110,6 @@ export class PassesFilterComponent extends BaseFormComponent {
         passReservationNumber: this.form.get('passReservationNumberControl'),
       });
 
-    super.subscribeToChanges();
   }
 
   async onSubmit() {

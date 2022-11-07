@@ -17,7 +17,6 @@ export class FacilityEditFormDetailsComponent implements OnInit {
     { value: 'Trail', display: 'Trail' },
   ];
   public bookingDaysAheadList = [
-    { value: null, display: 'Default (same day + 3 days)' },
     { value: 0, display: 'Same day only' },
     { value: 1, display: '1 day in advance' },
     { value: 2, display: '2 days in advance' },

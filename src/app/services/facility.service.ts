@@ -70,4 +70,81 @@ export class FacilityService {
     }
     this.loadingService.removeToFetchList(dataTag);
   }
+
+  async putFacility(obj, parkSk) {
+    let res;
+    let errorSubject = '';
+    let dataTag = 'faciliityPut';
+    try {
+      errorSubject = 'facility put';
+      if (this.validateFacilityObject(obj)) {
+        this.loadingService.addToFetchList(dataTag);
+        if (parkSk === '' || !parkSk) {
+          throw 'Must provide a park.';
+        }
+        (obj.pk = `facility::${parkSk}`),
+          (obj.sk = obj.name),
+          (obj.parkName = parkSk);
+        res = await firstValueFrom(this.apiService.put('facility', obj));
+        // ensure CURRENT_FACILITY in DataService is updated with new facility data.
+        this.fetchData(parkSk, obj.name);
+        this.toastService.addMessage(
+          `Facility: ${parkSk} - ${obj.name} updated.`,
+          `Facility updated`,
+          ToastTypes.SUCCESS
+        );
+      }
+    } catch (e) {
+      this.toastService.addMessage(
+        `There was a problem updating the facility.`,
+        `Error putting ${errorSubject}`,
+        ToastTypes.ERROR
+      );
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(e), 'Facility Service')
+      );
+    }
+    this.loadingService.removeToFetchList(dataTag);
+  }
+
+  async postFacility(obj, parkSk) {
+    let res;
+    let errorSubject = '';
+    let dataTag = 'facilityPost';
+    try {
+      errorSubject = 'facility post';
+      if (this.validateFacilityObject(obj)) {
+        this.loadingService.addToFetchList(dataTag);
+        if (parkSk === '' || !parkSk) {
+          throw 'Must provide a park.';
+        }
+        delete obj.pk;
+        delete obj.sk;
+        obj.parkName = parkSk;
+        res = await firstValueFrom(this.apiService.post('facility', obj));
+        // ensure CURRENT_FACILITY in DataService is updated with new facility data.
+        this.fetchData(parkSk, obj.name);
+        this.toastService.addMessage(
+          `New facility ${parkSk} - ${obj.name} created.`,
+          `New Facility created`,
+          ToastTypes.SUCCESS
+        );
+      }
+    } catch (e) {
+      this.toastService.addMessage(
+        `There was a problem creating the facility.`,
+        `Error posting ${errorSubject}`,
+        ToastTypes.ERROR
+      );
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(e), 'Facility Service')
+      );
+    }
+    this.loadingService.removeToFetchList(dataTag);
+  }
+
+  validateFacilityObject(obj) {
+    // TODO: write this function
+    return true;
+  }
 }

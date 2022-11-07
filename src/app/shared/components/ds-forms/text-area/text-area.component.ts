@@ -1,20 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { BaseInputComponent } from '../base-input/base-input.component';
 
 @Component({
   selector: 'app-text-area',
   templateUrl: './text-area.component.html',
   styleUrls: ['./text-area.component.scss'],
 })
-export class TextAreaComponent implements OnInit {
+export class TextAreaComponent extends BaseInputComponent {
   @Input() charCap;
-  @Input() label;
-  @Input() id;
-  @Input() control = new UntypedFormControl;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   getFieldLength() {
     let value: string = '';
@@ -22,5 +15,12 @@ export class TextAreaComponent implements OnInit {
       value = this.control?.value || '';
     }
     return value.length;
+  }
+
+  onInput(event) {
+    if (this.charCap && this.getFieldLength >= this.charCap) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
   }
 }

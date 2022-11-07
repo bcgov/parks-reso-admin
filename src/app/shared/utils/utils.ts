@@ -1,5 +1,6 @@
 import * as moment from 'moment';
 import { DateTime } from 'luxon';
+import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
 export class Utils {
   public convertArrayIntoObjForTypeAhead(
@@ -66,5 +67,13 @@ export class Utils {
 
   public convertJSDateToShortDate(date: Date): string {
     return DateTime.fromJSDate(date).setZone('America/Vancouver').toISODate();
+  }
+
+  public convertJSDateToNgbTimeStruct(date: Date): NgbTimeStruct {
+    return {
+      hour: date.getHours(),
+      minute: date.getMinutes(),
+      second: date.getSeconds(),
+    };
   }
 }

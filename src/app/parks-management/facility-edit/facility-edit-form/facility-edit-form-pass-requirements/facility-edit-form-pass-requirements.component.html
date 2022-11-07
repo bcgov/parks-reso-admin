@@ -1,1 +1,50 @@
 <h2>Pass Requirements</h2>
+<app-toggle
+  [control]="facilityPassesRequired"
+  [description]="'Passes required:'"
+  [trueText]="'On days selected below'"
+  [falseText]="'Every day'"
+  (inputChange)="togglePassesRequired($event)"
+>
+</app-toggle>
+<div *ngIf="facilityPassesRequired?.value === true">
+  <div class="row">
+    <div class="d-flex">
+      <div *ngFor="let day of facilityBookingDaysArray">
+        <div class="col me-4">
+          <app-checkbox [label]="day?.symbol" [control]="day?.control">
+          </app-checkbox>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="input-box">
+    <div class="input-box">
+      <app-text-area
+        [control]="facilityBookingDaysRichText"
+        [label]="'Message to Public'"
+        [charCap]="100"
+      >
+      </app-text-area>
+    </div>
+  </div>
+</div>
+<div>
+  <h3>AM Passes</h3>
+  <app-toggle [control]="getControl('AM')" [label]="'Available?'"> </app-toggle>
+  <app-text-input [control]="getControl('capacityAM')" [label]="'Capacity'">
+  </app-text-input>
+</div>
+<div>
+  <h3>PM Passes</h3>
+  <app-toggle [control]="getControl('PM')" [label]="'Available?'"> </app-toggle>
+  <app-text-input [control]="getControl('capacityPM')" [label]="'Capacity'">
+  </app-text-input>
+</div>
+<div>
+  <h3>All-Day Passes</h3>
+  <app-toggle [control]="getControl('DAY')" [label]="'Available?'">
+  </app-toggle>
+  <app-text-input [control]="getControl('capacityDAY')" [label]="'Capacity'">
+  </app-text-input>
+</div>

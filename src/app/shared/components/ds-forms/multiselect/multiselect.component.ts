@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
 import { ViewEncapsulation } from '@angular/core';
+import { BaseInputComponent } from '../base-input/base-input.component';
 
 @Component({
   selector: 'app-multiselect',
@@ -9,20 +9,11 @@ import { ViewEncapsulation } from '@angular/core';
   // Note: ViewEncapsulation necessary to override ng-select css classes.
   encapsulation: ViewEncapsulation.None,
 })
-export class MultiselectComponent implements OnInit {
-  @Input() control = new UntypedFormControl();
+export class MultiselectComponent extends BaseInputComponent implements OnInit {
   @Input() multiSelectOptions;
-  @Input() label;
-  @Input() icon;
-  @Input() id;
-  @Input() ariaLabel;
-  @Input() ariaDescribedBy;
-  @Input() placeholder;
 
   public selectedOptions: any[] = [];
   public isDisabled;
-
-  constructor() {}
 
   ngOnInit(): void {
     if (!this.control.value) {
@@ -30,7 +21,7 @@ export class MultiselectComponent implements OnInit {
     }
   }
 
-  checkDisabled(){
+  checkDisabled() {
     return this.control.disabled || false;
   }
 
