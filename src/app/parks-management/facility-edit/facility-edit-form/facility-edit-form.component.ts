@@ -22,12 +22,15 @@ import { Constants } from 'src/app/shared/utils/constants';
 })
 export class FacilityEditFormComponent extends BaseFormComponent {
   @Input() facility;
+  @Input() park;
 
   public bookingDaysFormArray;
   public bookingOpeningHourFormGroup;
   public isEditMode = new BehaviorSubject<boolean>(true);
   public facilityBookingDaysArray: any[] = [];
-  public parkName;
+
+  public defaultBookingDaysRichText =
+    '<p>You don&rsquo;t need a day-use pass for this date and pass type. Passes may be required on other days and at other parks.</p>';
 
   constructor(
     protected formBuilder: UntypedFormBuilder,
@@ -53,12 +56,18 @@ export class FacilityEditFormComponent extends BaseFormComponent {
           if (res && res[0]) {
             this.facility = res[0];
             this.data = this.facility;
-            this.parkName = this.facility.pk.split('::')[1];
             this.setForm();
           } else {
             this.isEditMode.next(false);
           }
         })
+    );
+    this.subscriptions.add(
+      dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
+        if (res && res[0]) {
+          this.park = res[0];
+        }
+      })
     );
     this.setForm();
   }
@@ -82,25 +91,25 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     // Create booking days subform:
     let bookableDaysFormGroup = new UntypedFormGroup({
       Monday: new UntypedFormControl(
-        this.data.bookingDays?.['1'] ? true : false
+        this.data.bookingDays ? this.data.bookingDays['1'] : true
       ),
       Tuesday: new UntypedFormControl(
-        this.data.bookingDays?.['2'] ? true : false
+        this.data.bookingDays ? this.data.bookingDays['2'] : true
       ),
       Wednesday: new UntypedFormControl(
-        this.data.bookingDays?.['3'] ? true : false
+        this.data.bookingDays ? this.data.bookingDays['3'] : true
       ),
       Thursday: new UntypedFormControl(
-        this.data.bookingDays?.['4'] ? true : false
+        this.data.bookingDays ? this.data.bookingDays['4'] : true
       ),
       Friday: new UntypedFormControl(
-        this.data.bookingDays?.['5'] ? true : false
+        this.data.bookingDays ? this.data.bookingDays['5'] : true
       ),
       Saturday: new UntypedFormControl(
-        this.data.bookingDays?.['6'] ? true : false
+        this.data.bookingDays ? this.data.bookingDays['6'] : true
       ),
       Sunday: new UntypedFormControl(
-        this.data.bookingDays?.['7'] ? true : false
+        this.data.bookingDays ? this.data.bookingDays['7'] : true
       ),
     });
     // Create booking time capacities subform
@@ -127,16 +136,10 @@ export class FacilityEditFormComponent extends BaseFormComponent {
         this.data.status?.stateReason || null
       ),
       facilityVisibility: new UntypedFormControl(this.data.visible),
-      facilityName: new UntypedFormControl(
-        this.data.name,
-        Validators.required
-      ),
-      facilityType: new UntypedFormControl(
-        this.data.type,
-        Validators.required
-      ),
+      facilityName: new UntypedFormControl(this.data.name, Validators.required),
+      facilityType: new UntypedFormControl(this.data.type, Validators.required),
       facilityBookingOpeningHour: new UntypedFormControl({
-        hour: this.data.bookingOpeningHour || 0,
+        hour: this.data.bookingOpeningHour || 7,
         minute: 0,
         second: 0,
       } as NgbTimeStruct),
@@ -144,13 +147,13 @@ export class FacilityEditFormComponent extends BaseFormComponent {
         this.data.bookingDaysAhead
       ),
       facilityBookingDaysRichText: new UntypedFormControl(
-        this.data.bookingDaysRichText
+        this.data
+          ? this.data.bookingDaysRichText
+          : this.defaultBookingDaysRichText
       ),
       facilityBookingDaysGroup: bookableDaysFormGroup,
       facilityBookingTimesGroup: bookingTimesFormGroup,
-      facilityPassesRequired: new UntypedFormControl(
-        this.getPassesRequired()
-      ),
+      facilityPassesRequired: new UntypedFormControl(this.getPassesRequired()),
     });
     this.fields = {
       facilityStatus: this.form.get('facilityStatus'),
@@ -158,15 +161,9 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       facilityClosureReason: this.form.get('facilityClosureReason'),
       facilityName: this.form.get('facilityName'),
       facilityType: this.form.get('facilityType'),
-      facilityBookingOpeningHour: this.form.get(
-        'facilityBookingOpeningHour'
-      ),
-      facilityBookingDaysAhead: this.form.get(
-        'facilityBookingDaysAhead'
-      ),
-      facilityBookingDaysRichText: this.form.get(
-        'facilityBookingDaysRichText'
-      ),
+      facilityBookingOpeningHour: this.form.get('facilityBookingOpeningHour'),
+      facilityBookingDaysAhead: this.form.get('facilityBookingDaysAhead'),
+      facilityBookingDaysRichText: this.form.get('facilityBookingDaysRichText'),
       facilityBookingDays: this.form.get('facilityBookingDaysGroup'),
       facilityBookingTimes: this.form.get('facilityBookingTimesGroup'),
       facilityPassesRequired: this.form.get('facilityPassesRequired'),
@@ -202,9 +199,9 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     if (res.invalidControls.length === 0) {
       const postObj = this.formatFormResults(res.fields);
       if (this.isEditMode.value === true) {
-        this.facilityService.putFacility(postObj, this.parkName);
+        this.facilityService.putFacility(postObj, this.park.sk);
       } else {
-        this.facilityService.postFacility(postObj, this.parkName);
+        this.facilityService.postFacility(postObj, this.park.sk);
       }
     }
   }
@@ -249,7 +246,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
         6: results.facilityBookingDaysGroup.Saturday,
         7: results.facilityBookingDaysGroup.Sunday,
       },
-      bookingDaysRichText: results.facilityBookingDaysRichText,
+      bookingDaysRichText: results.facilityBookingDaysRichText || '',
       bookableHolidays: [],
     };
     return postObj;
