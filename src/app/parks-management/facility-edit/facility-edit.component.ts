@@ -12,10 +12,7 @@ import { Constants } from 'src/app/shared/utils/constants';
 export class FacilityEditComponent implements OnDestroy {
   private subscriptions = new Subscription();
   public facility;
-  public parkSk;
-  public date;
-  public passType;
-  public resObject;
+  public park;
 
   constructor(protected dataService: DataService) {
     this.subscriptions.add(
@@ -26,6 +23,13 @@ export class FacilityEditComponent implements OnDestroy {
             this.facility = res[0];
           }
         })
+    );
+    this.subscriptions.add(
+      dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
+        if (res && res[0]) {
+          this.park = res[0];
+        }
+      })
     );
   }
 

@@ -49,6 +49,15 @@ const routes: Routes = [
         },
       },
       {
+        path: 'add-facility',
+        component: FacilityEditComponent,
+        canActivate: [AuthGuard],
+        data: {
+          label: 'Add Facility',
+          breadcrumb: 'Add Facility'
+        }
+      },
+      {
         path: ':facilityId',
         canActivate: [AuthGuard],
         resolve: [FacilityResolver],

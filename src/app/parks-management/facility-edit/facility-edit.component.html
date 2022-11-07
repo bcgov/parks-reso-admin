@@ -1,1 +1,9 @@
-<app-facility-edit-form *ngIf=facility [facility]="facility"> </app-facility-edit-form>
+<div *ngIf="facility">
+  <h1>Facility Edit: {{ facility?.name }}</h1>
+  <app-facility-edit-form [park]="park" [facility]="facility">
+  </app-facility-edit-form>
+</div>
+<div *ngIf="!facility">
+  <h1>{{ park?.name }}: Add New Facility</h1>
+  <app-facility-edit-form [park]="park"> </app-facility-edit-form>
+</div>
