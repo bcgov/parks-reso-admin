@@ -27,7 +27,7 @@ export class BaseInputComponent {
   }
 
   isInvalid() {
-    if (this.control.invalid && this.control.touched) {
+    if (this.control?.invalid && this.control?.touched) {
       return true;
     }
     return false;

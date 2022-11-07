@@ -70,46 +70,45 @@ export class PassesFilterComponent extends BaseFormComponent {
   }
 
   setForm() {
-    (this.form = new UntypedFormGroup({
-      passTypeControl: new UntypedFormControl({
+    this.form = new UntypedFormGroup({
+      passType: new UntypedFormControl({
         value: this.data.passType,
         disabled: this.loading,
       }),
-      passDateControl: new UntypedFormControl({
+      passDate: new UntypedFormControl({
         value: this.data.date,
         disabled: this.loading,
       }),
-      passStatusControl: new UntypedFormControl({
+      passStatus: new UntypedFormControl({
         value: this.data.passStatus,
         disabled: this.loading,
       }),
-      passFirstNameControl: new UntypedFormControl({
+      passFirstName: new UntypedFormControl({
         value: this.data.firstName,
         disabled: this.loading,
       }),
-      passLastNameControl: new UntypedFormControl({
+      passLastName: new UntypedFormControl({
         value: this.data.lastName,
         disabled: this.loading,
       }),
-      passEmailControl: new UntypedFormControl({
+      passEmail: new UntypedFormControl({
         value: this.data.email,
         disabled: this.loading,
       }),
-      passReservationNumberControl: new UntypedFormControl({
+      passReservationNumber: new UntypedFormControl({
         value: this.data.reservationNumber,
         disabled: this.loading,
       }),
-    })),
-      (this.fields = {
-        passType: this.form.get('passTypeControl'),
-        passDate: this.form.get('passDateControl'),
-        passStatus: this.form.get('passStatusControl'),
-        passFirstName: this.form.get('passFirstNameControl'),
-        passLastName: this.form.get('passLastNameControl'),
-        passEmail: this.form.get('passEmailControl'),
-        passReservationNumber: this.form.get('passReservationNumberControl'),
-      });
-
+    });
+    this.fields = {
+      passType: this.form.get('passType'),
+      passDate: this.form.get('passDate'),
+      passStatus: this.form.get('passStatus'),
+      passFirstName: this.form.get('passFirstName'),
+      passLastName: this.form.get('passLastName'),
+      passEmail: this.form.get('passEmail'),
+      passReservationNumber: this.form.get('passReservationNumber'),
+    };
   }
 
   async onSubmit() {

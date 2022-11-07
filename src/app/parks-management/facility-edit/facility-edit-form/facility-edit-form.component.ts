@@ -120,56 +120,56 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     });
     // Create base form
     this.form = new UntypedFormGroup({
-      facilityStatusControl: new UntypedFormControl(
+      facilityStatus: new UntypedFormControl(
         this.data.status?.state === 'open' ? true : false
       ),
-      facilityClosureReasonControl: new UntypedFormControl(
+      facilityClosureReason: new UntypedFormControl(
         this.data.status?.stateReason || null
       ),
-      facilityVisibilityControl: new UntypedFormControl(this.data.visible),
-      facilityNameControl: new UntypedFormControl(
+      facilityVisibility: new UntypedFormControl(this.data.visible),
+      facilityName: new UntypedFormControl(
         this.data.name,
         Validators.required
       ),
-      facilityTypeControl: new UntypedFormControl(
+      facilityType: new UntypedFormControl(
         this.data.type,
         Validators.required
       ),
-      facilityBookingOpeningHourControl: new UntypedFormControl({
+      facilityBookingOpeningHour: new UntypedFormControl({
         hour: this.data.bookingOpeningHour || 0,
         minute: 0,
         second: 0,
       } as NgbTimeStruct),
-      facilityBookingDaysAheadControl: new UntypedFormControl(
+      facilityBookingDaysAhead: new UntypedFormControl(
         this.data.bookingDaysAhead
       ),
-      facilityBookingDaysRichTextControl: new UntypedFormControl(
+      facilityBookingDaysRichText: new UntypedFormControl(
         this.data.bookingDaysRichText
       ),
       facilityBookingDaysGroup: bookableDaysFormGroup,
       facilityBookingTimesGroup: bookingTimesFormGroup,
-      facilityPassesRequiredControl: new UntypedFormControl(
+      facilityPassesRequired: new UntypedFormControl(
         this.getPassesRequired()
       ),
     });
     this.fields = {
-      facilityStatus: this.form.get('facilityStatusControl'),
-      facilityVisibility: this.form.get('facilityVisibilityControl'),
-      facilityClosureReason: this.form.get('facilityClosureReasonControl'),
-      facilityName: this.form.get('facilityNameControl'),
-      facilityType: this.form.get('facilityTypeControl'),
+      facilityStatus: this.form.get('facilityStatus'),
+      facilityVisibility: this.form.get('facilityVisibility'),
+      facilityClosureReason: this.form.get('facilityClosureReason'),
+      facilityName: this.form.get('facilityName'),
+      facilityType: this.form.get('facilityType'),
       facilityBookingOpeningHour: this.form.get(
-        'facilityBookingOpeningHourControl'
+        'facilityBookingOpeningHour'
       ),
       facilityBookingDaysAhead: this.form.get(
-        'facilityBookingDaysAheadControl'
+        'facilityBookingDaysAhead'
       ),
       facilityBookingDaysRichText: this.form.get(
-        'facilityBookingDaysRichTextControl'
+        'facilityBookingDaysRichText'
       ),
       facilityBookingDays: this.form.get('facilityBookingDaysGroup'),
       facilityBookingTimes: this.form.get('facilityBookingTimesGroup'),
-      facilityPassesRequired: this.form.get('facilityPassesRequiredControl'),
+      facilityPassesRequired: this.form.get('facilityPassesRequired'),
     };
 
     // add special field disabling rules
@@ -230,16 +230,16 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     }
     // create API submission object
     const postObj = {
-      name: results.facilityNameControl,
+      name: results.facilityName,
       status: {
-        state: results.facilityStatusControl ? 'open' : 'closed',
-        stateReason: results.facilityClosureReasonControl,
+        state: results.facilityStatus ? 'open' : 'closed',
+        stateReason: results.facilityClosureReason,
       },
-      type: results.facilityTypeControl,
-      visible: results.facilityVisibilityControl,
+      type: results.facilityType,
+      visible: results.facilityVisibility,
       bookingTimes: resultTimes,
-      bookingOpeningHour: results.facilityBookingOpeningHourControl?.hour,
-      bookingDaysAhead: results.facilityBookingDaysAheadControl,
+      bookingOpeningHour: results.facilityBookingOpeningHour?.hour,
+      bookingDaysAhead: results.facilityBookingDaysAhead,
       bookingDays: {
         1: results.facilityBookingDaysGroup.Monday,
         2: results.facilityBookingDaysGroup.Tuesday,
@@ -249,7 +249,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
         6: results.facilityBookingDaysGroup.Saturday,
         7: results.facilityBookingDaysGroup.Sunday,
       },
-      bookingDaysRichText: results.facilityBookingDaysRichTextControl,
+      bookingDaysRichText: results.facilityBookingDaysRichText,
       bookableHolidays: [],
     };
     return postObj;

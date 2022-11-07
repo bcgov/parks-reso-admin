@@ -116,13 +116,13 @@ export class PassService {
 
   async updateSearchParams(filters, facility) {
     let filterMap = {
-      date: filters.passDateControl || null,
-      reservationNumber: filters.passReservationNumberControl || null,
-      passStatus: filters.passStatusControl ? filters.passStatusControl.join(',') : null,
-      firstName: filters.passFirstNameControl || null,
-      lastName: filters.passLastNameControl || null,
-      email: filters.passEmailControl || null,
-      passType: filters.passTypeControl || null,
+      date: filters.passDate || null,
+      reservationNumber: filters.passReservationNumber || null,
+      passStatus: filters.passStatus ? filters.passStatus.join(',') : null,
+      firstName: filters.passFirstname || null,
+      lastName: filters.passLastName || null,
+      email: filters.passEmail || null,
+      passType: filters.passType || null,
       facilitySk: facility.sk,
     }
     for (let item of Object.keys(filterMap)){
