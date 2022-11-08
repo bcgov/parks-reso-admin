@@ -54,5 +54,6 @@ export class ParkService {
       this.dataService.setItemValue(dataTag, 'error');
     }
     this.loadingService.removeToFetchList(dataTag);
+    return res;
   }
 }

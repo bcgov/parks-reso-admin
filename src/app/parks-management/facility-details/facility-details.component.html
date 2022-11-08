@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="facility">
   <h1>{{ facility?.name }}</h1>
 
   <h1>Passes</h1>
@@ -12,6 +12,6 @@
       ></app-passes-utility-buttons>
     </div>
   </div>
-  <app-passes-filter *ngIf="facility" [facility]="facility"></app-passes-filter>
+  <app-passes-filter></app-passes-filter>
   <app-passes-list></app-passes-list>
 </div>

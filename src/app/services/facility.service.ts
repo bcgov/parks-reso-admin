@@ -69,6 +69,7 @@ export class FacilityService {
         this.dataService.setItemValue(dataTag, 'error');
     }
     this.loadingService.removeToFetchList(dataTag);
+    return res;
   }
 
   async putFacility(obj, parkSk) {

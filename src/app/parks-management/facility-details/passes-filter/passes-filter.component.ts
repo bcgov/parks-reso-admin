@@ -1,9 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -24,7 +19,8 @@ import { Constants } from 'src/app/shared/utils/constants';
   styleUrls: ['./passes-filter.component.scss'],
 })
 export class PassesFilterComponent extends BaseFormComponent {
-  @Input() facility;
+  // @Input() facility;
+  private facility;
 
   public bookingTimesList;
   public statusesList = ['reserved', 'active', 'expired', 'cancelled'];
@@ -48,6 +44,17 @@ export class PassesFilterComponent extends BaseFormComponent {
       changeDetectior
     );
 
+    this.subscriptions.add(
+      this.dataService
+        .watchItem(Constants.dataIds.CURRENT_FACILITY)
+        .subscribe((res) => {
+          if (res) {
+            this.facility = res[0];
+            this.bookingTimesList = this.getBookingTimesList();
+          }
+        })
+    );
+
     // push existing form data to parent subscriptions
     this.subscriptions.add(
       this.dataService
@@ -59,6 +66,7 @@ export class PassesFilterComponent extends BaseFormComponent {
           }
         })
     );
+    this.setForm();
   }
 
   getBookingTimesList() {
@@ -149,10 +157,5 @@ export class PassesFilterComponent extends BaseFormComponent {
       resFields?.date || null,
       resFields?.passType || null
     );
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.facility = changes['facility'].currentValue;
-    this.bookingTimesList = this.getBookingTimesList();
   }
 }

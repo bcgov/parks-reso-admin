@@ -2,7 +2,6 @@ import {
   AfterContentInit,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   OnDestroy,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';

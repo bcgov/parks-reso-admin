@@ -5,9 +5,9 @@ import { FacilityDetailsComponent } from './facility-details/facility-details.co
 import { ParkDetailsComponent } from './park-details/park-details.component';
 import { ParkEditComponent } from './park-edit/park-edit.component';
 import { ParksListComponent } from './parks-list/parks-list.component';
-import { FacilityResolver } from '../resolvers/facility.resolver';
 import { ParkResolver } from '../resolvers/park.resolver';
 import { FacilityEditComponent } from './facility-edit/facility-edit.component';
+import { FacilityDetailsResolver } from '../resolvers/facility-details.resolver';
 
 const routes: Routes = [
   {
@@ -54,13 +54,12 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         data: {
           label: 'Add Facility',
-          breadcrumb: 'Add Facility'
-        }
+          breadcrumb: 'Add Facility',
+        },
       },
       {
         path: ':facilityId',
         canActivate: [AuthGuard],
-        resolve: [FacilityResolver],
         data: {
           breadcrumb: 'FACILITY NAME',
           module: 'facility',
@@ -70,6 +69,7 @@ const routes: Routes = [
           {
             path: '',
             component: FacilityDetailsComponent,
+            resolve: [FacilityDetailsResolver],
             canActivate: [AuthGuard],
             data: {
               label: '',

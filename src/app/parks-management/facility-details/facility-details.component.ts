@@ -25,21 +25,6 @@ export class FacilityDetailsComponent implements OnDestroy {
         .subscribe((res) => {
           if (res && res[0]) {
             this.facility = res[0];
-            // TODO: This is where we should get initial pass list
-            // The reason why this is not in a separate pass resolver is because we require bookingtimes from our selected facility.
-            // Facility is only accessible after the facility resolver has resolved.
-            passService.initializePassList(this.facility);
-            let passFilterParams = this.dataService.getItemValue(
-              Constants.dataIds.PASS_SEARCH_PARAMS
-            );
-
-            // Initialize reservation data
-            this.reservationService.fetchData(
-              this.facility.pk.split('::')[1],
-              this.facility.name,
-              passFilterParams['date'],
-              passFilterParams['passType']
-            );
           }
         })
     );

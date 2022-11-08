@@ -68,6 +68,7 @@ export class ReservationService {
         this.dataService.setItemValue(dataTag, 'error');
     }
     this.loadingService.removeToFetchList(dataTag);
+    return res;
   }
 
   setCapacityBar(reservationObj, selectedPassType) {
