@@ -2,7 +2,10 @@ import * as moment from 'moment';
 import { DateTime } from 'luxon';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
+const TIMEZONE = 'America/Vancouver'
+
 export class Utils {
+
   public convertArrayIntoObjForTypeAhead(
     array,
     valueToUseAsKey,
@@ -62,11 +65,15 @@ export class Utils {
   }
 
   public getTodayAsShortDate() {
-    return DateTime.now().setZone('America/Vancouver').toISODate();
+    return DateTime.now().setZone(TIMEZONE).toISODate();
   }
 
   public convertJSDateToShortDate(date: Date): string {
-    return DateTime.fromJSDate(date).setZone('America/Vancouver').toISODate();
+    return DateTime.fromJSDate(date).setZone(TIMEZONE).toISODate();
+  }
+
+  public convertShortDateToJSDate(date: string): Date {
+    return DateTime.fromFormat(date, 'YYYY-MM-DD').setZone(TIMEZONE).toJSDate();
   }
 
   public convertJSDateToNgbTimeStruct(date: Date): NgbTimeStruct {

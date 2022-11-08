@@ -2,6 +2,11 @@
   <h1>Facility Edit: {{ facility?.name }}</h1>
   <app-facility-edit-form [park]="park" [facility]="facility">
   </app-facility-edit-form>
+  <div class="mx-4">
+    <h2>Capacity Changes</h2>
+    <app-modifiers-form [park]="park" [facility]="facility"></app-modifiers-form>
+    <app-modifiers-list></app-modifiers-list>
+  </div>
 </div>
 <div *ngIf="!facility">
   <h1>{{ park?.name }}: Add New Facility</h1>

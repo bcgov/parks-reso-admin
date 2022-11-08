@@ -1,0 +1,42 @@
+<form [formGroup]="form">
+  <div class="row p-2">
+    <div class="input-box col">
+      <app-shortdate-picker
+        [control]="fields?.modifierOverrideDate"
+        [label]="'Override date'"
+        [minDate]="today"
+
+      >
+      </app-shortdate-picker>
+    </div>
+    <div class="input-box col">
+      <app-text-input
+        [control]="fields?.modifierAMChanges"
+        [label]="'AM Changes'"
+        [type]="'number'"
+      >
+      </app-text-input>
+    </div>
+    <div class="input-box col">
+      <app-text-input
+        [control]="fields?.modifierPMChanges"
+        [label]="'PM Changes'"
+        [type]="'number'"
+      >
+      </app-text-input>
+    </div>
+    <div class="input-box col">
+      <app-text-input
+        [control]="fields?.modifierDAYChanges"
+        [label]="'All-Day Changes'"
+        [type]="'number'"
+      >
+      </app-text-input>
+    </div>
+    <div class="col d-flex">
+      <button class="btn btn-primary" (click)="onSubmit()" [disabled]="checkModifierSubmission()">
+        <i class="bi bi-save2-fill"></i>
+      </button>
+    </div>
+  </div>
+</form>

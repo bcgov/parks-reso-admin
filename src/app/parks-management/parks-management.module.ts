@@ -16,7 +16,6 @@ import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { DsModalModule } from '../shared/components/modal/ds-modal.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DsFormsModule } from '../shared/components/ds-forms/ds-forms.module';
-import { FacilityEditFormCapacityChangesComponent } from './facility-edit/facility-edit-form/facility-edit-form-capacity-changes/facility-edit-form-capacity-changes.component';
 import { FacilityEditFormDetailsComponent } from './facility-edit/facility-edit-form/facility-edit-form-details/facility-edit-form-details.component';
 import { FacilityEditFormPassRequirementsComponent } from './facility-edit/facility-edit-form/facility-edit-form-pass-requirements/facility-edit-form-pass-requirements.component';
 import { FacilityEditFormPublishingDetailsComponent } from './facility-edit/facility-edit-form/facility-edit-form-publishing-details/facility-edit-form-publishing-details.component';
@@ -24,6 +23,8 @@ import { FacilityEditFormComponent } from './facility-edit/facility-edit-form/fa
 import { PassesCapacityBarComponent } from './facility-details/passes-capacity-bar/passes-capacity-bar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PassesUtilityButtonsComponent } from './facility-details/passes-utility-buttons/passes-utility-buttons.component';
+import { ModifiersListComponent } from './modifiers-list/modifiers-list.component';
+import { ModifiersFormComponent } from './modifiers-form/modifiers-form.component';
 
 @NgModule({
   declarations: [
@@ -40,9 +41,10 @@ import { PassesUtilityButtonsComponent } from './facility-details/passes-utility
     FacilityEditFormPublishingDetailsComponent,
     FacilityEditFormDetailsComponent,
     FacilityEditFormPassRequirementsComponent,
-    FacilityEditFormCapacityChangesComponent,
     PassesCapacityBarComponent,
     PassesUtilityButtonsComponent,
+    ModifiersListComponent,
+    ModifiersFormComponent,
   ],
   imports: [
     CommonModule,

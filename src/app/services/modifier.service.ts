@@ -75,7 +75,8 @@ export class ModifierService {
   async setModifier(obj) {
     let res;
     try {
-      res = this.apiService.put('modifier', obj);
+      res = await firstValueFrom(this.apiService.put('modifier', obj));
+      this.fetchData(obj.parkName, obj.facility, obj.date);
       this.toastService.addMessage(
         `Modifier set`,
         'Modifier Service',
@@ -111,7 +112,8 @@ export class ModifierService {
 
     let res;
     try {
-      res = this.apiService.put('modifier', obj);
+      res = await firstValueFrom(this.apiService.put('modifier', obj));
+      this.fetchData(park, facility, date);
       this.toastService.addMessage(
         `Modifier removed`,
         'Modifier Service',
