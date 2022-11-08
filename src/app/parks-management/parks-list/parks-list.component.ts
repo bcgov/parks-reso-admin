@@ -85,6 +85,7 @@ export class ParksListComponent implements OnInit, OnDestroy {
             return {
               component: TableButtonComponent,
               inputs: {
+                altText: 'Edit',
                 buttonClass: 'btn btn-outline-primary',
                 iconClass: 'bi bi-pencil-fill',
                 onClick: function () {

@@ -10,6 +10,7 @@ export class TableButtonComponent {
   @Input() buttonClass: string;
   @Input() iconClass: string;
   @Input() isDisabled: boolean;
+  @Input() altText: string;
 
   constructor() {}
 

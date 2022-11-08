@@ -84,6 +84,7 @@ export class ModifiersListComponent implements OnInit {
             return {
               component: TableButtonComponent,
               inputs: {
+                altText: 'Delete',
                 buttonClass: 'btn btn-outline-danger',
                 iconClass: 'bi bi-trash3-fill',
                 onClick: async function () {

@@ -183,6 +183,7 @@ export class PassesListComponent implements OnInit, OnDestroy {
             return {
               component: TableButtonComponent,
               inputs: {
+                altText: 'Cancel',
                 buttonClass: 'btn btn-outline-danger',
                 iconClass: 'bi bi-x-circle-fill',
                 isDisabled: this.disableCancelButton(passObj),
