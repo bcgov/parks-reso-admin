@@ -1,0 +1,58 @@
+<button
+  [disabled]="!passes || passes.length === 0"
+  class="btn btn-primary me-1"
+  (click)="exportCsv()"
+>
+  Export to .csv
+</button>
+<button
+  [disabled]="!passes || passes.length === 0"
+  class="btn btn-primary me-1"
+  (click)="print()"
+>
+  Print
+</button>
+<button
+  [disabled]="!passes || passes.length === 0"
+  class="btn btn-primary"
+  (click)="copyEmails()"
+>
+  Copy Emails
+</button>
+
+<div id="print-area">
+  <table>
+    <thead>
+      <tr style="border: 1px solid black">
+        <th scope="col">Reg #</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+
+        <th *ngIf="facility?.type === 'Trail'" scope="col">Guests</th>
+        <th *ngIf="facility?.type === 'Facility'" scope="col">License</th>
+
+        <th scope="col">Facility</th>
+        <th scope="col">Date</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pass of passes">
+        <td>{{ pass.registrationNumber }}</td>
+        <td>{{ pass.firstName }}</td>
+        <td>{{ pass.lastName }}</td>
+        <td>{{ pass.email }}</td>
+        <td>{{ pass.phoneNumber }}</td>
+
+        <td *ngIf="facility?.type === 'Trail'">{{ pass.numberOfGuests }}</td>
+        <td *ngIf="facility?.type === 'Facility'">{{ pass.license }}</td>
+
+        <td>{{ pass.facilityType }}</td>
+        <td>{{ convertDate(pass.date) }}</td>
+        <td>{{ pass.passStatus }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

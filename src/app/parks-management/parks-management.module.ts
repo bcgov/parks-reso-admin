@@ -23,6 +23,7 @@ import { FacilityEditFormPublishingDetailsComponent } from './facility-edit/faci
 import { FacilityEditFormComponent } from './facility-edit/facility-edit-form/facility-edit-form.component';
 import { PassesCapacityBarComponent } from './facility-details/passes-capacity-bar/passes-capacity-bar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PassesUtilityButtonsComponent } from './facility-details/passes-utility-buttons/passes-utility-buttons.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FacilityEditFormPassRequirementsComponent,
     FacilityEditFormCapacityChangesComponent,
     PassesCapacityBarComponent,
+    PassesUtilityButtonsComponent,
   ],
   imports: [
     CommonModule,

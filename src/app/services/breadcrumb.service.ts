@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Breadcrumb } from '../model/breadcrumb.model';
+import { Breadcrumb } from '../models/breadcrumb.model';
 
 @Injectable({
   providedIn: 'root',
