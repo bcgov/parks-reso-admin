@@ -76,7 +76,7 @@ export class ParksListComponent implements OnInit, OnDestroy {
         },
         {
           id: 'edit-button',
-          displayHeader: '',
+          displayHeader: 'Actions',
           width: '10%',
           columnClasses: 'ps-5 pe-3',
           mapValue: () => null,
