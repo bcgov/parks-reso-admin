@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  SimpleChanges,
+} from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -50,12 +55,10 @@ export class PassesFilterComponent extends BaseFormComponent {
         .subscribe((res) => {
           if (res) {
             this.data = res;
-            this.bookingTimesList = this.getBookingTimesList();
             this.setForm();
           }
         })
     );
-    this.setForm();
   }
 
   getBookingTimesList() {
@@ -111,18 +114,33 @@ export class PassesFilterComponent extends BaseFormComponent {
     };
   }
 
+  cleanSearchParams(filters) {
+    let filterMap = {
+      date: filters.passDate || null,
+      reservationNumber: filters.passReservationNumber || null,
+      passStatus: filters.passStatus ? filters.passStatus.join(',') : null,
+      firstName: filters.passFirstname || null,
+      lastName: filters.passLastName || null,
+      email: filters.passEmail || null,
+      passType: filters.passType || null,
+    };
+    for (let item of Object.keys(filterMap)) {
+      if (!filterMap[item]) {
+        delete filterMap[item];
+      }
+    }
+    return filterMap;
+  }
+
   async onSubmit() {
     // Save current search params
     const res = await super.submit();
-    const resFields = await this.passService.updateSearchParams(
-      res.fields,
-      this.facility
-    );
-    let params = {
+    const resFields = await this.cleanSearchParams(res.fields);
+    let params = Object.assign(resFields, {
       parkSk: this.facility.pk.split('::')[1],
       facilitySk: this.facility.sk,
       passType: resFields?.passType || null,
-    };
+    });
     this.passService.fetchData(params);
 
     this.reservationService.fetchData(
@@ -131,5 +149,10 @@ export class PassesFilterComponent extends BaseFormComponent {
       resFields?.date || null,
       resFields?.passType || null
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.facility = changes['facility'].currentValue;
+    this.bookingTimesList = this.getBookingTimesList();
   }
 }

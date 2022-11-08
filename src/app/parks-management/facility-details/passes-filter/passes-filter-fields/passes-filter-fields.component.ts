@@ -4,22 +4,20 @@ import { UntypedFormControl } from '@angular/forms';
 @Component({
   selector: 'app-passes-filter-fields',
   templateUrl: './passes-filter-fields.component.html',
-  styleUrls: ['./passes-filter-fields.component.scss']
+  styleUrls: ['./passes-filter-fields.component.scss'],
 })
 export class PassesFilterFieldsComponent implements OnChanges {
-  @Input() passType = new UntypedFormControl;
+  @Input() passType = new UntypedFormControl();
   @Input() passTypeOptions;
-  @Input() passDate = new UntypedFormControl;
-  @Input() passStatus = new UntypedFormControl;
+  @Input() passDate = new UntypedFormControl();
+  @Input() passStatus = new UntypedFormControl();
   @Input() passStatusOptions;
-  @Input() passFirstName = new UntypedFormControl;
-  @Input() passLastName = new UntypedFormControl;
-  @Input() passEmail = new UntypedFormControl;
-  @Input() passReservationNumber = new UntypedFormControl;
+  @Input() passFirstName = new UntypedFormControl();
+  @Input() passLastName = new UntypedFormControl();
+  @Input() passEmail = new UntypedFormControl();
+  @Input() passReservationNumber = new UntypedFormControl();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnChanges(): void {
-  }
-
+  ngOnChanges(): void {}
 }

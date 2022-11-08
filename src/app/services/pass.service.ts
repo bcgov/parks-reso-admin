@@ -63,7 +63,6 @@ export class PassService {
         }
         res = await firstValueFrom(this.apiService.get('pass', queryObj));
         this.dataService.setItemValue(dataTag, res.data);
-        console.log('update firing');
         this.dataService.setItemValue(
           Constants.dataIds.PASS_SEARCH_PARAMS,
           queryObj

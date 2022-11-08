@@ -37,7 +37,7 @@ export class FacilityDetailsComponent implements OnDestroy {
             this.reservationService.fetchData(
               this.facility.pk.split('::')[1],
               this.facility.name,
-              passFilterParams['passDate'],
+              passFilterParams['date'],
               passFilterParams['passType']
             );
           }

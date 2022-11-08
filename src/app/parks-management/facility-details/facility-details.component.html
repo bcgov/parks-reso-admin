@@ -12,6 +12,6 @@
       ></app-passes-utility-buttons>
     </div>
   </div>
-  <app-passes-filter [facility]="facility"></app-passes-filter>
+  <app-passes-filter *ngIf="facility" [facility]="facility"></app-passes-filter>
   <app-passes-list></app-passes-list>
 </div>
