@@ -66,7 +66,7 @@ export class PassesFilterComponent extends BaseFormComponent {
           }
         })
     );
-    this.setForm();
+    this.initializeForm();
   }
 
   getBookingTimesList() {
@@ -80,36 +80,22 @@ export class PassesFilterComponent extends BaseFormComponent {
     return [];
   }
 
+  initializeForm() {
+    // First pass of form initialization, establish disabledRules (if any)
+    this.setForm();
+  }
+
   setForm() {
     this.form = new UntypedFormGroup({
-      passType: new UntypedFormControl({
-        value: this.data.passType,
-        disabled: this.loading,
-      }),
-      passDate: new UntypedFormControl({
-        value: this.data.date,
-        disabled: this.loading,
-      }),
-      passStatus: new UntypedFormControl({
-        value: this.data.passStatus,
-        disabled: this.loading,
-      }),
-      passFirstName: new UntypedFormControl({
-        value: this.data.firstName,
-        disabled: this.loading,
-      }),
-      passLastName: new UntypedFormControl({
-        value: this.data.lastName,
-        disabled: this.loading,
-      }),
-      passEmail: new UntypedFormControl({
-        value: this.data.email,
-        disabled: this.loading,
-      }),
-      passReservationNumber: new UntypedFormControl({
-        value: this.data.reservationNumber,
-        disabled: this.loading,
-      }),
+      passType: new UntypedFormControl(this.data.passType),
+      passDate: new UntypedFormControl(this.data.date),
+      passStatus: new UntypedFormControl(this.data.passStatus),
+      passFirstName: new UntypedFormControl(this.data.firstName),
+      passLastName: new UntypedFormControl(this.data.lastName),
+      passEmail: new UntypedFormControl(this.data.email),
+      passReservationNumber: new UntypedFormControl(
+        this.data.reservationNumber
+      ),
     });
     this.fields = {
       passType: this.form.get('passType'),

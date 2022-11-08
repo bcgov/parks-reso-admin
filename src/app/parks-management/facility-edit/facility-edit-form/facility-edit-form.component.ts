@@ -69,7 +69,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
         }
       })
     );
-    this.setForm();
+    this.intializeForm();
   }
 
   getPassesRequired() {
@@ -85,6 +85,35 @@ export class FacilityEditFormComponent extends BaseFormComponent {
 
   isFormValid() {
     return super.validate();
+  }
+
+  intializeForm() {
+    // First pass of form initialization, establish disabledRules (if any)
+    this.setForm();
+
+    // add special field disabling rules
+    super.addDisabledRule(this.fields.facilityName, this.isEditMode, [true]);
+    super.addDisabledRule(this.fields.facilityType, this.isEditMode, [true]);
+    super.addDisabledRule(
+      this.fields.facilityClosureReason,
+      this.fields.facilityStatus.valueChanges,
+      [true]
+    );
+    super.addDisabledRule(
+      this.fields.facilityBookingTimes.get('capacityAM'),
+      this.fields.facilityBookingTimes.controls['AM'].valueChanges,
+      [false, null]
+    );
+    super.addDisabledRule(
+      this.fields.facilityBookingTimes.get('capacityPM'),
+      this.fields.facilityBookingTimes.controls['PM'].valueChanges,
+      [false, null]
+    );
+    super.addDisabledRule(
+      this.fields.facilityBookingTimes.get('capacityDAY'),
+      this.fields.facilityBookingTimes.controls['DAY'].valueChanges,
+      [false, null]
+    );
   }
 
   setForm() {
@@ -168,30 +197,6 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       facilityBookingTimes: this.form.get('facilityBookingTimesGroup'),
       facilityPassesRequired: this.form.get('facilityPassesRequired'),
     };
-
-    // add special field disabling rules
-    super.addDisabledRule(this.fields.facilityName, this.isEditMode, [true]);
-    super.addDisabledRule(this.fields.facilityType, this.isEditMode, [true]);
-    super.addDisabledRule(
-      this.fields.facilityClosureReason,
-      this.fields.facilityStatus.valueChanges,
-      [true]
-    );
-    super.addDisabledRule(
-      this.fields.facilityBookingTimes.get('capacityAM'),
-      this.fields.facilityBookingTimes.controls['AM'].valueChanges,
-      [false, null]
-    );
-    super.addDisabledRule(
-      this.fields.facilityBookingTimes.get('capacityPM'),
-      this.fields.facilityBookingTimes.controls['PM'].valueChanges,
-      [false, null]
-    );
-    super.addDisabledRule(
-      this.fields.facilityBookingTimes.get('capacityDAY'),
-      this.fields.facilityBookingTimes.controls['DAY'].valueChanges,
-      [false, null]
-    );
   }
 
   async onSubmit() {

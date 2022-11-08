@@ -18,7 +18,10 @@ import { Constants } from 'src/app/shared/utils/constants';
   templateUrl: './modifiers-form.component.html',
   styleUrls: ['./modifiers-form.component.scss'],
 })
-export class ModifiersFormComponent extends BaseFormComponent implements OnInit {
+export class ModifiersFormComponent
+  extends BaseFormComponent
+  implements OnInit
+{
   @Input() facility;
   @Input() park;
 
@@ -55,7 +58,7 @@ export class ModifiersFormComponent extends BaseFormComponent implements OnInit 
           }
         })
     );
-    this.setForm();
+    this.initializeForm();
   }
 
   ngOnInit(): void {
@@ -92,6 +95,14 @@ export class ModifiersFormComponent extends BaseFormComponent implements OnInit 
     return false;
   }
 
+  initializeForm() {
+    // First pass of form initialization, establish disabledRules (if any)
+    this.setForm();
+    super.addDisabledRule(this.fields.modifierAMChanges, this.hasAM, [false]);
+    super.addDisabledRule(this.fields.modifierPMChanges, this.hasPM, [false]);
+    super.addDisabledRule(this.fields.modifierDAYChanges, this.hasDAY, [false]);
+  }
+
   setForm() {
     this.form = new UntypedFormGroup({
       modifierOverrideDate: new UntypedFormControl(null),
@@ -105,17 +116,13 @@ export class ModifiersFormComponent extends BaseFormComponent implements OnInit 
       modifierPMChanges: this.form.get('modifierPMChanges'),
       modifierDAYChanges: this.form.get('modifierDAYChanges'),
     };
-
-    super.addDisabledRule(this.fields.modifierAMChanges, this.hasAM, [false]);
-    super.addDisabledRule(this.fields.modifierPMChanges, this.hasPM, [false]);
-    super.addDisabledRule(this.fields.modifierDAYChanges, this.hasDAY, [false]);
-
   }
 
   async onSubmit() {
     let res = await super.submit();
     const postObj = this.formatFormResults(res.fields);
     this.modifierService.setModifier(postObj);
+    super.clear();
   }
 
   formatFormResults(results) {

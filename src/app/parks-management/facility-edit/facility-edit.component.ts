@@ -44,7 +44,6 @@ export class FacilityEditComponent implements OnDestroy {
   updateModifiers() {
     if (this.park && this.facility) {
       const today = this.utils.getTodayAsShortDate();
-      console.log('today:', today);
       this.modifierService.fetchData(this.park.sk, this.facility.sk, today);
     }
   }

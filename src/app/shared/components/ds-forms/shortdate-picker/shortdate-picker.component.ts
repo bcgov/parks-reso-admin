@@ -20,8 +20,6 @@ export class ShortdatePickerComponent
 {
   @Input() minDate: Date = null as any;
   @Input() maxDate: Date = null as any;
-  @Input() reset: EventEmitter<any>;
-  @Input() required = false;
 
   private subscriptions = new Subscription();
 
@@ -31,9 +29,11 @@ export class ShortdatePickerComponent
 
   ngOnInit() {
     this.modelDate = this.control?.value || null;
-    if (this.reset) {
-      this.subscriptions.add(this.reset.subscribe(() => this.clearDate()));
-    }
+    this.subscriptions.add(
+      this.control.valueChanges.subscribe((res) => {
+        this.modelDate = res || null;
+      })
+    );
   }
 
   checkDisabled() {
