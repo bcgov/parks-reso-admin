@@ -17,33 +17,28 @@ export class FacilityDetailsResolver implements Resolve<void> {
     protected reservationService: ReservationService
   ) {}
   async resolve(route: ActivatedRouteSnapshot) {
-    if (route.params['parkId'] && route.params['facilityId']) {
-      const facility = (
-        await this.facilityService.fetchData(
-          route.params['parkId'],
-          route.params['facilityId']
-        )
-      )[0];
+    const facility = this.dataService.getItemValue(
+      Constants.dataIds.CURRENT_FACILITY
+    )[0];
 
-      if (facility) {
-        // TODO: This is where we should get initial pass list
-        // The reason why this is not in a separate pass resolver is because we require bookingtimes from our selected facility.
-        // Facility is only accessible after the facility resolver has resolved.
-        this.passService.initializePassList(facility);
-        let passFilterParams = this.dataService.getItemValue(
-          Constants.dataIds.PASS_SEARCH_PARAMS
-        );
+    if (facility) {
+      // TODO: This is where we should get initial pass list
+      // The reason why this is not in a separate pass resolver is because we require bookingtimes from our selected facility.
+      // Facility is only accessible after the facility resolver has resolved.
+      await this.passService.initializePassList(facility, route.queryParams);
+      const passFilterParams = this.dataService.getItemValue(
+        Constants.dataIds.PASS_SEARCH_PARAMS
+      );
 
-        // Initialize reservation data
-        this.reservationService.fetchData(
-          facility.pk.split('::')[1],
-          facility.name,
-          passFilterParams['date'],
-          passFilterParams['passType']
-        );
-      } else {
-        // TODO: Handle the error
-      }
+      // Initialize reservation data
+      this.reservationService.fetchData(
+        facility.pk.split('::')[1],
+        facility.name,
+        passFilterParams['date'],
+        passFilterParams['passType']
+      );
+    } else {
+      // TODO: Handle the error
     }
   }
 }

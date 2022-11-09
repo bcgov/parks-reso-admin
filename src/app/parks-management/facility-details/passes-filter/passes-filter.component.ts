@@ -4,7 +4,7 @@ import {
   UntypedFormControl,
   UntypedFormGroup,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -33,7 +33,8 @@ export class PassesFilterComponent extends BaseFormComponent {
     protected loadingService: LoadingService,
     protected changeDetectior: ChangeDetectorRef,
     protected passService: PassService,
-    protected reservationService: ReservationService
+    protected reservationService: ReservationService,
+    private route: ActivatedRoute
   ) {
     super(
       formBuilder,
@@ -112,7 +113,7 @@ export class PassesFilterComponent extends BaseFormComponent {
     let filterMap = {
       date: filters.passDate || null,
       reservationNumber: filters.passReservationNumber || null,
-      passStatus: filters.passStatus ? filters.passStatus.join(',') : null,
+      passStatus: filters.passStatus ? filters.passStatus : null,
       firstName: filters.passFirstname || null,
       lastName: filters.passLastName || null,
       email: filters.passEmail || null,
@@ -130,6 +131,16 @@ export class PassesFilterComponent extends BaseFormComponent {
     // Save current search params
     const res = await super.submit();
     const resFields = await this.cleanSearchParams(res.fields);
+    const queryParams = { ...resFields };
+    if (queryParams.passStatus) {
+      queryParams.passStatus = queryParams.passStatus.toString();
+    }
+
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      queryParams: queryParams,
+    });
+
     let params = Object.assign(resFields, {
       parkSk: this.facility.pk.split('::')[1],
       facilitySk: this.facility.sk,

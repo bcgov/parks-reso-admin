@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { filter, firstValueFrom } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
 import { Utils } from '../shared/utils/utils';
 import { ApiService } from './api.service';
@@ -61,6 +61,7 @@ export class PassService {
           queryObj['ExclusiveStartKeyPK'] = params.ExclusiveStartKeyPK;
           queryObj['ExclusiveStartKeySK'] = params.ExclusiveStartKeySK;
         }
+
         res = await firstValueFrom(this.apiService.get('pass', queryObj));
         this.dataService.setItemValue(dataTag, res.data);
         this.dataService.setItemValue(
@@ -122,44 +123,43 @@ export class PassService {
     return true;
   }
 
-  async updateSearchParams(filters, facility) {
+  filterSearchParams(params) {
     let filterMap = {
-      date: filters.passDate || null,
-      reservationNumber: filters.passReservationNumber || null,
-      passStatus: filters.passStatus ? filters.passStatus.join(',') : null,
-      firstName: filters.passFirstname || null,
-      lastName: filters.passLastName || null,
-      email: filters.passEmail || null,
-      passType: filters.passType || null,
-      facilitySk: facility.sk,
+      date: params.date || null,
+      reservationNumber: params.passReservationNumber || null,
+      passStatus: params.passStatus ? params.passStatus : null,
+      firstName: params.passFirstname || null,
+      lastName: params.passLastName || null,
+      email: params.passEmail || null,
+      passType: params.passType || null,
     };
     for (let item of Object.keys(filterMap)) {
       if (!filterMap[item]) {
         delete filterMap[item];
       }
     }
-    this.dataService.setItemValue(
-      Constants.dataIds.PASS_SEARCH_PARAMS,
-      filterMap
-    );
-    return this.dataService.getItemValue(Constants.dataIds.PASS_SEARCH_PARAMS);
+    return filterMap;
   }
 
-  initializePassList(facility) {
-    // TODO: We need to set params into the url
-    // From here we can pull down these params and do our initial pass fetch.
+  initializePassList(facility, queryParams = {}) {
+    const filterMap = this.filterSearchParams(queryParams);
     let params = {};
 
-    // This is a placeholder. We would get these params from our url.
-    let urlParams = {};
-    params['date'] = urlParams['date']
-      ? urlParams['date']
+    // Defaults
+    params['date'] = filterMap['date']
+      ? filterMap['date']
       : this.utils.getTodayAsShortDate();
-    params['passType'] = urlParams['passType']
-      ? urlParams['passType']
+    params['passType'] = filterMap['passType']
+      ? filterMap['passType']
       : this.getBookingTimesList(facility)[0];
 
+    // Pass status is an array
+    if (filterMap.passStatus) {
+      params['passStatus'] = filterMap.passStatus.split(',');
+    }
     this.dataService.setItemValue(Constants.dataIds.PASS_SEARCH_PARAMS, params);
+    params['parkSk'] = facility.pk.split('::')[1];
+    params['facilitySk'] = facility.sk;
     this.fetchData(params);
   }
 

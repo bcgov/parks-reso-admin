@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import { BaseInputComponent } from '../base-input/base-input.component';
 
@@ -9,7 +15,10 @@ import { BaseInputComponent } from '../base-input/base-input.component';
   // Note: ViewEncapsulation necessary to override ng-select css classes.
   encapsulation: ViewEncapsulation.None,
 })
-export class MultiselectComponent extends BaseInputComponent implements OnInit {
+export class MultiselectComponent
+  extends BaseInputComponent
+  implements OnInit, OnChanges
+{
   @Input() multiSelectOptions;
 
   public selectedOptions: any[] = [];
@@ -27,5 +36,11 @@ export class MultiselectComponent extends BaseInputComponent implements OnInit {
 
   updateMultiselect() {
     this.control.setValue(this.selectedOptions);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['control']) {
+      this.selectedOptions = changes['control'].currentValue.value;
+    }
   }
 }

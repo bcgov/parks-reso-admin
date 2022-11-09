@@ -39,11 +39,9 @@ export class PassesListComponent implements OnInit, OnDestroy {
     protected vcr: ViewContainerRef
   ) {
     this.subscriptions.add(
-      dataService
-        .watchItem(Constants.dataIds.PASSES_LIST)
-        .subscribe((res) => {
-          this.tableRows = res;
-        })
+      dataService.watchItem(Constants.dataIds.PASSES_LIST).subscribe((res) => {
+        this.tableRows = res;
+      })
     );
   }
 
@@ -79,7 +77,9 @@ export class PassesListComponent implements OnInit, OnDestroy {
         },
       ],
     };
-    this.passModalRef = this.modalService.show(this.passModalTemplate, { class: 'modal-lg' });
+    this.passModalRef = this.modalService.show(this.passModalTemplate, {
+      class: 'modal-lg',
+    });
   }
 
   constructPassModalBody(passObj) {
@@ -121,9 +121,11 @@ export class PassesListComponent implements OnInit, OnDestroy {
             self.cancelModalRef.hide();
           },
         },
-      ]
+      ],
     };
-    this.cancelModalRef = this.modalService.show(this.cancelModalTemplate, { class: 'modal-lg' });
+    this.cancelModalRef = this.modalService.show(this.cancelModalTemplate, {
+      class: 'modal-lg',
+    });
   }
 
   constructCancelPassModal(passObj) {

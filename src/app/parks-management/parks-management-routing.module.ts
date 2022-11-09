@@ -7,6 +7,7 @@ import { ParkEditComponent } from './park-edit/park-edit.component';
 import { ParksListComponent } from './parks-list/parks-list.component';
 import { ParkResolver } from '../resolvers/park.resolver';
 import { FacilityEditComponent } from './facility-edit/facility-edit.component';
+import { FacilityResolver } from '../resolvers/facility.resolver';
 import { FacilityDetailsResolver } from '../resolvers/facility-details.resolver';
 
 const routes: Routes = [
@@ -60,6 +61,7 @@ const routes: Routes = [
       {
         path: ':facilityId',
         canActivate: [AuthGuard],
+        resolve: [FacilityResolver],
         data: {
           breadcrumb: 'FACILITY NAME',
           module: 'facility',
