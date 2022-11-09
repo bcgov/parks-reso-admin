@@ -110,12 +110,7 @@ export class ModifiersFormComponent
       modifierPMChanges: new UntypedFormControl(null),
       modifierDAYChanges: new UntypedFormControl(null),
     });
-    this.fields = {
-      modifierOverrideDate: this.form.get('modifierOverrideDate'),
-      modifierAMChanges: this.form.get('modifierAMChanges'),
-      modifierPMChanges: this.form.get('modifierPMChanges'),
-      modifierDAYChanges: this.form.get('modifierDAYChanges'),
-    };
+    super.setFields();
   }
 
   async onSubmit() {

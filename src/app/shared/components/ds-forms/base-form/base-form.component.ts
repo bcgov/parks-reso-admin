@@ -62,6 +62,17 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   }
 
   /**
+   * Sets up the `fields` object, which is a structured version of the form and its controls. 
+   * The `fields` object links the name of each form control to the control itself, as the controls do
+   * not know what their own instance is named. 
+   */
+  setFields() {
+    for (const control of Object.keys(this.form.controls)) {
+      this.fields[control] = this.form.get(control);
+    }
+  }
+
+  /**
    * Adds a specialized disabling rule to a control.
    * @param control - the `FormControl` that will be affected by the rule.
    * @param subject  - a `BehaviourSubject` whose changes will be subscribed to.

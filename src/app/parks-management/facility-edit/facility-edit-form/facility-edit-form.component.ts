@@ -180,23 +180,11 @@ export class FacilityEditFormComponent extends BaseFormComponent {
           ? this.data.bookingDaysRichText
           : this.defaultBookingDaysRichText
       ),
-      facilityBookingDaysGroup: bookableDaysFormGroup,
-      facilityBookingTimesGroup: bookingTimesFormGroup,
+      facilityBookingDays: bookableDaysFormGroup,
+      facilityBookingTimes: bookingTimesFormGroup,
       facilityPassesRequired: new UntypedFormControl(this.getPassesRequired()),
     });
-    this.fields = {
-      facilityStatus: this.form.get('facilityStatus'),
-      facilityVisibility: this.form.get('facilityVisibility'),
-      facilityClosureReason: this.form.get('facilityClosureReason'),
-      facilityName: this.form.get('facilityName'),
-      facilityType: this.form.get('facilityType'),
-      facilityBookingOpeningHour: this.form.get('facilityBookingOpeningHour'),
-      facilityBookingDaysAhead: this.form.get('facilityBookingDaysAhead'),
-      facilityBookingDaysRichText: this.form.get('facilityBookingDaysRichText'),
-      facilityBookingDays: this.form.get('facilityBookingDaysGroup'),
-      facilityBookingTimes: this.form.get('facilityBookingTimesGroup'),
-      facilityPassesRequired: this.form.get('facilityPassesRequired'),
-    };
+    super.setFields();
   }
 
   async onSubmit() {

@@ -79,7 +79,6 @@ export class ModifiersListComponent implements OnInit {
           width: '10%',
           mapValue: () => null,
           cellTemplate: (modifierObj) => {
-            console.log('modifierObj:', modifierObj);
             const self = this;
             return {
               component: TableButtonComponent,

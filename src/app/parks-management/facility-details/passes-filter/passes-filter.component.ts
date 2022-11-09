@@ -98,15 +98,7 @@ export class PassesFilterComponent extends BaseFormComponent {
         this.data.reservationNumber
       ),
     });
-    this.fields = {
-      passType: this.form.get('passType'),
-      passDate: this.form.get('passDate'),
-      passStatus: this.form.get('passStatus'),
-      passFirstName: this.form.get('passFirstName'),
-      passLastName: this.form.get('passLastName'),
-      passEmail: this.form.get('passEmail'),
-      passReservationNumber: this.form.get('passReservationNumber'),
-    };
+    super.setFields();
   }
 
   cleanSearchParams(filters) {
