@@ -1,13 +1,17 @@
 <div class="row py-2">
   <div class="input-box col-md-4">
     <app-picklist
+      id="passTypeID"
       [selectOptions]="passTypeOptions"
       [label]="'Pass Type'"
       [control]="passType"
     ></app-picklist>
   </div>
   <div class="input-box col-md-4">
-    <app-shortdate-picker [label]="'Pass Date'" [control]="passDate">
+    <app-shortdate-picker
+      id="passDatePicker"
+      [label]="'Pass Date'"
+      [control]="passDate">
     </app-shortdate-picker>
   </div>
   <div class="input-box col-md-4">
@@ -22,6 +26,7 @@
 <div class="row py-2">
   <div class="input-box col-md-4">
     <app-text-input
+      id="passFirstName"
       [label]="'First Name'"
       [control]="passFirstName"
       [type]="'text'"
@@ -29,6 +34,7 @@
   </div>
   <div class="input-box col-md-4">
     <app-text-input
+      id="passLastName"
       [label]="'Last Name'"
       [control]="passLastName"
       [type]="'text'"
@@ -36,6 +42,7 @@
   </div>
   <div class="input-box col-md-4">
     <app-text-input
+      id="passEmail"
       [label]="'Email'"
       [control]="passEmail"
       [type]="'text'"
@@ -46,6 +53,7 @@
 <div class="row py-2">
   <div class="input-box col-md-4">
     <app-text-input
+      id="passReservationNumber"
       [label]="'Reservation Number'"
       [control]="passReservationNumber"
       [type]="'text'"

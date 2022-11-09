@@ -174,7 +174,7 @@ export class PassesListComponent implements OnInit, OnDestroy {
         },
         {
           id: 'cancel-button',
-          displayHeader: '',
+          displayHeader: 'Actions',
           columnClasses: 'ps-5 pe-3',
           width: '10%',
           mapValue: () => null,
