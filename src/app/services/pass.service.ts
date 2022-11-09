@@ -143,9 +143,18 @@ export class PassService {
 
   initializePassList(facility, queryParams = {}) {
     const filterMap = this.filterSearchParams(queryParams);
-    let params = {};
+    let params = this.setPassParamDefaults(filterMap, facility);
+    // Pass status is an array
+    if (filterMap.passStatus) {
+      params['passStatus'] = filterMap.passStatus.split(',');
+    }
+    params['parkSk'] = facility.pk.split('::')[1];
+    params['facilitySk'] = facility.sk;
+    this.fetchData(params);
+  }
 
-    // Defaults
+  setPassParamDefaults(filterMap, facility) {
+    let params = {};
     params['date'] = filterMap['date']
       ? filterMap['date']
       : this.utils.getTodayAsShortDate();
@@ -153,14 +162,7 @@ export class PassService {
       ? filterMap['passType']
       : this.getBookingTimesList(facility)[0];
 
-    // Pass status is an array
-    if (filterMap.passStatus) {
-      params['passStatus'] = filterMap.passStatus.split(',');
-    }
-    this.dataService.setItemValue(Constants.dataIds.PASS_SEARCH_PARAMS, params);
-    params['parkSk'] = facility.pk.split('::')[1];
-    params['facilitySk'] = facility.sk;
-    this.fetchData(params);
+    return params;
   }
 
   getBookingTimesList(facility) {

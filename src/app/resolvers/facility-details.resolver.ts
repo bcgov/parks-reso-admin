@@ -26,16 +26,18 @@ export class FacilityDetailsResolver implements Resolve<void> {
       // The reason why this is not in a separate pass resolver is because we require bookingtimes from our selected facility.
       // Facility is only accessible after the facility resolver has resolved.
       await this.passService.initializePassList(facility, route.queryParams);
-      const passFilterParams = this.dataService.getItemValue(
-        Constants.dataIds.PASS_SEARCH_PARAMS
+
+      let reservationParams = this.passService.setPassParamDefaults(
+        route.queryParams,
+        facility
       );
 
       // Initialize reservation data
       this.reservationService.fetchData(
         facility.pk.split('::')[1],
         facility.name,
-        passFilterParams['date'],
-        passFilterParams['passType']
+        reservationParams['date'],
+        reservationParams['passType']
       );
     } else {
       // TODO: Handle the error
