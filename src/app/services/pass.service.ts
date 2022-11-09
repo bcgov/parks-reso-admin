@@ -45,13 +45,9 @@ export class PassService {
         dataTag = Constants.dataIds.PASSES_LIST;
         this.loadingService.addToFetchList(dataTag);
         // Check existing filter presets.
-        let filters =
-          this.dataService.getItemValue(Constants.dataIds.PASS_SEARCH_PARAMS) ??
-          {};
-        // Clear filters when switching facilities
-        if (!this.checkFilters(filters, params)) {
-          filters = {};
-        }
+
+        // TODO: Clean this up.
+        let filters = {};
         let queryObj = Object.assign(filters, params);
         (queryObj['park'] = params.parkSk),
           (queryObj['facilityName'] = params.facilitySk),
@@ -128,7 +124,7 @@ export class PassService {
       date: params.date || null,
       reservationNumber: params.passReservationNumber || null,
       passStatus: params.passStatus ? params.passStatus : null,
-      firstName: params.passFirstname || null,
+      firstName: params.passFirstName || null,
       lastName: params.passLastName || null,
       email: params.passEmail || null,
       passType: params.passType || null,

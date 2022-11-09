@@ -106,7 +106,7 @@ export class PassesFilterComponent extends BaseFormComponent {
       date: filters.passDate || null,
       reservationNumber: filters.passReservationNumber || null,
       passStatus: filters.passStatus ? filters.passStatus : null,
-      firstName: filters.passFirstname || null,
+      firstName: filters.passFirstName || null,
       lastName: filters.passLastName || null,
       email: filters.passEmail || null,
       passType: filters.passType || null,

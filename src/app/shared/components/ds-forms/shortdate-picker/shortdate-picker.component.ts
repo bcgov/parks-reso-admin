@@ -54,7 +54,6 @@ export class ShortdatePickerComponent
   ngOnChanges(changes: SimpleChanges) {
     if (changes['control']) {
       this.modelDate = changes['control'].currentValue.value;
-      this.onDateChange();
     }
   }
 
