@@ -27,7 +27,15 @@
             "baseHref": "/dayuse/",
             "polyfills": "src/polyfills.ts",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/assets", "src/env.js"],
+            "assets": [
+              "src/assets",
+              "src/env.js",
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce",
+                "output": "/tinymce/"
+              }
+            ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/@digitalspace/bcparks-bootstrap-theme/dist/css/bootstrap-theme.min.css",
@@ -36,7 +44,8 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "node_modules/keycloak-js/dist/keycloak.min.js"
+              "node_modules/keycloak-js/dist/keycloak.min.js",
+              "node_modules/tinymce/tinymce.min.js"
             ],
             "allowedCommonJsDependencies": [
               "base64-js",
@@ -104,7 +113,15 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/assets", "src/env.js"],
+            "assets": [
+              "src/assets",
+              "src/env.js",
+              {
+                "glob": "**/*",
+                "input": "node_modules/tinymce",
+                "output": "/tinymce/"
+              }
+            ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/@digitalspace/bcparks-bootstrap-theme/dist/css/bootstrap-theme.min.css",
@@ -113,21 +130,27 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "node_modules/keycloak-js/dist/keycloak.min.js"
+              "node_modules/keycloak-js/dist/keycloak.min.js",
+              "node_modules/tinymce/tinymce.min.js"
             ]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
     }
   },
   "cli": {
-    "schematicCollections": ["@angular-eslint/schematics"],
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ],
     "analytics": false
   }
 }

@@ -13,10 +13,15 @@ export class FacilityEditFormPassRequirementsComponent implements OnInit {
   @Input() facilityBookingDaysRichText = new UntypedFormControl();
 
   public facilityBookingDaysArray: any[] = [];
+  public richTextDefault =
+    '<p>You don&rsquo;t need a day-use pass for this date and pass type. Passes may be required on other days and at other parks.</p>';
 
   constructor() {}
 
   ngOnInit(): void {
+    if (!this.facilityBookingDaysRichText?.value) {
+      this.facilityBookingDaysRichText.setValue(this.richTextDefault);
+    }
     this.facilityBookingDaysArray = [
       {
         id: 0,

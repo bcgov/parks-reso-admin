@@ -14,6 +14,8 @@ import { TimepickerComponent } from './timepicker/timepicker.component';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { BaseInputComponent } from './base-input/base-input.component';
+import { WysiwygInputComponent } from './wysiwyg-input/wysiwyg-input.component';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { BaseInputComponent } from './base-input/base-input.component';
     TimepickerComponent,
     CheckboxComponent,
     BaseInputComponent,
+    WysiwygInputComponent,
   ],
   imports: [
     CommonModule,
@@ -35,6 +38,7 @@ import { BaseInputComponent } from './base-input/base-input.component';
     BsDatepickerModule.forRoot(),
     NgSelectModule,
     TimepickerModule,
+    EditorModule,
   ],
   exports: [
     BaseFormComponent,
@@ -46,6 +50,7 @@ import { BaseInputComponent } from './base-input/base-input.component';
     ToggleComponent,
     TimepickerComponent,
     CheckboxComponent,
+    WysiwygInputComponent
   ],
 })
 export class DsFormsModule {}

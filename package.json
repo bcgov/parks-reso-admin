@@ -27,6 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^13.1.0",
     "@ng-select/ng-select": "^9.0.2",
     "@popperjs/core": "^2.11.6",
+    "@tinymce/tinymce-angular": "^7.0.0",
     "bootstrap": "^5.2.2",
     "bootstrap-icons": "^1.7.2",
     "chart.js": "^3.7.1",
@@ -40,6 +41,7 @@
     "ngx-toastr": "^14.3.0",
     "popper.js": "^1.16.1",
     "rxjs": "^7.5.5",
+    "tinymce": "^6.2.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

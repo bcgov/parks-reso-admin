@@ -1696,6 +1696,14 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
+"@tinymce/tinymce-angular@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-angular/-/tinymce-angular-7.0.0.tgz#010de497d5774a8bdc5d5936bf4fb976adf05f56"
+  integrity sha512-IKNaG/ihlxE1XCfq6lzULbnsqZO9KNJtlpu5jo6JDJDL9zcFzj/N2A16Kk7rTj1yfmDoB1IXAk/BpMOvgDY8cg==
+  dependencies:
+    tinymce "^6.0.0 || ^5.5.0"
+    tslib "^2.3.0"
+
 "@tootallnate/once@2":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
@@ -7016,6 +7024,11 @@ thunky@^1.0.2:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.1.0.tgz#5abaf714a9405db0504732bbccd2cedd9ef9537d"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
+
+"tinymce@^6.0.0 || ^5.5.0", tinymce@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-6.2.0.tgz#473aa38af03bf772916f3e1730e6b8d3471203f0"
+  integrity sha512-zLjbFrg0hbtJ6PxmZUjQY6zyIOM/mLrWGTvhBec7XwYwoW1E0xXMQzy2tgMTh3OvJpsclgqf2ZMjmwcv4Cludw==
 
 tmp@0.2.1, tmp@^0.2.1, tmp@~0.2.1:
   version "0.2.1"
