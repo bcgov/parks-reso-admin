@@ -1,5 +1,5 @@
 <div class="container">
-  <h1>Park Edit: {{park?.name}}</h1>
+  <h1>Park Edit: {{ park?.name }}</h1>
   <form>
     <app-toggle
       [control]="fields?.parkStatus"
@@ -22,39 +22,58 @@
       [label]="'Park Name'"
       [type]="'text'"
       [id]="'parkName'"
-      >
+    >
     </app-text-input>
     <app-text-input
       [control]="fields?.parkOrcs"
       [label]="'Park ORCS'"
       [type]="'text'"
       [id]="'parkOrcs'"
-      >
+    >
     </app-text-input>
     <app-text-input
       [control]="fields?.parkCapacity"
       [label]="'Capacity'"
       [type]="'number'"
       [id]="'parkCapacity'"
-      >
+    >
     </app-text-input>
-    <app-text-input
-      [control]="fields?.parkSiteLink"
-      [label]="'Link to BC Parks Site'"
-      [type]="'text'"
-      [id]="'parkSiteLink'"
-      >
-    </app-text-input>
-    <app-text-input
-      [control]="fields?.parkMapLink"
-      [label]="'Link to Map'"
-      [type]="'text'"
-      [id]="'parkSiteLink'"
-      >
-    </app-text-input>
+    <div class="row align-items-end">
+      <div class="col-10">
+        <app-text-input
+          [control]="fields?.parkSiteLink"
+          [label]="'Link to BC Parks Site'"
+          [type]="'text'"
+          [id]="'parkSiteLink'"
+        >
+        </app-text-input>
+      </div>
+      <div class="col">
+        <button class="btn btn-primary mb-3" (click)="testParkSiteLink()">
+          Test Link
+        </button>
+      </div>
+    </div>
+    <div class="row align-items-end">
+      <div class="col-10">
+        <app-text-input
+          [control]="fields?.parkMapLink"
+          [label]="'Link to Map'"
+          [type]="'text'"
+          [id]="'parkSiteLink'"
+        >
+        </app-text-input>
+      </div>
+      <div class="col">
+        <button class="btn btn-primary mb-3" (click)="testMapLink()">
+          Test Link
+        </button>
+      </div>
+    </div>
     <app-wysiwyg-input
-    [control]="fields?.parkDescription"
-    [label]="'Park Description'">
+      [control]="fields?.parkDescription"
+      [label]="'Park Description'"
+    >
     </app-wysiwyg-input>
   </form>
   <button class="btn btn-primary" (click)="onSubmit()">Submit</button>

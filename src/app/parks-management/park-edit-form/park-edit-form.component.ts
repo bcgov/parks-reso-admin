@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { ParkService } from 'src/app/services/park.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { Constants } from 'src/app/shared/utils/constants';
 
@@ -28,7 +29,8 @@ export class ParkEditFormComponent extends BaseFormComponent {
     protected router: Router,
     protected dataService: DataService,
     protected loadingService: LoadingService,
-    protected changeDetector: ChangeDetectorRef
+    protected changeDetector: ChangeDetectorRef,
+    private parkService: ParkService
   ) {
     super(
       formBuilder,
@@ -78,6 +80,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
     const res = await super.submit();
     if (res.invalidControls.length === 0) {
       const postObj = this.formatFormResults(res.fields);
+      this.parkService.putPark(postObj);
     }
   }
 
@@ -96,5 +99,13 @@ export class ParkEditFormComponent extends BaseFormComponent {
       visible: results.parkVisibility,
     };
     return postObj;
+  }
+
+  testParkSiteLink() {
+    window.open(this.fields.parkSiteLink.value);
+  }
+
+  testMapLink() {
+    window.open(this.fields.parkMapLink.value);
   }
 }

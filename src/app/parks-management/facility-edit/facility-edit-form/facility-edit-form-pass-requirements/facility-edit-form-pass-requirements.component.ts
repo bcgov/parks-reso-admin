@@ -74,7 +74,7 @@ export class FacilityEditFormPassRequirementsComponent implements OnInit {
 
   togglePassesRequired(event) {
     if (!event) {
-      for (const day of Object.keys(this.facilityBookingDays.controls)) {
+      for (const day of Object.keys(this.facilityBookingDays)) {
         this.facilityBookingDays[day]?.setValue(true);
       }
     }

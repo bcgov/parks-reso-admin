@@ -56,4 +56,41 @@ export class ParkService {
     this.loadingService.removeToFetchList(dataTag);
     return res;
   }
+
+  async putPark(obj) {
+    let res;
+    let errorSubject = '';
+    let dataTag = 'parkPut';
+    try {
+      errorSubject = 'park put';
+      if (this.validateParkObject(obj)){
+        this.loadingService.addToFetchList(dataTag);
+        obj.pk = 'park';
+        obj.sk = obj.park.name
+        res = await firstValueFrom(this.apiService.put('park', obj));
+        // ensure CURRENT_PARK in DataService is updated with new facility data.
+        this.fetchData(obj.sk);
+        this.toastService.addMessage(
+          `Park: ${obj.sk} updated.`,
+          `Park updated`,
+          ToastTypes.SUCCESS
+        );
+      }
+    } catch (e) {
+      this.toastService.addMessage(
+        `There was a problem updating the park.`,
+        `Error putting ${errorSubject}`,
+        ToastTypes.ERROR
+      );
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(e), 'Park Service')
+      );
+    }
+    this.loadingService.removeToFetchList(dataTag);
+  }
+
+  validateParkObject(obj){
+    // TODO: write this function
+    return true;
+  }
 }
