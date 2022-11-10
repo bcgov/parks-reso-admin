@@ -89,12 +89,12 @@ export class PassesFilterComponent extends BaseFormComponent {
   setForm() {
     this.form = new UntypedFormGroup({
       passType: new UntypedFormControl(this.data.passType),
-      passDate: new UntypedFormControl(this.data.date),
+      date: new UntypedFormControl(this.data.date),
       passStatus: new UntypedFormControl(this.data.passStatus),
-      passFirstName: new UntypedFormControl(this.data.firstName),
-      passLastName: new UntypedFormControl(this.data.lastName),
-      passEmail: new UntypedFormControl(this.data.email),
-      passReservationNumber: new UntypedFormControl(
+      firstName: new UntypedFormControl(this.data.firstName),
+      lastName: new UntypedFormControl(this.data.lastName),
+      email: new UntypedFormControl(this.data.email),
+      reservationNumber: new UntypedFormControl(
         this.data.reservationNumber
       ),
     });
@@ -103,12 +103,12 @@ export class PassesFilterComponent extends BaseFormComponent {
 
   cleanSearchParams(filters) {
     let filterMap = {
-      date: filters.passDate || null,
-      reservationNumber: filters.passReservationNumber || null,
+      date: filters.date || null,
+      reservationNumber: filters.reservationNumber || null,
       passStatus: filters.passStatus ? filters.passStatus : null,
-      firstName: filters.passFirstName || null,
-      lastName: filters.passLastName || null,
-      email: filters.passEmail || null,
+      firstName: filters.firstName || null,
+      lastName: filters.lastName || null,
+      email: filters.email || null,
       passType: filters.passType || null,
     };
     for (let item of Object.keys(filterMap)) {

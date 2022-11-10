@@ -9,13 +9,13 @@ import { UntypedFormControl } from '@angular/forms';
 export class PassesFilterFieldsComponent implements OnChanges {
   @Input() passType = new UntypedFormControl();
   @Input() passTypeOptions;
-  @Input() passDate = new UntypedFormControl();
+  @Input() date = new UntypedFormControl();
   @Input() passStatus = new UntypedFormControl();
   @Input() passStatusOptions;
-  @Input() passFirstName = new UntypedFormControl();
-  @Input() passLastName = new UntypedFormControl();
-  @Input() passEmail = new UntypedFormControl();
-  @Input() passReservationNumber = new UntypedFormControl();
+  @Input() firstName = new UntypedFormControl();
+  @Input() lastName = new UntypedFormControl();
+  @Input() email = new UntypedFormControl();
+  @Input() reservationNumber = new UntypedFormControl();
 
   constructor() {}
 

@@ -166,7 +166,7 @@ export class PassesListComponent implements OnInit, OnDestroy {
           id: 'date',
           displayHeader: 'Date',
           columnClasses: 'px-3',
-          mapValue: (passObj) => passObj.shortPassDate,
+          mapValue: (passObj) => passObj.shortdate,
         },
         {
           id: 'status',

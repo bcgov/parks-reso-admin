@@ -4,13 +4,13 @@
       *ngIf="bookingTimesList"
       [passType]="fields?.passType"
       [passTypeOptions]="bookingTimesList"
-      [passDate]="fields?.passDate"
+      [date]="fields?.date"
       [passStatus]="fields?.passStatus"
       [passStatusOptions]="statusesList"
-      [passFirstName]="fields?.passFirstName"
-      [passLastName]="fields?.passLastName"
-      [passEmail]="fields?.passEmail"
-      [passReservationNumber]="fields?.passReservationNumber"
+      [firstName]="fields?.firstName"
+      [lastName]="fields?.lastName"
+      [email]="fields?.email"
+      [reservationNumber]="fields?.reservationNumber"
     >
     </app-passes-filter-fields>
     <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
