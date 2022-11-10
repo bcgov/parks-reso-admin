@@ -44,25 +44,22 @@ export class PassService {
       ) {
         dataTag = Constants.dataIds.PASSES_LIST;
         this.loadingService.addToFetchList(dataTag);
-        // Check existing filter presets.
 
-        // TODO: Clean this up.
-        let filters = {};
-        let queryObj = Object.assign(filters, params);
-        (queryObj['park'] = params.parkSk),
-          (queryObj['facilityName'] = params.facilitySk),
+        // TODO: clean up param magic.
+        (params['park'] = params.parkSk),
+          (params['facilityName'] = params.facilitySk),
           (errorSubject = 'passes');
         if (params.ExclusiveStartKeyPK && params.ExclusiveStartKeySK) {
           // Load more.
-          queryObj['ExclusiveStartKeyPK'] = params.ExclusiveStartKeyPK;
-          queryObj['ExclusiveStartKeySK'] = params.ExclusiveStartKeySK;
+          params['ExclusiveStartKeyPK'] = params.ExclusiveStartKeyPK;
+          params['ExclusiveStartKeySK'] = params.ExclusiveStartKeySK;
         }
 
-        res = await firstValueFrom(this.apiService.get('pass', queryObj));
+        res = await firstValueFrom(this.apiService.get('pass', params));
         this.dataService.setItemValue(dataTag, res.data);
         this.dataService.setItemValue(
           Constants.dataIds.PASS_SEARCH_PARAMS,
-          queryObj
+          params
         );
       }
     } catch (e) {
