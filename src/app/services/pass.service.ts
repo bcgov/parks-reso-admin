@@ -135,7 +135,10 @@ export class PassService {
   }
 
   initializePassList(facility, queryParams = {}) {
-    const defaultParams = this.setPassParamDefaults(queryParams, facility);
+    let defaultParams = {};
+    if (Object.keys(queryParams).length === 0) {
+      defaultParams = this.setPassParamDefaults(queryParams, facility);
+    }
     const filterMap = this.filterSearchParams(queryParams);
     const params = Object.assign(filterMap, defaultParams);
     params['parkSk'] = facility.pk.split('::')[1];
