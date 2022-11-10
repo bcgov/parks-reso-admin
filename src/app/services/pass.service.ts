@@ -122,11 +122,11 @@ export class PassService {
   filterSearchParams(params) {
     let filterMap = {
       date: params.date || null,
-      reservationNumber: params.passReservationNumber || null,
-      passStatus: params.passStatus ? params.passStatus : null,
-      firstName: params.passFirstName || null,
-      lastName: params.passLastName || null,
-      email: params.passEmail || null,
+      reservationNumber: params.reservationNumber || null,
+      passStatus: params.passStatus ? params.passStatus.split(',') : null,
+      firstName: params.firstName || null,
+      lastName: params.lastName || null,
+      email: params.email || null,
       passType: params.passType || null,
     };
     for (let item of Object.keys(filterMap)) {
@@ -138,12 +138,9 @@ export class PassService {
   }
 
   initializePassList(facility, queryParams = {}) {
+    const defaultParams = this.setPassParamDefaults(queryParams, facility);
     const filterMap = this.filterSearchParams(queryParams);
-    let params = this.setPassParamDefaults(filterMap, facility);
-    // Pass status is an array
-    if (filterMap.passStatus) {
-      params['passStatus'] = filterMap.passStatus.split(',');
-    }
+    const params = Object.assign(filterMap, defaultParams);
     params['parkSk'] = facility.pk.split('::')[1];
     params['facilitySk'] = facility.sk;
     this.fetchData(params);
@@ -151,12 +148,9 @@ export class PassService {
 
   setPassParamDefaults(filterMap, facility) {
     let params = {};
-    params['date'] = filterMap['date']
-      ? filterMap['date']
-      : this.utils.getTodayAsShortDate();
-    params['passType'] = filterMap['passType']
-      ? filterMap['passType']
-      : this.getBookingTimesList(facility)[0];
+    params['date'] = filterMap['date'] ?? this.utils.getTodayAsShortDate();
+    params['passType'] =
+      filterMap['passType'] ?? this.getBookingTimesList(facility)[0];
 
     return params;
   }
