@@ -25,6 +25,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PassesUtilityButtonsComponent } from './facility-details/passes-utility-buttons/passes-utility-buttons.component';
 import { ModifiersListComponent } from './modifiers-list/modifiers-list.component';
 import { ModifiersFormComponent } from './modifiers-form/modifiers-form.component';
+import { ParkEditFormComponent } from './park-edit-form/park-edit-form.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ModifiersFormComponent } from './modifiers-form/modifiers-form.componen
     PassesUtilityButtonsComponent,
     ModifiersListComponent,
     ModifiersFormComponent,
+    ParkEditFormComponent,
   ],
   imports: [
     CommonModule,

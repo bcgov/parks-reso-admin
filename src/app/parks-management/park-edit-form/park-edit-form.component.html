@@ -1,0 +1,62 @@
+<div class="container">
+  <h1>Park Edit: {{park?.name}}</h1>
+  <form>
+    <app-toggle
+      [control]="fields?.parkStatus"
+      [description]="'Status: '"
+      [trueText]="'Passes are required at this park.'"
+      [falseText]="'Passes are not required at this park.'"
+      [id]="'parkStatus'"
+    >
+    </app-toggle>
+    <app-toggle
+      [control]="fields?.parkVisibility"
+      [description]="'Status: '"
+      [trueText]="'Park is visible to the public.'"
+      [falseText]="'Park is not visible to the public.'"
+      [id]="'parkStatus'"
+    >
+    </app-toggle>
+    <app-text-input
+      [control]="fields?.parkName"
+      [label]="'Park Name'"
+      [type]="'text'"
+      [id]="'parkName'"
+      >
+    </app-text-input>
+    <app-text-input
+      [control]="fields?.parkOrcs"
+      [label]="'Park ORCS'"
+      [type]="'text'"
+      [id]="'parkOrcs'"
+      >
+    </app-text-input>
+    <app-text-input
+      [control]="fields?.parkCapacity"
+      [label]="'Capacity'"
+      [type]="'number'"
+      [id]="'parkCapacity'"
+      >
+    </app-text-input>
+    <app-text-input
+      [control]="fields?.parkSiteLink"
+      [label]="'Link to BC Parks Site'"
+      [type]="'text'"
+      [id]="'parkSiteLink'"
+      >
+    </app-text-input>
+    <app-text-input
+      [control]="fields?.parkMapLink"
+      [label]="'Link to Map'"
+      [type]="'text'"
+      [id]="'parkSiteLink'"
+      >
+    </app-text-input>
+    <app-wysiwyg-input
+    [control]="fields?.parkDescription"
+    [label]="'Park Description'">
+    </app-wysiwyg-input>
+  </form>
+  <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+  <button class="btn btn-secondary" (click)="setForm()">Reset</button>
+</div>

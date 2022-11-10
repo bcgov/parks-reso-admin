@@ -27,55 +27,55 @@ export class FacilityEditFormPassRequirementsComponent implements OnInit {
         id: 0,
         day: 'Sunday',
         symbol: 'Su',
-        control: this.facilityBookingDays.get('Sunday'),
+        control: this.facilityBookingDays['Sunday'],
       },
       {
         id: 1,
         day: 'Monday',
         symbol: 'M',
-        control: this.facilityBookingDays.get('Monday'),
+        control: this.facilityBookingDays['Monday'],
       },
       {
         id: 2,
         day: 'Tuesday',
         symbol: 'T',
-        control: this.facilityBookingDays.get('Tuesday'),
+        control: this.facilityBookingDays['Tuesday'],
       },
       {
         id: 3,
         day: 'Wednesday',
         symbol: 'W',
-        control: this.facilityBookingDays.get('Wednesday'),
+        control: this.facilityBookingDays['Wednesday'],
       },
       {
         id: 4,
         day: 'Thursday',
         symbol: 'Th',
-        control: this.facilityBookingDays.get('Thursday'),
+        control: this.facilityBookingDays['Thursday'],
       },
       {
         id: 5,
         day: 'Friday',
         symbol: 'F',
-        control: this.facilityBookingDays.get('Friday'),
+        control: this.facilityBookingDays['Friday'],
       },
       {
         id: 6,
         day: 'Saturday',
         symbol: 'Sa',
-        control: this.facilityBookingDays.get('Saturday'),
+        control: this.facilityBookingDays['Saturday'],
       },
     ];
   }
 
   getControl(controlName) {
-    return this.facilityBookingTimes.get(controlName) as UntypedFormControl;
+    return this.facilityBookingTimes[controlName] as UntypedFormControl;
   }
 
   togglePassesRequired(event) {
     if (!event) {
       for (const day of Object.keys(this.facilityBookingDays.controls)) {
-        this.facilityBookingDays.get(day)?.setValue(true);
+        this.facilityBookingDays[day]?.setValue(true);
       }
     }
   }

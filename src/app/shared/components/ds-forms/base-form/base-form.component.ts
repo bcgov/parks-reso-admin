@@ -16,7 +16,7 @@ export interface formResult {
   isValid?: boolean; // form validity
   fields?: any; // raw key:value pairs formatted how form is structured (respects nesting)
   invalidControls?: any; // list of invalid controls
-  disabledControls?: any[]; // list of disablec controls
+  disabledControls?: any; // list of disabled controls
   controlsArray?: any[]; // flattened list of controls
 }
 
@@ -30,8 +30,9 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   public data: any = {}; // existing form data
   public fields: any = {}; // raw key:value pairs of the form inputs.
   public subscriptions = new Subscription();
+  public disabledSubscriptions = new Subscription();
   public loading = false;
-  public disabledControls: any[] = []; // list of disabled
+  public disabledControls: any = {}; // object of disabled controls
   public isSubmitted = false;
 
   constructor(
@@ -46,7 +47,7 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
     this.subscriptions.add(
       this.bLoadingService.getLoadingStatus().subscribe((res) => {
         this.loading = res;
-        // if enable()/disable() arent wrapped in setTimeout(), race conditions can occur
+        // if enable()/disable() functions arent wrapped in setTimeout(), race conditions can occur
         // https://github.com/angular/angular/issues/22556
         if (this.loading) {
           this.disable();
@@ -62,14 +63,29 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   }
 
   /**
-   * Sets up the `fields` object, which is a structured version of the form and its controls. 
+   * Sets up the `fields` object, which is a structured version of the form and its controls.
    * The `fields` object links the name of each form control to the control itself, as the controls do
-   * not know what their own instance is named. 
+   * not know what their own instance is named. The field `name` is added to the control to fix this.
+   * The object `fields` respects the form control nesting structure while `controls` does not.
    */
   setFields() {
-    for (const control of Object.keys(this.form.controls)) {
-      this.fields[control] = this.form.get(control);
+    this.fields = this.getFieldNames(this.form.controls);
+  }
+
+  /**
+   * Recursively constructs the `fields` object.
+   */
+  getFieldNames(controls) {
+    let list: any = {};
+    for (const control of Object.keys(controls)) {
+      if (controls[control].hasOwnProperty('controls')) {
+        list[control] = this.getFieldNames(controls[control].controls);
+      } else {
+        list[control] = controls[control];
+        list[control].name = control;
+      }
     }
+    return list;
   }
 
   /**
@@ -81,7 +97,7 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
    * will be disabled if `subject.value === true OR null`
    */
   addDisabledRule(control, subject: BehaviorSubject<any>, conditions) {
-    this.subscriptions.add(
+    this.disabledSubscriptions.add(
       subject.subscribe((changes) => {
         let disableFlag = false;
         for (const condition of conditions) {
@@ -95,6 +111,10 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
         }
       })
     );
+  }
+
+  clearDisabledRules() {
+    this.disabledSubscriptions.unsubscribe();
   }
 
   /**
@@ -127,18 +147,21 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   setControlStatus(control, disable: boolean) {
     if (disable) {
       if (!control.disabled) {
-        control.disable();
-        if (this.disabledControls.indexOf(control) === -1) {
-          this.disabledControls.push(control);
-        }
+        setTimeout(() => {
+          control.disable();
+          if (!this.disabledControls.hasOwnProperty(control.name)) {
+            this.disabledControls[control.name] = control;
+          }
+        });
       }
     } else {
       if (!control.enabled) {
-        control.enable();
-        const index = this.disabledControls.indexOf(control);
-        if (index > -1) {
-          this.disabledControls.splice(index, 1);
-        }
+        setTimeout(() => {
+          control.enable();
+          if (this.disabledControls[control.name]) {
+            delete this.disabledControls[control.name];
+          }
+        });
       }
     }
   }
@@ -182,16 +205,17 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   /**
    * Enable the entire form - except for controls that have been specifically disabled with `addDisabledRule()`.
    */
-  // enable the entire form - except for fields that are specifically disabled
   enable() {
     setTimeout(() => {
       for (const control of this.getControlsArray()) {
         // check for special disabled rules and evaluate them
-        if (this.disabledControls.indexOf(control) > -1) {
+        if (this.disabledControls.hasOwnProperty(control.name)) {
           // Control is specifically disabled, prevent reenabling
           continue;
         } else {
-          control.enable();
+          setTimeout(() => {
+            control.enable();
+          });
         }
       }
     });
@@ -277,6 +301,7 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   }
 
   ngOnDestroy() {
+    this.disabledSubscriptions.unsubscribe();
     this.subscriptions.unsubscribe();
   }
 }

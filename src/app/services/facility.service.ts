@@ -75,7 +75,7 @@ export class FacilityService {
   async putFacility(obj, parkSk) {
     let res;
     let errorSubject = '';
-    let dataTag = 'faciliityPut';
+    let dataTag = 'facilityPut';
     try {
       errorSubject = 'facility put';
       if (this.validateFacilityObject(obj)) {

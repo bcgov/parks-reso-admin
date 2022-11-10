@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -21,8 +21,8 @@ import { Constants } from 'src/app/shared/utils/constants';
   styleUrls: ['./facility-edit-form.component.scss'],
 })
 export class FacilityEditFormComponent extends BaseFormComponent {
-  @Input() facility;
-  @Input() park;
+  public facility;
+  public park;
 
   public bookingDaysFormArray;
   public bookingOpeningHourFormGroup;
@@ -90,7 +90,6 @@ export class FacilityEditFormComponent extends BaseFormComponent {
   intializeForm() {
     // First pass of form initialization, establish disabledRules (if any)
     this.setForm();
-
     // add special field disabling rules
     super.addDisabledRule(this.fields.facilityName, this.isEditMode, [true]);
     super.addDisabledRule(this.fields.facilityType, this.isEditMode, [true]);
@@ -100,18 +99,18 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       [true]
     );
     super.addDisabledRule(
-      this.fields.facilityBookingTimes.get('capacityAM'),
-      this.fields.facilityBookingTimes.controls['AM'].valueChanges,
+      this.fields.facilityBookingTimes.capacityAM,
+      this.fields.facilityBookingTimes.AM.valueChanges,
       [false, null]
     );
     super.addDisabledRule(
-      this.fields.facilityBookingTimes.get('capacityPM'),
-      this.fields.facilityBookingTimes.controls['PM'].valueChanges,
+      this.fields.facilityBookingTimes.capacityPM,
+      this.fields.facilityBookingTimes.PM.valueChanges,
       [false, null]
     );
     super.addDisabledRule(
-      this.fields.facilityBookingTimes.get('capacityDAY'),
-      this.fields.facilityBookingTimes.controls['DAY'].valueChanges,
+      this.fields.facilityBookingTimes.capacityDAY,
+      this.fields.facilityBookingTimes.DAY.valueChanges,
       [false, null]
     );
   }
@@ -203,19 +202,19 @@ export class FacilityEditFormComponent extends BaseFormComponent {
   formatFormResults(results) {
     // create bookingTimes subObject
     let resultTimes = {};
-    if (results.facilityBookingTimesGroup?.AM) {
+    if (results.facilityBookingTimes?.AM && results.facilityBookingTimes?.capacityAM) {
       resultTimes['AM'] = {
-        max: results.facilityBookingTimesGroup.capacityAM,
+        max: results.facilityBookingTimes.capacityAM,
       };
     }
-    if (results.facilityBookingTimesGroup?.PM) {
+    if (results.facilityBookingTimes?.PM && results.facilityBookingTimes?.capacityPM) {
       resultTimes['PM'] = {
-        max: results.facilityBookingTimesGroup.capacityPM,
+        max: results.facilityBookingTimes.capacityPM,
       };
     }
-    if (results.facilityBookingTimesGroup?.DAY) {
+    if (results.facilityBookingTimes?.DAY && results.facilityBookingTimes?.capacityDAY) {
       resultTimes['DAY'] = {
-        max: results.facilityBookingTimesGroup.capacityDAY,
+        max: results.facilityBookingTimes.capacityDAY,
       };
     }
     // create API submission object
@@ -231,13 +230,13 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       bookingOpeningHour: results.facilityBookingOpeningHour?.hour,
       bookingDaysAhead: results.facilityBookingDaysAhead,
       bookingDays: {
-        1: results.facilityBookingDaysGroup.Monday,
-        2: results.facilityBookingDaysGroup.Tuesday,
-        3: results.facilityBookingDaysGroup.Wednesday,
-        4: results.facilityBookingDaysGroup.Thursday,
-        5: results.facilityBookingDaysGroup.Friday,
-        6: results.facilityBookingDaysGroup.Saturday,
-        7: results.facilityBookingDaysGroup.Sunday,
+        1: results.facilityBookingDays.Monday,
+        2: results.facilityBookingDays.Tuesday,
+        3: results.facilityBookingDays.Wednesday,
+        4: results.facilityBookingDays.Thursday,
+        5: results.facilityBookingDays.Friday,
+        6: results.facilityBookingDays.Saturday,
+        7: results.facilityBookingDays.Sunday,
       },
       bookingDaysRichText: results.facilityBookingDaysRichText || '',
       bookableHolidays: [],
