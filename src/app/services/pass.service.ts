@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { filter, firstValueFrom } from 'rxjs';
+import { filter, firstValueFrom, of } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
 import { Utils } from '../shared/utils/utils';
 import { ApiService } from './api.service';
@@ -38,28 +38,20 @@ export class PassService {
     try {
       if (
         !params.passSk &&
-        params.parkSk &&
-        params.facilitySk &&
+        params.park &&
+        params.facilityName &&
         params.passType
       ) {
         dataTag = Constants.dataIds.PASSES_LIST;
         this.loadingService.addToFetchList(dataTag);
 
-        // TODO: clean up param magic.
-        (params['park'] = params.parkSk),
-          (params['facilityName'] = params.facilitySk),
-          (errorSubject = 'passes');
-        if (params.ExclusiveStartKeyPK && params.ExclusiveStartKeySK) {
-          // Load more.
-          params['ExclusiveStartKeyPK'] = params.ExclusiveStartKeyPK;
-          params['ExclusiveStartKeySK'] = params.ExclusiveStartKeySK;
-        }
+        const queryParams = this.filterSearchParams(params);
 
-        res = await firstValueFrom(this.apiService.get('pass', params));
+        res = await firstValueFrom(this.apiService.get('pass', queryParams));
         this.dataService.setItemValue(dataTag, res.data);
         this.dataService.setItemValue(
           Constants.dataIds.PASS_SEARCH_PARAMS,
-          params
+          queryParams
         );
       }
     } catch (e) {
@@ -118,14 +110,19 @@ export class PassService {
 
   filterSearchParams(params) {
     let filterMap = {
+      park: params.park || null,
+      facilityName: params.facilityName || null,
       date: params.date || null,
       reservationNumber: params.reservationNumber || null,
-      passStatus: params.passStatus ? params.passStatus.split(',') : null,
+      passStatus: params.passStatus || null,
       firstName: params.firstName || null,
       lastName: params.lastName || null,
       email: params.email || null,
       passType: params.passType || null,
+      ExclusiveStartKeyPK: params.ExclusiveStartKeyPK || null,
+      ExclusiveStartKeySK: params.ExclusiveStartKeySK || null,
     };
+
     for (let item of Object.keys(filterMap)) {
       if (!filterMap[item]) {
         delete filterMap[item];
@@ -134,24 +131,22 @@ export class PassService {
     return filterMap;
   }
 
-  initializePassList(facility, queryParams = {}) {
-    let defaultParams = {};
+  setParamsFromUrl(facility, queryParams = {}) {
+    let params = { ...queryParams };
+    params['park'] = facility.pk.split('::')[1];
+    params['facilityName'] = facility.name;
+
     if (Object.keys(queryParams).length === 0) {
-      defaultParams = this.setPassParamDefaults(queryParams, facility);
+      // No params in url. Set defaults
+      params['date'] = this.utils.getTodayAsShortDate();
+      params['passType'] = this.getBookingTimesList(facility)[0];
+    } else {
+      // QueryParams need passStatus as an array.
+      if (queryParams['passStatus']) {
+        params['passStatus'] = queryParams['passStatus'].split(',');
+      }
     }
-    const filterMap = this.filterSearchParams(queryParams);
-    const params = Object.assign(filterMap, defaultParams);
-    params['parkSk'] = facility.pk.split('::')[1];
-    params['facilitySk'] = facility.sk;
     this.fetchData(params);
-  }
-
-  setPassParamDefaults(filterMap, facility) {
-    let params = {};
-    params['date'] = filterMap['date'] ?? this.utils.getTodayAsShortDate();
-    params['passType'] =
-      filterMap['passType'] ?? this.getBookingTimesList(facility)[0];
-
     return params;
   }
 

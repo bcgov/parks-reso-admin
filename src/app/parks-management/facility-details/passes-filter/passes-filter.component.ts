@@ -94,48 +94,21 @@ export class PassesFilterComponent extends BaseFormComponent {
       firstName: new UntypedFormControl(this.data.firstName),
       lastName: new UntypedFormControl(this.data.lastName),
       email: new UntypedFormControl(this.data.email),
-      reservationNumber: new UntypedFormControl(
-        this.data.reservationNumber
-      ),
+      reservationNumber: new UntypedFormControl(this.data.reservationNumber),
     });
     super.setFields();
-  }
-
-  cleanSearchParams(filters) {
-    let filterMap = {
-      date: filters.date || null,
-      reservationNumber: filters.reservationNumber || null,
-      passStatus: filters.passStatus ? filters.passStatus : null,
-      firstName: filters.firstName || null,
-      lastName: filters.lastName || null,
-      email: filters.email || null,
-      passType: filters.passType || null,
-    };
-    for (let item of Object.keys(filterMap)) {
-      if (!filterMap[item]) {
-        delete filterMap[item];
-      }
-    }
-    return filterMap;
   }
 
   async onSubmit() {
     // Save current search params
     const res = await super.submit();
-    const resFields = await this.cleanSearchParams(res.fields);
-    const queryParams = { ...resFields };
-    if (queryParams.passStatus) {
-      queryParams.passStatus = queryParams.passStatus.toString();
-    }
+    const resFields = await this.passService.filterSearchParams(res.fields);
 
-    this.router.navigate(['.'], {
-      relativeTo: this.route,
-      queryParams: queryParams,
-    });
+    this.updateUrl(resFields);
 
     let params = Object.assign(resFields, {
-      parkSk: this.facility.pk.split('::')[1],
-      facilitySk: this.facility.sk,
+      park: this.facility.pk.split('::')[1],
+      facilityName: this.facility.sk,
       passType: resFields?.passType || null,
     });
     this.passService.fetchData(params);
@@ -146,5 +119,18 @@ export class PassesFilterComponent extends BaseFormComponent {
       resFields?.date || null,
       resFields?.passType || null
     );
+  }
+
+  updateUrl(resFields) {
+    const queryParams = { ...resFields };
+    delete queryParams.park;
+    delete queryParams.facilityName;
+    if (queryParams.passStatus) {
+      queryParams.passStatus = queryParams.passStatus.toString();
+    }
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      queryParams: queryParams,
+    });
   }
 }

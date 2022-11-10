@@ -22,22 +22,17 @@ export class FacilityDetailsResolver implements Resolve<void> {
     )[0];
 
     if (facility) {
-      // TODO: This is where we should get initial pass list
-      // The reason why this is not in a separate pass resolver is because we require bookingtimes from our selected facility.
-      // Facility is only accessible after the facility resolver has resolved.
-      await this.passService.initializePassList(facility, route.queryParams);
-
-      let reservationParams = this.passService.setPassParamDefaults(
-        route.queryParams,
-        facility
+      const filteredParams = await this.passService.setParamsFromUrl(
+        facility,
+        route.queryParams
       );
 
       // Initialize reservation data
       this.reservationService.fetchData(
-        facility.pk.split('::')[1],
-        facility.name,
-        reservationParams['date'],
-        reservationParams['passType']
+        filteredParams['park'],
+        filteredParams['facilityName'],
+        filteredParams['date'],
+        filteredParams['passType']
       );
     } else {
       // TODO: Handle the error
