@@ -147,21 +147,17 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   setControlStatus(control, disable: boolean) {
     if (disable) {
       if (!control.disabled) {
-        setTimeout(() => {
-          control.disable();
-          if (!this.disabledControls.hasOwnProperty(control.name)) {
-            this.disabledControls[control.name] = control;
-          }
-        });
+        control.disable();
+        if (!this.disabledControls.hasOwnProperty(control.name)) {
+          this.disabledControls[control.name] = control;
+        }
       }
     } else {
       if (!control.enabled) {
-        setTimeout(() => {
-          control.enable();
-          if (this.disabledControls[control.name]) {
-            delete this.disabledControls[control.name];
-          }
-        });
+        control.enable();
+        if (this.disabledControls[control.name]) {
+          delete this.disabledControls[control.name];
+        }
       }
     }
   }
@@ -196,8 +192,8 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   /**
    * Disable the entire form.
    */
-  disable() {
-    setTimeout(() => {
+  async disable() {
+    await setTimeout(() => {
       this.form.disable();
     });
   }
@@ -205,8 +201,9 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   /**
    * Enable the entire form - except for controls that have been specifically disabled with `addDisabledRule()`.
    */
-  enable() {
-    setTimeout(() => {
+  async enable() {
+    await this.disable();
+    await setTimeout(() => {
       for (const control of this.getControlsArray()) {
         // check for special disabled rules and evaluate them
         if (this.disabledControls.hasOwnProperty(control.name)) {

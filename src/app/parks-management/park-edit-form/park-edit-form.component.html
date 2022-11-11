@@ -108,7 +108,7 @@
   </form>
 
   <section class="d-flex flex-row-reverse mt-4 mx-4">
-    <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
-    <button class="btn btn-secondary me-2" (click)="setForm()">Reset</button>
+    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="form?.invalid">Submit</button>
+    <button class="btn btn-secondary me-2" (click)="setForm()" [disabled]="form?.pristine">Reset</button>
   </section>
 </div>

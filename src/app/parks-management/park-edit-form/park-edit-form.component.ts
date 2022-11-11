@@ -5,7 +5,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { FormService } from 'src/app/services/form.service';
@@ -30,7 +30,8 @@ export class ParkEditFormComponent extends BaseFormComponent {
     protected dataService: DataService,
     protected loadingService: LoadingService,
     protected changeDetector: ChangeDetectorRef,
-    private parkService: ParkService
+    private parkService: ParkService,
+    private route: ActivatedRoute
   ) {
     super(
       formBuilder,
@@ -82,6 +83,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
       const postObj = this.formatFormResults(res.fields);
       this.parkService.putPark(postObj);
     }
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   // Format form fields for API submission

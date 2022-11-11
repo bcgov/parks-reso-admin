@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter, Subscription } from 'rxjs';
 import { KeycloakService } from 'src/app/services/keycloak.service';
@@ -6,7 +6,7 @@ import { KeycloakService } from 'src/app/services/keycloak.service';
 @Injectable({
   providedIn: 'root',
 })
-export class SideBarService {
+export class SideBarService implements OnDestroy {
   @Output() toggleChange: EventEmitter<boolean> = new EventEmitter();
 
   private subscriptions = new Subscription();

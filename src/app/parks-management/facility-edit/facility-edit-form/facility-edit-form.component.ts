@@ -5,7 +5,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
@@ -39,7 +39,8 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     protected dataService: DataService,
     protected loadingService: LoadingService,
     protected changeDetector: ChangeDetectorRef,
-    private facilityService: FacilityService
+    private facilityService: FacilityService,
+    private route: ActivatedRoute
   ) {
     super(
       formBuilder,
@@ -196,23 +197,33 @@ export class FacilityEditFormComponent extends BaseFormComponent {
         this.facilityService.postFacility(postObj, this.park.sk);
       }
     }
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   // format form fields for API submission
   formatFormResults(results) {
     // create bookingTimes subObject
     let resultTimes = {};
-    if (results.facilityBookingTimes?.AM && results.facilityBookingTimes?.capacityAM) {
+    if (
+      results.facilityBookingTimes?.AM &&
+      results.facilityBookingTimes?.capacityAM
+    ) {
       resultTimes['AM'] = {
         max: results.facilityBookingTimes.capacityAM,
       };
     }
-    if (results.facilityBookingTimes?.PM && results.facilityBookingTimes?.capacityPM) {
+    if (
+      results.facilityBookingTimes?.PM &&
+      results.facilityBookingTimes?.capacityPM
+    ) {
       resultTimes['PM'] = {
         max: results.facilityBookingTimes.capacityPM,
       };
     }
-    if (results.facilityBookingTimes?.DAY && results.facilityBookingTimes?.capacityDAY) {
+    if (
+      results.facilityBookingTimes?.DAY &&
+      results.facilityBookingTimes?.capacityDAY
+    ) {
       resultTimes['DAY'] = {
         max: results.facilityBookingTimes.capacityDAY,
       };
