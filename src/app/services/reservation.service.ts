@@ -38,9 +38,25 @@ export class ReservationService {
         );
       }
       this.dataService.setItemValue(dataTag, res);
-
       if (resDate && selectedPassType) {
-        this.setCapacityBar(res[0], selectedPassType);
+        if (res[0]) {
+          this.setCapacityBar(res[0], selectedPassType);
+        } else {
+          // No res Object. Use facility cap
+          const facility = this.dataService.getItemValue(
+            Constants.dataIds.CURRENT_FACILITY
+          )[0];
+          this.dataService.setItemValue(
+            Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+            {
+              capPercent: 0,
+              reserved: 0,
+              capacity: facility.bookingTimes[selectedPassType].max,
+              modifier: 0,
+              style: 'success',
+            }
+          );
+        }
       } else {
         // Set to initialized but invalid state
         this.dataService.setItemValue(
