@@ -1,4 +1,4 @@
-<div *ngIf="park" class="pb-3">
+<div *ngIf="park" class="pb-4">
   <app-fancy-header
     [mainText]="park?.name"
     [headerColour1]="'#2D834F'"
@@ -17,7 +17,7 @@
     }"
   ></app-fancy-header>
 
-  <div class="container-fluid pt-3">
+  <div class="mx-4 pt-4">
     <div class="row">
       <div class="col-md-6">
         <label><strong>Status:</strong></label>
@@ -60,7 +60,7 @@
     </div>
   </div>
 
-  <div class="pt-3">
+  <div class="pt-4">
     <app-fancy-header
       [mainText]="'Facilities'"
       [headerColour1]="'#AD9E7C'"
@@ -74,7 +74,7 @@
     ></app-fancy-header>
   </div>
 
-  <div class="pt-3">
+  <div class="pt-4">
     <app-table
       [tableSchema]="tableSchema"
       [data]="tableRows"

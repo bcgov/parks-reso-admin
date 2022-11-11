@@ -1,6 +1,6 @@
-<h2 class="pt-3">Facility Details</h2>
+<h2>Facility Details</h2>
 <div class="input-box">
-  <div class="d-flex flex-wrap flex-md-nowrap justify-content-between pb-2">
+  <div class="d-flex flex-wrap flex-md-nowrap justify-content-between">
     <div class="w-100 pe-md-4">
       <app-text-input
         [label]="'Facility Name'"
@@ -20,8 +20,8 @@
       </app-picklist>
     </div>
   </div>
-  <div class="d-flex flex-wrap flex-md-nowrap justify-content-between pb-2">
-    <div class="w-100 pe-md-4 pb-sm-3">
+  <div class="d-flex flex-wrap flex-md-nowrap justify-content-between pt-2">
+    <div class="w-100 pe-md-4 mb-4 mb-sm-0">
       <app-timepicker
         [label]="'Booking Opening Hour'"
         [control]="facilityBookingOpeningHour"
@@ -35,7 +35,7 @@
         If left blank, the default value of 7 AM will be used.
       </div>
     </div>
-    <div div class="w-100">
+    <div class="w-100">
       <app-picklist
         [label]="'Booking Days Ahead'"
         [control]="facilityBookingDaysAhead"

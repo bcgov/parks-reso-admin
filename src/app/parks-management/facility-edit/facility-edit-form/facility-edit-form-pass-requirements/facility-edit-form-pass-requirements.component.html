@@ -1,57 +1,84 @@
-<h2 class="pt-3">Pass Requirements</h2>
-<div class="p-4 my-4 grey-bg">
-    <app-toggle
-      [control]="facilityPassesRequired"
-      [description]="'Passes required:'"
-      [trueText]="'On days selected below'"
-      [falseText]="'Every day'"
-      (inputChange)="togglePassesRequired($event)"
+<h2>Pass Requirements</h2>
+<app-toggle
+  [control]="facilityPassesRequired"
+  [description]="'Passes required:'"
+  [trueText]="'On days selected below'"
+  [falseText]="'Every day'"
+  (inputChange)="togglePassesRequired($event)"
+>
+</app-toggle>
+
+<div class="mt-4" *ngIf="facilityPassesRequired?.value === true">
+  <div class="d-flex flex-nowrap">
+    <div
+      class="d-inline-flex me-md-4"
+      *ngFor="let day of facilityBookingDaysArray"
     >
-    </app-toggle>
-
-    <div *ngIf="facilityPassesRequired?.value === true">
-      <div class="d-flex flex-nowrap py-4">
-        <div class="d-inline-flex me-md-4" *ngFor="let day of facilityBookingDaysArray">
-            <app-checkbox [label]="day?.symbol" [control]="day?.control">
-            </app-checkbox>
-        </div>
-      </div>
-
-      <div class="input-box pt-2 mb-0">
-        <div class="input-box">
-          <app-wysiwyg-input
-            [control]="facilityBookingDaysRichText"
-            [label]="'Message to Public'"
-          >
-          </app-wysiwyg-input>
-        </div>
-      </div>
-
+      <app-checkbox [label]="day?.symbol" [control]="day?.control">
+      </app-checkbox>
     </div>
+  </div>
+
+  <div class="input-box pt-4 mb-0">
+    <div class="input-box">
+      <app-wysiwyg-input
+        [control]="facilityBookingDaysRichText"
+        [label]="'Message to Public'"
+      >
+      </app-wysiwyg-input>
+    </div>
+  </div>
 </div>
-<div class="d-flex flex-wrap flex-md-nowrap justify-content-between py-2">
-  <div class="pb-3">
+
+<div class="d-flex flex-wrap flex-md-nowrap justify-content-between mt-4">
+  <div>
     <h3>AM Passes</h3>
     <div class="d-inline-flex justify-content-between">
-      <app-toggle class="pe-3 w-100" [control]="getControl('AM')" [label]="'Available?'"> </app-toggle>
-      <app-text-input class="capacity-input" [control]="getControl('capacityAM')" [label]="'Capacity'">
+      <app-toggle
+        class="pe-3 w-100"
+        [control]="getControl('AM')"
+        [label]="'Available?'"
+      >
+      </app-toggle>
+      <app-text-input
+        class="capacity-input"
+        [control]="getControl('capacityAM')"
+        [label]="'Capacity'"
+      >
       </app-text-input>
     </div>
   </div>
-  <div class="pb-3">
+  <div>
     <h3>PM Passes</h3>
     <div class="d-inline-flex justify-content-between">
-      <app-toggle class="pe-3 w-100" [control]="getControl('PM')" [label]="'Available?'"> </app-toggle>
-      <app-text-input class="capacity-input" [control]="getControl('capacityPM')" [label]="'Capacity'">
+      <app-toggle
+        class="pe-3 w-100"
+        [control]="getControl('PM')"
+        [label]="'Available?'"
+      >
+      </app-toggle>
+      <app-text-input
+        class="capacity-input"
+        [control]="getControl('capacityPM')"
+        [label]="'Capacity'"
+      >
       </app-text-input>
     </div>
   </div>
-  <div class="pb-3">
+  <div>
     <h3>All-Day Passes</h3>
     <div class="d-inline-flex justify-content-between">
-      <app-toggle class="pe-3 w-100" [control]="getControl('DAY')" [label]="'Available?'">
+      <app-toggle
+        class="pe-3 w-100"
+        [control]="getControl('DAY')"
+        [label]="'Available?'"
+      >
       </app-toggle>
-      <app-text-input class="capacity-input" [control]="getControl('capacityDAY')" [label]="'Capacity'">
+      <app-text-input
+        class="capacity-input"
+        [control]="getControl('capacityDAY')"
+        [label]="'Capacity'"
+      >
       </app-text-input>
     </div>
   </div>

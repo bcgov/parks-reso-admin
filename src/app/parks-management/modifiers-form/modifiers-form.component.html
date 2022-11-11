@@ -1,5 +1,5 @@
 <form [formGroup]="form">
-  <div class="d-flex flex-wrap flex-md-nowrap justify-content-between p-4 my-4 grey-bg">
+  <div class="d-flex flex-wrap flex-md-nowrap justify-content-between">
     <div class="input-box me-md-4 align-self-end w-100">
       <app-shortdate-picker
         [control]="fields?.modifierOverrideDate"
@@ -23,7 +23,7 @@
         [type]="'number'"
       >
       </app-text-input>
-    </div> 
+    </div>
     <div class="input-box me-md-4 align-self-end w-100">
       <app-text-input
         [control]="fields?.modifierDAYChanges"
@@ -33,7 +33,11 @@
       </app-text-input>
     </div>
     <div class="d-flex justify-content-end align-self-end mb-3 w-100">
-      <button class="btn btn-primary" (click)="onSubmit()" [disabled]="checkModifierSubmission()">
+      <button
+        class="btn btn-primary"
+        (click)="onSubmit()"
+        [disabled]="checkModifierSubmission()"
+      >
         <i class="bi bi-save2-fill"></i>
       </button>
     </div>
