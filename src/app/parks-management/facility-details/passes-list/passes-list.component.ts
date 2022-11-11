@@ -100,7 +100,7 @@ export class PassesListComponent implements OnInit, OnDestroy {
     message +=
       `</br></br><strong>Facility Name:</strong></br>` + passObj.facilityName;
     message += `</br></br><strong>Booking Time:</strong></br>` + passObj.type;
-    message += `</br></br><strong>Date:</strong></br>` + passObj.date;
+    message += `</br></br><strong>Date:</strong></br>` + passObj.shortPassDate;
     message +=
       `</br></br><strong>Pass Status:</strong></br>` + passObj.passStatus;
     return message;
@@ -166,7 +166,7 @@ export class PassesListComponent implements OnInit, OnDestroy {
           id: 'date',
           displayHeader: 'Date',
           columnClasses: 'px-3',
-          mapValue: (passObj) => passObj.shortdate,
+          mapValue: (passObj) => passObj.shortPassDate,
         },
         {
           id: 'status',

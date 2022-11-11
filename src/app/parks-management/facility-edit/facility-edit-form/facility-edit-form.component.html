@@ -5,7 +5,7 @@
       [facilityClosureReason]="fields?.facilityClosureReason"
       [facilityVisibility]="fields?.facilityVisibility"
     >
-  </app-facility-edit-form-publishing-details>
+    </app-facility-edit-form-publishing-details>
   </div>
   <div class="form-section">
     <app-facility-edit-form-details
@@ -25,7 +25,13 @@
     >
     </app-facility-edit-form-pass-requirements>
   </div>
-  <div class="py-4 text-end">
-    <button class="btn btn-primary" (click)="onSubmit()" [disabled]="!isFormValid()">Submit</button>
+  <div class="py-3 text-end">
+    <button
+      class="btn btn-primary"
+      (click)="onSubmit()"
+      [disabled]="!isFormValid()"
+    >
+      Submit
+    </button>
   </div>
 </form>

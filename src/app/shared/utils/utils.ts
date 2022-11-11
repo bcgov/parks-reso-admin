@@ -2,10 +2,9 @@ import * as moment from 'moment';
 import { DateTime } from 'luxon';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
-const TIMEZONE = 'America/Vancouver'
+const TIMEZONE = 'America/Vancouver';
 
 export class Utils {
-
   public convertArrayIntoObjForTypeAhead(
     array,
     valueToUseAsKey,
@@ -82,5 +81,37 @@ export class Utils {
       minute: date.getMinutes(),
       second: date.getSeconds(),
     };
+  }
+
+  public capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  public convert24hTo12hTime(hour: number): { hour: string; amPm: string } {
+    if (hour === 0) {
+      return { hour: '12', amPm: 'AM' };
+    } else if (hour === 12) {
+      return { hour: '12', amPm: 'PM' };
+    } else if (hour && hour < 12) {
+      return { hour: hour.toString(), amPm: 'AM' };
+    } else if (hour && hour > 12) {
+      return { hour: (hour - 12).toString(), amPm: 'PM' };
+    } else {
+      return { hour: null, amPm: null };
+    }
+  }
+
+  public convert12hTo24hTime(hour: string, amPm: string): number {
+    if (hour === '12' && amPm === 'AM') {
+      return 0;
+    } else if (hour === '12' && amPm === 'PM') {
+      return 12;
+    } else if (amPm === 'AM') {
+      return parseInt(hour, 10);
+    } else if (amPm === 'PM') {
+      return parseInt(hour, 10) + 12;
+    } else {
+      return null;
+    }
   }
 }

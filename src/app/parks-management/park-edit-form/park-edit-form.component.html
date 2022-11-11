@@ -1,81 +1,104 @@
-<div class="container">
-  <h1>Park Edit: {{ park?.name }}</h1>
-  <form>
-    <app-toggle
-      [control]="fields?.parkStatus"
-      [description]="'Status: '"
-      [trueText]="'Passes are required at this park.'"
-      [falseText]="'Passes are not required at this park.'"
-      [id]="'parkStatus'"
-    >
-    </app-toggle>
-    <app-toggle
-      [control]="fields?.parkVisibility"
-      [description]="'Status: '"
-      [trueText]="'Park is visible to the public.'"
-      [falseText]="'Park is not visible to the public.'"
-      [id]="'parkStatus'"
-    >
-    </app-toggle>
-    <app-text-input
-      [control]="fields?.parkName"
-      [label]="'Park Name'"
-      [type]="'text'"
-      [id]="'parkName'"
-    >
-    </app-text-input>
-    <app-text-input
-      [control]="fields?.parkOrcs"
-      [label]="'Park ORCS'"
-      [type]="'text'"
-      [id]="'parkOrcs'"
-    >
-    </app-text-input>
-    <app-text-input
-      [control]="fields?.parkCapacity"
-      [label]="'Capacity'"
-      [type]="'number'"
-      [id]="'parkCapacity'"
-    >
-    </app-text-input>
-    <div class="row align-items-end">
-      <div class="col-10">
+<div class="mb-3" *ngIf="park">
+  <app-fancy-header
+    [mainText]="'Edit Park: ' + park?.name"
+    [headerColour1]="'#2D834F'"
+    [headerColour2]="'#205d38'"
+    [buttonSettings1]="{
+      active: false,
+      text: 'Details',
+      nav: '..',
+      hidden: false
+    }"
+    [buttonSettings2]="{
+      active: true,
+      text: 'Edit',
+      nav: '',
+      hidden: false
+    }"
+  ></app-fancy-header>
+  <div class="container-fluid">
+    <section class="mt-3">
+      <form>
+        <app-toggle
+          [control]="fields?.parkStatus"
+          [description]="'Status: '"
+          [trueText]="'Passes are required at this park.'"
+          [falseText]="'Passes are not required at this park.'"
+          [id]="'parkStatus'"
+        >
+        </app-toggle>
+        <app-toggle
+          [control]="fields?.parkVisibility"
+          [description]="'Status: '"
+          [trueText]="'Park is visible to the public.'"
+          [falseText]="'Park is not visible to the public.'"
+          [id]="'parkStatus'"
+        >
+        </app-toggle>
         <app-text-input
-          [control]="fields?.parkSiteLink"
-          [label]="'Link to BC Parks Site'"
+          [control]="fields?.parkName"
+          [label]="'Park Name'"
           [type]="'text'"
-          [id]="'parkSiteLink'"
+          [id]="'parkName'"
         >
         </app-text-input>
-      </div>
-      <div class="col">
-        <button class="btn btn-primary mb-3" (click)="testParkSiteLink()">
-          Test Link
-        </button>
-      </div>
-    </div>
-    <div class="row align-items-end">
-      <div class="col-10">
         <app-text-input
-          [control]="fields?.parkMapLink"
-          [label]="'Link to Map'"
+          [control]="fields?.parkOrcs"
+          [label]="'Park ORCS'"
           [type]="'text'"
-          [id]="'parkSiteLink'"
+          [id]="'parkOrcs'"
         >
         </app-text-input>
-      </div>
-      <div class="col">
-        <button class="btn btn-primary mb-3" (click)="testMapLink()">
-          Test Link
-        </button>
-      </div>
-    </div>
-    <app-wysiwyg-input
-      [control]="fields?.parkDescription"
-      [label]="'Park Description'"
-    >
-    </app-wysiwyg-input>
-  </form>
-  <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
-  <button class="btn btn-secondary" (click)="setForm()">Reset</button>
+        <app-text-input
+          [control]="fields?.parkCapacity"
+          [label]="'Capacity'"
+          [type]="'number'"
+          [id]="'parkCapacity'"
+        >
+        </app-text-input>
+        <div class="row align-items-end">
+          <div class="col-10">
+            <app-text-input
+              [control]="fields?.parkSiteLink"
+              [label]="'Link to BC Parks Site'"
+              [type]="'text'"
+              [id]="'parkSiteLink'"
+            >
+            </app-text-input>
+          </div>
+          <div class="col">
+            <button class="btn btn-primary mb-3" (click)="testParkSiteLink()">
+              Test Link
+            </button>
+          </div>
+        </div>
+        <div class="row align-items-end">
+          <div class="col-10">
+            <app-text-input
+              [control]="fields?.parkMapLink"
+              [label]="'Link to Map'"
+              [type]="'text'"
+              [id]="'parkSiteLink'"
+            >
+            </app-text-input>
+          </div>
+          <div class="col">
+            <button class="btn btn-primary mb-3" (click)="testMapLink()">
+              Test Link
+            </button>
+          </div>
+        </div>
+        <app-wysiwyg-input
+          [control]="fields?.parkDescription"
+          [label]="'Park Description'"
+        >
+        </app-wysiwyg-input>
+      </form>
+    </section>
+
+    <section class="mt-3">
+      <button class="btn btn-primary me-2" (click)="onSubmit()">Submit</button>
+      <button class="btn btn-secondary" (click)="setForm()">Reset</button>
+    </section>
+  </div>
 </div>

@@ -26,6 +26,7 @@ import { PassesUtilityButtonsComponent } from './facility-details/passes-utility
 import { ModifiersListComponent } from './modifiers-list/modifiers-list.component';
 import { ModifiersFormComponent } from './modifiers-form/modifiers-form.component';
 import { ParkEditFormComponent } from './park-edit-form/park-edit-form.component';
+import { FancyHeaderModule } from '../shared/components/fancy-header/fancy-header.module';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ParkEditFormComponent } from './park-edit-form/park-edit-form.component
     ReactiveFormsModule,
     DsFormsModule,
     ParksManagementRoutingModule,
+    FancyHeaderModule,
     NgbModule,
   ],
   providers: [BsModalService],

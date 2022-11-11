@@ -1,5 +1,22 @@
-<div class="container-fluid my-2">
-  <h2>Parks</h2>
+<app-fancy-header
+  [mainText]="'Parks'"
+  [headerColour1]="'#205d38'"
+  [headerColour2]="'#2D834F'"
+  [buttonSettings1]="{
+    active: true,
+    text: 'Details',
+    nav: '',
+    hidden: true
+  }"
+  [buttonSettings2]="{
+    active: false,
+    text: 'Edit',
+    nav: 'edit',
+    hidden: true
+  }"
+></app-fancy-header>
+
+<div class="my-3">
   <app-table
     [tableSchema]="tableSchema"
     [data]="tableRows"

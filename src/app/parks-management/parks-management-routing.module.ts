@@ -9,6 +9,7 @@ import { ParkResolver } from '../resolvers/park.resolver';
 import { FacilityEditComponent } from './facility-edit/facility-edit.component';
 import { FacilityResolver } from '../resolvers/facility.resolver';
 import { FacilityDetailsResolver } from '../resolvers/facility-details.resolver';
+import { FacilityAddResolver } from '../resolvers/facility-add.resolver';
 
 const routes: Routes = [
   {
@@ -53,6 +54,7 @@ const routes: Routes = [
         path: 'add-facility',
         component: FacilityEditComponent,
         canActivate: [AuthGuard],
+        resolve: [FacilityAddResolver],
         data: {
           label: 'Add Facility',
           breadcrumb: 'Add Facility',
