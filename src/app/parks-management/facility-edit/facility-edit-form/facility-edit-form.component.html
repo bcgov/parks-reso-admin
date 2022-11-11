@@ -6,7 +6,8 @@
       [facilityVisibility]="fields?.facilityVisibility"
     >
   </app-facility-edit-form-publishing-details>
-  <hr>
+  </div>
+  <div class="form-section">
     <app-facility-edit-form-details
       [facilityName]="fields?.facilityName"
       [facilityType]="fields?.facilityType"
@@ -14,14 +15,17 @@
       [facilityBookingDaysAhead]="fields?.facilityBookingDaysAhead"
     >
     </app-facility-edit-form-details>
-    <hr>
+  </div>
+  <div class="form-section">
     <app-facility-edit-form-pass-requirements
-    [facilityPassesRequired]="fields?.facilityPassesRequired"
-    [facilityBookingDays]="fields?.facilityBookingDays"
-    [facilityBookingTimes]="fields?.facilityBookingTimes"
-    [facilityBookingDaysRichText]="fields?.facilityBookingDaysRichText"
+      [facilityPassesRequired]="fields?.facilityPassesRequired"
+      [facilityBookingDays]="fields?.facilityBookingDays"
+      [facilityBookingTimes]="fields?.facilityBookingTimes"
+      [facilityBookingDaysRichText]="fields?.facilityBookingDaysRichText"
     >
     </app-facility-edit-form-pass-requirements>
+  </div>
+  <div class="py-4 text-end">
     <button class="btn btn-primary" (click)="onSubmit()" [disabled]="!isFormValid()">Submit</button>
   </div>
 </form>

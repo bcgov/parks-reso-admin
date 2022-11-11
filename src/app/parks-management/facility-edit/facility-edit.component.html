@@ -1,14 +1,14 @@
-<div *ngIf="facility">
-  <h1>Facility Edit: {{ facility?.name }}</h1>
-  <app-facility-edit-form>
-  </app-facility-edit-form>
-  <div class="mx-4">
+<div class="container-fluid" *ngIf="facility">
+  <h1 class="p-4">Facility Edit: {{ facility?.name }}</h1>
+  <app-facility-edit-form></app-facility-edit-form>
+  <hr>
+  <div class="mx-4 py-4">
     <h2>Capacity Changes</h2>
     <app-modifiers-form></app-modifiers-form>
     <app-modifiers-list></app-modifiers-list>
   </div>
 </div>
-<div *ngIf="!facility">
-  <h1>{{ park?.name }}: Add New Facility</h1>
+<div class="container-fluid" *ngIf="!facility">
+  <h1 class="p-4">{{ park?.name }}: Add New Facility</h1>
   <app-facility-edit-form> </app-facility-edit-form>
 </div>

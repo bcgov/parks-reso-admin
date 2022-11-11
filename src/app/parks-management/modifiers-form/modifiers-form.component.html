@@ -1,15 +1,14 @@
 <form [formGroup]="form">
-  <div class="row p-2">
-    <div class="input-box col">
+  <div class="d-flex flex-wrap flex-md-nowrap justify-content-between p-4 my-4 grey-bg">
+    <div class="input-box me-md-4 align-self-end w-100">
       <app-shortdate-picker
         [control]="fields?.modifierOverrideDate"
         [label]="'Override date'"
         [minDate]="today"
-
       >
       </app-shortdate-picker>
     </div>
-    <div class="input-box col">
+    <div class="input-box me-md-4 align-self-end w-100">
       <app-text-input
         [control]="fields?.modifierAMChanges"
         [label]="'AM Changes'"
@@ -17,15 +16,15 @@
       >
       </app-text-input>
     </div>
-    <div class="input-box col">
+    <div class="input-box me-md-4 align-self-end w-100">
       <app-text-input
         [control]="fields?.modifierPMChanges"
         [label]="'PM Changes'"
         [type]="'number'"
       >
       </app-text-input>
-    </div>
-    <div class="input-box col">
+    </div> 
+    <div class="input-box me-md-4 align-self-end w-100">
       <app-text-input
         [control]="fields?.modifierDAYChanges"
         [label]="'All-Day Changes'"
@@ -33,7 +32,7 @@
       >
       </app-text-input>
     </div>
-    <div class="col d-flex">
+    <div class="d-flex justify-content-end align-self-end mb-3 w-100">
       <button class="btn btn-primary" (click)="onSubmit()" [disabled]="checkModifierSubmission()">
         <i class="bi bi-save2-fill"></i>
       </button>
