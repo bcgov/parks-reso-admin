@@ -103,11 +103,13 @@ export class ParkEditFormComponent extends BaseFormComponent {
     return postObj;
   }
 
-  testParkSiteLink() {
-    window.open(this.fields.parkSiteLink.value);
+  testParkSiteLink(event) {
+    event.preventDefault();
+    window.open(this.fields.parkSiteLink.value, '_blank');
   }
 
-  testMapLink() {
+  testMapLink(event) {
+    event.preventDefault();
     window.open(this.fields.parkMapLink.value);
   }
 }
