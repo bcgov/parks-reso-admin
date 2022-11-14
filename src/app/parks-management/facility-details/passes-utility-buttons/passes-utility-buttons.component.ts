@@ -74,7 +74,7 @@ export class PassesUtilityButtonsComponent implements OnDestroy {
       this.toastService.addMessage(
         'Failed Exporting Passes:' + e,
         'Export Passes',
-        Constants.ToastTypes.SUCCESS
+        Constants.ToastTypes.ERROR
       );
     }
   }
@@ -114,6 +114,11 @@ export class PassesUtilityButtonsComponent implements OnDestroy {
 
   copyEmails(): void {
     PassUtils.copyEmailToClipboard(this.passes);
+    this.toastService.addMessage(
+      'Emails copied to clipboard.',
+      'Copy Emails',
+      Constants.ToastTypes.SUCCESS
+    );
   }
 
   convertDate(date) {
