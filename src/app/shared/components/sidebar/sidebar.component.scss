@@ -37,6 +37,10 @@ a[aria-expanded="true"] {
   color: $bcgold;
 }
 
+#sidebar ul li.active a:hover {
+  color: #fff;
+}
+
 a {
   padding-left: 20px !important;
 }
