@@ -58,6 +58,14 @@ export class ModifiersFormComponent
           }
         })
     );
+    this.subscriptions.add(
+      dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
+        if (res && res[0]) {
+          this.park = res[0];
+          this.setForm();
+        }
+      })
+    );
     this.initializeForm();
   }
 
@@ -87,7 +95,7 @@ export class ModifiersFormComponent
     if (
       !this.fields.modifierOverrideDate.value ||
       (!this.fields.modifierAMChanges.value &&
-        this.fields.modifierPMChanges.value &&
+        !this.fields.modifierPMChanges.value &&
         !this.fields.modifierDAYChanges.value)
     ) {
       return true;
