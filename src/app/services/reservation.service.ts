@@ -1,72 +1,135 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Constants } from 'app/shared/utils/constants';
-import { BehaviorSubject } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
+import { Constants } from '../shared/utils/constants';
 import { ApiService } from './api.service';
+import { DataService } from './data.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
-import { ToastService } from './toast.service';
+import { LoadingService } from './loading.service';
+import { ToastService, ToastTypes } from './toast.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReservationService {
-  private item: BehaviorSubject<any>;
-  private list: BehaviorSubject<any>;
-
   constructor(
-    private apiService: ApiService,
+    private dataService: DataService,
     private eventService: EventService,
     private toastService: ToastService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this.item = new BehaviorSubject(null);
-    this.list = new BehaviorSubject(null);
-  }
+    private apiService: ApiService,
+    private loadingService: LoadingService
+  ) {}
 
-  setItemValue(value): void {
-    this.item.next(value);
-  }
-  setListValue(value): void {
-    this.list.next(value);
-  }
-
-  public getItemValue() {
-    return this.item.asObservable();
-  }
-  public getListValue() {
-    return this.list.asObservable();
-  }
-
-  async fetchData(park, facility, date) {
-    let res = null;
-    let errorSubject = 'reservations';
+  async fetchData(parkSk, facilitySk, resDate = null, selectedPassType = null) {
+    let res;
+    let errorSubject = '';
+    let dataTag;
     try {
-      res = await this.apiService.get('reservation', { park: park, facility: facility, date: date });
-      res = res[0];
-
-      if (!res) {
-        this.setItemValue({});
+      if (resDate) {
+        // We are getting a single reservations object.
+        dataTag = Constants.dataIds.CURRENT_RESERVATIONS_OBJECT;
+        this.loadingService.addToFetchList(dataTag);
+        errorSubject = 'facility reservation';
+        res = await firstValueFrom(
+          this.apiService.get('reservation', {
+            park: parkSk,
+            facility: facilitySk,
+            date: resDate,
+          })
+        );
+      }
+      this.dataService.setItemValue(dataTag, res);
+      if (resDate && selectedPassType) {
+        if (res[0]) {
+          this.setCapacityBar(res[0], selectedPassType);
+        } else {
+          // No res Object. Use facility cap
+          const facility = this.dataService.getItemValue(
+            Constants.dataIds.CURRENT_FACILITY
+          )[0];
+          this.dataService.setItemValue(
+            Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+            {
+              capPercent: 0,
+              reserved: 0,
+              capacity: facility.bookingTimes[selectedPassType].max,
+              modifier: 0,
+              style: 'success',
+            }
+          );
+        }
       } else {
-        this.setItemValue(res);
+        // Set to initialized but invalid state
+        this.dataService.setItemValue(
+          Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+          {
+            capPercent: 0,
+            reserved: null as any,
+            capacity: null as any,
+            modifier: 0,
+            style: 'success',
+          }
+        );
       }
     } catch (e) {
       this.toastService.addMessage(
-        `An error has occured while getting ${errorSubject}.`,
-        'Reservation Service',
-        Constants.ToastTypes.ERROR
+        `Please refresh the page.`,
+        `Error getting ${errorSubject}`,
+        ToastTypes.ERROR
       );
-      this.eventService.setError(new EventObject(EventKeywords.ERROR, e, 'Reservation Service'));
-      this.router.navigate(['../', { relativeTo: this.route }]);
-      throw e;
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(e), 'Reservation Service')
+      );
+      // TODO: We may want to change this.
+      if (errorSubject === 'facility reservations')
+        this.dataService.setItemValue(dataTag, 'error');
     }
+    this.loadingService.removeToFetchList(dataTag);
     return res;
   }
 
-  clearItemValue(): void {
-    this.setItemValue(null);
+  setCapacityBar(reservationObj, selectedPassType) {
+    let capBarObj = {
+      capPercent: 0,
+      reserved: 0,
+      capacity: 0,
+      modifier: 0,
+      style: 'success',
+    };
+
+    if (
+      reservationObj &&
+      reservationObj.capacities &&
+      reservationObj.capacities[selectedPassType]
+    ) {
+      const modifiedCapacity =
+        reservationObj.capacities[selectedPassType].baseCapacity +
+        reservationObj.capacities[selectedPassType].capacityModifier;
+      capBarObj.capacity = modifiedCapacity;
+      capBarObj.reserved =
+        modifiedCapacity -
+        reservationObj.capacities[selectedPassType].availablePasses;
+      capBarObj.modifier =
+        reservationObj.capacities[selectedPassType].capacityModifier;
+    }
+
+    capBarObj.capPercent = capBarObj.capacity
+      ? Math.floor((capBarObj.reserved / capBarObj.capacity) * 100)
+      : 0;
+    capBarObj.style = this.calculateProgressBarColour(capBarObj.capPercent);
+
+    this.dataService.setItemValue(
+      Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+      capBarObj
+    );
   }
-  clearListValue(): void {
-    this.setListValue(null);
+
+  public calculateProgressBarColour(capPercent) {
+    if (capPercent < 25) {
+      return 'success';
+    } else if (capPercent < 75) {
+      return 'warning';
+    } else {
+      return 'danger';
+    }
   }
 }

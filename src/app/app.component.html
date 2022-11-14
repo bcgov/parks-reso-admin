@@ -1,12 +1,14 @@
 <app-header [showSideBar]="showSideBar"></app-header>
-<app-sidebar *ngIf="showSideBar"></app-sidebar>
-<div class="app-body content" [ngClass]="{'content' : showSideBar}" id="scrollTop">
-	<span *ngIf="showBreadCrumb">
-		<app-breadcrumb (navigateBreadcrumb)="navigateBreadcrumb($event)"></app-breadcrumb>
-	</span>
-	<app-toggle-button class="app-toggle" *ngIf="showSideBar && showBreadCrumb"></app-toggle-button>
-	<main>
-		<router-outlet></router-outlet>
-	</main>
+<app-infinite-loading-bar></app-infinite-loading-bar>
+<div class="content d-flex">
+  <app-sidebar *ngIf="showSideBar" class="d-none d-lg-inline"></app-sidebar>
+  <div class="w-100">
+    <app-toggle-button
+      *ngIf="showSideBar"
+      class="d-none d-lg-inline"
+    ></app-toggle-button>
+    <app-breadcrumb *ngIf="showBreadCrumb"></app-breadcrumb>
+    <router-outlet></router-outlet>
+  </div>
 </div>
-<app-footer></app-footer>
+<app-footer class="footer"></app-footer>

@@ -1,0 +1,44 @@
+<form [formGroup]="form">
+  <div class="form-section">
+    <app-facility-edit-form-publishing-details
+      [facilityStatus]="fields?.facilityStatus"
+      [facilityClosureReason]="fields?.facilityClosureReason"
+      [facilityVisibility]="fields?.facilityVisibility"
+    >
+    </app-facility-edit-form-publishing-details>
+  </div>
+  <div class="form-section">
+    <app-facility-edit-form-details
+      [facilityName]="fields?.facilityName"
+      [facilityType]="fields?.facilityType"
+      [facilityBookingOpeningHour]="fields?.facilityBookingOpeningHour"
+      [facilityBookingDaysAhead]="fields?.facilityBookingDaysAhead"
+    >
+    </app-facility-edit-form-details>
+  </div>
+  <div class="form-section">
+    <app-facility-edit-form-pass-requirements
+      [facilityPassesRequired]="fields?.facilityPassesRequired"
+      [facilityBookingDays]="fields?.facilityBookingDays"
+      [facilityBookingTimes]="fields?.facilityBookingTimes"
+      [facilityBookingDaysRichText]="fields?.facilityBookingDaysRichText"
+    >
+    </app-facility-edit-form-pass-requirements>
+  </div>
+  <div class="m-4">
+    <button
+      class="btn btn-primary me-2"
+      (click)="onSubmit()"
+      [disabled]="!isFormValid()"
+    >
+      Submit
+    </button>
+    <button
+      class="btn btn-secondary"
+      (click)="setForm()"
+      [disabled]="form?.pristine"
+    >
+      Reset
+    </button>
+  </div>
+</form>

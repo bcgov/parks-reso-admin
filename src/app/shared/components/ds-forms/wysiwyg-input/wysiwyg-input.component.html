@@ -1,0 +1,19 @@
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
+  >{{ label
+  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
+>
+<div>
+  <editor
+    [formControl]="control"
+    [init]="{
+      base_url: '/dayuse/tinymce',
+      suffix: '.min',
+      height: 300,
+      menubar: false,
+      toolbar:
+        'undo redo | formatselect | bold italic backcolor | \
+    alignleft aligncenter alignright alignjustify | link | \
+    bullist numlist outdent indent | removeformat | help'
+    }"
+  ></editor>
+</div>

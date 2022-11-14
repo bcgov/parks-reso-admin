@@ -1,29 +1,56 @@
-@import '~assets/styles/abstracts/mixins.scss';
-@import '~assets/styles/themes/default.scss';
+@import "src/assets/styles/abstracts/mixins.scss";
 
-.parks-header-bg-colour {
-  background: linear-gradient(110deg, #003366 60%, #5475a7 60%);
-}
-.park-header-bg-colour {
-  background: linear-gradient(110deg, #5475a7 60%, #003366 60%);
-}
-.facilities-header-bg-colour {
-  background: linear-gradient(110deg, #93b17c 60%, #dfe8d8 60%);
-}
-.facility-header-bg-colour {
-  background: linear-gradient(110deg, #dfe8d8 60%, #93b17c 60%);
-}
-.passes-header-bg-colour {
-  background: linear-gradient(110deg, #cbc3e3 60%, #f4f3f9 60%);
-}
-.pass-header-bg-colour {
-  background: linear-gradient(110deg, #f4f3f9 60%, #cbc3e3 60%);
+html,
+body {
+  height: 100%;
+  margin: 0;
 }
 
-.pointer:hover {
+.clickable {
   cursor: pointer;
 }
 
-.material-icons {
-  vertical-align: middle;
+.accordion {
+  .accordion-button {
+    color: $primary-blue;
+    background-color: white;
+    box-shadow: none;
+  }
+
+  .accordion-item {
+    border: none;
+    color: black;
+  }
+}
+
+.form-section {
+  padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+}
+
+.form-header {
+  padding: 2rem;
+}
+
+.form-footer {
+  padding-bottom: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.form-section:nth-child(odd) {
+  background-color: $form-grey;
+}
+
+.invalid-field {
+  box-shadow: 0 0 0 0.25rem rgb(255 30 30 /25%);
+  border-radius: 6px;
+  transition: 0.3s smooth;
+}
+
+.park-header-bg-colour {
+  background: linear-gradient(110deg, #5475a7 60%, #003366 60%);
+}
+
+.grey-bg {
+  background-color: #e4e4e4;
 }

@@ -1,3 +1,7 @@
+/***************************************************************************************************
+ * Load `$localize` onto the global scope - used if i18n tags appear in Angular templates.
+ */
+import '@angular/localize/init';
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.
@@ -8,8 +12,8 @@
  *      file.
  *
  * The current setup is for so-called "evergreen" browsers; the last versions of browsers that
- * automatically update themselves. This includes Safari >= 10, Chrome >= 55 (including Opera),
- * Edge >= 13 on the desktop, and iOS 10 and Chrome on mobile.
+ * automatically update themselves. This includes recent versions of Safari, Chrome (including
+ * Opera), Edge on the desktop, and iOS and Chrome on mobile.
  *
  * Learn more in https://angular.io/guide/browser-support
  */
@@ -18,70 +22,36 @@
  * BROWSER POLYFILLS
  */
 
-/** IE9, IE10 and IE11 requires all of the following polyfills. **/
-import 'core-js/features/symbol';
-import 'core-js/features/function';
-import 'core-js/features/parse-int';
-import 'core-js/features/parse-float';
-import 'core-js/features/number';
-import 'core-js/features/math';
-import 'core-js/features/string';
-import 'core-js/features/date';
-import 'core-js/features/array';
-import 'core-js/features/regexp';
-import 'core-js/features/map';
-import 'core-js/features/set';
-
-import 'core-js/features/weak-map';
-import 'core-js/features/weak-set';
-import 'core-js/features/object';
-
-/** IE10 and IE11 requires the following for NgClass support on SVG elements */
-import 'classlist.js';  // Run `npm install --save classlist.js`.
-
-/** IE10 and IE11 requires the following to support `@angular/animation`. */
-import 'web-animations-js';  // Run `npm install --save web-animations-js`.
-
-
-/** Evergreen browsers require these. **/
-import 'core-js/features/reflect';
-
-
-/** ALL Firefox browsers require the following to support `@angular/animation`. **/
-import 'web-animations-js';  // Run `npm install --save web-animations-js`.
-
-
+/**
+ * By default, zone.js will patch all possible macroTask and DomEvents
+ * user can disable parts of macroTask/DomEvents patch by setting following flags
+ * because those flags need to be set before `zone.js` being loaded, and webpack
+ * will put import in the top of bundle, so user need to create a separate file
+ * in this directory (for example: zone-flags.ts), and put the following flags
+ * into that file, and then add the following code before importing zone.js.
+ * import './zone-flags';
+ *
+ * The flags allowed in zone-flags.ts are listed here.
+ *
+ * The following flags will work for all browsers.
+ *
+ * (window as any).__Zone_disable_requestAnimationFrame = true; // disable patch requestAnimationFrame
+ * (window as any).__Zone_disable_on_property = true; // disable patch onProperty such as onclick
+ * (window as any).__zone_symbol__UNPATCHED_EVENTS = ['scroll', 'mousemove']; // disable patch specified eventNames
+ *
+ *  in IE/Edge developer tools, the addEventListener will also be wrapped by zone.js
+ *  with the following flag, it will bypass `zone.js` patch for IE/Edge
+ *
+ *  (window as any).__Zone_enable_cross_context_check = true;
+ *
+ */
 
 /***************************************************************************************************
- * Zone JS is required by Angular itself.
+ * Zone JS is required by default for Angular itself.
  */
-import 'zone.js/dist/zone';  // Included with Angular CLI.
-
+import 'zone.js';  // Included with Angular CLI.
 
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
-
- // global is not defined fix (https://github.com/Leonidas-from-XIV/node-xml2js/issues/538)
-(window as any)['global'] = window;
-
-// Specific polyfill needed for IE11 using current packages as of Sep 24, 2018:
-// https://github.com/uxitten/polyfill/blob/master/string.polyfill.js
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
-if (!String.prototype.padStart) {
-  String.prototype.padStart = function padStart(targetLength, padString) {
-    // tslint:disable-next-line:no-bitwise
-    targetLength = targetLength >> 0; // truncate if number or convert non-number to 0;
-    padString = String((typeof padString !== 'undefined' ? padString : ' '));
-    if (this.length > targetLength) {
-      return String(this);
-    } else {
-      targetLength = targetLength - this.length;
-      if (targetLength > padString.length) {
-        padString += padString.repeat(targetLength / padString.length); // append to original to ensure we are longer than needed
-      }
-      return padString.slice(0, targetLength) + String(this);
-    }
-  };
-}

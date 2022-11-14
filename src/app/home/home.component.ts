@@ -1,28 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { KeycloakService } from '../services/keycloak.service';
-import 'rxjs/add/operator/takeUntil';
+import { Component } from '@angular/core';
+import { KeycloakService } from 'src/app/services/keycloak.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
-
-export class HomeComponent implements OnInit {
-  public isAdmin = false;
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private keyCloakService: KeycloakService
-  ) {
-  }
-
-  ngOnInit() {
-    this.isAdmin = this.keyCloakService.isAuthorized(['sysadmin']);
-  }
-
-  navigate(nav) {
-    this.router.navigate([nav], { relativeTo: this.route });
+export class HomeComponent {
+  // This can be pulled in via the config.
+  public cardConfig = [
+    {
+      cardHeader: 'Parks Management',
+      cardTitle: 'Parks Management',
+      cardText: 'Manage parks, facilities and passes.',
+      navigation: 'parks',
+    },
+  ];
+  constructor(protected keyCloakService: KeycloakService) {
+    // if (keyCloakService.isAllowed('export-reports')) {
+    //   this.cardConfig.push({
+    //     cardHeader: 'Pass Management',
+    //     cardTitle: 'Pass Management Tools',
+    //     cardText: 'This page is a work in progress. Coming soon.',
+    //     navigation: 'export-reports',
+    //   });
+    // }
+    // if (keyCloakService.isAllowed('lock-records')) {
+    //   this.cardConfig.push({
+    //     cardHeader: 'Site Metrics',
+    //     cardTitle: 'Site Metrics',
+    //     cardText: 'See pass counts for various states.',
+    //     navigation: 'lock-records',
+    //   });
+    // }
   }
 }

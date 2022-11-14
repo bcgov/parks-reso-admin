@@ -1,0 +1,28 @@
+<div class="modal-content" id="{{ modal?.id }}">
+  <div class="modal-header">
+    <h3 class="modal-title">{{ modal?.title }}</h3>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+      (click)="close()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div innerHTML="{{ modal?.body }}"></div>
+  </div>
+  <div class="modal-footer">
+    <div *ngIf="modal?.buttons">
+      <div *ngFor="let modalButton of modal?.buttons">
+
+        <button
+          class="{{ modalButton?.classes }}"
+          (click)="(modalButton?.onClick())"
+        >
+          {{ modalButton?.text }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

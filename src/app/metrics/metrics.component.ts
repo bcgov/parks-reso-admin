@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { MetricService } from 'app/services/metric.service';
 import Chart from 'chart.js/auto';
-import { ApiService } from 'app/services/api.service';
-import { ToastService } from 'app/services/toast.service';
-import { Constants } from 'app/shared/utils/constants';
+import { ApiService } from '../services/api.service';
+import { MetricService } from '../services/metric.service';
+import { ToastService } from '../services/toast.service';
+import { Constants } from '../shared/utils/constants';
 
 @Component({
   selector: 'app-metrics',
   templateUrl: './metrics.component.html',
-  styleUrls: ['./metrics.component.scss']
+  styleUrls: ['./metrics.component.scss'],
 })
 export class MetricsComponent implements OnInit {
   passStatusChart;
@@ -19,7 +19,11 @@ export class MetricsComponent implements OnInit {
   signedURL: any;
   buttonText: any = 'Export Pass Data';
 
-  constructor(private metricService: MetricService, private apiService: ApiService, private toastService: ToastService) {}
+  constructor(
+    private metricService: MetricService,
+    private apiService: ApiService,
+    private toastService: ToastService
+  ) {}
 
   async ngOnInit() {
     const payload = await this.metricService.fetchData('passTotals');
@@ -47,7 +51,7 @@ export class MetricsComponent implements OnInit {
               'rgba(153, 102, 255, 0.2)',
               'rgba(255, 159, 64, 0.2)',
               'rgba(100, 33, 155, 0.2)',
-              'rgba(100, 33, 77, 0.2)'
+              'rgba(100, 33, 77, 0.2)',
             ],
             borderColor: [
               'rgba(255, 99, 132, 1)',
@@ -57,16 +61,16 @@ export class MetricsComponent implements OnInit {
               'rgba(153, 102, 255, 1)',
               'rgba(255, 159, 64, 1)',
               'rgba(100, 33, 155, 1)',
-              'rgba(100, 33, 77, 0.2)'
+              'rgba(100, 33, 77, 0.2)',
             ],
-            borderWidth: 1
-          }
-        ]
+            borderWidth: 1,
+          },
+        ],
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false
-      }
+        maintainAspectRatio: false,
+      },
     });
   }
 
@@ -78,19 +82,22 @@ export class MetricsComponent implements OnInit {
     const res = await this.apiService.get('export-all-pass');
     const self = this;
     setTimeout(function () {
-      self.statusMessage = res.status;
-      self.getPassExport(res.sk);
+      self.statusMessage = res['status'];
+      self.getPassExport(res['sk']);
     }, 1000);
   }
 
   async getPassExport(sk) {
     const self = this;
     const params = {
-      getJob: sk
+      getJob: sk,
     };
     const res = await this.apiService.get('export-all-pass', params);
-    this.statusMessage = res.status;
-    if (res.status === 'Job not found' || res.jobObj.progressPercentage === -1) {
+    this.statusMessage = res['status'];
+    if (
+      res['status'] === 'Job not found' ||
+      res['jobObj'].progressPercentage === -1
+    ) {
       // last job failed
       this.isGenerating = false;
       this.buttonText = 'Export Pass Data';
@@ -99,11 +106,11 @@ export class MetricsComponent implements OnInit {
         'Export Service',
         Constants.ToastTypes.ERROR
       );
-    } else if (res.status === 'Job complete') {
+    } else if (res['status'] === 'Job complete') {
       // Show the DL link.
       this.isGenerating = false;
       this.buttonText = 'Export Pass Data';
-      this.signedURL = res.signedURL;
+      this.signedURL = res['signedURL'];
 
       this.toastService.addMessage(
         `Your report is downloading.`,
@@ -112,7 +119,7 @@ export class MetricsComponent implements OnInit {
       );
 
       // Set a delay so they see the toast msg.
-      setTimeout(function() {
+      setTimeout(function () {
         window.open(self.signedURL, '_blank');
       }, 5000);
     } else {

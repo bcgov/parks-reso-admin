@@ -1,0 +1,55 @@
+<div
+  class="p-4 d-flex justify-content-between"
+  [style.background]="
+    'linear-gradient(110deg, ' +
+    headerColour1 +
+    ' 60%, ' +
+    headerColour2 +
+    ' 60%)'
+  "
+>
+  <h1 class="text-white m-0">{{ mainText }}</h1>
+  <div class="btn-group d-md-block d-none" role="group">
+    <button
+      type="button"
+      class="btn btn-outline-light"
+      [class.active]="buttonSettings1.active"
+      (click)="navigate(buttonSettings1.nav)"
+      *ngIf="!buttonSettings1.hidden"
+    >
+      {{ buttonSettings1.text }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-light"
+      [class.active]="buttonSettings2.active"
+      (click)="navigate(buttonSettings2.nav)"
+      *ngIf="!buttonSettings2.hidden"
+    >
+      {{ buttonSettings2.text }}
+    </button>
+  </div>
+</div>
+<!--mobile btns-->
+<div class="text-center p-3 d-md-none">
+  <div class="btn-group w-100" role="group">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      [class.active]="buttonSettings1.active"
+      (click)="navigate(buttonSettings1.nav)"
+      *ngIf="!buttonSettings1.hidden"
+    >
+      {{ buttonSettings1.text }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      [class.active]="buttonSettings2.active"
+      (click)="navigate(buttonSettings2.nav)"
+      *ngIf="!buttonSettings2.hidden"
+    >
+      {{ buttonSettings2.text }}
+    </button>
+  </div>
+</div>

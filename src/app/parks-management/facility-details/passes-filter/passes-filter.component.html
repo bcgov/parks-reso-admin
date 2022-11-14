@@ -1,0 +1,18 @@
+<form [formGroup]="form">
+  <div class="form-section">
+    <app-passes-filter-fields
+      *ngIf="bookingTimesList"
+      [passType]="fields?.passType"
+      [passTypeOptions]="bookingTimesList"
+      [date]="fields?.date"
+      [passStatus]="fields?.passStatus"
+      [passStatusOptions]="statusesList"
+      [firstName]="fields?.firstName"
+      [lastName]="fields?.lastName"
+      [email]="fields?.email"
+      [reservationNumber]="fields?.reservationNumber"
+    >
+    </app-passes-filter-fields>
+    <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+  </div>
+</form>

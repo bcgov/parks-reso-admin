@@ -1,0 +1,28 @@
+<div *ngIf="data">
+  <label>
+    <strong>
+      <span *ngIf="data.reserved === null">
+        To display capacity levels, you must filter by a date.
+      </span>
+      <div *ngIf="data.reserved !== null">
+        <span>{{ data.reserved }}/{{ data.capacity }}&nbsp;</span>
+        <span class="text-success" *ngIf="data.modifier > 0">
+          (+{{ data.modifier }})&nbsp;
+        </span>
+        <span class="text-danger" *ngIf="data.modifier < 0">
+          ({{ data.modifier }})&nbsp;
+        </span>
+        <span>passes reserved</span>
+      </div>
+      <div *ngIf="data.modifier > 0 || data.modifier < 0" class="text-muted">
+        <small>Modifier applied</small>
+      </div>
+    </strong>
+  </label>
+  <ngb-progressbar
+    [showValue]="true"
+    type="{{ data.style }}"
+    [value]="data.capPercent"
+    height="1.5rem"
+  ></ngb-progressbar>
+</div>

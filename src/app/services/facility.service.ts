@@ -1,170 +1,151 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PostFacility, PutFacility } from 'app/models/facility';
-import { Constants } from 'app/shared/utils/constants';
-import { BehaviorSubject } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
+import { Constants } from '../shared/utils/constants';
+import { Utils } from '../shared/utils/utils';
 import { ApiService } from './api.service';
+import { DataService } from './data.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
-import { ToastService } from './toast.service';
+import { LoadingService } from './loading.service';
+import { ToastService, ToastTypes } from './toast.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FacilityService {
-  private item: BehaviorSubject<any>;
-  private list: BehaviorSubject<any>;
-
   constructor(
-    private apiService: ApiService,
+    private dataService: DataService,
     private eventService: EventService,
     private toastService: ToastService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this.item = new BehaviorSubject(null);
-    this.list = new BehaviorSubject(null);
-  }
+    private apiService: ApiService,
+    private loadingService: LoadingService
+  ) {}
+  public utils = new Utils();
 
-  setItemValue(value): void {
-    this.item.next(value);
-  }
-  setListValue(value): void {
-    this.list.next(value);
-  }
-
-  public getItemValue() {
-    return this.item.asObservable();
-  }
-  public getListValue() {
-    return this.list.asObservable();
-  }
-
-  async fetchData(facilitySk = null, parkSk = null) {
-    let res = null;
+  async fetchData(parkSk = null, facilitySk = null) {
+    let res;
     let errorSubject = '';
+    let dataTag;
     try {
+      errorSubject = 'facilities list';
       if (!facilitySk && parkSk) {
-        // We are getting a facilities of a given park.
-        errorSubject = 'facilities';
-        res = await this.apiService.get('facility', { park: parkSk, facilities: true });
-        this.setListValue(res);
+        dataTag = Constants.dataIds.FACILITIES_LIST;
+        this.loadingService.addToFetchList(dataTag);
+        // We are getting all facilities for a given park.
+        res = await firstValueFrom(
+          this.apiService.get('facility', { facilities: true, park: parkSk })
+        );
+        this.dataService.setItemValue(dataTag, res);
       } else if (facilitySk && parkSk) {
+        // We are getting a single facility.
+        dataTag = Constants.dataIds.CURRENT_FACILITY;
+        this.loadingService.addToFetchList(dataTag);
         errorSubject = 'facility';
-        // we're getting a single item for a given park
-        res = await this.apiService.get('facility', { facilityName: facilitySk, park: parkSk });
-        res = res[0];
-        this.setItemValue(res);
+        res = await firstValueFrom(
+          this.apiService.get('facility', {
+            facilityName: facilitySk,
+            park: parkSk,
+          })
+        );
+        this.dataService.setItemValue(dataTag, res);
       } else {
-        // We're getting a list
-        errorSubject = 'facilities';
-        res = await this.apiService.get('facility');
-        this.setListValue(res);
+        // We are getting all facilities
+        dataTag = Constants.dataIds.FACILITIES_LIST;
+        this.loadingService.addToFetchList(dataTag);
+        errorSubject = 'facilities list';
+        res = await firstValueFrom(this.apiService.get('facility'));
+        this.dataService.setItemValue(dataTag, res);
       }
     } catch (e) {
-      this.toastService.addMessage(`An error has occured while getting ${errorSubject}.`, 'Facility Service', Constants.ToastTypes.ERROR);
-      this.eventService.setError(
-        new EventObject(
-          EventKeywords.ERROR,
-          e,
-          'Facility Service'
-        )
+      this.toastService.addMessage(
+        `Please refresh the page.`,
+        `Error getting ${errorSubject}`,
+        ToastTypes.ERROR
       );
-      this.router.navigate(['../', { relativeTo: this.route }]);
-      throw e;
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(e), 'Facility Service')
+      );
+      // TODO: We may want to change this.
+      if (errorSubject === 'facilities list')
+        this.dataService.setItemValue(dataTag, 'error');
     }
+    this.loadingService.removeToFetchList(dataTag);
     return res;
   }
 
-  clearItemValue(): void {
-    this.setItemValue(null);
-  }
-  clearListValue(): void {
-    this.setListValue(null);
-  }
-
-  async createFacility(obj, parkSk) {
-    let res = null;
+  async putFacility(obj, parkSk) {
+    let res;
+    let errorSubject = '';
+    let dataTag = 'facilityPut';
     try {
-      // Remove non-valid fields and verify field types.
-      this.checkManditoryFields(obj);
-      if (parkSk === '' || !parkSk) {
-        throw ('You must provide a park sk');
+      errorSubject = 'facility put';
+      if (this.validateFacilityObject(obj)) {
+        this.loadingService.addToFetchList(dataTag);
+        if (parkSk === '' || !parkSk) {
+          throw 'Must provide a park.';
+        }
+        (obj.pk = `facility::${parkSk}`),
+          (obj.sk = obj.name),
+          (obj.parkName = parkSk);
+        res = await firstValueFrom(this.apiService.put('facility', obj));
+        // ensure CURRENT_FACILITY in DataService is updated with new facility data.
+        this.fetchData(parkSk, obj.name);
+        this.toastService.addMessage(
+          `Facility: ${parkSk} - ${obj.name} updated.`,
+          `Facility updated`,
+          ToastTypes.SUCCESS
+        );
       }
-      let postObj = new PostFacility(obj);
-      postObj.parkName = parkSk;
-      res = await this.apiService.post('facility', postObj);
     } catch (e) {
-      this.toastService.addMessage(`An error has occured while creating facility.`, 'Facility Service', Constants.ToastTypes.ERROR);
-      this.eventService.setError(
-        new EventObject(
-          EventKeywords.ERROR,
-          e,
-          'Faciltiy Service'
-        )
+      this.toastService.addMessage(
+        `There was a problem updating the facility.`,
+        `Error putting ${errorSubject}`,
+        ToastTypes.ERROR
       );
-      this.router.navigate(['../', { relativeTo: this.route }]);
-      throw e;
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(e), 'Facility Service')
+      );
     }
-    return res;
+    this.loadingService.removeToFetchList(dataTag);
   }
 
-  async editFacility(obj, parkSk) {
-    let res = null;
+  async postFacility(obj, parkSk) {
+    let res;
+    let errorSubject = '';
+    let dataTag = 'facilityPost';
     try {
-      // To do an edit we need to pass back the entire object with all old and new fields.
-      this.checkManditoryFields(obj);
-      if (parkSk === '' || !parkSk) {
-        throw ('You must provide a park sk');
+      errorSubject = 'facility post';
+      if (this.validateFacilityObject(obj)) {
+        this.loadingService.addToFetchList(dataTag);
+        if (parkSk === '' || !parkSk) {
+          throw 'Must provide a park.';
+        }
+        delete obj.pk;
+        delete obj.sk;
+        obj.parkName = parkSk;
+        res = await firstValueFrom(this.apiService.post('facility', obj));
+        // ensure CURRENT_FACILITY in DataService is updated with new facility data.
+        this.fetchData(parkSk, obj.name);
+        this.toastService.addMessage(
+          `New facility ${parkSk} - ${obj.name} created.`,
+          `New Facility created`,
+          ToastTypes.SUCCESS
+        );
       }
-      if (!obj.pk) {
-        throw ('You must provide a facility pk');
-      }
-      if (!obj.sk) {
-        throw ('You must provide a facility sk');
-      }
-
-      let putObj = new PutFacility(obj);
-      putObj.parkName = parkSk;
-
-      // We must tell API that we are editing faciltiy.
-      // This is to prevent reservations object from being overwritten.
-      putObj['mode'] = 'editFacililty';
-      res = await this.apiService.put('facility', putObj);
     } catch (e) {
-      this.toastService.addMessage(`An error has occured while editing facility.`, 'Faciltiy Service', Constants.ToastTypes.ERROR);
-      this.eventService.setError(
-        new EventObject(
-          EventKeywords.ERROR,
-          e,
-          'Facility Service'
-        )
+      this.toastService.addMessage(
+        `There was a problem creating the facility.`,
+        `Error posting ${errorSubject}`,
+        ToastTypes.ERROR
       );
-      this.router.navigate(['../', { relativeTo: this.route }]);
-      throw e;
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(e), 'Facility Service')
+      );
     }
-    return res;
+    this.loadingService.removeToFetchList(dataTag);
   }
 
-  private checkManditoryFields(obj) {
-    if (obj.name === '' || !obj.name) {
-      throw ('You must provide a facility name');
-    }
-    if (
-      typeof obj.visible !== 'boolean' ||
-      obj.visible === null ||
-      obj.visible === undefined) {
-      throw ('You must provide a boolean for facility visibility');
-    }
-    if (
-      obj.status.state === '' ||
-      !obj.status.state ||
-      (obj.status.state !== 'closed' && obj.status.state !== 'open')
-    ) {
-      throw ('You must provide a valid park status');
-    }
-
-    if (!obj.bookingTimes.AM && !obj.bookingTimes.PM && !obj.bookingTimes.DAY) {
-      throw ('You must have a booking time set');
-    }
+  validateFacilityObject(obj) {
+    // TODO: write this function
+    return true;
   }
 }

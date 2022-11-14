@@ -1,0 +1,23 @@
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
+  >{{ label
+  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
+>
+
+<ng-select
+  placeholder="{{ placeholder }}"
+  name="{{ id }}"
+  id="{{ id }}"
+  attr.aria-label="{{ ariaLabel }}"
+  attr.aria-describedby="{{ ariaDescribedBy }}"
+  [class.with-item-left]="icon"
+  [ngClass]="{ 'invalid-field': isInvalid() }"
+  class="input-group mb-3"
+  [disabled]="checkDisabled()"
+  [(ngModel)]="selectedOptions"
+  (change)="updateMultiselect()"
+  [items]="multiSelectOptions"
+  bindLabel="name"
+  appendTo="body"
+  [multiple]="true"
+>
+</ng-select>

@@ -1,0 +1,129 @@
+<div class="mb-4" *ngIf="park">
+  <app-fancy-header
+    [mainText]="'Edit Park: ' + park?.name"
+    [headerColour1]="'#2D834F'"
+    [headerColour2]="'#205d38'"
+    [buttonSettings1]="{
+      active: false,
+      text: 'Details',
+      nav: '..',
+      hidden: false
+    }"
+    [buttonSettings2]="{
+      active: true,
+      text: 'Edit',
+      nav: '',
+      hidden: false
+    }"
+  ></app-fancy-header>
+  <form>
+    <section class="form-section">
+      <app-toggle
+        [control]="fields?.parkStatus"
+        [description]="'Status: '"
+        [trueText]="'Passes are required at this park.'"
+        [falseText]="'Passes are not required at this park.'"
+        [id]="'parkStatus'"
+      >
+      </app-toggle>
+      <app-toggle
+        [control]="fields?.parkVisibility"
+        [description]="'Status: '"
+        [trueText]="'Park is visible to the public.'"
+        [falseText]="'Park is not visible to the public.'"
+        [id]="'parkStatus'"
+      >
+      </app-toggle>
+    </section>
+
+    <section class="form-section">
+      <app-text-input
+        [control]="fields?.parkName"
+        [label]="'Park Name'"
+        [type]="'text'"
+        [id]="'parkName'"
+      >
+      </app-text-input>
+      <div class="row">
+        <div class="col-6">
+          <app-text-input
+            [control]="fields?.parkOrcs"
+            [label]="'Park ORCS'"
+            [type]="'text'"
+            [id]="'parkOrcs'"
+          >
+          </app-text-input>
+        </div>
+        <div class="col-6">
+          <app-text-input
+            [control]="fields?.parkCapacity"
+            [label]="'Capacity'"
+            [type]="'number'"
+            [id]="'parkCapacity'"
+          >
+          </app-text-input>
+        </div>
+      </div>
+      <div class="row align-items-end">
+        <div class="col-10">
+          <app-text-input
+            [control]="fields?.parkSiteLink"
+            [label]="'Link to BC Parks Site'"
+            [type]="'text'"
+            [id]="'parkSiteLink'"
+          >
+          </app-text-input>
+        </div>
+        <div class="col">
+          <button
+            class="btn btn-primary mb-3"
+            (click)="testParkSiteLink($event)"
+          >
+            Test Link
+          </button>
+        </div>
+      </div>
+      <div class="row align-items-end">
+        <div class="col-10">
+          <app-text-input
+            [control]="fields?.parkMapLink"
+            [label]="'Link to Map'"
+            [type]="'text'"
+            [id]="'parkSiteLink'"
+          >
+          </app-text-input>
+        </div>
+        <div class="col">
+          <button class="btn btn-primary mb-3" (click)="testMapLink($event)">
+            Test Link
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <app-wysiwyg-input
+        [control]="fields?.parkDescription"
+        [label]="'Park Description'"
+      >
+      </app-wysiwyg-input>
+    </section>
+  </form>
+
+  <section class="d-flex flex-row-reverse mt-4 mx-4">
+    <button
+      class="btn btn-primary"
+      (click)="onSubmit()"
+      [disabled]="form?.invalid"
+    >
+      Submit
+    </button>
+    <button
+      class="btn btn-secondary me-2"
+      (click)="setForm()"
+      [disabled]="form?.pristine"
+    >
+      Reset
+    </button>
+  </section>
+</div>

@@ -1,0 +1,33 @@
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
+  >{{ label
+  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
+>
+
+<div class="input-group mb-3" [ngClass]="{ 'invalid-field': isInvalid() }">
+  <span
+    *ngIf="icon"
+    class="input-group-text"
+    id="{{ ariaDescribedBy }}"
+    [ngClass]="icon"
+    ><i class="bi"></i
+  ></span>
+  <select
+    name="{{ id }}"
+    id="{{ id }}"
+    attr.aria-label="{{ ariaLabel }}"
+    attr.aria-describedby="{{ ariaDescribedBy }}"
+    [class.with-item-left]="icon"
+    class="form-control"
+    [formControl]="control"
+  >
+    <option selected *ngIf="defaultNullDisplay" value="null">
+      {{ defaultNullDisplay }}
+    </option>
+    <option
+      *ngFor="let option of selectOptions; index as i"
+      value="{{ option?.value }}"
+    >
+      {{ option?.display }}
+    </option>
+  </select>
+</div>

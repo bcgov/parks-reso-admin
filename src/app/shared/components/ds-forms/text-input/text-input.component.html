@@ -1,0 +1,79 @@
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
+  >{{ label
+  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
+>
+
+<!-- For type number -->
+<div
+  *ngIf="!moneyMode && type === 'number'"
+  class="input-group mb-3"
+  [ngClass]="{ 'invalid-field': isInvalid() }"
+>
+  <span
+    *ngIf="icon"
+    class="input-group-text"
+    id="{{ ariaDescribedBy }}"
+    [ngClass]="icon"
+    ><i class="bi"></i
+  ></span>
+  <input
+    type="number"
+    name="{{ id }}"
+    id="{{ id }}"
+    (keydown)="blockInvalidChars($event)"
+    min="0"
+    [formControl]="control"
+    class="form-control"
+    [class.with-item-left]="icon"
+    placeholder="{{ placeholder }}"
+    attr.aria-label="{{ ariaLabel }}"
+    attr.aria-describedby="{{ ariaDescribedBy }}"
+  />
+</div>
+<!-- For type text -->
+<div
+  *ngIf="!moneyMode && type === 'text'"
+  class="input-group mb-3"
+  [ngClass]="{ 'invalid-field': isInvalid() }"
+>
+  <span
+    *ngIf="icon"
+    class="input-group-text"
+    id="{{ ariaDescribedBy }}"
+    [ngClass]="icon"
+    ><i class="bi"></i
+  ></span>
+  <input
+    type="text"
+    name="{{ id }}"
+    id="{{ id }}"
+    [formControl]="control"
+    class="form-control"
+    placeholder="{{ placeholder }}"
+    attr.aria-label="{{ ariaLabel }}"
+    attr.aria-describedby="{{ ariaDescribedBy }}"
+  />
+</div>
+
+<!-- For currency -->
+<div
+  *ngIf="moneyMode"
+  class="input-group mb-3"
+  [ngClass]="{ 'invalid-field': isInvalid() }"
+>
+  <span class="input-group-text" id="{{ ariaDescribedBy }}"
+    ><i class="bi bi-currency-dollar"></i
+  ></span>
+  <input
+    type="number"
+    name="{{ id }}"
+    id="{{ id }}"
+    class="form-control"
+    [formControl]="control"
+    (keydown)="blockInvalidChars($event)"
+    placeholder="{{ placeholder }}"
+    step="0.01"
+    attr.aria-label="{{ ariaLabel }}"
+    attr.aria-describedby="{{ ariaDescribedBy }}"
+  />
+</div>

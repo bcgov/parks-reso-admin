@@ -1,38 +1,68 @@
-<header class="app-header app-header--solid"
-  id="header">
-  <nav class="navbar navbar-expand-md justify-content-between">
-    <a class="navbar-brand" [ngClass]="{ 'align-no-sidebar': !showSideBar }" title="BC Parks" routerLink="/">
-      <span class="navbar-brand__title">BC Parks</span>
-    </a>
-    <div [ngClass]="{ 'align-no-sidebar': !showSideBar }">
-      <span class="navbar-environment" *ngIf="environment !== 'prod'">{{ environment }}</span>
-    </div>
-    <ng-container *ngIf="showSideBar">
+<header id="header">
+  <nav class="navbar navbar-expand-lg navbar-dark p-0">
+    <div class="container-fluid">
+      <a
+        class="navbar-brand d-none d-md-inline"
+        title="BC Parks - Camping Reservations"
+        [routerLink]="['']"
+      >
+        <img
+          src="assets/images/bcparks_primary_reversed.svg"
+          height="100"
+          alt="BC Government Logo"
+        />
+      </a>
+      <a
+        class="navbar-brand d-inline d-md-none"
+        title="BC Parks - Camping Reservations"
+        [routerLink]="['']"
+      >
+        <img
+          src="assets/images/bcparks_wordmark_white.svg"
+          height="60"
+          alt="BC Parks Logo"
+        />
+      </a>
       <button
         class="navbar-toggler"
         type="button"
-        title="Toggle Main Navigation"
-        aria-controls="navbarText"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        (click)="toggleNav()"
+        *ngIf="showSideBar"
+        (click)="isMenuCollapsed = !isMenuCollapsed"
       >
-        <i class="material-icons">menu</i>
-        <span>MENU</span>
+        &#9776;
       </button>
-      <div class="navbar-collapse" [@toggleNav]="isNavMenuOpen ? 'navOpen' : 'navClosed'" id="mainNav">
-        <ul class="navbar-nav">
-          <!-- LOGGED IN -->
-          <li *ngIf="isAuthorized" class="nav-item" placement="bottom-right">
-            <a class="nav-link" id="welcome" tabindex="0">
-              <span>{{ welcomeMsg }}</span>
-            </a>
-          </li>
-        </ul>
+      <div class="d-none d-lg-inline">
+        <div class="me-auto"></div>
+        <div *ngIf="isAuthorized" class="navbar-text me-3">
+          {{ welcomeMsg }}
+        </div>
       </div>
-    </ng-container>
-    <div *ngIf="!showSideBar" class="align-no-sidebar d-none d-md-block">
-      <span></span>
     </div>
   </nav>
+  <div
+    [ngbCollapse]="isMenuCollapsed"
+    class="collapse navbar-collapse text-white"
+  >
+    <div id="dropdown" class="d-lg-none">
+      <ul class="navbar-nav">
+        <li
+          class="nav-item"
+          [ngClass]="route.active ? 'active' : ''"
+          *ngFor="let route of routes"
+        >
+          <a [routerLink]="[route.path]">{{ route.data.label }}</a>
+        </li>
+        <div *ngIf="isAuthorized" class="navbar-text welcome-text p-2">
+          {{ welcomeMsg }}
+        </div>
+      </ul>
+    </div>
+  </div>
+  <div
+    *ngIf="showBanner"
+    class="env-banner text-center bg-danger text-white py-2"
+  >
+    This is the <strong>{{ envName }}</strong> environment. The content you are
+    viewing is not final and subject to change.
+  </div>
 </header>

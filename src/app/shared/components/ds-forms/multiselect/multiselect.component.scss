@@ -1,0 +1,36 @@
+@import "src/assets/themes/variables";
+
+$form-field-border: #9cace5;
+$form-field-disabled: #e9ecef;
+
+
+.ng-select-container {
+  border: 1px solid $gray-500 !important;
+}
+
+.ng-select-disabled {
+  .ng-value-container {
+    background-color: $form-field-disabled;
+  }
+}
+
+.ng-select-focused {
+  border-radius: 3px;
+  border-color: #9cace5;
+  box-shadow: 0 0 0 0.25rem rgb(56 89 138 / 25%);
+  transition: 0.1s;
+}
+
+.ng-placeholder {
+  margin-right: 0px;
+}
+
+.ng-value-container {
+  cursor: pointer;
+    padding: 0px;
+    width: 20rem;
+    min-height: 2.3rem;
+    & input {
+      cursor: pointer !important;
+    }
+}

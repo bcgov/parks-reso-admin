@@ -1,0 +1,45 @@
+<div class="mb-4" *ngIf="facility">
+  <app-fancy-header
+    [mainText]="'Edit Facility: ' + facility?.name"
+    [headerColour1]="'#C1B59B'"
+    [headerColour2]="'#AD9E7C'"
+    [buttonSettings1]="{
+      active: false,
+      text: 'Details',
+      nav: '..',
+      hidden: false
+    }"
+    [buttonSettings2]="{
+      active: true,
+      text: 'Edit',
+      nav: '',
+      hidden: false
+    }"
+  ></app-fancy-header>
+  <app-facility-edit-form> </app-facility-edit-form>
+
+  <hr />
+  <div class="mx-4">
+    <h2>Capacity Changes</h2>
+  </div>
+  <div class="p-4">
+    <app-modifiers-form></app-modifiers-form>
+  </div>
+  <div class="mt-4">
+    <app-modifiers-list></app-modifiers-list>
+  </div>
+</div>
+<div *ngIf="!facility && park">
+  <app-fancy-header
+    [mainText]="'Add facility to ' + park?.name"
+    [headerColour1]="'#C1B59B'"
+    [headerColour2]="'#AD9E7C'"
+    [buttonSettings1]="{
+      active: true,
+      text: 'Back',
+      nav: '..',
+      hidden: false
+    }"
+  ></app-fancy-header>
+  <app-facility-edit-form> </app-facility-edit-form>
+</div>

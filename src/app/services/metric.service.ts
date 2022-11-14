@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Constants } from 'app/shared/utils/constants';
+import { Constants } from '../shared/utils/constants';
 import { ApiService } from './api.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
 import { ToastService } from './toast.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MetricService {
   constructor(
@@ -28,7 +28,9 @@ export class MetricService {
         'Pass Service',
         Constants.ToastTypes.ERROR
       );
-      this.eventService.setError(new EventObject(EventKeywords.ERROR, e, 'Metric Service'));
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, e as string, 'Metric Service')
+      );
       this.router.navigate(['../', { relativeTo: this.route }]);
     }
   }

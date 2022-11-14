@@ -1,127 +1,156 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Constants } from 'app/shared/utils/constants';
-import { BehaviorSubject } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
+import { Constants } from '../shared/utils/constants';
+import { Utils } from '../shared/utils/utils';
 import { ApiService } from './api.service';
+import { DataService } from './data.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
-import { ToastService } from './toast.service';
+import { LoadingService } from './loading.service';
+import { ToastService, ToastTypes } from './toast.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PassService {
-  private item: BehaviorSubject<any>;
-  private list: BehaviorSubject<any>;
-  public lastSearchParams = {
-    passSk: null,
-    parkSk: null,
-    facilitySk: null,
-    passType: null,
-    ExclusiveStartKeyPK: null,
-    ExclusiveStartKeySK: null,
-    queryParams: null
-  };
+  private utils = new Utils();
 
   constructor(
-    private apiService: ApiService,
+    private dataService: DataService,
     private eventService: EventService,
     private toastService: ToastService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this.item = new BehaviorSubject(null);
-    this.list = new BehaviorSubject(null);
-  }
+    private apiService: ApiService,
+    private loadingService: LoadingService
+  ) {}
 
-  setItemValue(value): void {
-    this.item.next(value);
-  }
-  setListValue(value): void {
-    this.list.next(value);
-  }
-
-  public getItemValue() {
-    return this.item.asObservable();
-  }
-  public getListValue() {
-    return this.list.asObservable();
-  }
-
-  async fetchData(
-    passSk = null,
-    parkSk = null,
-    facilitySk = null,
-    passType = null,
-    ExclusiveStartKeyPK = null,
-    ExclusiveStartKeySK = null,
-    queryParams = null
-  ) {
-    let res = null;
+  // params = {
+  // passSk:,
+  // parkSk:,
+  // facilitySk:,
+  // passType:,
+  // ExclusiveStartKeyPK:,
+  // ExclusiveStartKeySK:,
+  // queryParams:
+  // }
+  async fetchData(params) {
+    let res;
     let errorSubject = '';
+    let dataTag;
     try {
-      if (!passSk && parkSk && facilitySk && passType) {
-        // We are getting list of passes filtered with type
-        errorSubject = 'passes';
-        let queryObj = {
-          park: parkSk,
-          facilityName: facilitySk,
-          passType: passType
-        };
-        if (ExclusiveStartKeyPK && ExclusiveStartKeySK) {
-          queryObj['ExclusiveStartKeyPK'] = ExclusiveStartKeyPK;
-          queryObj['ExclusiveStartKeySK'] = ExclusiveStartKeySK;
-        }
+      if (
+        !params.passSk &&
+        params.park &&
+        params.facilityName &&
+        params.passType
+      ) {
+        dataTag = Constants.dataIds.PASSES_LIST;
+        this.loadingService.addToFetchList(dataTag);
 
-        if (queryParams) {
-          Object.keys(queryParams).forEach(key => {
-            queryObj[key] = queryParams[key];
-          });
-        }
+        const queryParams = this.filterSearchParams(params);
 
-        res = await this.apiService.get('pass', queryObj);
-        this.setListValue(res);
-        this.lastSearchParams = {
-          passSk: passSk,
-          parkSk: parkSk,
-          facilitySk: facilitySk,
-          passType: passType,
-          ExclusiveStartKeyPK: ExclusiveStartKeyPK,
-          ExclusiveStartKeySK: ExclusiveStartKeySK,
-          queryParams: queryParams
-        };
-        return res;
+        res = await firstValueFrom(this.apiService.get('pass', queryParams));
+        this.dataService.setItemValue(dataTag, res.data);
+        this.dataService.setItemValue(
+          Constants.dataIds.PASS_SEARCH_PARAMS,
+          queryParams
+        );
       }
     } catch (e) {
       this.toastService.addMessage(
-        `An error has occured while getting ${errorSubject}.`,
-        'Pass Service',
-        Constants.ToastTypes.ERROR
+        `Please refresh the page.`,
+        `Error getting ${errorSubject}`,
+        ToastTypes.ERROR
       );
-      this.eventService.setError(new EventObject(EventKeywords.ERROR, e, 'Pass Service'));
-      this.router.navigate(['../', { relativeTo: this.route }]);
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(e), 'Pass Service')
+      );
+      // TODO: We may want to change this.
+      if (errorSubject === 'pass list')
+        this.dataService.setItemValue(dataTag, 'error');
     }
+    this.loadingService.removeToFetchList(dataTag);
+    return res;
   }
 
-  clearItemValue(): void {
-    this.setItemValue(null);
-  }
-  clearListValue(): void {
-    this.setListValue(null);
-  }
-
-  async cancelPass(passId, parkSk) {
-    let res = null;
+  async cancelPasses(passId, parkSk) {
+    let res;
+    let errorSubject = 'pass';
+    let dataTag = Constants.dataIds.CANCELLED_PASS;
     try {
-      res = await this.apiService.delete('pass', { passId: passId, park: parkSk });
-      this.setItemValue(res);
+      this.loadingService.addToFetchList(dataTag);
+      res = await firstValueFrom(
+        this.apiService.delete('pass', { passId: passId, park: parkSk })
+      );
+      this.dataService.setItemValue(dataTag, res);
+      const params = this.dataService.getItemValue(
+        Constants.dataIds.PASS_SEARCH_PARAMS
+      );
+      this.fetchData(params);
     } catch (e) {
       this.toastService.addMessage(
-        `An error has occured while canceling Pass.`,
-        'Pass Service',
-        Constants.ToastTypes.ERROR
+        `Please refresh the page.`,
+        `Error cancelling ${errorSubject}`,
+        ToastTypes.ERROR
       );
-      this.eventService.setError(new EventObject(EventKeywords.ERROR, e, 'Pass Service'));
-      throw e;
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(e), 'Pass Service')
+      );
+      // TODO: We may want to change this.
+      if (errorSubject === 'pass cancel')
+        this.dataService.setItemValue(dataTag, 'error');
     }
+    this.loadingService.removeToFetchList(dataTag);
+  }
+
+  checkFilters(filters, params) {
+    if (filters.facilitySk !== params.facilitySk) {
+      return false;
+    }
+    return true;
+  }
+
+  filterSearchParams(params) {
+    let filterMap = {
+      park: params.park || null,
+      facilityName: params.facilityName || null,
+      date: params.date || null,
+      reservationNumber: params.reservationNumber || null,
+      passStatus: params.passStatus || null,
+      firstName: params.firstName || null,
+      lastName: params.lastName || null,
+      email: params.email || null,
+      passType: params.passType || null,
+      ExclusiveStartKeyPK: params.ExclusiveStartKeyPK || null,
+      ExclusiveStartKeySK: params.ExclusiveStartKeySK || null,
+    };
+
+    for (let item of Object.keys(filterMap)) {
+      if (!filterMap[item]) {
+        delete filterMap[item];
+      }
+    }
+    return filterMap;
+  }
+
+  setParamsFromUrl(facility, queryParams = {}) {
+    let params = { ...queryParams };
+    params['park'] = facility.pk.split('::')[1];
+    params['facilityName'] = facility.name;
+
+    if (Object.keys(queryParams).length === 0) {
+      // No params in url. Set defaults
+      params['date'] = this.utils.getTodayAsShortDate();
+      params['passType'] = this.getBookingTimesList(facility)[0];
+    } else {
+      // QueryParams need passStatus as an array.
+      if (queryParams['passStatus']) {
+        params['passStatus'] = queryParams['passStatus'].split(',');
+      }
+    }
+    this.fetchData(params);
+    return params;
+  }
+
+  getBookingTimesList(facility) {
+    return Object.keys(facility.bookingTimes);
   }
 }

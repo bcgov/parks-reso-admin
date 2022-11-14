@@ -1,49 +1,20 @@
-<div class="container pt-lg-5">
-	<div class="home-title-container text-center">
-		<h1>
-			<span>BC Parks - Day Pass Reservation System</span>
-			<span class="badge"
-				id="alpha">ADMIN</span>
-		</h1>
-	</div>
-	<div class="row">
-		<div class="col-lg-6 col-md-12">
-			<div class="card">
-				<h5 class="card-header">All Parks</h5>
-				<div class="card-body">
-					<h5 class="card-title">Parks Management</h5>
-					<p class="card-text">Manage parks, facilities and passes.</p>
-					<button (click)="navigate('parks')"
-						type="button"
-						class="btn btn-primary">Go</button>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-6 col-md-12">
-			<div class="card">
-				<h5 class="card-header">Pass Management</h5>
-				<div class="card-body">
-					<h5 class="card-title">Pass Management Tools</h5>
-					<p class="card-text">This page is a work in progress. Coming soon.</p>
-					<button (click)="navigate('reservations')"
-						type="button"
-						class="btn btn-primary">Go</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row pt-lg-4" *ngIf="isAdmin">
-		<div class="col-lg-6 col-md-12">
-			<div class="card">
-				<h5 class="card-header">Site Metrics</h5>
-				<div class="card-body">
-					<h5 class="card-title">Site Metrics</h5>
-					<p class="card-text">See pass counts for various states (active/expired/reserved/cancelled).</p>
-					<button (click)="navigate('metrics')"
-						type="button"
-						class="btn btn-primary">Go</button>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="pt-md-5 container container-fluid">
+  <div class="home-title-container text-center">
+    <h1>
+      <span>Day-Use Pass Admin System</span>
+    </h1>
+  </div>
+  <div class="row">
+    <div
+      class="col-xxl-4 col-md-6 col-12 mb-4"
+      *ngFor="let card of cardConfig"
+    >
+      <app-nav-card
+        [cardHeader]="card.cardHeader"
+        [cardTitle]="card.cardTitle"
+        [cardText]="card.cardText"
+        [navigation]="card.navigation"
+      ></app-nav-card>
+    </div>
+  </div>
 </div>

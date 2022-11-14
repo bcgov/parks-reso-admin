@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 //
 // This service/class provides a centralized place to persist config values
@@ -10,9 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class ConfigService {
   private configuration = {};
 
-  constructor(
-    private httpClient: HttpClient
-  ) { }
+  constructor(private httpClient: HttpClient) {}
   /**
    * Initialize the Config Service.  Get configuration data from front-end build, or back-end if nginx
    * is configured to pass the /config endpoint to a dynamic service that returns JSON.
@@ -26,7 +25,9 @@ export class ConfigService {
       try {
         // Attempt to get application via this.httpClient. This uses the url of the application that you are running it from
         // This will not work for local because it will try and get localhost:4200/api instead of 3000/api...
-        this.configuration = await this.httpClient.get('/api/config').toPromise();
+        this.configuration = await firstValueFrom(
+          this.httpClient.get(`api/config`)
+        );
       } catch (e) {
         // If all else fails, we'll just use the variables found in env.js
         console.error('Error getting local configuration:', e);

@@ -1,0 +1,149 @@
+<div *ngIf="facility" class="mb-4">
+  <!-- Facility details -->
+  <section>
+    <app-fancy-header
+      [mainText]="facility?.name"
+      [headerColour1]="'#C1B59B'"
+      [headerColour2]="'#AD9E7C'"
+      [buttonSettings1]="{
+        active: true,
+        text: 'Details',
+        nav: '..',
+        hidden: false
+      }"
+      [buttonSettings2]="{
+        active: false,
+        text: 'Edit',
+        nav: 'edit',
+        hidden: false
+      }"
+    ></app-fancy-header>
+    <div>
+      <div class="mx-4 pt-4">
+        <div class="row">
+          <div class="col-md-6">
+            <label><strong>Status:</strong></label>
+            <p>
+              {{ Utils.capitalizeFirstLetter(facility.status.state) || "-" }}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <label><strong>Visible:</strong></label>
+            <p>
+              {{
+                Utils.capitalizeFirstLetter(facility.visible.toString()) || "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label><strong>Closure Reason:</strong></label>
+            <p>
+              {{ facility.status.stateReason || "-" }}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <label><strong>Type:</strong></label>
+            <p>
+              {{ facility.type }}
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label>
+              <strong>Booking Opening Time:</strong>
+            </label>
+            <p>
+              {{ bookingOpeningHourText }}
+              <small *ngIf="facility.bookingOpeningHour === null"
+                >(default)</small
+              >
+            </p>
+          </div>
+          <div class="col-md-6">
+            <label>
+              <strong>Booking Days Ahead:</strong>
+            </label>
+            <p>
+              {{ bookingDaysAheadText }}
+              <small *ngIf="facility.bookingDaysAhead === null"
+                >(default)</small
+              >
+            </p>
+          </div>
+        </div>
+        <div class="row" *ngIf="facility?.bookingTimes.AM">
+          <div class="col-md-6">
+            <label>
+              <strong>AM Capacity:</strong>
+            </label>
+            <p>
+              {{ facility?.bookingTimes.AM.max }}
+            </p>
+          </div>
+        </div>
+        <div class="row" *ngIf="facility?.bookingTimes.PM">
+          <div class="col-md-6">
+            <label>
+              <strong>PM Capacity:</strong>
+            </label>
+            <p>
+              {{ facility?.bookingTimes.PM.max }}
+            </p>
+          </div>
+        </div>
+        <div class="row" *ngIf="facility?.bookingTimes.DAY">
+          <div class="col-md-6">
+            <label>
+              <strong>All Day Capacity:</strong>
+            </label>
+            <p>
+              {{ facility?.bookingTimes.DAY.max }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pass List -->
+  <section>
+    <app-fancy-header
+      [mainText]="'Passes'"
+      [headerColour1]="'#C55115'"
+      [headerColour2]="'#E86825'"
+      [buttonSettings1]="{
+        active: false,
+        text: '',
+        nav: '',
+        hidden: true
+      }"
+      [buttonSettings2]="{
+        active: false,
+        text: '',
+        nav: '',
+        hidden: true
+      }"
+    ></app-fancy-header>
+    <div class="mx-4 mt-4">
+      <div class="row">
+        <div class="col-12 col-lg-7">
+          <app-passes-capacity-bar></app-passes-capacity-bar>
+        </div>
+        <div class="col-12 col-lg-5 mt-4 mt-lg-auto">
+          <app-passes-utility-buttons
+            class="d-flex justify-content-lg-end"
+          ></app-passes-utility-buttons>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4">
+      <app-passes-filter></app-passes-filter>
+    </div>
+    <div class="mt-4">
+      <app-passes-list></app-passes-list>
+    </div>
+  </section>
+</div>

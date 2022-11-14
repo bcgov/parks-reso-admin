@@ -1,0 +1,28 @@
+<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
+  >{{ label
+  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
+>
+<div class="d-flex">
+  <div
+    class="form-check form-switch"
+    [ngClass]="{ 'invalid-field': isInvalid() }"
+  >
+    <input
+      *ngIf="control"
+      type="checkbox"
+      name="{{ id }}"
+      id="{{ id }}"
+      [formControl]="control"
+      (ngModelChange)="onChange($event)"
+      checked="getSwitchState()"
+      class="form-check-input"
+      attr.aria-label="{{ ariaLabel }}"
+      attr.aria-describedby="{{ ariaDescribedBy }}"
+    />
+  </div>
+  <div class="d-flex">
+    {{ description }}&nbsp;
+    <div *ngIf="getSwitchState()">{{ trueText }}</div>
+    <div *ngIf="!getSwitchState()" class="text-muted">{{ falseText }}</div>
+  </div>
+</div>

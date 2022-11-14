@@ -1,0 +1,15 @@
+<app-table
+  [tableSchema]="tableSchema"
+  [data]="tableRows"
+  [emptyTableMsg]="'No passes found.'"
+></app-table>
+
+<!-- Here is where we store the templates for the specific modals shown from this page.  -->
+<!-- They are not rendered until clicked. -->
+<ng-template #passModalTemplate>
+  <app-modal [modal]="passModal"></app-modal>
+</ng-template>
+
+<ng-template #cancelModalTemplate>
+  <app-modal [modal]="cancelModal"></app-modal>
+</ng-template>

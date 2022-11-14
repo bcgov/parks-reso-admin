@@ -1,0 +1,62 @@
+<div class="row py-2">
+  <div class="input-box col-md-4">
+    <app-picklist
+      id="passTypeID"
+      [selectOptions]="passTypeOptions"
+      [label]="'Pass Type'"
+      [control]="passType"
+    ></app-picklist>
+  </div>
+  <div class="input-box col-md-4">
+    <app-shortdate-picker
+      id="datePicker"
+      [label]="'Pass Date'"
+      [control]="date">
+    </app-shortdate-picker>
+  </div>
+  <div class="input-box col-md-4">
+    <app-multiselect
+      [label]="'Pass Status'"
+      [control]="passStatus"
+      [multiSelectOptions]="passStatusOptions"
+    ></app-multiselect>
+  </div>
+</div>
+
+<div class="row py-2">
+  <div class="input-box col-md-4">
+    <app-text-input
+      id="firstName"
+      [label]="'First Name'"
+      [control]="firstName"
+      [type]="'text'"
+    ></app-text-input>
+  </div>
+  <div class="input-box col-md-4">
+    <app-text-input
+      id="lastName"
+      [label]="'Last Name'"
+      [control]="lastName"
+      [type]="'text'"
+    ></app-text-input>
+  </div>
+  <div class="input-box col-md-4">
+    <app-text-input
+      id="email"
+      [label]="'Email'"
+      [control]="email"
+      [type]="'text'"
+    ></app-text-input>
+  </div>
+</div>
+
+<div class="row py-2">
+  <div class="input-box col-md-4">
+    <app-text-input
+      id="reservationNumber"
+      [label]="'Reservation Number'"
+      [control]="reservationNumber"
+      [type]="'text'"
+    ></app-text-input>
+  </div>
+</div>

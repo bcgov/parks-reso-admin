@@ -1,37 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Constants } from 'app/shared/utils/constants';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { Constants } from '../shared/utils/constants';
 import { ApiService } from './api.service';
+import { DataService } from './data.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
+import { LoadingService } from './loading.service';
 import { ToastService } from './toast.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ModifierService {
   private list: BehaviorSubject<any>;
-  constructor(private apiService: ApiService, private eventService: EventService, private toastService: ToastService) {
+  constructor(
+    private apiService: ApiService,
+    private eventService: EventService,
+    private toastService: ToastService,
+    private loadingService: LoadingService,
+    private dataService: DataService
+  ) {
     this.list = new BehaviorSubject([]);
   }
 
-  setListValue(value): void {
-    this.list.next(value);
-  }
-
-  public getListValue() {
-    return this.list.asObservable();
-  }
-
   async fetchData(park, facility, date) {
-    let modifierList = [];
+    let dataTag = '';
+    let modifierList: any[] = [];
     let errorSubject = 'modifiers';
     try {
-      const res = await this.apiService.get('reservation', {
-        park: park,
-        facility: facility,
-        date: date,
-        getFutureReservationObjects: true
-      });
+      dataTag = Constants.dataIds.MODIFIERS;
+      this.loadingService.addToFetchList(dataTag);
+
+      const res = await firstValueFrom(
+        this.apiService.get('reservation', {
+          park: park,
+          facility: facility,
+          date: date,
+          getFutureReservationObjects: true,
+        })
+      );
 
       //   TODO: Push this into the backend
       for (let i = 0; i < res.length; i++) {
@@ -43,7 +49,7 @@ export class ModifierService {
           }
         }
       }
-      this.setListValue(modifierList);
+      this.dataService.setItemValue(dataTag, modifierList);
     } catch (e) {
       console.log(e);
       this.toastService.addMessage(
@@ -51,8 +57,11 @@ export class ModifierService {
         'Modiifier Service',
         Constants.ToastTypes.ERROR
       );
-      this.eventService.setError(new EventObject(EventKeywords.ERROR, e, 'Modiifier Service'));
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(e), 'Modiifier Service')
+      );
     }
+    this.loadingService.removeToFetchList(dataTag);
   }
 
   //   {
@@ -64,17 +73,24 @@ export class ModifierService {
   //     "facility": "Cheakamus"
   //   }
   async setModifier(obj) {
-    let res = null;
+    let res;
     try {
-      res = this.apiService.put('modifier', obj);
-      this.toastService.addMessage(`Modifier set`, 'Modifier Service', Constants.ToastTypes.SUCCESS);
+      res = await firstValueFrom(this.apiService.put('modifier', obj));
+      this.fetchData(obj.parkName, obj.facility, obj.date);
+      this.toastService.addMessage(
+        `Modifier set`,
+        'Modifier Service',
+        Constants.ToastTypes.SUCCESS
+      );
     } catch (error) {
       this.toastService.addMessage(
         `An error has occured while setting modifier.`,
         'Modifier Service',
         Constants.ToastTypes.ERROR
       );
-      this.eventService.setError(new EventObject(EventKeywords.ERROR, error, 'Modifier Service'));
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(error), 'Modifier Service')
+      );
     }
 
     // TODO: kick off reservations list get
@@ -88,27 +104,33 @@ export class ModifierService {
       bookingTimes: {
         AM: 0,
         PM: 0,
-        DAY: 0
+        DAY: 0,
       },
       parkName: park,
-      facility: facility
+      facility: facility,
     };
 
-    let res = null;
+    let res;
     try {
-      res = this.apiService.put('modifier', obj);
-      this.toastService.addMessage(`Modifier removed`, 'Modifier Service', Constants.ToastTypes.SUCCESS);
+      res = await firstValueFrom(this.apiService.put('modifier', obj));
+      this.fetchData(park, facility, date);
+      this.toastService.addMessage(
+        `Modifier removed`,
+        'Modifier Service',
+        Constants.ToastTypes.SUCCESS
+      );
     } catch (error) {
       this.toastService.addMessage(
         `An error has occured while setting modifier.`,
         'Modifier Service',
         Constants.ToastTypes.ERROR
       );
-      this.eventService.setError(new EventObject(EventKeywords.ERROR, error, 'Modifier Service'));
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(error), 'Modifier Service')
+      );
     }
 
     // TODO: kick off reservations list get
-
     return res;
   }
 }

@@ -1,63 +1,44 @@
-@import "assets/styles/base/base.scss";
+@import "/src/assets/themes/variables";
 
-.app-footer {
-    background: $bg-dark;
-    border-top: none;
-    color: $footer-color;
-    position: relative;
-    .container {
-        padding: 0.5rem 1.5rem;
+.footer-admin {
+  background-color: $primary-nav;
+  color: $white;
+  position: relative;
+}
+
+a {
+  color: $white;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $bcgold;
+}
+
+.gov-links {
+  font-size: 0.875rem;
+  line-height: 1rem;
+  list-style-type: none;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+    
+    &:after {
+      position: relative;
+      top: -1px;
+      display: inline-block;
+      margin-left: 0.5rem;
+      margin-right: 0.25rem;
+      content: '|';
     }
 
-    ul {
-        padding: 0;
-        font-size: 0.875rem;
-        list-style-type: none;
-        text-align: center;
-
-        li {
-            margin-bottom: 0.25rem;
-        }
+    &:last-child {
+      &:after {
+        display: none;
+      }
     }
-
-    a {
-        color: $footer-color;
-
-        &:focus,
-        &:hover {
-            color: $gold;
-        }
-    }
-
-    .footer-admin {
-        margin: 0;
-        padding: 0;
-
-        .gov-links {
-            text-align: center;
-            margin: 0;
-            padding: 0;
-
-            li {
-                display: inline-block;
-                margin: 0;
-                line-height: 1rem;
-
-                &:after {
-                    position: relative;
-                    top: -1px;
-                    display: inline-block;
-                    margin-left: 0.5rem;
-                    margin-right: 0.25rem;
-                    content: '|';
-                }
-
-                &:last-child {
-                    &:after {
-                        display: none;
-                    }
-                }
-            }
-        }
-    }
+  }
 }

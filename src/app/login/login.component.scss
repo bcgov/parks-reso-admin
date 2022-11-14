@@ -1,7 +1,13 @@
-@import '~assets/styles/base/base.scss';
+@import "src/assets/themes/variables";
+
+h1 {
+  font-size: 2.8rem;
+  font-weight: normal;
+}
 
 .login-container {
   background-color: $white;
+  min-height: 100%;
   padding: 1.4rem 0.6rem;
 }
 
@@ -13,13 +19,11 @@
 
 @media screen and (min-width: 768px) {
   .login-container {
-    background: $lightgray;
-    /* fill the entire viewport and offset the fixed header and footer height (68px + 37px = 105px;) */
-    min-height: calc(100vh - 105px);
+    background: $form-grey;
     padding: 0;
   }
   .login-form {
-    border: 1px solid $login-page-form-border;
+    border: 1px solid $alpha-border-color;
     width: 75%;
   }
 }
@@ -45,9 +49,8 @@ a.reg-link {
   margin-bottom: 0.5rem;
   display: inline-block;
   margin-top: 0.25rem;
-  text-decoration: underline;
 
-  span.material-icons {
-    margin-right: 4px;
+  i {
+    margin-right: 0.25rem;
   }
 }
