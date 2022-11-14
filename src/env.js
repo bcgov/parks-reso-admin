@@ -11,12 +11,12 @@
   // Environment name
   window.__env.ENVIRONMENT = "local"; // local | dev | test | prod
 
-  window.__env.API_LOCATION = 'http://localhost:3000';
-  window.__env.API_PATH = '/api';
-  window.__env.API_PUBLIC_PATH = '/api';
-  window.__env.KEYCLOAK_CLIENT_ID = 'parking-pass';
-  window.__env.KEYCLOAK_URL = 'https://dev.oidc.gov.bc.ca/auth';
-  window.__env.KEYCLOAK_REALM = 'g7v0xlf4';
+  window.__env.API_LOCATION =
+    "http://localhost:3000";
+  window.__env.API_PATH = "/api";
+  window.__env.KEYCLOAK_CLIENT_ID = "parking-pass";
+  window.__env.KEYCLOAK_URL = "https://dev.oidc.gov.bc.ca/auth";
+  window.__env.KEYCLOAK_REALM = "g7v0xlf4";
   window.__env.KEYCLOAK_ENABLED = true;
 
   // Number of days in advance a pass is available
