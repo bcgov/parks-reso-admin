@@ -70,7 +70,10 @@ export class ParkEditFormComponent extends BaseFormComponent {
       ),
       parkVisibility: new UntypedFormControl(this.data.visible),
       parkCapacity: new UntypedFormControl(this.data.capacity),
-      parkSiteLink: new UntypedFormControl(this.data.bcParksLink),
+      parkSiteLink: new UntypedFormControl(
+        this.data.bcParksLink,
+        Validators.required
+      ),
       parkMapLink: new UntypedFormControl(this.data.mapLink),
       parkDescription: new UntypedFormControl(this.data.description),
     });

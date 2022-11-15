@@ -16,6 +16,7 @@
   [(ngModel)]="selectedOptions"
   (change)="updateMultiselect()"
   [items]="multiSelectOptions"
+  labelForId="{{id}}"
   bindLabel="name"
   appendTo="body"
   [multiple]="true"
