@@ -21,7 +21,7 @@ jobs:
     environment: prod
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: ['16']
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
@@ -76,7 +76,7 @@ jobs:
     environment: prod
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: ['16']
     steps:
       - uses: actions/checkout@v3
         with:
