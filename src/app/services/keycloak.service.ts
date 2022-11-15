@@ -136,14 +136,14 @@ export class KeycloakService {
       !(
         jwt &&
         jwt.resource_access &&
-        jwt.resource_access['attendance-and-revenue'] &&
-        jwt.resource_access['attendance-and-revenue'].roles
+        jwt.resource_access['parking-pass'] &&
+        jwt.resource_access['parking-pass'].roles
       )
     ) {
       return false;
     }
 
-    return jwt.resource_access['attendance-and-revenue'].roles.length >= 1;
+    return jwt.resource_access['parking-pass'].roles.length >= 1;
   }
 
   /**
@@ -163,7 +163,7 @@ export class KeycloakService {
     }
 
     const jwt = JwtUtil.decodeToken(token);
-    return jwt?.resource_access?.['attendance-and-revenue']?.roles.includes(
+    return jwt?.resource_access?.['parking-pass']?.roles.includes(
       'sysadmin'
     );
   }
