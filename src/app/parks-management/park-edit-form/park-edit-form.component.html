@@ -127,3 +127,9 @@
     </button>
   </section>
 </div>
+
+<!-- Here is where we store the templates for the specific modals shown from this page.  -->
+<!-- They are not rendered until clicked. -->
+<ng-template #parkEditConfirmationTemplate>
+  <app-modal [modal]="parkEditModal"></app-modal>
+</ng-template>

@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Component, Input, OnInit } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 export interface modalSchema {
   id: string;
