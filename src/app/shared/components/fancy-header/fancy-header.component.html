@@ -15,7 +15,7 @@
       class="btn btn-outline-light"
       [class.active]="buttonSettings1.active"
       (click)="navigate(buttonSettings1.nav)"
-      *ngIf="!buttonSettings1.hidden"
+      *ngIf="buttonSettings1 && !buttonSettings1.hidden"
     >
       {{ buttonSettings1.text }}
     </button>
@@ -24,7 +24,7 @@
       class="btn btn-outline-light"
       [class.active]="buttonSettings2.active"
       (click)="navigate(buttonSettings2.nav)"
-      *ngIf="!buttonSettings2.hidden"
+      *ngIf="buttonSettings2 && !buttonSettings2.hidden"
     >
       {{ buttonSettings2.text }}
     </button>
@@ -38,7 +38,7 @@
       class="btn btn-outline-secondary"
       [class.active]="buttonSettings1.active"
       (click)="navigate(buttonSettings1.nav)"
-      *ngIf="!buttonSettings1.hidden"
+      *ngIf="buttonSettings1 && !buttonSettings1.hidden"
     >
       {{ buttonSettings1.text }}
     </button>
@@ -47,7 +47,7 @@
       class="btn btn-outline-secondary"
       [class.active]="buttonSettings2.active"
       (click)="navigate(buttonSettings2.nav)"
-      *ngIf="!buttonSettings2.hidden"
+      *ngIf="buttonSettings2 && !buttonSettings2.hidden"
     >
       {{ buttonSettings2.text }}
     </button>
