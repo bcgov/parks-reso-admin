@@ -61,7 +61,11 @@
   class="input-group mb-3"
   [ngClass]="{ 'invalid-field': isInvalid() }"
 >
-  <span class="input-group-text" id="{{ ariaDescribedBy }}"
+  <span
+    id="{{ ariaDescribedBy }}"
+    [ngClass]="icon"
+    class="input-group-text"
+    id="{{ ariaDescribedBy }}"
     ><i class="bi bi-currency-dollar"></i
   ></span>
   <input

@@ -1,5 +1,7 @@
 <h2>Pass Requirements</h2>
 <app-toggle
+  id="facilityPassesRequired"
+  [ariaLabel]="'Facility Passes Required'"
   [control]="facilityPassesRequired"
   [description]="'Passes required:'"
   [trueText]="'On days selected below'"
@@ -14,7 +16,7 @@
       class="d-inline-flex me-md-4"
       *ngFor="let day of facilityBookingDaysArray"
     >
-      <app-checkbox [label]="day?.symbol" [control]="day?.control">
+      <app-checkbox [id]="day?.symbol" [label]="day?.symbol" [control]="day?.control">
       </app-checkbox>
     </div>
   </div>
@@ -24,6 +26,7 @@
       <app-wysiwyg-input
         [control]="facilityBookingDaysRichText"
         [label]="'Message to Public'"
+        [id]="'facilityBookingDaysRichText'"
       >
       </app-wysiwyg-input>
     </div>
@@ -38,12 +41,14 @@
         class="pe-3 w-100"
         [control]="getControl('AM')"
         [label]="'Available?'"
+        id="amAvailable"
       >
       </app-toggle>
       <app-text-input
         class="capacity-input"
         [control]="getControl('capacityAM')"
         [label]="'Capacity'"
+        id="amCapacity"
       >
       </app-text-input>
     </div>
@@ -55,12 +60,14 @@
         class="pe-3 w-100"
         [control]="getControl('PM')"
         [label]="'Available?'"
+        id="pmAvailable"
       >
       </app-toggle>
       <app-text-input
         class="capacity-input"
         [control]="getControl('capacityPM')"
         [label]="'Capacity'"
+        id="pmCapacity"
       >
       </app-text-input>
     </div>
@@ -72,12 +79,14 @@
         class="pe-3 w-100"
         [control]="getControl('DAY')"
         [label]="'Available?'"
+        id="dayAvailable"
       >
       </app-toggle>
       <app-text-input
         class="capacity-input"
         [control]="getControl('capacityDAY')"
         [label]="'Capacity'"
+        id="dayCapacity"
       >
       </app-text-input>
     </div>

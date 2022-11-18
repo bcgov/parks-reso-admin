@@ -42,3 +42,9 @@
     </button>
   </div>
 </form>
+
+<!-- Here is where we store the templates for the specific modals shown from this page.  -->
+<!-- They are not rendered until clicked. -->
+<ng-template #facilityEditConfirmationTemplate>
+  <app-modal [modal]="facilityEditModal"></app-modal>
+</ng-template>
