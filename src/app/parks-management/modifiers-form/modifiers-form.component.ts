@@ -131,13 +131,13 @@ export class ModifiersFormComponent
   formatFormResults(results) {
     let resultTimes = {};
     if (results.modifierAMChanges) {
-      resultTimes['AM'] = results.modifierAMChanges;
+      resultTimes['AM'] = parseInt(results.modifierAMChanges, 10);
     }
     if (results.modifierPMChanges) {
-      resultTimes['PM'] = results.modifierPMChanges;
+      resultTimes['PM'] = parseInt(results.modifierPMChanges, 10);
     }
     if (results.modifierDAYChanges) {
-      resultTimes['DAY'] = results.modifierDAYChanges;
+      resultTimes['DAY'] = parseInt(results.modifierDAYChanges, 10);
     }
     const postObj = {
       date: results.modifierOverrideDate,
