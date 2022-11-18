@@ -179,7 +179,9 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       facilityClosureReason: new UntypedFormControl(
         this.data.status?.stateReason || null
       ),
-      facilityVisibility: new UntypedFormControl(this.data.visible),
+      facilityVisibility: new UntypedFormControl(
+        this.data.visible ? this.data.visible : false
+      ),
       facilityName: new UntypedFormControl(this.data.name, Validators.required),
       facilityType: new UntypedFormControl(this.data.type, Validators.required),
       facilityBookingOpeningHour: new UntypedFormControl({
@@ -216,6 +218,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     } else {
       this.facilityService.postFacility(facilityObj, this.park.sk);
     }
+    this.facilityService.fetchData(this.park.sk);
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
@@ -369,7 +372,9 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     for (const day of Object.keys(facilityObj.bookingDays)) {
       if (facilityObj.bookingDays[day]) {
         const weekday =
-          Constants.Weekdays.filter((weekday) => String(weekday.id) === day)[0] || null;
+          Constants.Weekdays.filter(
+            (weekday) => String(weekday.id) === day
+          )[0] || null;
         bookingDaysList.push(weekday?.name);
       }
     }
