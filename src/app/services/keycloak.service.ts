@@ -153,7 +153,11 @@ export class KeycloakService {
    * @memberof KeycloakService
    */
   isAllowed(service): boolean {
-    if (service !== 'export-reports' && service !== 'lock-records') {
+    if (
+      service !== 'export-reports' &&
+      service !== 'lock-records' &&
+      service !== 'add-facility'
+    ) {
       return true;
     }
     const token = this.getToken();
@@ -163,9 +167,7 @@ export class KeycloakService {
     }
 
     const jwt = JwtUtil.decodeToken(token);
-    return jwt?.resource_access?.['parking-pass']?.roles.includes(
-      'sysadmin'
-    );
+    return jwt?.resource_access?.['parking-pass']?.roles.includes('sysadmin');
   }
 
   /**

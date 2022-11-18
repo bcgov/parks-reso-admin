@@ -6,6 +6,7 @@ import { Constants } from 'src/app/shared/utils/constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tableSchema } from 'src/app/shared/components/table/table.component';
 import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
+import { KeycloakService } from 'src/app/services/keycloak.service';
 
 @Component({
   selector: 'app-park-details',
@@ -17,12 +18,14 @@ export class ParkDetailsComponent implements OnInit, OnDestroy {
   public park;
   public tableSchema: tableSchema;
   public tableRows: any[] = [];
+  public addFacilityButtonConfig;
 
   constructor(
     protected dataService: DataService,
     protected facilityService: FacilityService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    protected keycloakService: KeycloakService
   ) {
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
@@ -39,6 +42,14 @@ export class ParkDetailsComponent implements OnInit, OnDestroy {
           this.tableRows = res;
         })
     );
+    if (this.keycloakService.isAllowed('add-facility')) {
+      this.addFacilityButtonConfig = {
+        active: true,
+        text: 'Add Facility',
+        nav: 'add-facility',
+        hidden: false,
+      };
+    }
   }
 
   ngOnInit(): void {
