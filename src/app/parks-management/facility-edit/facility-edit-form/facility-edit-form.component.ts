@@ -218,7 +218,6 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     } else {
       this.facilityService.postFacility(facilityObj, this.park.sk);
     }
-    this.facilityService.fetchData(this.park.sk);
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 

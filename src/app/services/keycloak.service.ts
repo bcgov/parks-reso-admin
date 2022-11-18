@@ -123,7 +123,8 @@ export class KeycloakService {
    * @returns {boolean} true if the user has access, false otherwise.
    * @memberof KeycloakService
    */
-  isAuthorized(): boolean {
+  isAuthorized(specificRoles = []): boolean {
+    const client = 'parking-pass';
     const token = this.getToken();
 
     if (!token) {
@@ -136,14 +137,20 @@ export class KeycloakService {
       !(
         jwt &&
         jwt.resource_access &&
-        jwt.resource_access['parking-pass'] &&
-        jwt.resource_access['parking-pass'].roles
+        jwt.resource_access[client] &&
+        jwt.resource_access[client].roles
       )
     ) {
       return false;
     }
 
-    return jwt.resource_access['parking-pass'].roles.length >= 1;
+    if (specificRoles.length === 0) {
+      return jwt.resource_access[client].roles.length >= 1;
+    } else {
+      return !specificRoles.some(
+        (role) => jwt.resource_access[client].roles.indexOf(role) === -1
+      );
+    }
   }
 
   /**

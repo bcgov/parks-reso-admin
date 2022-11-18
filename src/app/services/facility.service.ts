@@ -89,6 +89,7 @@ export class FacilityService {
         res = await firstValueFrom(this.apiService.put('facility', obj));
         // ensure CURRENT_FACILITY in DataService is updated with new facility data.
         this.fetchData(parkSk, obj.name);
+        this.fetchData(parkSk);
         this.toastService.addMessage(
           `Facility: ${parkSk} - ${obj.name} updated.`,
           `Facility updated`,
@@ -125,6 +126,7 @@ export class FacilityService {
         res = await firstValueFrom(this.apiService.post('facility', obj));
         // ensure CURRENT_FACILITY in DataService is updated with new facility data.
         this.fetchData(parkSk, obj.name);
+        this.fetchData(parkSk);
         this.toastService.addMessage(
           `New facility ${parkSk} - ${obj.name} created.`,
           `New Facility created`,

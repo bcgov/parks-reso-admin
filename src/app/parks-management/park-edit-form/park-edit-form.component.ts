@@ -32,7 +32,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
   public isEditMode = new BehaviorSubject<boolean>(true);
   public parkEditModal: modalSchema;
   public parkEditModalRef: BsModalRef;
-  private utils = new Utils()
+  private utils = new Utils();
 
   @ViewChild('parkEditConfirmationTemplate')
   parkEditConfirmationTemplate: TemplateRef<any>;
@@ -166,7 +166,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
     }
     let message = this.utils.buildInnerHTMLRow([
       `<strong>Name:</strong></br>` + parkObj.park?.name,
-      `<strong>Status:</strong></br>` + statusMsg
+      `<strong>Status:</strong></br>` + statusMsg,
     ]);
     let visibleMsg = '';
     if (parkObj.visible) {
@@ -176,8 +176,8 @@ export class ParkEditFormComponent extends BaseFormComponent {
     }
     message += this.utils.buildInnerHTMLRow([
       `<strong>Visibility:</strong></br>` + visibleMsg,
-      `<strong>Capacity:</strong></br>` + parkObj.park?.capacity
-    ])
+      `<strong>Capacity:</strong></br>` + parkObj.park?.capacity,
+    ]);
     message +=
       `<strong>Link to BC Parks Site:</strong></br>` +
       parkObj.park?.bcParksLink;
