@@ -23,7 +23,8 @@
         [description]="'Status: '"
         [trueText]="'Passes are required at this park.'"
         [falseText]="'Passes are not required at this park.'"
-        [id]="'parkStatus'"
+        id="'parkStatus'"
+        [ariaLabel]="'Park Status'"
       >
       </app-toggle>
       <app-toggle
@@ -32,6 +33,7 @@
         [trueText]="'Park is visible to the public.'"
         [falseText]="'Park is not visible to the public.'"
         [id]="'parkStatus'"
+        [ariaLabel]="'Park Visibility'"
       >
       </app-toggle>
     </section>
@@ -105,6 +107,8 @@
       <app-wysiwyg-input
         [control]="fields?.parkDescription"
         [label]="'Park Description'"
+        [ariaLabel]="'Park Description'"
+        [id]="'parkDescription'"
       >
       </app-wysiwyg-input>
     </section>
