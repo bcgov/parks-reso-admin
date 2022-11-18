@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -6,13 +11,16 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { ParkService } from 'src/app/services/park.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
+import { modalSchema } from 'src/app/shared/components/modal/modal.component';
 import { Constants } from 'src/app/shared/utils/constants';
+import { Utils } from 'src/app/shared/utils/utils';
 
 @Component({
   selector: 'app-park-edit-form',
@@ -22,6 +30,12 @@ import { Constants } from 'src/app/shared/utils/constants';
 export class ParkEditFormComponent extends BaseFormComponent {
   public park;
   public isEditMode = new BehaviorSubject<boolean>(true);
+  public parkEditModal: modalSchema;
+  public parkEditModalRef: BsModalRef;
+  private utils = new Utils()
+
+  @ViewChild('parkEditConfirmationTemplate')
+  parkEditConfirmationTemplate: TemplateRef<any>;
 
   constructor(
     protected formBuilder: UntypedFormBuilder,
@@ -31,7 +45,8 @@ export class ParkEditFormComponent extends BaseFormComponent {
     protected loadingService: LoadingService,
     protected changeDetector: ChangeDetectorRef,
     private parkService: ParkService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: BsModalService
   ) {
     super(
       formBuilder,
@@ -70,7 +85,10 @@ export class ParkEditFormComponent extends BaseFormComponent {
       ),
       parkVisibility: new UntypedFormControl(this.data.visible),
       parkCapacity: new UntypedFormControl(this.data.capacity),
-      parkSiteLink: new UntypedFormControl(this.data.bcParksLink),
+      parkSiteLink: new UntypedFormControl(
+        this.data.bcParksLink,
+        Validators.required
+      ),
       parkMapLink: new UntypedFormControl(this.data.mapLink),
       parkDescription: new UntypedFormControl(this.data.description),
     });
@@ -81,8 +99,12 @@ export class ParkEditFormComponent extends BaseFormComponent {
     const res = await super.submit();
     if (res.invalidControls.length === 0) {
       const postObj = this.formatFormResults(res.fields);
-      this.parkService.putPark(postObj);
+      this.displayConfirmationModal(postObj);
     }
+  }
+
+  submitParkChanges(postObj) {
+    this.parkService.putPark(postObj);
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
@@ -101,6 +123,69 @@ export class ParkEditFormComponent extends BaseFormComponent {
       visible: results.parkVisibility,
     };
     return postObj;
+  }
+
+  displayConfirmationModal(parkObj) {
+    const self = this;
+    this.parkEditModal = {
+      id: 'parkEditModal',
+      title: 'Confirm Park Details:',
+      body: this.constructParkEditModalBody(parkObj),
+      buttons: [
+        {
+          text: 'Cancel',
+          classes: 'btn btn-outline-secondary',
+          onClick: function () {
+            self.parkEditModalRef.hide();
+          },
+        },
+        {
+          text: 'Confirm',
+          classes: 'btn btn-primary',
+          onClick: function () {
+            self.submitParkChanges(parkObj);
+            self.parkEditModalRef.hide();
+          },
+        },
+      ],
+    };
+    this.parkEditModalRef = this.modalService.show(
+      this.parkEditConfirmationTemplate,
+      {
+        class: 'modal-lg',
+      }
+    );
+  }
+
+  constructParkEditModalBody(parkObj) {
+    let statusMsg = '';
+    if (parkObj.status === 'open') {
+      statusMsg += `Open (passes required)`;
+    } else {
+      statusMsg += `Closed (passes not required)`;
+    }
+    let message = this.utils.buildInnerHTMLRow([
+      `<strong>Name:</strong></br>` + parkObj.park?.name,
+      `<strong>Status:</strong></br>` + statusMsg
+    ]);
+    let visibleMsg = '';
+    if (parkObj.visible) {
+      visibleMsg += `Visible to public`;
+    } else {
+      visibleMsg += `Not visible to public`;
+    }
+    message += this.utils.buildInnerHTMLRow([
+      `<strong>Visibility:</strong></br>` + visibleMsg,
+      `<strong>Capacity:</strong></br>` + parkObj.park?.capacity
+    ])
+    message +=
+      `<strong>Link to BC Parks Site:</strong></br>` +
+      parkObj.park?.bcParksLink;
+    message +=
+      `</br></br><strong>Link to map:</strong></br>` + parkObj.park?.mapLink;
+    message +=
+      `</br></br><strong>Description</strong></br>` + parkObj.description;
+    return message;
   }
 
   testParkSiteLink(event) {

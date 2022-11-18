@@ -20,4 +20,15 @@ export class Constants {
     INFO: 2,
     ERROR: 3,
   };
+
+  // luxon weekdays, 1-indexed starting with Monday.
+  public static readonly Weekdays: any[] = [
+    { id: 7, name: 'Sunday', symbol: 'Su' },
+    { id: 1, name: 'Monday', symbol: 'M' },
+    { id: 2, name: 'Tuesday', symbol: 'T' },
+    { id: 3, name: 'Wednesday', symbol: 'W' },
+    { id: 4, name: 'Thursday', symbol: 'Th' },
+    { id: 5, name: 'Friday', symbol: 'F' },
+    { id: 6, name: 'Saturday', symbol: 'Sa' },
+  ];
 }

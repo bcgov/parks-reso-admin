@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { Constants } from 'src/app/shared/utils/constants';
 
 @Component({
   selector: 'app-facility-edit-form-pass-requirements',
@@ -22,50 +23,13 @@ export class FacilityEditFormPassRequirementsComponent implements OnInit {
     if (!this.facilityBookingDaysRichText?.value) {
       this.facilityBookingDaysRichText.setValue(this.richTextDefault);
     }
-    this.facilityBookingDaysArray = [
-      {
-        id: 0,
-        day: 'Sunday',
-        symbol: 'Su',
-        control: this.facilityBookingDays['Sunday'],
-      },
-      {
-        id: 1,
-        day: 'Monday',
-        symbol: 'M',
-        control: this.facilityBookingDays['Monday'],
-      },
-      {
-        id: 2,
-        day: 'Tuesday',
-        symbol: 'T',
-        control: this.facilityBookingDays['Tuesday'],
-      },
-      {
-        id: 3,
-        day: 'Wednesday',
-        symbol: 'W',
-        control: this.facilityBookingDays['Wednesday'],
-      },
-      {
-        id: 4,
-        day: 'Thursday',
-        symbol: 'Th',
-        control: this.facilityBookingDays['Thursday'],
-      },
-      {
-        id: 5,
-        day: 'Friday',
-        symbol: 'F',
-        control: this.facilityBookingDays['Friday'],
-      },
-      {
-        id: 6,
-        day: 'Saturday',
-        symbol: 'Sa',
-        control: this.facilityBookingDays['Saturday'],
-      },
-    ];
+    for (const day of Constants.Weekdays) {
+      const control = {
+        control: this.facilityBookingDays[day.name],
+      };
+      const dayObj = Object.assign(day, control);
+      this.facilityBookingDaysArray.push(dayObj);
+    }
   }
 
   getControl(controlName) {

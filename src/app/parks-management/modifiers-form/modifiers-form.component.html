@@ -5,6 +5,7 @@
         [control]="fields?.modifierOverrideDate"
         [label]="'Override date'"
         [minDate]="today"
+        [id]="'modifierOverrideDate'"
       >
       </app-shortdate-picker>
     </div>
@@ -13,6 +14,7 @@
         [control]="fields?.modifierAMChanges"
         [label]="'AM Changes'"
         [type]="'number'"
+        id="modifierAMChanges"
       >
       </app-text-input>
     </div>
@@ -21,6 +23,7 @@
         [control]="fields?.modifierPMChanges"
         [label]="'PM Changes'"
         [type]="'number'"
+        id="modifierPMChanges"
       >
       </app-text-input>
     </div>
@@ -29,11 +32,13 @@
         [control]="fields?.modifierDAYChanges"
         [label]="'All-Day Changes'"
         [type]="'number'"
+        id="modifierDAYChanges"
       >
       </app-text-input>
     </div>
     <div class="d-flex justify-content-end align-self-end mb-3 w-100">
       <button
+        aria-label="'Save'"
         class="btn btn-primary"
         (click)="onSubmit()"
         [disabled]="checkModifierSubmission()"

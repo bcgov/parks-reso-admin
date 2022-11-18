@@ -74,7 +74,7 @@ export class ModifiersListComponent implements OnInit {
         },
         {
           id: 'delete-modifier',
-          displayHeader: '',
+          displayHeader: 'Actions',
           columnClasses: 'ps-5 pe-3',
           width: '10%',
           mapValue: () => null,
