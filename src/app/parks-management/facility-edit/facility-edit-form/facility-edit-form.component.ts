@@ -231,7 +231,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       results.facilityBookingTimes?.capacityAM
     ) {
       resultTimes['AM'] = {
-        max: results.facilityBookingTimes.capacityAM,
+        max: parseInt(results.facilityBookingTimes.capacityAM, 10),
       };
     }
     if (
@@ -239,7 +239,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       results.facilityBookingTimes?.capacityPM
     ) {
       resultTimes['PM'] = {
-        max: results.facilityBookingTimes.capacityPM,
+        max: parseInt(results.facilityBookingTimes.capacityPM, 10),
       };
     }
     if (
@@ -247,7 +247,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       results.facilityBookingTimes?.capacityDAY
     ) {
       resultTimes['DAY'] = {
-        max: results.facilityBookingTimes.capacityDAY,
+        max: parseInt(results.facilityBookingTimes.capacityDAY, 10),
       };
     }
     // create API submission object
