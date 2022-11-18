@@ -369,7 +369,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     for (const day of Object.keys(facilityObj.bookingDays)) {
       if (facilityObj.bookingDays[day]) {
         const weekday =
-          Constants.Weekdays.filter((e) => String(e.id) === day)[0] || null;
+          Constants.Weekdays.filter((weekday) => String(weekday.id) === day)[0] || null;
         bookingDaysList.push(weekday?.name);
       }
     }
