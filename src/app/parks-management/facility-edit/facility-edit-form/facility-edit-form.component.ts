@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -7,13 +12,17 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
+import { ConfigService } from 'src/app/services/config.service';
 import { DataService } from 'src/app/services/data.service';
 import { FacilityService } from 'src/app/services/facility.service';
 import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
+import { modalSchema } from 'src/app/shared/components/modal/modal.component';
 import { Constants } from 'src/app/shared/utils/constants';
+import { Utils } from 'src/app/shared/utils/utils';
 
 @Component({
   selector: 'app-facility-edit-form',
@@ -23,14 +32,18 @@ import { Constants } from 'src/app/shared/utils/constants';
 export class FacilityEditFormComponent extends BaseFormComponent {
   public facility;
   public park;
-
   public bookingDaysFormArray;
   public bookingOpeningHourFormGroup;
+  public facilityEditModal: modalSchema;
+  public facilityEditModalRef: BsModalRef;
   public isEditMode = new BehaviorSubject<boolean>(true);
   public facilityBookingDaysArray: any[] = [];
-
   public defaultBookingDaysRichText =
     '<p>You don&rsquo;t need a day-use pass for this date and pass type. Passes may be required on other days and at other parks.</p>';
+  private utils = new Utils();
+
+  @ViewChild('facilityEditConfirmationTemplate')
+  facilityEditConfirmationTemplate: TemplateRef<any>;
 
   constructor(
     protected formBuilder: UntypedFormBuilder,
@@ -40,7 +53,9 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     protected loadingService: LoadingService,
     protected changeDetector: ChangeDetectorRef,
     private facilityService: FacilityService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: BsModalService,
+    private configService: ConfigService
   ) {
     super(
       formBuilder,
@@ -191,11 +206,15 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     let res = await super.submit();
     if (res.invalidControls.length === 0) {
       const postObj = this.formatFormResults(res.fields);
-      if (this.isEditMode.value === true) {
-        this.facilityService.putFacility(postObj, this.park.sk);
-      } else {
-        this.facilityService.postFacility(postObj, this.park.sk);
-      }
+      this.displayConfirmationModal(postObj);
+    }
+  }
+
+  submitFacilityChanges(facilityObj) {
+    if (this.isEditMode.value === true) {
+      this.facilityService.putFacility(facilityObj, this.park.sk);
+    } else {
+      this.facilityService.postFacility(facilityObj, this.park.sk);
     }
     this.router.navigate(['../'], { relativeTo: this.route });
   }
@@ -253,5 +272,136 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       bookableHolidays: [],
     };
     return postObj;
+  }
+
+  displayConfirmationModal(facilityObj) {
+    const self = this;
+    this.facilityEditModal = {
+      id: 'facilityEditModal',
+      title: 'Confirm Facility Details:',
+      body: this.constructFacilityEditModalBody(facilityObj),
+      buttons: [
+        {
+          text: 'Cancel',
+          classes: 'btn btn-outline-secondary',
+          onClick: function () {
+            self.facilityEditModalRef.hide();
+          },
+        },
+        {
+          text: 'Confirm',
+          classes: 'btn btn-primary',
+          onClick: function () {
+            self.submitFacilityChanges(facilityObj);
+            self.facilityEditModalRef.hide();
+          },
+        },
+      ],
+    };
+    this.facilityEditModalRef = this.modalService.show(
+      this.facilityEditConfirmationTemplate,
+      {
+        class: 'modal-lg',
+      }
+    );
+  }
+
+  constructFacilityEditModalBody(facilityObj) {
+    let statusMsg = '';
+    if (facilityObj.status?.state === 'open') {
+      statusMsg += `Open (passes required)`;
+    } else {
+      statusMsg += `Closed (passes not required)`;
+      statusMsg += `</br></br><strong>Closure Reason:</strong></br>`;
+      if (facilityObj.status?.stateReason) {
+        statusMsg += facilityObj.status?.stateReason;
+      } else {
+        statusMsg += `None specified`;
+      }
+    }
+    let message = this.utils.buildInnerHTMLRow([
+      `<strong>Name:</strong></br>` + facilityObj.name,
+      `<strong>Status:</strong></br>` + statusMsg,
+    ]);
+
+    let visibleMsg = '';
+    if (facilityObj.visible) {
+      visibleMsg += `Facility is visible to public`;
+    } else {
+      visibleMsg += `Facility is not visible to public`;
+    }
+    message += this.utils.buildInnerHTMLRow([
+      `<strong>Visible:</strong></br>` + visibleMsg,
+      `<strong>Type:</strong></br>` + facilityObj.type,
+    ]);
+
+    let openingHourMsg = '';
+    if (facilityObj.bookingOpeningHour) {
+      const hour = this.utils.convert24hTo12hTime(
+        facilityObj.bookingOpeningHour
+      ).hour;
+      const meridian = this.utils.convert24hTo12hTime(
+        facilityObj.bookingOpeningHour
+      ).amPm;
+      openingHourMsg += `${hour}:00 ${meridian} PST/PDT`;
+    } else {
+      const hour = this.utils.convert24hTo12hTime(
+        this.configService.config['ADVANCE_BOOKING_HOUR']
+      ).hour;
+      const meridian = this.utils.convert24hTo12hTime(
+        this.configService.config['ADVANCE_BOOKING_HOUR']
+      ).amPm;
+      openingHourMsg += `${hour}:00 ${meridian} PST/PDT (default)`;
+    }
+    let daysAheadMsg = '';
+    if (facilityObj.bookingDaysAhead) {
+      daysAheadMsg += facilityObj.bookingDaysAhead;
+    } else {
+      daysAheadMsg += `${this.configService.config['ADVANCE_BOOKING_LIMIT']} (default)`;
+    }
+    message += this.utils.buildInnerHTMLRow([
+      `<strong>Booking Opening Time:</strong></br>` + openingHourMsg,
+      `<strong>Booking Days Ahead:</strong></br>` + daysAheadMsg,
+    ]);
+
+    let bookingDaysList = [];
+    console.log('facilityObj.bookingDays:', facilityObj.bookingDays);
+    for (const day of Object.keys(facilityObj.bookingDays)) {
+      if (facilityObj.bookingDays[day]) {
+        const weekday = Constants.Weekdays.filter(
+          (e) => String(e.id) === day
+        )[0] || null;
+        bookingDaysList.push(weekday?.name);
+      }
+    }
+    message += `<hr>`;
+    let capacityMsg = [];
+    if (facilityObj.bookingTimes?.AM) {
+      capacityMsg.push(
+        `<strong>AM Capacity:</strong></br>` + facilityObj.bookingTimes?.AM?.max
+      );
+    }
+    if (facilityObj.bookingTimes?.PM) {
+      capacityMsg.push(
+        `<strong>PM Capacity:</strong></br>` + facilityObj.bookingTimes?.PM?.max
+      );
+    }
+    if (facilityObj.bookingTimes?.DAY) {
+      capacityMsg.push(
+        `<strong>All-day Capacity:</strong></br>` +
+          facilityObj.bookingTimes?.DAY?.max
+      );
+    }
+    message += this.utils.buildInnerHTMLRow(capacityMsg);
+
+    message += `<hr>`;
+    message += `<strong>Passes are required on the following days:</strong></br>`;
+    message += bookingDaysList.join(', ');
+
+    message +=
+      `</br></br><strong>Passes-not-required text:</strong></br>` +
+      facilityObj.bookingDaysRichText;
+
+    return message;
   }
 }
