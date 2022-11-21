@@ -218,7 +218,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     } else {
       this.facilityService.postFacility(facilityObj, this.park.sk);
     }
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.navigateBack();
   }
 
   // format form fields for API submission
@@ -406,5 +406,9 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       facilityObj.bookingDaysRichText;
 
     return message;
+  }
+
+  navigateBack() {
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

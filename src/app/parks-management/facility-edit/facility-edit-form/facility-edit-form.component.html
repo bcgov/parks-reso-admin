@@ -34,11 +34,17 @@
       Submit
     </button>
     <button
-      class="btn btn-secondary"
+      class="btn btn-secondary me-2"
       (click)="setForm()"
       [disabled]="form?.pristine"
     >
       Reset
+    </button>
+    <button
+      class="btn btn-outline-danger"
+      (click)="navigateBack()"
+    >
+      Cancel
     </button>
   </div>
 </form>

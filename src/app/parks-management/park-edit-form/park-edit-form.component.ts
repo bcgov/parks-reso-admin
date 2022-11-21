@@ -105,7 +105,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
 
   submitParkChanges(postObj) {
     this.parkService.putPark(postObj);
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.navigateBack();
   }
 
   // Format form fields for API submission
@@ -196,5 +196,9 @@ export class ParkEditFormComponent extends BaseFormComponent {
   testMapLink(event) {
     event.preventDefault();
     window.open(this.fields.parkMapLink.value);
+  }
+
+  navigateBack() {
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }
