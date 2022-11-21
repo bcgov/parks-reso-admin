@@ -159,7 +159,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
 
   constructParkEditModalBody(parkObj) {
     let statusMsg = '';
-    if (parkObj.status === 'open') {
+    if (parkObj.park?.status === 'open') {
       statusMsg += `Open (passes required)`;
     } else {
       statusMsg += `Closed (passes not required)`;
