@@ -64,7 +64,7 @@ export class Utils {
   }
 
   public getTodaysDate() {
-    return DateTime.now().setZone(TIMEZONE);
+    return DateTime.now().setZone(TIMEZONE).toISO();
   }
 
   public getTodayAsShortDate() {
