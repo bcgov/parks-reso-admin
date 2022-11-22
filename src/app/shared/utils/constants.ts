@@ -12,6 +12,7 @@ export class Constants {
     CURRENT_RESERVATIONS_OBJECT: 'currentReservationsObj',
     CURRENT_CAPACITY_BAR_OBJECT: 'currentCapacityBarObj',
     ENTER_DATA_URL_PARAMS: 'enter-data-url-params',
+    PASS_BREAKDOWN_BY_STATUS: 'pass-breakdown-by-status',
     MODIFIERS: 'modifiers',
   };
 
