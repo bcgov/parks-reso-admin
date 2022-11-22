@@ -7,6 +7,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { PassUtils } from 'src/app/utils/pass-utils';
 import { DateTime } from 'luxon';
+import { KeycloakService } from 'src/app/services/keycloak.service';
 
 @Component({
   selector: 'app-passes-utility-buttons',
@@ -25,6 +26,7 @@ export class PassesUtilityButtonsComponent implements OnDestroy {
     protected apiService: ApiService,
     protected toastService: ToastService,
     protected dataService: DataService,
+    protected keyCloakService: KeycloakService,
     protected passService: PassService
   ) {
     this.subscriptions.add(
@@ -51,6 +53,14 @@ export class PassesUtilityButtonsComponent implements OnDestroy {
           this.passFilterParams = res;
         })
     );
+  }
+
+  isAllowed(buttonFunction) {
+    if (buttonFunction === 'exportCsv') {
+      return this.keyCloakService.isAllowed('export-reports');
+    } else {
+      return false;
+    }
   }
 
   async exportCsv() {

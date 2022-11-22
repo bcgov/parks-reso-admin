@@ -2,6 +2,7 @@
   [disabled]="!passes || passes.length === 0"
   class="btn btn-primary me-1"
   (click)="exportCsv()"
+  [hidden]="isAllowed('exportCsv') === false"
 >
   Export to .csv
 </button>
