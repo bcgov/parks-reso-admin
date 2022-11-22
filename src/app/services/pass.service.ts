@@ -29,6 +29,7 @@ export class PassService {
   // passType:,
   // ExclusiveStartKeyPK:,
   // ExclusiveStartKeySK:,
+  // appendResults: boolean,
   // queryParams:
   // }
   async fetchData(params) {
@@ -44,11 +45,18 @@ export class PassService {
       ) {
         dataTag = Constants.dataIds.PASSES_LIST;
         this.loadingService.addToFetchList(dataTag);
-
         const queryParams = this.filterSearchParams(params);
-
         res = await firstValueFrom(this.apiService.get('pass', queryParams));
-        this.dataService.setItemValue(dataTag, res.data);
+        if (params?.appendResults) {
+          this.dataService.appendItemValue(dataTag, res.data)
+        } else {
+          this.dataService.setItemValue(dataTag, res.data);
+        }
+        if (res.LastEvaluatedKey){
+          this.dataService.setItemValue(Constants.dataIds.PASS_LAST_EVALUATED_KEY, res.LastEvaluatedKey)
+        } else {
+          this.dataService.clearItemValue(Constants.dataIds.PASS_LAST_EVALUATED_KEY);
+        }
         this.dataService.setItemValue(
           Constants.dataIds.PASS_SEARCH_PARAMS,
           queryParams

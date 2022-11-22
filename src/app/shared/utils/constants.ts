@@ -6,11 +6,13 @@ export class Constants {
     CURRENT_FACILITY: 'currentFacility',
     PASSES_LIST: 'passesList',
     PASS_SEARCH_PARAMS: 'passSearchParams',
+    PASS_LAST_EVALUATED_KEY: 'passLastEvaluatedKey',
     CANCELLED_PASS: 'cancelledPass',
     RESERVATION_OBJECTS_LIST: 'reservationObjectsList',
     CURRENT_RESERVATIONS_OBJECT: 'currentReservationsObj',
     CURRENT_CAPACITY_BAR_OBJECT: 'currentCapacityBarObj',
     ENTER_DATA_URL_PARAMS: 'enter-data-url-params',
+    PASS_BREAKDOWN_BY_STATUS: 'pass-breakdown-by-status',
     MODIFIERS: 'modifiers',
   };
 

@@ -2,6 +2,8 @@
   [tableSchema]="tableSchema"
   [data]="tableRows"
   [emptyTableMsg]="'No passes found.'"
+  [lastEvaluatedKey]="lastEvaluatedKey"
+  (loadMore)="loadMorePasses()"
 ></app-table>
 
 <!-- Here is where we store the templates for the specific modals shown from this page.  -->

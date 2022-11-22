@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
+import { Utils } from '../shared/utils/utils';
 import { ApiService } from './api.service';
 import { DataService } from './data.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
@@ -11,16 +12,15 @@ import { ToastService } from './toast.service';
   providedIn: 'root',
 })
 export class ModifierService {
-  private list: BehaviorSubject<any>;
+  private utils = new Utils();
+
   constructor(
     private apiService: ApiService,
     private eventService: EventService,
     private toastService: ToastService,
     private loadingService: LoadingService,
     private dataService: DataService
-  ) {
-    this.list = new BehaviorSubject([]);
-  }
+  ) {}
 
   async fetchData(park, facility, date) {
     let dataTag = '';
@@ -38,7 +38,6 @@ export class ModifierService {
           getFutureReservationObjects: true,
         })
       );
-
       //   TODO: Push this into the backend
       for (let i = 0; i < res.length; i++) {
         const resObj = res[i];
@@ -76,7 +75,8 @@ export class ModifierService {
     let res;
     try {
       res = await firstValueFrom(this.apiService.put('modifier', obj));
-      this.fetchData(obj.parkName, obj.facility, obj.date);
+      const today = this.utils.getTodayAsShortDate();
+      this.fetchData(obj.parkName, obj.facility, today);
       this.toastService.addMessage(
         `Modifier set`,
         'Modifier Service',
@@ -113,7 +113,8 @@ export class ModifierService {
     let res;
     try {
       res = await firstValueFrom(this.apiService.put('modifier', obj));
-      this.fetchData(park, facility, date);
+      const today = this.utils.getTodayAsShortDate();
+      this.fetchData(park, facility, today);
       this.toastService.addMessage(
         `Modifier removed`,
         'Modifier Service',
