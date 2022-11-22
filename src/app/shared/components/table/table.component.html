@@ -11,7 +11,7 @@
         </th>
       </tr>
     </thead>
-    <tbody *ngIf="rows?.length > 0 && !loading">
+    <tbody *ngIf="rows?.length > 0 ">
       <tr
         *ngFor="let row of rows"
         app-table-row
@@ -36,5 +36,12 @@
     <div class="text-muted">
       {{ emptyTableMsg }}
     </div>
+  </div>
+</div>
+<div *ngIf="lastEvaluatedKey && !loading">
+  <div class="d-flex justify-content-center">
+    <button class="btn btn-outline-secondary" (click)="loadMoreClicked()">
+      Load more
+    </button>
   </div>
 </div>

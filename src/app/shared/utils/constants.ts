@@ -6,6 +6,7 @@ export class Constants {
     CURRENT_FACILITY: 'currentFacility',
     PASSES_LIST: 'passesList',
     PASS_SEARCH_PARAMS: 'passSearchParams',
+    PASS_LAST_EVALUATED_KEY: 'passLastEvaluatedKey',
     CANCELLED_PASS: 'cancelledPass',
     RESERVATION_OBJECTS_LIST: 'reservationObjectsList',
     CURRENT_RESERVATIONS_OBJECT: 'currentReservationsObj',

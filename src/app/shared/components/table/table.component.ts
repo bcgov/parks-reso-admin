@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
 
@@ -28,6 +28,9 @@ export class TableComponent implements OnChanges, OnDestroy {
   @Input() tableSchema: tableSchema;
   @Input() data: any[];
   @Input() emptyTableMsg = 'This table is empty.';
+  @Input() lastEvaluatedKey = null;
+
+  @Output() loadMore: EventEmitter<any> = new EventEmitter();
 
   public columns;
   public rows: any = [];
@@ -70,6 +73,10 @@ export class TableComponent implements OnChanges, OnDestroy {
         this.rows.push(row);
       }
     }
+  }
+
+  loadMoreClicked() {
+    this.loadMore.emit(this.lastEvaluatedKey);
   }
 
   ngOnDestroy(): void {

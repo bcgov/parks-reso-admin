@@ -28,6 +28,7 @@ export class PassesListComponent implements OnInit, OnDestroy {
   public cancelModal: modalSchema;
   public passModalRef: BsModalRef;
   public cancelModalRef: BsModalRef;
+  public lastEvaluatedKey = null;
 
   @ViewChild('passModalTemplate') passModalTemplate: TemplateRef<any>;
   @ViewChild('cancelModalTemplate') cancelModalTemplate: TemplateRef<any>;
@@ -42,6 +43,13 @@ export class PassesListComponent implements OnInit, OnDestroy {
       dataService.watchItem(Constants.dataIds.PASSES_LIST).subscribe((res) => {
         this.tableRows = res;
       })
+    );
+    this.subscriptions.add(
+      dataService
+        .watchItem(Constants.dataIds.PASS_LAST_EVALUATED_KEY)
+        .subscribe((res) => {
+          this.lastEvaluatedKey = res;
+        })
     );
   }
 
@@ -59,6 +67,19 @@ export class PassesListComponent implements OnInit, OnDestroy {
       return true;
     }
     return false;
+  }
+
+  loadMorePasses() {
+    console.log('this.lastEvaluatedKey:', this.lastEvaluatedKey);
+    let loadMoreObj = this.dataService.mergeItemValue(
+      Constants.dataIds.PASS_SEARCH_PARAMS,
+      {
+        ExclusiveStartKeyPK: this.lastEvaluatedKey?.pk?.S,
+        ExclusiveStartKeySK: this.lastEvaluatedKey?.sk?.S,
+        appendResults: true,
+      }
+    );
+    this.passService.fetchData(loadMoreObj);
   }
 
   displayPassModal(passObj) {
