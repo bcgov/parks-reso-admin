@@ -164,6 +164,7 @@ export class KeycloakService {
       service !== 'export-reports' &&
       service !== 'lock-records' &&
       service !== 'add-facility' &&
+      service !== 'metrics' &&
       service !== 'cancel-passes'
     ) {
       return true;

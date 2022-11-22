@@ -26,6 +26,8 @@ export class SideBarService implements OnDestroy {
         return keyCloakService.isAllowed('lock-records');
       } else if (obj.path === 'add-facility') {
         return keyCloakService.isAllowed('add-facility');
+      } else if (obj.path === 'metrics') {
+        return keyCloakService.isAllowed('metrics');
       } else if (obj.path === 'login') {
         return keyCloakService.isAuthenticated() ? false : true;
       } else {
