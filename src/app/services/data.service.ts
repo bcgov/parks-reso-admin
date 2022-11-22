@@ -20,6 +20,30 @@ export class DataService {
     this.data[id].next(value);
   }
 
+  // Append array data to existing dataService id
+  appendItemValue(id, value): any[] {
+    if (!this.checkIfDataExists(id)){
+      this.setItemValue(id, value);
+      return [];
+    } else {
+      const appendObj = this.getItemValue(id).concat(value);
+      this.data[id].next(appendObj);
+      return appendObj;
+    }
+  }
+
+   // Merge object data to existing dataService id
+  mergeItemValue(id, value, attribute = null): any {
+    if (!this.checkIfDataExists(id)){
+      this.setItemValue(id, value);
+      return null;
+    } else {
+      const  assignObj = Object.assign(this.getItemValue(id), value);
+      this.data[id].next(assignObj);
+      return assignObj;
+    }
+  }
+
   public watchItem(id) {
     this.checkIfDataExists(id) ? null : this.initItem(id);
     return this.data[id];
