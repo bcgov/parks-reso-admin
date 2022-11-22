@@ -63,6 +63,10 @@ export class Utils {
     );
   }
 
+  public getTodaysDate() {
+    return DateTime.now().setZone(TIMEZONE);
+  }
+
   public getTodayAsShortDate() {
     return DateTime.now().setZone(TIMEZONE).toISODate();
   }
