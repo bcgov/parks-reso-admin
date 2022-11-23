@@ -75,7 +75,7 @@ export class ModifierService {
     let res;
     try {
       res = await firstValueFrom(this.apiService.put('modifier', obj));
-      const today = this.utils.getTodayAsShortDate();
+      const today = this.utils.getTodaysDate();
       this.fetchData(obj.parkName, obj.facility, today);
       this.toastService.addMessage(
         `Modifier set`,
@@ -113,7 +113,7 @@ export class ModifierService {
     let res;
     try {
       res = await firstValueFrom(this.apiService.put('modifier', obj));
-      const today = this.utils.getTodayAsShortDate();
+      const today = this.utils.getTodaysDate();
       this.fetchData(park, facility, today);
       this.toastService.addMessage(
         `Modifier removed`,
