@@ -25,13 +25,13 @@ export class HomeComponent {
     //     navigation: 'export-reports',
     //   });
     // }
-    // if (keyCloakService.isAllowed('lock-records')) {
-    //   this.cardConfig.push({
-    //     cardHeader: 'Site Metrics',
-    //     cardTitle: 'Site Metrics',
-    //     cardText: 'See pass counts for various states.',
-    //     navigation: 'lock-records',
-    //   });
-    // }
+    if (keyCloakService.isAllowed('metrics')) {
+      this.cardConfig.push({
+        cardHeader: 'Site Metrics',
+        cardTitle: 'Site Metrics',
+        cardText: 'See pass counts for various states.',
+        navigation: 'metrics',
+      });
+    }
   }
 }
