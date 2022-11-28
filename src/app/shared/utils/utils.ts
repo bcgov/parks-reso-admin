@@ -63,6 +63,10 @@ export class Utils {
     );
   }
 
+  public getTodaysDate() {
+    return DateTime.now().setZone(TIMEZONE).toISO();
+  }
+
   public getTodayAsShortDate() {
     return DateTime.now().setZone(TIMEZONE).toISODate();
   }
@@ -113,5 +117,15 @@ export class Utils {
     } else {
       return null;
     }
+  }
+
+  buildInnerHTMLRow(arr): string {
+    let str = `<div class="row">`;
+    let columns = '';
+    for (const column of arr) {
+      columns += `<div class="col mb-4">${column}</div>`;
+    }
+    str += columns + `</div>`;
+    return str;
   }
 }

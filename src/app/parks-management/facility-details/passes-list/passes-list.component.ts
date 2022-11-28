@@ -14,6 +14,7 @@ import { tableSchema } from 'src/app/shared/components/table/table.component';
 import { Constants } from 'src/app/shared/utils/constants';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { modalSchema } from 'src/app/shared/components/modal/modal.component';
+import { KeycloakService } from 'src/app/services/keycloak.service';
 
 @Component({
   selector: 'app-passes-list',
@@ -28,12 +29,14 @@ export class PassesListComponent implements OnInit, OnDestroy {
   public cancelModal: modalSchema;
   public passModalRef: BsModalRef;
   public cancelModalRef: BsModalRef;
+  public lastEvaluatedKey = null;
 
   @ViewChild('passModalTemplate') passModalTemplate: TemplateRef<any>;
   @ViewChild('cancelModalTemplate') cancelModalTemplate: TemplateRef<any>;
 
   constructor(
     protected dataService: DataService,
+    protected keyCloakService: KeycloakService,
     protected passService: PassService,
     protected modalService: BsModalService,
     protected vcr: ViewContainerRef
@@ -42,6 +45,13 @@ export class PassesListComponent implements OnInit, OnDestroy {
       dataService.watchItem(Constants.dataIds.PASSES_LIST).subscribe((res) => {
         this.tableRows = res;
       })
+    );
+    this.subscriptions.add(
+      dataService
+        .watchItem(Constants.dataIds.PASS_LAST_EVALUATED_KEY)
+        .subscribe((res) => {
+          this.lastEvaluatedKey = res;
+        })
     );
   }
 
@@ -59,6 +69,23 @@ export class PassesListComponent implements OnInit, OnDestroy {
       return true;
     }
     return false;
+  }
+
+  isAllowed(method) {
+    return this.keyCloakService.isAllowed(method);
+  }
+
+  loadMorePasses() {
+    console.log('this.lastEvaluatedKey:', this.lastEvaluatedKey);
+    let loadMoreObj = this.dataService.mergeItemValue(
+      Constants.dataIds.PASS_SEARCH_PARAMS,
+      {
+        ExclusiveStartKeyPK: this.lastEvaluatedKey?.pk?.S,
+        ExclusiveStartKeySK: this.lastEvaluatedKey?.sk?.S,
+        appendResults: true,
+      }
+    );
+    this.passService.fetchData(loadMoreObj);
   }
 
   displayPassModal(passObj) {
@@ -135,6 +162,66 @@ export class PassesListComponent implements OnInit, OnDestroy {
   }
 
   createTable() {
+
+    let columns = [
+      {
+        id: 'passId',
+        displayHeader: 'Reg #',
+        columnClasses: 'ps-3 pe-3',
+        mapValue: (passObj) => passObj.sk,
+      },
+      {
+        id: 'email',
+        displayHeader: 'Email',
+        columnClasses: 'px-3',
+        mapValue: (passObj) => passObj.email,
+      },
+      {
+        id: 'numberOfGuests',
+        displayHeader: 'Guests',
+        columnClasses: 'px-3',
+        mapValue: (passObj) => passObj.numberOfGuests,
+      },
+      {
+        id: 'date',
+        displayHeader: 'Date',
+        columnClasses: 'px-3',
+        mapValue: (passObj) => passObj.shortPassDate,
+      },
+      {
+        id: 'status',
+        displayHeader: 'Status',
+        columnClasses: 'px-3',
+        mapValue: (passObj) => passObj.passStatus,
+      }
+    ];
+
+    if (this.isAllowed('cancel-passes')) {
+      let cancelLayout = {
+        id: 'cancel-button',
+        displayHeader: 'Actions',
+        columnClasses: 'ps-5 pe-3',
+        width: '10%',
+        mapValue: () => null,
+        cellTemplate: (passObj) => {
+          const self = this;
+          return {
+            component: TableButtonComponent,
+            inputs: {
+              altText: 'Cancel',
+              buttonClass: 'btn btn-outline-danger',
+              iconClass: 'bi bi-x-circle-fill',
+              isDisabled: this.disableCancelButton(passObj),
+              onClick: function () {
+                self.displayCancelModal(passObj);
+              },
+            },
+          };
+        },
+      };
+      columns.push(cancelLayout);
+    }
+
     this.tableSchema = {
       id: 'passes-list',
       rowClick: (passObj) => {
@@ -143,60 +230,7 @@ export class PassesListComponent implements OnInit, OnDestroy {
           self.displayPassModal(passObj);
         };
       },
-      columns: [
-        {
-          id: 'passId',
-          displayHeader: 'Reg #',
-          columnClasses: 'ps-3 pe-3',
-          mapValue: (passObj) => passObj.sk,
-        },
-        {
-          id: 'email',
-          displayHeader: 'Email',
-          columnClasses: 'px-3',
-          mapValue: (passObj) => passObj.email,
-        },
-        {
-          id: 'numberOfGuests',
-          displayHeader: 'Guests',
-          columnClasses: 'px-3',
-          mapValue: (passObj) => passObj.numberOfGuests,
-        },
-        {
-          id: 'date',
-          displayHeader: 'Date',
-          columnClasses: 'px-3',
-          mapValue: (passObj) => passObj.shortPassDate,
-        },
-        {
-          id: 'status',
-          displayHeader: 'Status',
-          columnClasses: 'px-3',
-          mapValue: (passObj) => passObj.passStatus,
-        },
-        {
-          id: 'cancel-button',
-          displayHeader: 'Actions',
-          columnClasses: 'ps-5 pe-3',
-          width: '10%',
-          mapValue: () => null,
-          cellTemplate: (passObj) => {
-            const self = this;
-            return {
-              component: TableButtonComponent,
-              inputs: {
-                altText: 'Cancel',
-                buttonClass: 'btn btn-outline-danger',
-                iconClass: 'bi bi-x-circle-fill',
-                isDisabled: this.disableCancelButton(passObj),
-                onClick: function () {
-                  self.displayCancelModal(passObj);
-                },
-              },
-            };
-          },
-        },
-      ],
+      columns: columns
     };
   }
 

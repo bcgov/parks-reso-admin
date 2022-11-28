@@ -13,8 +13,8 @@
     <div innerHTML="{{ modal?.body }}"></div>
   </div>
   <div class="modal-footer">
-    <div *ngIf="modal?.buttons">
-      <div *ngFor="let modalButton of modal?.buttons">
+    <div *ngIf="modal?.buttons" class="d-flex">
+      <div *ngFor="let modalButton of modal?.buttons" class="ps-3">
 
         <button
           class="{{ modalButton?.classes }}"

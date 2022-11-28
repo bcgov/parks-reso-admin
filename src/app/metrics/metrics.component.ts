@@ -1,17 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import Chart from 'chart.js/auto';
-import { ApiService } from '../services/api.service';
-import { MetricService } from '../services/metric.service';
+import { Component, OnDestroy } from '@angular/core';
 import { ToastService } from '../services/toast.service';
+import { ApiService } from '../services/api.service';
 import { Constants } from '../shared/utils/constants';
+import Chart from 'chart.js/auto';
+import { firstValueFrom, Subscription } from 'rxjs';
+import { DataService } from '../services/data.service';
+import { LoadingService } from '../services/loading.service';
 
 @Component({
   selector: 'app-metrics',
   templateUrl: './metrics.component.html',
   styleUrls: ['./metrics.component.scss'],
 })
-export class MetricsComponent implements OnInit {
+export class MetricsComponent implements OnDestroy {
+  private subscriptions = new Subscription();
+  public loading: boolean = false;
+
   passStatusChart;
+  passExport;
   canvas: any;
   ctx: any;
   isGenerating: any = false;
@@ -20,21 +26,38 @@ export class MetricsComponent implements OnInit {
   buttonText: any = 'Export Pass Data';
 
   constructor(
-    private metricService: MetricService,
     private apiService: ApiService,
-    private toastService: ToastService
-  ) {}
+    private toastService: ToastService,
+    protected dataService: DataService,
+    protected loadingService: LoadingService
+  ) {
+    this.subscriptions.add(
+      dataService
+        .watchItem(Constants.dataIds.PASS_BREAKDOWN_BY_STATUS)
+        .subscribe((res) => {
+          if (res) {
+            this.buildDoughnutChart(res);
+          }
+        })
+    );
 
-  async ngOnInit() {
-    const payload = await this.metricService.fetchData('passTotals');
-    let labels = [];
-    let data = [];
-    for (const item of Object.keys(payload)) {
+    this.subscriptions.add(
+      loadingService.getLoadingStatus().subscribe((res) => {
+        this.loading = res;
+      })
+    );
+  }
+
+  buildDoughnutChart(res) {
+    let data: string[] = [];
+    let labels: string[] = [];
+
+    for (const item of Object.keys(res)) {
       labels.push(item);
-      data.push(payload[item]);
+      data.push(res[item]);
     }
 
-    this.canvas = document.getElementById('chart1');
+    this.canvas = document.getElementById('passChart');
     this.ctx = this.canvas.getContext('2d');
     this.passStatusChart = new Chart(this.canvas, {
       type: 'doughnut',
@@ -44,26 +67,11 @@ export class MetricsComponent implements OnInit {
           {
             data: data,
             backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(100, 33, 155, 0.2)',
-              'rgba(100, 33, 77, 0.2)',
+              '#E4E4E4', //cancelled
+              '#75b343', //active
+              '#205d38', //reserved
+              '#fdb813', //expired
             ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-              'rgba(100, 33, 155, 1)',
-              'rgba(100, 33, 77, 0.2)',
-            ],
-            borderWidth: 1,
           },
         ],
       },
@@ -77,9 +85,8 @@ export class MetricsComponent implements OnInit {
   async exportPassData() {
     this.isGenerating = true;
     this.signedURL = null;
-
     // Call export all pass api
-    const res = await this.apiService.get('export-all-pass');
+    const res = await firstValueFrom(this.apiService.get('export-all-pass'));
     const self = this;
     setTimeout(function () {
       self.statusMessage = res['status'];
@@ -92,12 +99,12 @@ export class MetricsComponent implements OnInit {
     const params = {
       getJob: sk,
     };
-    const res = await this.apiService.get('export-all-pass', params);
+    const res = await firstValueFrom(
+      this.apiService.get('export-all-pass', params)
+    );
     this.statusMessage = res['status'];
     if (
-      res['status'] === 'Job not found' ||
-      res['jobObj'].progressPercentage === -1
-    ) {
+      res['status'] === 'Job not found' || res['jobObj'].progressPercentage === -1) {
       // last job failed
       this.isGenerating = false;
       this.buttonText = 'Export Pass Data';
@@ -127,5 +134,9 @@ export class MetricsComponent implements OnInit {
         self.getPassExport(sk);
       }, 1000);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }

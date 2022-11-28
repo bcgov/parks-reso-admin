@@ -1,29 +1,26 @@
-<div class="container-fluid-padding">
+<div class="container-fluid pt-3">
     <h1>Site Metrics</h1>
+    <hr />
+    <div class="card">
 
-    <hr>
-    <div class="mt-2 card-deck">
-      <div class="card">
         <div class="card-body">
-          <h3 class="card-title">Passes</h3>
-          <p class="card-text">All Passes By status</p>
-          <div class="mt-lg-auto">
-            <div class="d-flex justify-content-lg-end">
-              <button
-                [disabled]="isGenerating"
-                class="btn btn-primary mr-1"
-                (click)="exportPassData()">
-                {{buttonText}}&nbsp;
-                <div style="vertical-align: middle;" *ngIf="isGenerating" class="spinner-border" role="status">
-                  <span class="sr-only"></span>
-                </div>
-              </button>
+            <div class="mb-2">
+                <h2>Export Report</h2>
+                <button [disabled]="isGenerating" class="btn btn-primary mr-1" (click)="exportPassData()">
+                    {{buttonText}}&nbsp;
+                    <div style="vertical-align: middle;" *ngIf="isGenerating" class="spinner-border" role="status">
+                        <span class="sr-only"></span>
+                    </div>
+                </button>
             </div>
-          </div>
+            <hr />
+            <h2>Pass breakdown by status</h2>
+            <div class="mt-2 d-flex flex-column align-items-center justify-content-center">
+                <div *ngIf="loading">
+                    <div class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></div>
+                </div>
+                <canvas id="passChart" #passChart></canvas>
+            </div>
         </div>
-        <div class="card-footer" style="height: 300px">
-          <canvas id="chart1" #chart1></canvas>
-        </div>
-      </div>
     </div>
 </div>
