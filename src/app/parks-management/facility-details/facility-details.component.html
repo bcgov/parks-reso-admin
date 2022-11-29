@@ -73,16 +73,6 @@
               >
             </p>
           </div>
-          <div class="col-md-6">
-            <label>
-              <strong>Winter Warning:</strong>
-            </label>
-            <p>
-              {{
-                Utils.capitalizeFirstLetter(facility.winterWarning.toString()) || "false"
-              }}
-            </p>
-          </div>
         </div>
         <div class="row" *ngIf="facility?.bookingTimes.AM">
           <div class="col-md-6">

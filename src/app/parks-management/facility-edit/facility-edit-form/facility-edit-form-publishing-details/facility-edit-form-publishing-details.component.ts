@@ -10,7 +10,6 @@ export class FacilityEditFormPublishingDetailsComponent implements OnInit {
   @Input() facilityStatus = new UntypedFormControl();
   @Input() facilityClosureReason = new UntypedFormControl();
   @Input() facilityVisibility = new UntypedFormControl();
-  @Input() facilityWinterWarning = new UntypedFormControl();
 
   constructor() { }
 

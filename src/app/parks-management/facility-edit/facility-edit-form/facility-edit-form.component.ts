@@ -182,9 +182,6 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       facilityVisibility: new UntypedFormControl(
         this.data.visible ? this.data.visible : false
       ),
-      facilityWinterWarning: new UntypedFormControl(
-        this.data.winterWarning ? this.data.winterWarning : false
-      ),
       facilityName: new UntypedFormControl(this.data.name, Validators.required),
       facilityType: new UntypedFormControl(this.data.type, Validators.required),
       facilityBookingOpeningHour: new UntypedFormControl({
@@ -261,7 +258,6 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       },
       type: results.facilityType,
       visible: results.facilityVisibility,
-      winterWarning: results.facilityWinterWarning,
       bookingTimes: resultTimes,
       bookingOpeningHour: results.facilityBookingOpeningHour?.hour,
       bookingDaysAhead: results.facilityBookingDaysAhead,
@@ -368,16 +364,6 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     message += this.utils.buildInnerHTMLRow([
       `<strong>Booking Opening Time:</strong></br>` + openingHourMsg,
       `<strong>Booking Days Ahead:</strong></br>` + daysAheadMsg,
-    ]);
-
-    let winterMsg = '';
-    if (facilityObj.winterWarning) {
-      winterMsg += `Winter warning in effect`;
-    } else {
-      winterMsg += `No winter warning`;
-    }
-    message += this.utils.buildInnerHTMLRow([
-      `<strong>Winter Warning:</strong></br>` + winterMsg
     ]);
 
     let bookingDaysList = [];

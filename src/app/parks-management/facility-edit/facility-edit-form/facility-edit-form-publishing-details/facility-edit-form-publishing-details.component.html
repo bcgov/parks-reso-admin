@@ -24,26 +24,14 @@
       </div>
     </div>
     <div class="pt-4 w-100">
-      <div>
-        <app-toggle
-          id="facilityVisibility"
-          [control]="facilityVisibility"
-          [label]="'Visibility: '"
-          [trueText]="'Facility is visible to the public'"
-          [falseText]="'Facility is not visible to the public'"
-        >
-        </app-toggle>
-      </div>
-      <div class="pt-4">
-        <app-toggle
-          id="facilityWinterWarning"
-          [control]="facilityWinterWarning"
-          [label]="'Winter Warning: '"
-          [trueText]="'Winter warning in effect'"
-          [falseText]="'No winter warning'"
-        >
-        </app-toggle>
-      </div>
+      <app-toggle
+        id="facilityVisibility"
+        [control]="facilityVisibility"
+        [label]="'Visibility: '"
+        [trueText]="'Facility is visible to the public'"
+        [falseText]="'Facility is not visible to the public'"
+      >
+      </app-toggle>
     </div>
   </div>
 </div>
