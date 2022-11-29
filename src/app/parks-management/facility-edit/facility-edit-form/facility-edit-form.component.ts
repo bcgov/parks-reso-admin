@@ -366,6 +366,16 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       `<strong>Booking Days Ahead:</strong></br>` + daysAheadMsg,
     ]);
 
+    let winterMessage = '';
+    if (facilityObj.winterWarning) {
+      winterMessage += `Winter warning in effect`;
+    } else {
+      winterMessage += `No winter warning`;
+    }
+    message += this.utils.buildInnerHTMLRow([
+      `<strong>Winter Warning:</strong></br>` + winterMessage
+    ]);
+
     let bookingDaysList = [];
     for (const day of Object.keys(facilityObj.bookingDays)) {
       if (facilityObj.bookingDays[day]) {
