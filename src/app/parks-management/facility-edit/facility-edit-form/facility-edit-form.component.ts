@@ -367,6 +367,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     ]);
 
     let bookingDaysList = [];
+    console.log('facilityObj.bookingDays:', facilityObj.bookingDays);
     for (const day of Object.keys(facilityObj.bookingDays)) {
       if (facilityObj.bookingDays[day]) {
         const weekday =
