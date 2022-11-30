@@ -1,4 +1,4 @@
-@import "~bootstrap/scss/bootstrap.scss";
+@import "node_modules/bootstrap/scss/bootstrap.scss";
 
 ::ng-deep.btn-default {
   @extend .btn-outline-secondary;
