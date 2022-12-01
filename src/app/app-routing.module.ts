@@ -16,6 +16,7 @@ const routes: Routes = [
     data: {
       label: 'Home',
       breadcrumb: 'Home',
+      icon: 'bi-house-fill',
     },
   },
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     data: {
       label: 'Parks Management',
       breadcrumb: 'Parks',
+      icon: 'bi-tree-fill',
     },
     loadChildren: () =>
       import('./parks-management/parks-management.module').then(
@@ -39,6 +41,7 @@ const routes: Routes = [
     data: {
       label: 'Metrics',
       breadcrumb: 'Metrics',
+      icon: 'bi-bar-chart-fill',
     },
     loadChildren: () =>
       import('./metrics/metrics.module').then((m) => m.MetricsModule),
@@ -71,7 +74,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})],
+  imports: [
+    RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
