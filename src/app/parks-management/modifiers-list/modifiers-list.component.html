@@ -1,4 +1,9 @@
 <div class="mx-4">
   <h4>Scheduled capacity changes</h4>
+  <div [hidden]="tableRows.length">{{ tableEmptyMsg }}</div>
 </div>
-<app-table [tableSchema]="tableSchema" [data]="tableRows"></app-table>
+<app-table
+  [hidden]="!tableRows.length"
+  [tableSchema]="tableSchema"
+  [data]="tableRows"
+></app-table>

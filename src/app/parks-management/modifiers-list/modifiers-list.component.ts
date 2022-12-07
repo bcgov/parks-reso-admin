@@ -17,6 +17,7 @@ export class ModifiersListComponent implements OnInit {
   private subscriptions = new Subscription();
   public tableSchema: tableSchema;
   public tableRows: any[] = [];
+  public tableEmptyMsg = 'There are no scheduled capacity changes.';
 
   constructor(
     protected dataService: DataService,
