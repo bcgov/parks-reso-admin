@@ -24,29 +24,45 @@ export class TimepickerComponent
   @Input() showSeconds = false;
   @Input() showMinutes = true;
   @Input() is24HTime = false;
+  @Input() defaultTime = { hour: 0, minute: 0, second: 0 };
 
   private subscriptions = new Subscription();
+  public initialTime;
   public modelTime;
   public utils = new Utils();
 
   ngOnInit(): void {
-    this.modelTime = new Date();
-    this.modelTime.setHours(
-      this.control?.value?.hour || 0,
-      this.control?.value?.minute || 0,
-      this.control?.value?.second || 0
+    this.initialTime = {
+      hour: this.control?.value?.hour || this.defaultTime.hour,
+      minute: this.control?.value?.minute || this.defaultTime.minute,
+      second: this.control?.value?.second || this.defaultTime.second
+    }
+    this.setTime(
+      this.initialTime.hour,
+      this.initialTime.minute,
+      this.initialTime.second,
     );
     if (this.reset) {
       this.subscriptions.add(this.reset.subscribe(() => this.clearDate()));
     }
   }
 
-  onTimeChange() {
-    if (this.modelTime) {
-      this.control.setValue(
-        this.utils.convertJSDateToNgbTimeStruct(this.modelTime)
+  setTime(hour, minute, second): void {
+    this.modelTime = new Date();
+    this.modelTime.setHours(hour, minute, second);
+  }
+
+  onTimeChange(event) {
+    if (!event || !this.modelTime) {
+      this.setTime(
+        this.initialTime.hour,
+        this.initialTime.minute,
+        this.initialTime.second
       );
     }
+    this.control.setValue(
+      this.utils.convertJSDateToNgbTimeStruct(this.modelTime)
+    );
   }
 
   clearDate() {
