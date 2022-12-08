@@ -2,6 +2,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ConfigService } from './config.service';
+import { LoggerService } from './logger.service';
 
 import { MetricService } from './metric.service';
 
@@ -10,7 +11,7 @@ describe('MetricService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [HttpClient, HttpHandler, ConfigService],
+      providers: [HttpClient, HttpHandler, ConfigService, LoggerService],
       imports: [RouterTestingModule],
     });
     service = TestBed.inject(MetricService);

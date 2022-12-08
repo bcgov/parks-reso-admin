@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ConfigService } from './config.service';
 
 import { ReservationService } from './reservation.service';
+import { LoggerService } from './logger.service';
 
 describe('ReservationService', () => {
   let service: ReservationService;
@@ -10,7 +11,7 @@ describe('ReservationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        HttpClient, HttpHandler, ConfigService
+        HttpClient, HttpHandler, ConfigService, LoggerService
       ]
     });
     service = TestBed.inject(ReservationService);

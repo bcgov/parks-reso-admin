@@ -6,6 +6,7 @@ import { ApiService } from './api.service';
 import { DataService } from './data.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
 import { LoadingService } from './loading.service';
+import { LoggerService } from './logger.service';
 import { ToastService } from './toast.service';
 
 @Injectable({
@@ -18,6 +19,7 @@ export class ModifierService {
     private apiService: ApiService,
     private eventService: EventService,
     private toastService: ToastService,
+    private loggerService: LoggerService,
     private loadingService: LoadingService,
     private dataService: DataService
   ) {}
@@ -29,7 +31,7 @@ export class ModifierService {
     try {
       dataTag = Constants.dataIds.MODIFIERS;
       this.loadingService.addToFetchList(dataTag);
-
+      this.loggerService.debug(`GET Reservation ${park} ${facility} ${date}`);
       const res = await firstValueFrom(
         this.apiService.get('reservation', {
           park: park,
@@ -50,7 +52,7 @@ export class ModifierService {
       }
       this.dataService.setItemValue(dataTag, modifierList);
     } catch (e) {
-      console.log(e);
+      this.loggerService.error(`${JSON.stringify(e)}`);
       this.toastService.addMessage(
         `An error has occured while getting ${errorSubject}.`,
         'Modiifier Service',
@@ -74,6 +76,7 @@ export class ModifierService {
   async setModifier(obj) {
     let res;
     try {
+      this.loggerService.debug(`PUT modifier ${JSON.stringify(obj)}`);
       res = await firstValueFrom(this.apiService.put('modifier', obj));
       const today = this.utils.getTodaysDate();
       this.fetchData(obj.parkName, obj.facility, today);
@@ -83,6 +86,7 @@ export class ModifierService {
         Constants.ToastTypes.SUCCESS
       );
     } catch (error) {
+      this.loggerService.error(`${JSON.stringify(error)}`);
       this.toastService.addMessage(
         `An error has occured while setting modifier.`,
         'Modifier Service',
@@ -112,6 +116,7 @@ export class ModifierService {
 
     let res;
     try {
+      this.loggerService.debug(`PUT modifier ${JSON.stringify(obj)}`);
       res = await firstValueFrom(this.apiService.put('modifier', obj));
       const today = this.utils.getTodaysDate();
       this.fetchData(park, facility, today);
@@ -121,6 +126,7 @@ export class ModifierService {
         Constants.ToastTypes.SUCCESS
       );
     } catch (error) {
+      this.loggerService.error(`${JSON.stringify(error)}`);
       this.toastService.addMessage(
         `An error has occured while setting modifier.`,
         'Modifier Service',
