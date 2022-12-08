@@ -7,6 +7,7 @@ import { LoadingService } from './loading.service';
 
 import { PassService } from './pass.service';
 import { ToastService } from './toast.service';
+import { LoggerService } from './logger.service';
 
 describe('PassService', () => {
   let service: PassService;
@@ -19,6 +20,7 @@ describe('PassService', () => {
         EventService,
         ToastService,
         HttpHandler,
+        LoggerService,
         ConfigService,
         LoadingService,
       ],

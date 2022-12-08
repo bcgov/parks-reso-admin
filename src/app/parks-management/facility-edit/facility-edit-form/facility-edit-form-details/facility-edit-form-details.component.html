@@ -26,13 +26,12 @@
         [label]="'Booking Opening Hour'"
         [control]="facilityBookingOpeningHour"
         [id]="'facilityBookingOpeningHour'"
+        [showMinutes]="false"
         [showSeconds]="false"
         [is24HTime]="false"
+        [defaultTime]="{hour: 7, minute: 0, second: 0}"
       >
       </app-timepicker>
-      <div class="text-muted small">
-        If left blank, the default value of 7 AM will be used.
-      </div>
     </div>
     <div class="w-100">
       <app-picklist

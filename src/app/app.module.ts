@@ -26,7 +26,6 @@ import { InfiniteLoadingBarModule } from './shared/components/infinite-loading-b
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingService } from './services/loading.service';
-import { FancyHeaderComponent } from './shared/components/fancy-header/fancy-header.component';
 
 export function initConfig(
   configService: ConfigService,

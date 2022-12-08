@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Constants } from '../shared/utils/constants';
 import { ApiService } from './api.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
+import { LoggerService } from './logger.service';
 import { ToastService } from './toast.service';
 
 @Injectable({
@@ -12,6 +13,7 @@ export class MetricService {
   constructor(
     private apiService: ApiService,
     private eventService: EventService,
+    private loggerService: LoggerService,
     private toastService: ToastService,
     private router: Router,
     private route: ActivatedRoute
@@ -21,8 +23,10 @@ export class MetricService {
     let errorSubject = '';
 
     try {
+      this.loggerService.debug(`Metric GET: ${metric}`);
       return await this.apiService.get('metric', { type: metric });
     } catch (e) {
+      this.loggerService.error(`${JSON.stringify(e)}`);
       this.toastService.addMessage(
         `An error has occured while getting ${errorSubject}.`,
         'Pass Service',

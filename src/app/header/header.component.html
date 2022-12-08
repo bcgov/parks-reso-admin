@@ -50,7 +50,14 @@
           [ngClass]="route.active ? 'active' : ''"
           *ngFor="let route of routes"
         >
-          <a [routerLink]="[route.path]">{{ route.data.label }}</a>
+          <a [routerLink]="[route.path]">
+            <i
+              *ngIf="route.data.icon"
+              class="bi me-2"
+              [ngClass]="route.data.icon"
+            ></i
+            >{{ route.data.label }}</a
+          >
         </li>
         <div *ngIf="isAuthorized" class="navbar-text welcome-text p-2">
           {{ welcomeMsg }}

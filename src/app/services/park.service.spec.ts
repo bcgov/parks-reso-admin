@@ -7,6 +7,7 @@ import { LoadingService } from './loading.service';
 
 import { ParkService } from './park.service';
 import { ToastService } from './toast.service';
+import { LoggerService } from './logger.service';
 
 describe('ParkService', () => {
   let service: ParkService;
@@ -18,6 +19,7 @@ describe('ParkService', () => {
         DataService,
         EventService,
         ToastService,
+        LoggerService,
         HttpHandler,
         ConfigService,
         LoadingService,

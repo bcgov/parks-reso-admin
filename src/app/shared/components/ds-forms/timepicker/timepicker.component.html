@@ -11,13 +11,15 @@
     [ngClass]="icon"
     ><i class="bi"></i
   ></span>
-  <ngb-timepicker
+  <timepicker
     title="Set the facility opening hour"
     name="{{ id }}"
     id="{{ id }}"
     [(ngModel)]="modelTime"
-    (ngModelChange)="onTimeChange()"
-    [meridian]="!is24HTime"
+    (ngModelChange)="onTimeChange($event)"
+    [showMinutes]="showMinutes"
+    [showSeconds]="showSeconds"
+    [showMeridian]="!is24HTime"
   >
-  </ngb-timepicker>
+  </timepicker>
 </div>

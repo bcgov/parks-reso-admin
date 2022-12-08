@@ -4,8 +4,6 @@ import { BaseInputComponent } from '../base-input/base-input.component';
 @Component({
   selector: 'app-wysiwyg-input',
   templateUrl: './wysiwyg-input.component.html',
-  styleUrls: ['./wysiwyg-input.component.scss']
+  styleUrls: ['./wysiwyg-input.component.scss'],
 })
-export class WysiwygInputComponent extends BaseInputComponent {
-
-}
+export class WysiwygInputComponent extends BaseInputComponent {}

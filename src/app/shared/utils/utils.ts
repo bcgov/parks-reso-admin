@@ -63,20 +63,30 @@ export class Utils {
     );
   }
 
+  // Converts current epoch time to ISO date in TIMEZONE.
   public getTodaysDate() {
     return DateTime.now().setZone(TIMEZONE).toISO();
   }
 
+  // Converts current epoch time to calendar short date in TIMEZONE.
   public getTodayAsShortDate() {
     return DateTime.now().setZone(TIMEZONE).toISODate();
   }
 
+  // Chops short date from JSDate. Timezones not respected.
+  // Useful if receiving JSDate from a datepicker and we want the calendar date picked irrespective of browser/server tz.
   public convertJSDateToShortDate(date: Date): string {
+    return DateTime.fromJSDate(date).toISODate();
+  }
+
+  // Converts zoned JSDate to zoned short date, respecting any change in timezone.
+  public convertJSDateToZonedShortDate(date: Date): string {
     return DateTime.fromJSDate(date).setZone(TIMEZONE).toISODate();
   }
 
+  // Converts short date to 00:00:00.000 JSDate in TIMEZONE.
   public convertShortDateToJSDate(date: string): Date {
-    return DateTime.fromFormat(date, 'YYYY-MM-DD').setZone(TIMEZONE).toJSDate();
+    return DateTime.fromFormat(date, 'yyyy-LL-dd').setZone(TIMEZONE).toJSDate();
   }
 
   public convertJSDateToNgbTimeStruct(date: Date): NgbTimeStruct {
