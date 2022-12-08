@@ -22,6 +22,7 @@ export class TimepickerComponent
 {
   @Input() reset: EventEmitter<any>;
   @Input() showSeconds = false;
+  @Input() showMinutes = true;
   @Input() is24HTime = false;
 
   private subscriptions = new Subscription();
@@ -29,13 +30,12 @@ export class TimepickerComponent
   public utils = new Utils();
 
   ngOnInit(): void {
-    this.modelTime = {
-      hour: this.control?.value?.hour || 0,
-      minute: this.control?.value?.minute || 0,
-    };
-    if (this.showSeconds) {
-      this.modelTime['second'] = this.control?.value?.second || 0;
-    }
+    this.modelTime = new Date();
+    this.modelTime.setHours(
+      this.control?.value?.hour || 0,
+      this.control?.value?.minute || 0,
+      this.control?.value?.second || 0
+    );
     if (this.reset) {
       this.subscriptions.add(this.reset.subscribe(() => this.clearDate()));
     }
@@ -43,7 +43,9 @@ export class TimepickerComponent
 
   onTimeChange() {
     if (this.modelTime) {
-      this.control.setValue(this.modelTime);
+      this.control.setValue(
+        this.utils.convertJSDateToNgbTimeStruct(this.modelTime)
+      );
     }
   }
 

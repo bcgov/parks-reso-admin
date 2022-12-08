@@ -9,6 +9,7 @@ import { UntypedFormControl, Validators } from '@angular/forms';
 export class BaseInputComponent {
   @Input() control = new UntypedFormControl();
   @Input() label;
+  @Input() subLabel;
   @Input() icon;
   @Input() placeholder;
   @Input() id;

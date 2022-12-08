@@ -1,4 +1,7 @@
-<h2>Pass Requirements</h2>
+<h2>When Are Passes Required?</h2>
+<p class="mb-4">
+  Set the days and times passes are required and the capacity for this facility.
+</p>
 <app-toggle
   id="facilityPassesRequired"
   [ariaLabel]="'Facility Passes Required'"
@@ -16,7 +19,11 @@
       class="d-inline-flex me-md-4"
       *ngFor="let day of facilityBookingDaysArray"
     >
-      <app-checkbox [id]="day?.symbol" [label]="day?.symbol" [control]="day?.control">
+      <app-checkbox
+        [id]="day?.symbol"
+        [label]="day?.symbol"
+        [control]="day?.control"
+      >
       </app-checkbox>
     </div>
   </div>
@@ -27,6 +34,9 @@
         [control]="facilityBookingDaysRichText"
         [label]="'Message to Public'"
         [id]="'facilityBookingDaysRichText'"
+        [subLabel]="
+          'The message below will be displayed to the public on days when passes are not required.'
+        "
       >
       </app-wysiwyg-input>
     </div>

@@ -2,6 +2,11 @@
   >{{ label
   }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
 >
+<p>
+  <small class="text-muted" *ngIf="subLabel">
+    {{ subLabel }}
+  </small>
+</p>
 <div>
   <editor
     [formControl]="control"
