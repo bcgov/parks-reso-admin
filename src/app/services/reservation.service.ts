@@ -5,6 +5,7 @@ import { ApiService } from './api.service';
 import { DataService } from './data.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
 import { LoadingService } from './loading.service';
+import { LoggerService } from './logger.service';
 import { ToastService, ToastTypes } from './toast.service';
 
 @Injectable({
@@ -15,6 +16,7 @@ export class ReservationService {
     private dataService: DataService,
     private eventService: EventService,
     private toastService: ToastService,
+    private loggerService: LoggerService,
     private apiService: ApiService,
     private loadingService: LoadingService
   ) {}
@@ -29,6 +31,7 @@ export class ReservationService {
         dataTag = Constants.dataIds.CURRENT_RESERVATIONS_OBJECT;
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'facility reservation';
+        this.loggerService.debug(`Reservation GET ${parkSk} ${facilitySk} ${resDate}`);
         res = await firstValueFrom(
           this.apiService.get('reservation', {
             park: parkSk,
@@ -71,6 +74,7 @@ export class ReservationService {
         );
       }
     } catch (e) {
+      this.loggerService.error(`${JSON.stringify(e)}`);
       this.toastService.addMessage(
         `Please refresh the page.`,
         `Error getting ${errorSubject}`,

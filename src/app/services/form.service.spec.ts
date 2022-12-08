@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ConfigService } from './config.service';
 
 import { FormService } from './form.service';
+import { LoggerService } from './logger.service';
 
 describe('FormService', () => {
   let service: FormService;
@@ -12,7 +13,7 @@ describe('FormService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [HttpClient, HttpHandler, ConfigService],
+      providers: [HttpClient, HttpHandler, ConfigService, LoggerService],
     });
     service = TestBed.inject(FormService);
   });

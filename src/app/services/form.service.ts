@@ -44,6 +44,7 @@ export class FormService {
       // We require queryParam type = activity
       // In obj we need subAreaId, activity and date
       if (obj.subAreaId && obj.activity && obj.date) {
+        this.loggerService.debug(`Posting subarea ${JSON.stringify(obj)}`);
         res = await firstValueFrom(
           this.apiService.post('subarea', obj, { type: 'activity' })
         );
