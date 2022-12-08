@@ -11,7 +11,7 @@
         </th>
       </tr>
     </thead>
-    <tbody *ngIf="rows?.length > 0 ">
+    <tbody *ngIf="rows?.length > 0 && !loading">
       <tr
         *ngFor="let row of rows"
         app-table-row
