@@ -16,7 +16,7 @@
     name="{{ id }}"
     id="{{ id }}"
     [(ngModel)]="modelTime"
-    (ngModelChange)="onTimeChange()"
+    (ngModelChange)="onTimeChange($event)"
     [showMinutes]="showMinutes"
     [showSeconds]="showSeconds"
     [showMeridian]="!is24HTime"
