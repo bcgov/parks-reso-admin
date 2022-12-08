@@ -7,6 +7,7 @@ import { EventService } from './event.service';
 import { FacilityService } from './facility.service';
 import { LoadingService } from './loading.service';
 import { ToastService } from './toast.service';
+import { LoggerService } from './logger.service';
 
 describe('FacilityService', () => {
   let service: FacilityService;
@@ -18,6 +19,7 @@ describe('FacilityService', () => {
         DataService,
         EventService,
         ToastService,
+        LoggerService,
         HttpHandler,
         ConfigService,
         LoadingService,

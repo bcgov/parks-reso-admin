@@ -7,6 +7,7 @@ import { DataService } from './data.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
 import { LoadingService } from './loading.service';
 import { ToastService, ToastTypes } from './toast.service';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class FacilityService {
     private dataService: DataService,
     private eventService: EventService,
     private toastService: ToastService,
+    private loggerService: LoggerService,
     private apiService: ApiService,
     private loadingService: LoadingService
   ) {}
@@ -31,6 +33,7 @@ export class FacilityService {
         dataTag = Constants.dataIds.FACILITIES_LIST;
         this.loadingService.addToFetchList(dataTag);
         // We are getting all facilities for a given park.
+        this.loggerService.debug(`Facility GET: ${parkSk}`);
         res = await firstValueFrom(
           this.apiService.get('facility', { facilities: true, park: parkSk })
         );
@@ -40,6 +43,7 @@ export class FacilityService {
         dataTag = Constants.dataIds.CURRENT_FACILITY;
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'facility';
+        this.loggerService.debug(`Facility GET: ${parkSk} ${facilitySk}`);
         res = await firstValueFrom(
           this.apiService.get('facility', {
             facilityName: facilitySk,
@@ -52,10 +56,12 @@ export class FacilityService {
         dataTag = Constants.dataIds.FACILITIES_LIST;
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'facilities list';
+        this.loggerService.debug(`Facility List GET`);
         res = await firstValueFrom(this.apiService.get('facility'));
         this.dataService.setItemValue(dataTag, res);
       }
     } catch (e) {
+      this.loggerService.error(`${JSON.stringify(e)}`);
       this.toastService.addMessage(
         `Please refresh the page.`,
         `Error getting ${errorSubject}`,
@@ -86,6 +92,7 @@ export class FacilityService {
         (obj.pk = `facility::${parkSk}`),
           (obj.sk = obj.name),
           (obj.parkName = parkSk);
+        this.loggerService.debug(`Put Facility: ${JSON.stringify(obj)}`);
         res = await firstValueFrom(this.apiService.put('facility', obj));
         // ensure CURRENT_FACILITY in DataService is updated with new facility data.
         this.fetchData(parkSk, obj.name);
@@ -97,6 +104,7 @@ export class FacilityService {
         );
       }
     } catch (e) {
+      this.loggerService.error(`Put Facility: ${JSON.stringify(e)}`);
       this.toastService.addMessage(
         `There was a problem updating the facility.`,
         `Error putting ${errorSubject}`,
@@ -123,6 +131,7 @@ export class FacilityService {
         delete obj.pk;
         delete obj.sk;
         obj.parkName = parkSk;
+        this.loggerService.debug(`Post Facility: ${JSON.stringify(obj)}`);
         res = await firstValueFrom(this.apiService.post('facility', obj));
         // ensure CURRENT_FACILITY in DataService is updated with new facility data.
         this.fetchData(parkSk, obj.name);
@@ -134,6 +143,7 @@ export class FacilityService {
         );
       }
     } catch (e) {
+      this.loggerService.error(`Post Facility: ${JSON.stringify(e)}`);
       this.toastService.addMessage(
         `There was a problem creating the facility.`,
         `Error posting ${errorSubject}`,
