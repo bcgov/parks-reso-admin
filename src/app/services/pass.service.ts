@@ -6,6 +6,7 @@ import { ApiService } from './api.service';
 import { DataService } from './data.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
 import { LoadingService } from './loading.service';
+import { LoggerService } from './logger.service';
 import { ToastService, ToastTypes } from './toast.service';
 
 @Injectable({
@@ -17,6 +18,7 @@ export class PassService {
   constructor(
     private dataService: DataService,
     private eventService: EventService,
+    private loggerService: LoggerService,
     private toastService: ToastService,
     private apiService: ApiService,
     private loadingService: LoadingService
@@ -85,6 +87,7 @@ export class PassService {
     let dataTag = Constants.dataIds.CANCELLED_PASS;
     try {
       this.loadingService.addToFetchList(dataTag);
+      this.loggerService.debug(`Pass DELETE ${passId} ${parkSk}`);
       res = await firstValueFrom(
         this.apiService.delete('pass', { passId: passId, park: parkSk })
       );
@@ -94,6 +97,7 @@ export class PassService {
       );
       this.fetchData(params);
     } catch (e) {
+      this.loggerService.error(`${JSON.stringify(e)}`);
       this.toastService.addMessage(
         `Please refresh the page.`,
         `Error cancelling ${errorSubject}`,

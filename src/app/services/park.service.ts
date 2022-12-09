@@ -6,6 +6,7 @@ import { ApiService } from './api.service';
 import { DataService } from './data.service';
 import { EventKeywords, EventObject, EventService } from './event.service';
 import { LoadingService } from './loading.service';
+import { LoggerService } from './logger.service';
 import { ToastService, ToastTypes } from './toast.service';
 
 @Injectable({
@@ -16,6 +17,7 @@ export class ParkService {
     private dataService: DataService,
     private eventService: EventService,
     private toastService: ToastService,
+    private loggerService: LoggerService,
     private apiService: ApiService,
     private loadingService: LoadingService
   ) {}
@@ -32,16 +34,19 @@ export class ParkService {
         dataTag = Constants.dataIds.CURRENT_PARK;
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'park';
+        this.loggerService.debug(`Park GET ${sk}`);
         res = await firstValueFrom(this.apiService.get('park', { park: sk }));
       } else {
         // we are getting all parks
         dataTag = Constants.dataIds.PARKS_LIST;
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'parks list';
+        this.loggerService.debug(`Park List GET`);
         res = await firstValueFrom(this.apiService.get('park'));
       }
       this.dataService.setItemValue(dataTag, res);
     } catch (e) {
+      this.loggerService.error(`${JSON.stringify(e)}`);
       this.toastService.addMessage(
         `Please refresh the page.`,
         `Error getting ${errorSubject}`,
@@ -67,6 +72,7 @@ export class ParkService {
         this.loadingService.addToFetchList(dataTag);
         obj.pk = 'park';
         obj.sk = obj.park.name
+        this.loggerService.debug(`Park GET ${JSON.stringify(obj)}`);
         res = await firstValueFrom(this.apiService.put('park', obj));
         // ensure CURRENT_PARK in DataService is updated with new facility data.
         this.fetchData(obj.sk);
@@ -77,6 +83,7 @@ export class ParkService {
         );
       }
     } catch (e) {
+      this.loggerService.error(`${JSON.stringify(e)}`);
       this.toastService.addMessage(
         `There was a problem updating the park.`,
         `Error putting ${errorSubject}`,

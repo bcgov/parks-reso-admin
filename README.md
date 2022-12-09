@@ -86,6 +86,6 @@ Prod pipeline is triggered by removing the ```pre-release``` tag from a release.
 
 # Config service
 
-Config service is used to alter frontend via DynamoDB. In Dynamo, an item with the PK and SK of config must exist. Within the attributes, you are able to set certain configurations such as ```KEYCLOAK_ENABLED```, ```API_LOCATION```, and ```debugMode```.
+Config service is used to alter frontend via DynamoDB. In Dynamo, an item with the PK and SK of config must exist. Within the attributes, you are able to set certain configurations such as ```KEYCLOAK_ENABLED```, ```API_LOCATION```, and ```logLevel```.
 
 This item is request by the front ends upon client connection.

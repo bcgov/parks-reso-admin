@@ -13,6 +13,7 @@
       [facilityType]="fields?.facilityType"
       [facilityBookingOpeningHour]="fields?.facilityBookingOpeningHour"
       [facilityBookingDaysAhead]="fields?.facilityBookingDaysAhead"
+      [resetEvent]="resetEvent"
     >
     </app-facility-edit-form-details>
   </div>
@@ -35,7 +36,7 @@
     </button>
     <button
       class="btn btn-secondary me-2"
-      (click)="setForm()"
+      (click)="onFormReset()"
       [disabled]="form?.pristine"
     >
       Reset
