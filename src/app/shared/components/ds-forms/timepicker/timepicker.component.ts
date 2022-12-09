@@ -28,6 +28,7 @@ export class TimepickerComponent
 
   private subscriptions = new Subscription();
   public initialTime;
+  public isInitialLoad = true;
   public modelTime;
   public utils = new Utils();
 
@@ -35,40 +36,55 @@ export class TimepickerComponent
     this.initialTime = {
       hour: this.control?.value?.hour || this.defaultTime.hour,
       minute: this.control?.value?.minute || this.defaultTime.minute,
-      second: this.control?.value?.second || this.defaultTime.second
-    }
+      second: this.control?.value?.second || this.defaultTime.second,
+    };
     this.setTime(
       this.initialTime.hour,
       this.initialTime.minute,
-      this.initialTime.second,
+      this.initialTime.second
     );
     if (this.reset) {
-      this.subscriptions.add(this.reset.subscribe(() => this.clearDate()));
+      this.subscriptions.add(
+        this.reset.subscribe(() => {
+          this.clearTime();
+        })
+      );
     }
   }
 
   setTime(hour, minute, second): void {
     this.modelTime = new Date();
     this.modelTime.setHours(hour, minute, second);
+    this.control.setValue(
+      this.utils.convertJSDateToNgbTimeStruct(this.modelTime)
+    );
   }
 
   onTimeChange(event) {
+    if (this.isInitialLoad) {
+      this.isInitialLoad = false;
+    } else {
+      this.control.markAsDirty();
+    }
     if (!event || !this.modelTime) {
-      this.setTime(
-        this.initialTime.hour,
-        this.initialTime.minute,
-        this.initialTime.second
-      );
+      this.clearTime();
     }
     this.control.setValue(
       this.utils.convertJSDateToNgbTimeStruct(this.modelTime)
     );
   }
 
-  clearDate() {
-    this.modelTime = null as any;
-    this.control.setValue(null);
-    this.control.markAsDirty();
+  clearTime() {
+    this.setTime(
+      this.initialTime.hour,
+      this.initialTime.minute,
+      this.initialTime.second
+    );
+    this.control.setValue(
+      this.utils.convertJSDateToNgbTimeStruct(this.modelTime)
+    );
+    this.isInitialLoad = true;
+    this.control.markAsPristine();
   }
 
   ngOnDestroy() {

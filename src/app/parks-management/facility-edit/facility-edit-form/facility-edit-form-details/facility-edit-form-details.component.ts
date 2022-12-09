@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,7 @@ import { UntypedFormControl } from '@angular/forms';
   styleUrls: ['./facility-edit-form-details.component.scss']
 })
 export class FacilityEditFormDetailsComponent implements OnInit {
+  @Input() resetEvent = new EventEmitter();
   @Input() facilityName = new UntypedFormControl();
   @Input() facilityType = new UntypedFormControl();
   @Input() facilityBookingOpeningHour = new UntypedFormControl();
