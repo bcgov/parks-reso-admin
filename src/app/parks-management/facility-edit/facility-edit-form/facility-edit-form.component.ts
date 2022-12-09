@@ -212,6 +212,11 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     }
   }
 
+  onFormReset() {
+    this.setForm();
+    this.resetEvent.emit()
+  }
+
   submitFacilityChanges(facilityObj) {
     if (this.isEditMode.value === true) {
       this.facilityService.putFacility(facilityObj, this.park.sk);
@@ -367,7 +372,6 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     ]);
 
     let bookingDaysList = [];
-    console.log('facilityObj.bookingDays:', facilityObj.bookingDays);
     for (const day of Object.keys(facilityObj.bookingDays)) {
       if (facilityObj.bookingDays[day]) {
         const weekday =

@@ -2,6 +2,7 @@ import {
   AfterContentInit,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   OnDestroy,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
@@ -34,6 +35,10 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   public loading = false;
   public disabledControls: any = {}; // object of disabled controls
   public isSubmitted = false;
+
+  // Form events that can be listened to:
+  // TODO: add more events if necessary
+  public resetEvent = new EventEmitter();
 
   constructor(
     public bFormBuilder: UntypedFormBuilder,
