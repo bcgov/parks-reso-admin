@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { PassService } from 'src/app/services/pass.service';
 import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
+import { TableIconComponent } from 'src/app/shared/components/table/table-components/table-icon/table-icon.component';
 import { tableSchema } from 'src/app/shared/components/table/table.component';
 import { Constants } from 'src/app/shared/utils/constants';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -129,6 +130,13 @@ export class PassesListComponent implements OnInit, OnDestroy {
     message += `</br></br><strong>Date:</strong></br>` + passObj.shortPassDate;
     message +=
       `</br></br><strong>Pass Status:</strong></br>` + passObj.passStatus;
+    if (passObj.isOverbooked === true) {
+      if (passObj.passStatus === 'active' || passObj.passStatus === 'reserved') {
+        message += `</br></br><i class="bi bi-exclamation-triangle-fill text-danger"></i> <strong class="text-danger">Pass is overbooked</strong></br>`;
+      } else {
+        message += `</br></br><i class="bi bi-exclamation-triangle-fill"></i> <strong>Pass is overbooked</strong></br>`;
+      }
+    }
     return message;
   }
 
@@ -158,6 +166,39 @@ export class PassesListComponent implements OnInit, OnDestroy {
     let message = `<p>You are about to cancel pass <strong>${passObj.registrationNumber}</strong>.</div>`;
     message += `<p>Are you sure you want to continue?</p>`;
     return message;
+  }
+
+  displayOverbookedWarning(passObj) {
+    if (passObj.isOverbooked === true) {
+      //show icon in red if pass is still actived/reserved
+      if (
+        passObj.passStatus === 'active' ||
+        passObj.passStatus === 'reserved'
+      ) {
+        return {
+          component: TableIconComponent,
+          inputs: {
+            altText: 'Overbooked',
+            iconClass: 'bi bi-exclamation-triangle-fill text-danger',
+          },
+        };
+        //otherwise, greyed out
+      } else {
+        return {
+          component: TableIconComponent,
+          inputs: {
+            altText: 'Overbooked',
+            iconClass: 'bi bi-exclamation-triangle-fill',
+          },
+        };
+      }
+    }
+    return {
+      component: TableIconComponent,
+      inputs: {
+        iconClass: '',
+      },
+    };
   }
 
   createTable() {
@@ -192,7 +233,14 @@ export class PassesListComponent implements OnInit, OnDestroy {
         displayHeader: 'Status',
         columnClasses: 'px-3',
         mapValue: (passObj) => passObj.passStatus,
-      }
+      },
+      {
+        id: 'overbooked',
+        displayHeader: '',
+        columnClasses: 'px-3',
+        mapValue: () => null,
+        cellTemplate: (passObj) => this.displayOverbookedWarning(passObj),
+      },
     ];
 
     if (this.isAllowed('cancel-passes')) {
@@ -229,7 +277,7 @@ export class PassesListComponent implements OnInit, OnDestroy {
           self.displayPassModal(passObj);
         };
       },
-      columns: columns
+      columns: columns,
     };
   }
 

@@ -4,7 +4,7 @@
       <span *ngIf="data.reserved === null">
         To display capacity levels, you must filter by a date.
       </span>
-      <div *ngIf="data.reserved !== null">
+      <div *ngIf="data.reserved !== null" class="d-sm-flex">
         <span>{{ data.reserved }}/{{ data.capacity }}&nbsp;</span>
         <span class="text-success" *ngIf="data.modifier > 0">
           (+{{ data.modifier }})&nbsp;
@@ -12,7 +12,13 @@
         <span class="text-danger" *ngIf="data.modifier < 0">
           ({{ data.modifier }})&nbsp;
         </span>
-        <span>passes reserved</span>
+        <span class="me-2">passes reserved</span>
+        <div *ngIf="data.overbooked > 0 && data.overbooked === 1" class="text-danger">
+          <small><i class="bi bi-exclamation-triangle-fill"></i> {{ data.overbooked }} pass overbooked</small>
+        </div>
+        <div *ngIf="data.overbooked > 1" class="text-danger">
+          <small><i class="bi bi-exclamation-triangle-fill"></i> {{ data.overbooked }} passes overbooked</small>
+        </div>
       </div>
       <div *ngIf="data.modifier > 0 || data.modifier < 0" class="text-muted">
         <small>Modifier applied</small>
