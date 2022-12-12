@@ -18,7 +18,7 @@ export class TextAreaComponent extends BaseInputComponent {
   }
 
   onInput(event) {
-    if (this.charCap && this.getFieldLength >= this.charCap) {
+    if (this.charCap && this.getFieldLength() >= this.charCap) {
       event.preventDefault();
       event.stopPropagation();
     }
