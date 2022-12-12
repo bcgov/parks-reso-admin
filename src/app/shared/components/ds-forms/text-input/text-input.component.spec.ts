@@ -9,9 +9,8 @@ describe('TextInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TextInputComponent ],
-    })
-    .compileComponents();
+      declarations: [TextInputComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -20,7 +19,16 @@ describe('TextInputComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should block invalid characters', async () => {
+    const e1 = new KeyboardEvent('keydown', { key: 'a' });
+    const e2 = new KeyboardEvent('keydown', { key: 'e' });
+    const allowSpy = spyOn(e1, 'preventDefault');
+    const preventSpy = spyOn(e2, 'preventDefault');
+    component.blockInvalidChars(e1);
+    await fixture.detectChanges();
+    expect(allowSpy).toHaveBeenCalledTimes(0);
+    component.blockInvalidChars(e2);
+    await fixture.detectChanges();
+    expect(preventSpy).toHaveBeenCalled();
   });
 });
