@@ -1,9 +1,7 @@
 import {
   Component,
   Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
 } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import { BaseInputComponent } from '../base-input/base-input.component';
@@ -17,7 +15,7 @@ import { BaseInputComponent } from '../base-input/base-input.component';
 })
 export class MultiselectComponent
   extends BaseInputComponent
-  implements OnInit, OnChanges
+  implements OnInit
 {
   @Input() multiSelectOptions;
 
@@ -36,11 +34,5 @@ export class MultiselectComponent
 
   updateMultiselect() {
     this.control.setValue(this.selectedOptions);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['control']) {
-      this.selectedOptions = changes['control'].currentValue.value;
-    }
   }
 }

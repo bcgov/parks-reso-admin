@@ -3,8 +3,6 @@ import {
   Input,
   OnInit,
   OnDestroy,
-  OnChanges,
-  SimpleChanges,
 } from '@angular/core';
 import { Utils } from '../../../utils/utils';
 import { Subscription } from 'rxjs';
@@ -17,7 +15,7 @@ import { BaseInputComponent } from '../base-input/base-input.component';
 })
 export class ShortdatePickerComponent
   extends BaseInputComponent
-  implements OnInit, OnChanges, OnDestroy
+  implements OnInit, OnDestroy
 {
   @Input() minDate: Date = null as any;
   @Input() maxDate: Date = null as any;
@@ -50,11 +48,6 @@ export class ShortdatePickerComponent
     this.modelDate = null as any;
     this.control.setValue(null);
     this.control.markAsDirty();
-  }
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['control']) {
-      this.modelDate = changes['control'].currentValue.value;
-    }
   }
 
   ngOnDestroy() {

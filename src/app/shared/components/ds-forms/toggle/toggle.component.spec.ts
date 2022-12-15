@@ -8,16 +8,18 @@ describe('ToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ToggleComponent ],
-    })
-    .compileComponents();
+      declarations: [ToggleComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ToggleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should get switch state', async () => {
     expect(component).toBeTruthy();
+    component.control.setValue(true);
+    expect(component.getSwitchState()).toBeTrue();
+    component.control.setValue(false);
   });
 });
