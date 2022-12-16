@@ -1,3 +1,4 @@
+import { EventEmitter } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimepickerComponent } from './timepicker.component';
@@ -23,11 +24,15 @@ describe('TimepickerComponent', () => {
   it('should initialize time properly', () => {
     expect(component.control.value).toEqual({ hour: 0, minute: 0, second: 0 });
     component.defaultTime = { hour: 4, minute: 5, second: 6 };
+    component.reset = new EventEmitter<any>();
+    const resetSpy = spyOn(component, 'clearTime');
     component.ngOnInit();
     expect(component.control.value).toEqual({ hour: 4, minute: 5, second: 6 });
     component.control.setValue({ hour: 1, minute: 2, second: 3 });
     component.ngOnInit();
     expect(component.control.value).toEqual({ hour: 1, minute: 2, second: 3 });
+    component.reset.emit();
+    expect(resetSpy).toHaveBeenCalled();
   });
 
   it('should update time properly', () => {
