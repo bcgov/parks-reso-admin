@@ -49,9 +49,4 @@ describe('MultiselectComponent', () => {
     component.updateMultiselect();
     expect(component.control.value).toEqual(['option 3', 'option 2']);
   });
-
-  it('should reflect changes', async () => {
-    component.ngOnInit();
-    await fixture.isStable();
-  })
 });
