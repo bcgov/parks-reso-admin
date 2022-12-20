@@ -76,7 +76,6 @@ export class PassesListComponent implements OnInit, OnDestroy {
   }
 
   loadMorePasses() {
-    console.log('this.lastEvaluatedKey:', this.lastEvaluatedKey);
     let loadMoreObj = this.dataService.mergeItemValue(
       Constants.dataIds.PASS_SEARCH_PARAMS,
       {

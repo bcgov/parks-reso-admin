@@ -11,11 +11,22 @@ describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
 
+  let fakeConfigService = {
+    config: {
+      ENVIRONMENT: 'prod',
+    },
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [HeaderComponent],
-      providers: [ConfigService, KeycloakService, HttpClient, HttpHandler],
+      providers: [
+        { provide: ConfigService, useValue: fakeConfigService },
+        KeycloakService,
+        HttpClient,
+        HttpHandler,
+      ],
     }).compileComponents();
   });
 
@@ -27,5 +38,12 @@ describe('HeaderComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should unsubscribe on destroy', async () => {
+    const subSpy = spyOn<any>(component['subscriptions'], 'unsubscribe');
+    component.ngOnDestroy();
+    expect(subSpy).toHaveBeenCalledTimes(1);
+    expect(component.showBanner).toBeFalse();
   });
 });
