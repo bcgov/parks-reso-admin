@@ -214,7 +214,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
 
   onFormReset() {
     this.setForm();
-    this.resetEvent.emit()
+    this.resetEvent.emit();
   }
 
   submitFacilityChanges(facilityObj) {
@@ -363,6 +363,8 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     let daysAheadMsg = '';
     if (facilityObj.bookingDaysAhead) {
       daysAheadMsg += facilityObj.bookingDaysAhead;
+    } else if (facilityObj.bookingDaysAhead === 0) {
+      daysAheadMsg += 'Same day';
     } else {
       daysAheadMsg += `${this.configService.config['ADVANCE_BOOKING_LIMIT']} (default)`;
     }

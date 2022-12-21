@@ -9,7 +9,7 @@ import { Constants } from 'src/app/shared/utils/constants';
 })
 export class FacilityEditFormPassRequirementsComponent implements OnInit {
   @Input() facilityPassesRequired = new UntypedFormControl();
-  @Input() facilityBookingDays = new UntypedFormGroup({});
+  @Input() facilityBookingDays = {};
   @Input() facilityBookingTimes = new UntypedFormGroup({});
   @Input() facilityBookingDaysRichText = new UntypedFormControl();
 
