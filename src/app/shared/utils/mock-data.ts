@@ -17,13 +17,13 @@ export class MockData {
 
   public static readonly mockFacility_1 = {
     bookingDays: {
-      Monday: false,
-      Tuesday: false,
-      Wednesday: false,
-      Thursday: true,
-      Friday: true,
-      Saturday: true,
-      Sunday: true,
+      1: false,
+      2: false,
+      3: false,
+      4: true,
+      5: true,
+      6: true,
+      7: true,
     },
     isUpdating: false,
     bookingDaysAhead: 2,
@@ -47,6 +47,38 @@ export class MockData {
     sk: 'Mock Facility 1',
     pk: 'facility::Mock Park 1',
     type: 'Trail',
+  };
+
+  // closed, invisible
+  public static readonly mockFacility_2 = {
+    bookingDays: {
+      1: false,
+      2: false,
+      3: false,
+      4: false,
+      5: false,
+      6: false,
+      7: false,
+    },
+    isUpdating: false,
+    bookingDaysAhead: 0,
+    visible: false,
+    bookingOpeningHour: null,
+    status: {
+      stateReason: 'Closed reason',
+      state: 'closed',
+    },
+    bookableHolidays: [],
+    name: 'Mock Facility 2',
+    bookingDaysRichText: '<p>Rich text for Mock Facility 2</p>',
+    bookingTimes: {
+      DAY: {
+        max: 7,
+      },
+    },
+    sk: 'Mock Facility 2',
+    pk: 'facility::Mock Park 1',
+    type: 'Parking',
   };
 
   public static readonly mockPartialPassFilters_1 = {
