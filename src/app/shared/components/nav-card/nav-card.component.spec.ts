@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { FancyHeaderComponent } from './fancy-header.component';
+import { NavCardComponent } from './nav-card.component';
 
-describe('FancyHeaderComponent', () => {
-  let component: FancyHeaderComponent;
-  let fixture: ComponentFixture<FancyHeaderComponent>;
+describe('NavCardComponent', () => {
+  let component: NavCardComponent;
+  let fixture: ComponentFixture<NavCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FancyHeaderComponent],
+      declarations: [NavCardComponent],
       imports: [RouterTestingModule],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(FancyHeaderComponent);
+    fixture = TestBed.createComponent(NavCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -25,8 +25,6 @@ describe('FancyHeaderComponent', () => {
   it('navigates', async () => {
     const navSpy = spyOn(component['router'], 'navigate');
     component.navigate('mock');
-    expect(navSpy).toHaveBeenCalledOnceWith(['mock'], {
-      relativeTo: component['route'],
-    });
+    expect(navSpy).toHaveBeenCalledOnceWith(['/mock']);
   });
 });
