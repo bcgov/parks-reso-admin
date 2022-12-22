@@ -8,11 +8,27 @@ export class MockData {
     description: 'Mock Park 1 description',
     mapLink: 'https://bcparks.ca',
     name: 'Mock Park 1',
-    orcs: 'MOCK',
-    roles: ['sysadmin', 'MOCK'],
+    orcs: 'MOC1',
+    roles: ['sysadmin', 'MOC1'],
     status: 'open',
     visible: true,
+    capacity: null,
     winterWarning: false,
+  };
+
+  public static readonly mockPark_2 = {
+    pk: 'park',
+    sk: 'Mock Park 2',
+    bcParksLink: 'https://bcparks.ca',
+    description: 'Mock Park 2 description',
+    mapLink: 'https://bcparks.ca',
+    name: 'Mock Park 2',
+    orcs: 'MOC2',
+    roles: ['sysadmin', 'MOC2'],
+    status: 'closed',
+    visible: false,
+    capacity: 100,
+    winterWarning: true,
   };
 
   public static readonly mockFacility_1 = {
@@ -136,5 +152,41 @@ export class MockData {
     registrationNumber: '1234567891',
     shortPassDate: '2022-12-18',
     type: 'PM',
+  };
+
+  public static readonly mockReservationObj_1 = {
+    pk: 'reservations::Mock Park 1::Mock Facility 1',
+    sk: '2022-12-21',
+    status: 'open',
+    capacities: {
+      AM: {
+        baseCapacity: 5,
+        capacityModifier: 8,
+        availablePasses: 13,
+      },
+      PM: {
+        baseCapacity: 3,
+        capacityModifier: -1,
+        availablePasses: 0,
+      },
+    },
+  };
+
+  public static readonly mockReservationObj_2 = {
+    pk: 'reservations::Mock Park 1::Mock Facility 1',
+    sk: '2022-12-22',
+    status: 'closed',
+    capacities: {
+      AM: {
+        baseCapacity: 5,
+        capacityModifier: 0,
+        availablePasses: 5,
+      },
+      PM: {
+        baseCapacity: 3,
+        capacityModifier: -1,
+        availablePasses: 2,
+      },
+    },
   };
 }
