@@ -177,6 +177,8 @@ describe('BaseFormComponent', () => {
     };
     comp.form.controls['testControl1'].setErrors({ invalid: true });
     const invalidRes = await comp.submit();
+    await fixture.isStable();
+    fixture.detectChanges();
     expect(invalidRes.form).toEqual(comp.form);
     expect(invalidRes.fields).toEqual(expectedFields);
     expect(invalidRes.isValid).toBeFalse();
