@@ -24,4 +24,10 @@ describe('SelectComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('emits an event', async () => {
+    const eventSpy = spyOn(component.output, 'emit');
+    component.emit('mock');
+    expect(eventSpy).toHaveBeenCalledOnceWith('mock');
+  });
 });
