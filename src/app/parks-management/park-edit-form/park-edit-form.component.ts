@@ -184,7 +184,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
     message +=
       `</br></br><strong>Link to map:</strong></br>` + parkObj.park?.mapLink;
     message +=
-      `</br></br><strong>Description</strong></br>` + parkObj.description;
+      `</br></br><strong>Description:</strong></br>` + parkObj.description;
     return message;
   }
 
