@@ -1,15 +1,19 @@
 <td
   *ngFor="let column of columnSchema"
-  class="{{ column.columnClasses }} table-cell"
+  class="{{ column?.columnClasses }} table-cell"
   [class.clickable]="rowData?.onClick"
   (click)="onClick()"
 >
   <div class="d-flex align-items-center">
-    <span *ngIf="rowData[column.id].cellTemplate">
+    <span *ngIf="rowData[column.id]?.cellTemplate">
       <ng-template #cellTemplateComponent></ng-template>
     </span>
-    <span *ngIf="!rowData[column.id].cellTemplate">
-      {{ rowData[column.id].display ? rowData[column.id].display : rowData[column.id].value }}
+    <span *ngIf="!rowData[column.id]?.cellTemplate">
+      {{
+        rowData[column.id]?.display
+          ? rowData[column.id]?.display
+          : rowData[column.id]?.value
+      }}
     </span>
   </div>
 </td>
