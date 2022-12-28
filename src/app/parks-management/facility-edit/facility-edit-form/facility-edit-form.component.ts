@@ -17,7 +17,6 @@ import { BehaviorSubject } from 'rxjs';
 import { ConfigService } from 'src/app/services/config.service';
 import { DataService } from 'src/app/services/data.service';
 import { FacilityService } from 'src/app/services/facility.service';
-import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { modalSchema } from 'src/app/shared/components/modal/modal.component';
@@ -47,7 +46,6 @@ export class FacilityEditFormComponent extends BaseFormComponent {
 
   constructor(
     protected formBuilder: UntypedFormBuilder,
-    protected formService: FormService,
     protected router: Router,
     protected dataService: DataService,
     protected loadingService: LoadingService,
@@ -59,7 +57,6 @@ export class FacilityEditFormComponent extends BaseFormComponent {
   ) {
     super(
       formBuilder,
-      formService,
       router,
       dataService,
       loadingService,

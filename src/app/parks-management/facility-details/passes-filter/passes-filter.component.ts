@@ -6,7 +6,6 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
-import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { PassService } from 'src/app/services/pass.service';
 import { ReservationService } from 'src/app/services/reservation.service';
@@ -27,22 +26,20 @@ export class PassesFilterComponent extends BaseFormComponent {
 
   constructor(
     protected formBuilder: UntypedFormBuilder,
-    protected formService: FormService,
     protected router: Router,
     protected dataService: DataService,
     protected loadingService: LoadingService,
-    protected changeDetectior: ChangeDetectorRef,
+    protected changeDetector: ChangeDetectorRef,
     protected passService: PassService,
     protected reservationService: ReservationService,
     private route: ActivatedRoute
   ) {
     super(
       formBuilder,
-      formService,
       router,
       dataService,
       loadingService,
-      changeDetectior
+      changeDetector
     );
 
     this.subscriptions.add(
