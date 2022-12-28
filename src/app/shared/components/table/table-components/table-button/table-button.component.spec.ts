@@ -19,4 +19,13 @@ describe('TableButtonComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('handles button clicking', async () => {
+    const e = new Event('click');
+    const eventSpy = spyOn(e, 'stopPropagation');
+    const clickSpy = spyOn(component, 'onClick');
+    component.onButtonClick(e);
+    expect(eventSpy).toHaveBeenCalledTimes(1);
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+  });
 });
