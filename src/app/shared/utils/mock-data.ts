@@ -163,11 +163,13 @@ export class MockData {
         baseCapacity: 5,
         capacityModifier: 8,
         availablePasses: 13,
+        overbooked: 0,
       },
       PM: {
         baseCapacity: 3,
         capacityModifier: -1,
         availablePasses: 0,
+        overbooked: 1,
       },
     },
   };
@@ -181,12 +183,23 @@ export class MockData {
         baseCapacity: 5,
         capacityModifier: 0,
         availablePasses: 5,
+        overbooked: 0,
       },
       PM: {
         baseCapacity: 3,
         capacityModifier: -1,
         availablePasses: 2,
+        overbooked: 1,
       },
+    },
+  };
+
+  public static readonly mockPassLastEvaluatedKey_1 = {
+    pk: {
+      S: 'pk',
+    },
+    sk: {
+      S: 'sk',
     },
   };
 }

@@ -73,9 +73,6 @@ export class PassService {
       this.eventService.setError(
         new EventObject(EventKeywords.ERROR, String(e), 'Pass Service')
       );
-      // TODO: We may want to change this.
-      if (errorSubject === 'pass list')
-        this.dataService.setItemValue(dataTag, 'error');
     }
     this.loadingService.removeToFetchList(dataTag);
     return res;
@@ -106,9 +103,6 @@ export class PassService {
       this.eventService.setError(
         new EventObject(EventKeywords.ERROR, String(e), 'Pass Service')
       );
-      // TODO: We may want to change this.
-      if (errorSubject === 'pass cancel')
-        this.dataService.setItemValue(dataTag, 'error');
     }
     this.loadingService.removeToFetchList(dataTag);
   }
