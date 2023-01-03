@@ -55,11 +55,11 @@ export class ModifierService {
       this.loggerService.error(`${JSON.stringify(e)}`);
       this.toastService.addMessage(
         `An error has occured while getting ${errorSubject}.`,
-        'Modiifier Service',
+        'Modifier Service',
         Constants.ToastTypes.ERROR
       );
       this.eventService.setError(
-        new EventObject(EventKeywords.ERROR, String(e), 'Modiifier Service')
+        new EventObject(EventKeywords.ERROR, String(e), 'Modifier Service')
       );
     }
     this.loadingService.removeToFetchList(dataTag);
