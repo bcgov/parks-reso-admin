@@ -11,8 +11,13 @@
       [lastName]="fields?.lastName"
       [email]="fields?.email"
       [reservationNumber]="fields?.reservationNumber"
+      [overbooked]="fields?.overbooked"
+      [overbookedOptions]="overbookedList"
+
     >
     </app-passes-filter-fields>
-    <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+    <div class="d-flex justify-content-lg-end">
+      <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+    </div>
   </div>
 </form>

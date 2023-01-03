@@ -39,6 +39,7 @@ export class ReservationService {
             date: resDate,
           })
         );
+        
       }
       this.dataService.setItemValue(dataTag, res);
       if (resDate && selectedPassType) {
@@ -56,6 +57,7 @@ export class ReservationService {
               reserved: 0,
               capacity: facility.bookingTimes[selectedPassType].max,
               modifier: 0,
+              overbooked: 0,
               style: 'success',
             }
           );
@@ -69,6 +71,7 @@ export class ReservationService {
             reserved: null as any,
             capacity: null as any,
             modifier: 0,
+            overbooked: 0,
             style: 'success',
           }
         );
@@ -97,6 +100,7 @@ export class ReservationService {
       reserved: 0,
       capacity: 0,
       modifier: 0,
+      overbooked: 0,
       style: 'success',
     };
 
@@ -110,14 +114,15 @@ export class ReservationService {
         reservationObj.capacities[selectedPassType].capacityModifier;
       capBarObj.capacity = modifiedCapacity;
       capBarObj.reserved =
-        modifiedCapacity -
+        modifiedCapacity + reservationObj.capacities[selectedPassType].overbooked -
         reservationObj.capacities[selectedPassType].availablePasses;
       capBarObj.modifier =
         reservationObj.capacities[selectedPassType].capacityModifier;
+      capBarObj.overbooked = reservationObj.capacities[selectedPassType].overbooked;
     }
 
     capBarObj.capPercent = capBarObj.capacity
-      ? Math.floor((capBarObj.reserved / capBarObj.capacity) * 100)
+      ? Math.floor((capBarObj.reserved / capBarObj.capacity) * 100) 
       : 0;
     capBarObj.style = this.calculateProgressBarColour(capBarObj.capPercent);
 

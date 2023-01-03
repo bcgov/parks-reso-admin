@@ -18,11 +18,15 @@ import { Constants } from 'src/app/shared/utils/constants';
   styleUrls: ['./passes-filter.component.scss'],
 })
 export class PassesFilterComponent extends BaseFormComponent {
-  // @Input() facility;
   private facility;
 
   public bookingTimesList;
   public statusesList = ['reserved', 'active', 'expired', 'cancelled'];
+  public overbookedList = [
+    { value: 'all', display: 'Show all passes' },
+    { value: 'show', display: 'Show overbooked only' },
+    { value: 'hide', display: 'Hide overbooked' },
+  ];
 
   constructor(
     protected formBuilder: UntypedFormBuilder,
@@ -92,6 +96,7 @@ export class PassesFilterComponent extends BaseFormComponent {
       lastName: new UntypedFormControl(this.data.lastName),
       email: new UntypedFormControl(this.data.email),
       reservationNumber: new UntypedFormControl(this.data.reservationNumber),
+      overbooked: new UntypedFormControl(this.data.overbooked),
     });
     super.setFields();
   }

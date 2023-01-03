@@ -77,9 +77,9 @@ describe('PassesListComponent', () => {
     expect(component.tableRows).toBeDefined();
     expect(component.tableRows.length).toEqual(2);
     expect(component.lastEvaluatedKey).toBeDefined();
-    // six columns if cancellation allowed.
+    // seven columns if cancellation allowed.
     const row = component.tableSchema.columns;
-    expect(row.length).toEqual(6);
+    expect(row.length).toEqual(7);
     // check row values;
     expect(row[0].mapValue(mockPass1)).toEqual('1234567890');
     expect(row[1].mapValue(mockPass1)).toEqual('mock@email.ca');
@@ -87,7 +87,8 @@ describe('PassesListComponent', () => {
     expect(row[3].mapValue(mockPass1)).toEqual('2022-12-18');
     expect(row[4].mapValue(mockPass1)).toEqual('expired');
     expect(row[5].mapValue(mockPass1)).toBeNull();
-    expect(row[5].cellTemplate(mockPass1)).toBeDefined();
+    expect(row[6].mapValue(mockPass1)).toBeNull();
+    expect(row[6].cellTemplate(mockPass1)).toBeDefined();
   });
 
   it('displays modals when clicked', async () => {
@@ -115,7 +116,7 @@ describe('PassesListComponent', () => {
       'constructCancelPassModal'
     );
     const cancelModalTemplate =
-      component.tableSchema.columns[5].cellTemplate(mockPass1);
+      component.tableSchema.columns[6].cellTemplate(mockPass1);
     cancelModalTemplate.inputs.onClick();
     expect(cancelModalSpy).toHaveBeenCalledTimes(1);
     expect(component.cancelModalRef).toBeDefined();
