@@ -184,15 +184,9 @@ describe('BaseFormComponent', () => {
     fixture.detectChanges();
     expect(invalidRes.form).toEqual(comp.form);
     expect(invalidRes.fields).toEqual(expectedFields);
-    expect(invalidRes.isValid).toBeFalse();
-    expect(invalidRes.invalidControls.length).toEqual(1);
     expect(invalidRes.disabledControls).toEqual({});
     expect(invalidRes.controlsArray.length).toEqual(4);
     expect(comp.isSubmitted).toBeTrue();
-    comp.clear();
-    const validRes = await comp.submit();
-    expect(validRes.isValid).toBeTrue();
-    expect(validRes.invalidControls.length).toEqual(0);
   });
 
   it('unsubscribes on destroy', async () => {

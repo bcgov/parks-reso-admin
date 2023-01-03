@@ -1,8 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { ConfigService } from '../services/config.service';
 import { KeycloakService } from '../services/keycloak.service';
 
