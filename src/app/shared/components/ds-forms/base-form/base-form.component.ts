@@ -9,7 +9,6 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
-import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
 
 export interface formResult {
@@ -42,7 +41,6 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
 
   constructor(
     public bFormBuilder: UntypedFormBuilder,
-    public bFormService: FormService,
     public bRouter: Router,
     public bDataService: DataService,
     public bLoadingService: LoadingService,
