@@ -118,11 +118,13 @@ describe('BaseFormComponent', () => {
     ).and.callThrough();
     // disable
     comp.setControlStatus(comp.form.controls['testControl1'], true);
+    fixture.detectChanges();
     expect(disableSpy).toHaveBeenCalledTimes(1);
     expect(comp.form.controls['testControl1'].disabled).toBeTrue();
     expect(Object.keys(comp.disabledControls).length).toEqual(1);
     // enable
     comp.setControlStatus(comp.form.controls['testControl1'], false);
+    fixture.detectChanges();
     expect(enableSpy).toHaveBeenCalledTimes(1);
     expect(comp.form.controls['testControl1'].enabled).toBeTrue();
     expect(Object.keys(comp.disabledControls).length).toEqual(0);
@@ -146,6 +148,7 @@ describe('BaseFormComponent', () => {
     comp.setControlStatus(comp.form.controls['testControl1'], true);
     await comp.enable();
     await fixture.isStable();
+    fixture.detectChanges();
     expect(Object.keys(comp.disabledControls).length).toEqual(1);
   });
 
