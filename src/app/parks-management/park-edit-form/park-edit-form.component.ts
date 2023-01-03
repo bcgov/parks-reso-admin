@@ -14,7 +14,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
-import { FormService } from 'src/app/services/form.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { ParkService } from 'src/app/services/park.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
@@ -39,7 +38,6 @@ export class ParkEditFormComponent extends BaseFormComponent {
 
   constructor(
     protected formBuilder: UntypedFormBuilder,
-    protected formService: FormService,
     protected router: Router,
     protected dataService: DataService,
     protected loadingService: LoadingService,
@@ -50,7 +48,6 @@ export class ParkEditFormComponent extends BaseFormComponent {
   ) {
     super(
       formBuilder,
-      formService,
       router,
       dataService,
       loadingService,
