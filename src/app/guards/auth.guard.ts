@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, UrlTree, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import {
+  CanActivate,
+  UrlTree,
+  Router,
+  RouterStateSnapshot,
+  ActivatedRouteSnapshot,
+} from '@angular/router';
+import { ConfigService } from '../services/config.service';
 import { KeycloakService } from '../services/keycloak.service';
 
 @Injectable({
@@ -8,7 +15,8 @@ import { KeycloakService } from '../services/keycloak.service';
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly keycloakService: KeycloakService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly configService: ConfigService
   ) {}
 
   canActivate(
@@ -53,17 +61,30 @@ export class AuthGuard implements CanActivate {
       }
     }
 
-    // Not authorized
+    // Not authorized / feature flagged
     if (!this.keycloakService.isAuthorized()) {
       // login was successful but the user doesn't have necessary Keycloak roles.
       return this.router.parseUrl('/unauthorized');
     }
 
-    if (!this.keycloakService.isAllowed('export-reports') && state.url === '/export-reports') {
+    if (
+      !this.configService.config.QR_CODE_ENABLED &&
+      state.url === '/pass-management'
+    ) {
       return this.router.parseUrl('/');
     }
 
-    if (!this.keycloakService.isAllowed('lock-records') && state.url === '/lock-records') {
+    if (
+      !this.keycloakService.isAllowed('export-reports') &&
+      state.url === '/export-reports'
+    ) {
+      return this.router.parseUrl('/');
+    }
+
+    if (
+      !this.keycloakService.isAllowed('lock-records') &&
+      state.url === '/lock-records'
+    ) {
       return this.router.parseUrl('/');
     }
 

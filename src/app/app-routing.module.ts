@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { ParksManagementComponent } from './parks-management/parks-management.component';
 import { MetricsComponent } from './metrics/metrics.component';
 import { MetricsResolver } from './resolvers/metrics.resolver';
+import { PassManagementComponent } from './pass-management/pass-management.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,20 @@ const routes: Routes = [
     loadChildren: () =>
       import('./parks-management/parks-management.module').then(
         (m) => m.ParksManagementModule
+      ),
+  },
+  {
+    path: 'pass-management',
+    canActivate: [AuthGuard],
+    component: PassManagementComponent,
+    data: {
+      label: 'Pass Management',
+      breadcrumb: 'Pass Management',
+      icon: 'bi-pass-fill',
+    },
+    loadChildren: () =>
+      import('./pass-management/pass-management.module').then(
+        (m) => m.PassManagementModule
       ),
   },
   {
