@@ -82,7 +82,7 @@ describe('PassesUtilityButtonsComponent', () => {
     await fixture.isStable();
     expect(apiSpy).toHaveBeenCalledWith('export-pass', {
       facilityName: 'Mock Facility 1',
-      park: 'Mock Park 1',
+      park: 'MOC1',
       email: 'mock@email.ca',
       date: '2022-12-19',
       firstName: 'firstName',

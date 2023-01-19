@@ -69,7 +69,6 @@ export class ParkEditFormComponent extends BaseFormComponent {
     // First pass of form initialization, establish disabledRules (if any)
     this.setForm();
     // Disabling rules:
-    super.addDisabledRule(this.fields.parkName, this.isEditMode, [true]);
     super.addDisabledRule(this.fields.parkOrcs, this.isEditMode, [true]);
   }
 

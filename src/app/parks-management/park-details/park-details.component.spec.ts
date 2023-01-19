@@ -106,8 +106,8 @@ describe('ParkDetailsComponent', () => {
     );
     expect(displayElements[0].nativeElement.innerText).toContain('Passes are required at this park.')
     expect(displayElements[1].nativeElement.innerText).toContain('Not set')
-    expect(displayElements[2].nativeElement.innerText).toContain(mockPark.bcParksLink)
     expect(displayElements[3].nativeElement.innerText).toContain('true')
-    expect(displayElements[4].nativeElement.innerText).toContain(mockPark.mapLink)
+    expect(displayElements[4].nativeElement.innerText).toContain(mockPark.bcParksLink)
+    expect(displayElements[5].nativeElement.innerText).toContain(mockPark.mapLink)
   });
 });

@@ -3,7 +3,7 @@ export class MockData {
 
   public static readonly mockPark_1 = {
     pk: 'park',
-    sk: 'Mock Park 1',
+    sk: 'MOC1',
     bcParksLink: 'https://bcparks.ca',
     description: 'Mock Park 1 description',
     mapLink: 'https://bcparks.ca',
@@ -18,7 +18,7 @@ export class MockData {
 
   public static readonly mockPark_2 = {
     pk: 'park',
-    sk: 'Mock Park 2',
+    sk: 'MOC2',
     bcParksLink: 'https://bcparks.ca',
     description: 'Mock Park 2 description',
     mapLink: 'https://bcparks.ca',
@@ -61,7 +61,7 @@ export class MockData {
       },
     },
     sk: 'Mock Facility 1',
-    pk: 'facility::Mock Park 1',
+    pk: 'facility::MOC1',
     type: 'Trail',
   };
 
@@ -93,7 +93,7 @@ export class MockData {
       },
     },
     sk: 'Mock Facility 2',
-    pk: 'facility::Mock Park 1',
+    pk: 'facility::MOC1',
     type: 'Parking',
   };
 
@@ -113,8 +113,9 @@ export class MockData {
   };
 
   public static readonly mockPass_1 = {
-    pk: 'pass::Mock Park 1',
+    pk: 'pass::MOC1',
     sk: '1234567890',
+    parkName: 'Mock Park 1',
     creationDate: '2022-12-18T19:00:00.000Z',
     date: '2022-12-18T19:00:00.000Z',
     email: 'mock@email.ca',
@@ -134,8 +135,9 @@ export class MockData {
   };
 
   public static readonly mockPass_2 = {
-    pk: 'pass::Mock Park 1',
+    pk: 'pass::MOC1',
     sk: '1234567891',
+    parkName: 'Mock Park 1',
     creationDate: '2022-12-18T19:00:00.000Z',
     date: '2022-12-18T19:00:00.000Z',
     email: 'mock2@email.ca',
@@ -155,7 +157,7 @@ export class MockData {
   };
 
   public static readonly mockReservationObj_1 = {
-    pk: 'reservations::Mock Park 1::Mock Facility 1',
+    pk: 'reservations::MOC1::Mock Facility 1',
     sk: '2022-12-21',
     status: 'open',
     capacities: {
@@ -175,7 +177,7 @@ export class MockData {
   };
 
   public static readonly mockReservationObj_2 = {
-    pk: 'reservations::Mock Park 1::Mock Facility 1',
+    pk: 'reservations::MOC1::Mock Facility 1',
     sk: '2022-12-22',
     status: 'closed',
     capacities: {

@@ -79,7 +79,7 @@ export class ModifierService {
       this.loggerService.debug(`PUT modifier ${JSON.stringify(obj)}`);
       res = await firstValueFrom(this.apiService.put('modifier', obj));
       const today = this.utils.getTodaysDate();
-      this.fetchData(obj.parkName, obj.facility, today);
+      this.fetchData(obj.parkOrcs, obj.facility, today);
       this.toastService.addMessage(
         `Modifier set`,
         'Modifier Service',
@@ -110,7 +110,7 @@ export class ModifierService {
         PM: 0,
         DAY: 0,
       },
-      parkName: park,
+      parkOrcs: park,
       facility: facility,
     };
 

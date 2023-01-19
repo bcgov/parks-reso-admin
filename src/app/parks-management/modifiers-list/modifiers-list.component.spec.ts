@@ -66,7 +66,7 @@ describe('ModifiersListComponent', () => {
     );
     await component.deleteModifierObj(mockReservationObj1);
     expect(deleteServiceSpy).toHaveBeenCalledOnceWith(
-      'Mock Park 1',
+      'MOC1',
       'Mock Facility 1',
       '2022-12-21'
     );

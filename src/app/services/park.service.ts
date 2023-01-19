@@ -71,7 +71,7 @@ export class ParkService {
       if (this.validateParkObject(obj)){
         this.loadingService.addToFetchList(dataTag);
         obj.pk = 'park';
-        obj.sk = obj.park.name
+        obj.sk = obj.park.orcs
         this.loggerService.debug(`Park GET ${JSON.stringify(obj)}`);
         res = await firstValueFrom(this.apiService.put('park', obj));
         // ensure CURRENT_PARK in DataService is updated with new facility data.

@@ -5,9 +5,11 @@ import {
   NavigationEnd,
   Router,
 } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Breadcrumb } from '../models/breadcrumb.model';
+import { Constants } from '../shared/utils/constants';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +17,26 @@ import { Breadcrumb } from '../models/breadcrumb.model';
 export class BreadcrumbService {
   // Subject emitting the breadcrumb hierarchy
   private readonly _breadcrumbs = new BehaviorSubject<Breadcrumb[]>([]);
+  public park;
+  public subscriptions = new Subscription();
 
   // Observable exposing the breadcrumb hierarchy
   readonly breadcrumbs = this._breadcrumbs.asObservable();
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private dataService: DataService) {
     // Initial seed
     this.setBreadcrum();
+
+    this.subscriptions.add(
+      this.dataService
+        .watchItem(Constants.dataIds.CURRENT_PARK)
+        .subscribe((res) => {
+          if (res && res[0]) {
+            this.park = res[0];
+            this.setBreadcrum();
+          }
+        })
+    );
 
     this.router.events
       .pipe(
@@ -57,7 +72,7 @@ export class BreadcrumbService {
         let label = '';
         switch (route.data['breadcrumb']) {
           case 'PARK NAME':
-            label = route.params['parkId'];
+            label = this.park?.name || route.params['parkId'];
             break;
           case 'FACILITY NAME':
             label = route.params['facilityId'];
