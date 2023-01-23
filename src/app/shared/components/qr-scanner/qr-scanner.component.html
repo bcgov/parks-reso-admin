@@ -1,0 +1,75 @@
+<select
+  *ngIf="scannerEnabled"
+  id="camera-select"
+  (change)="onDeviceSelectChange($event.target['value'])"
+  class="form-select form-select-lg mb-3"
+  aria-label=".form-select-lg example"
+>
+  <label><strong>Select Camera:</strong></label>
+  <option value="">No Device Selected</option>
+  <option
+    *ngFor="let device of availableDevices"
+    value="{{ device.deviceId }}"
+    [selected]="deviceCurrent && device.deviceId === deviceCurrent.deviceId"
+  >
+    {{ device.label }}
+  </option>
+</select>
+
+<zxing-scanner
+  [class.d-none]="!scannerEnabled"
+  [enable]="scannerEnabled"
+  [device]="deviceCurrent"
+  (deviceChange)="onDeviceChange($event)"
+  (scanSuccess)="onCodeResult($event)"
+  (scanError)="onCodeError($event)"
+  [formats]="formatsEnabled"
+  (permissionResponse)="onHasPermission($event)"
+  (camerasFound)="onCamerasFound($event)"
+>
+</zxing-scanner>
+<section
+  *ngIf="scannerEnabled"
+  id="scanner-indicator"
+  class="border border-top-0 rounded-bottom position-relative p-2"
+  [class.bg-success]="scanningState === 'found'"
+>
+  <div *ngIf="scanningState === 'scanning'">
+    <div class="d-flex justify-content-between w-100">
+      <p class="fw-bold fs-3 mb-0">Searching for QR code...</p>
+      <div class="spinner-grow ms-auto" role="status" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div *ngIf="scanningState === 'found'" class="text-white">
+    <div class="d-flex justify-content-between w-100">
+      <p class="fw-bold fs-3 mb-0">QR code found!</p>
+      <i class="bi bi-check-lg" style="font-size: 1.5rem"></i>
+    </div>
+  </div>
+</section>
+
+<section id="scanner-errors" *ngIf="scannerEnabled">
+  <ng-container *ngIf="hasPermission === undefined">
+    <h2>Waiting for permissions.</h2>
+
+    <blockquote>
+      If your device does not has cameras, no permissions will be asked.
+    </blockquote>
+  </ng-container>
+
+  <ng-container *ngIf="hasPermission === false">
+    <h2>
+      You denied the camera permission, we can't scan anything without it.
+    </h2>
+  </ng-container>
+
+  <ng-container *ngIf="hasDevices === undefined">
+    <h2>Couldn't check for devices.</h2>
+
+    <blockquote>This may be caused by some security error.</blockquote>
+  </ng-container>
+
+  <ng-container *ngIf="hasDevices === false">
+    <h2>No devices were found.</h2>
+  </ng-container>
+</section>

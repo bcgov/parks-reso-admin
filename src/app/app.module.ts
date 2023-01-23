@@ -26,6 +26,7 @@ import { InfiniteLoadingBarModule } from './shared/components/infinite-loading-b
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingService } from './services/loading.service';
+import { PassManagementModule } from './pass-management/pass-management.module';
 
 export function initConfig(
   configService: ConfigService,
@@ -56,6 +57,7 @@ export function initConfig(
     HeaderModule,
     FooterModule,
     HomeModule,
+    PassManagementModule,
     InfiniteLoadingBarModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
