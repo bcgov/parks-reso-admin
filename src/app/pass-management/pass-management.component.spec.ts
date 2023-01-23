@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ConfigService } from '../services/config.service';
 
 import { PassManagementComponent } from './pass-management.component';
 
@@ -8,9 +10,10 @@ describe('PassManagementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PassManagementComponent ]
-    })
-    .compileComponents();
+      declarations: [PassManagementComponent],
+      providers: [ConfigService],
+      imports: [HttpClientTestingModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PassManagementComponent);
     component = fixture.componentInstance;
