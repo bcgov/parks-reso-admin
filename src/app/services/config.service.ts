@@ -42,8 +42,9 @@ export class ConfigService {
   }
 
   get logLevel(): any {
-    // Can be overidden by the js console.
-    return window['__env'].logLevel;
+    if (window['__env'] && window['__env'].logLevel != undefined)
+      // Can be overidden by the js console.
+      return window['__env'].logLevel;
   }
 
   get config(): any {
