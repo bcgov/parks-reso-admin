@@ -45,28 +45,27 @@ export class AppComponent implements OnInit, OnDestroy {
         messages.forEach((msg) => {
           switch (msg.type) {
             case Constants.ToastTypes.SUCCESS:
-              {
+              if (msg.title === 'QR Service') {
+                this.toastr.success(msg.body, msg.title, {
+                  timeOut: 1000,
+                  positionClass: 'toast-top-center',
+                });
+              } else {
                 this.toastr.success(msg.body, msg.title);
               }
               break;
             case Constants.ToastTypes.WARNING:
-              {
-                this.toastr.warning(msg.body, msg.title);
-              }
+              this.toastr.warning(msg.body, msg.title);
               break;
             case Constants.ToastTypes.INFO:
-              {
-                this.toastr.info(msg.body, msg.title);
-              }
+              this.toastr.info(msg.body, msg.title);
               break;
             case Constants.ToastTypes.ERROR:
-              {
-                this.toastr.error(msg.body, msg.title, {
-                  extendedTimeOut: 0,
-                  timeOut: 0,
-                  closeButton: true,
-                });
-              }
+              this.toastr.error(msg.body, msg.title, {
+                extendedTimeOut: 0,
+                timeOut: 0,
+                closeButton: true,
+              });
               break;
           }
           // Remove message from memory

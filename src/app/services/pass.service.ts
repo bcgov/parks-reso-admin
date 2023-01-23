@@ -39,7 +39,22 @@ export class PassService {
     let errorSubject = '';
     let dataTag;
     try {
-      if (
+      if (params.park && params.passId) {
+        console.log('PARK', params.park);
+        console.log('passId', params.passId);
+
+        // Fetch for QR codes
+        // For now we are going to async this.
+
+        // This might be useful for online later
+        dataTag = 'get-' + params.passId;
+        this.loadingService.addToFetchList(dataTag);
+        const queryParams = this.filterSearchParams(params);
+        res = await firstValueFrom(this.apiService.get('pass', queryParams));
+        this.dataService.setItemValue(dataTag, res.data[0]);
+        this.loadingService.removeToFetchList(dataTag);
+        return res.data[0];
+      } else if (
         !params.passSk &&
         params.park &&
         params.facilityName &&
@@ -50,14 +65,19 @@ export class PassService {
         const queryParams = this.filterSearchParams(params);
         res = await firstValueFrom(this.apiService.get('pass', queryParams));
         if (params?.appendResults) {
-          this.dataService.appendItemValue(dataTag, res.data)
+          this.dataService.appendItemValue(dataTag, res.data);
         } else {
           this.dataService.setItemValue(dataTag, res.data);
         }
-        if (res.LastEvaluatedKey){
-          this.dataService.setItemValue(Constants.dataIds.PASS_LAST_EVALUATED_KEY, res.LastEvaluatedKey)
+        if (res.LastEvaluatedKey) {
+          this.dataService.setItemValue(
+            Constants.dataIds.PASS_LAST_EVALUATED_KEY,
+            res.LastEvaluatedKey
+          );
         } else {
-          this.dataService.clearItemValue(Constants.dataIds.PASS_LAST_EVALUATED_KEY);
+          this.dataService.clearItemValue(
+            Constants.dataIds.PASS_LAST_EVALUATED_KEY
+          );
         }
         this.dataService.setItemValue(
           Constants.dataIds.PASS_SEARCH_PARAMS,
@@ -120,6 +140,7 @@ export class PassService {
       facilityName: params.facilityName || null,
       date: params.date || null,
       reservationNumber: params.reservationNumber || null,
+      passId: params.passId || null,
       passStatus: params.passStatus || null,
       firstName: params.firstName || null,
       lastName: params.lastName || null,
@@ -160,5 +181,42 @@ export class PassService {
 
   getBookingTimesList(facility) {
     return Object.keys(facility.bookingTimes);
+  }
+
+  async checkInPass(pk, sk) {
+    if (pk && sk) {
+      const res = await firstValueFrom(
+        await this.apiService.put(
+          'pass',
+          { pk: pk, sk: sk },
+          { checkedIn: true }
+        )
+      );
+      this.toastService.addMessage(
+        `Pass successfully checked-in.`,
+        'QR Service',
+        Constants.ToastTypes.SUCCESS
+      );
+      return res;
+    }
+    return null;
+  }
+  async checkOutPass(pk, sk) {
+    if (pk && sk) {
+      const res = await firstValueFrom(
+        await this.apiService.put(
+          'pass',
+          { pk: pk, sk: sk },
+          { checkedIn: false }
+        )
+      );
+      this.toastService.addMessage(
+        `Pass successfully checked-out.`,
+        'QR Service',
+        Constants.ToastTypes.SUCCESS
+      );
+      return res;
+    }
+    return null;
   }
 }

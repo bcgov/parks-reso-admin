@@ -1,0 +1,156 @@
+<div class="container-fluid pt-3 mb-4">
+  <h1>Pass Management</h1>
+
+  <div class="d-grid gap-2 mb-4">
+    <div class="btn-group btn-group-lg">
+      <button
+        type="button"
+        class="btn btn-primary"
+        [class.active]="mode === 'camera'"
+        (click)="setMode('camera')"
+      >
+        Camera
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        [class.active]="mode === 'manual'"
+        (click)="setMode('manual')"
+      >
+        Manual Lookup
+      </button>
+    </div>
+  </div>
+
+  <section *ngIf="mode === 'camera'">
+    <app-qr-scanner
+      [scannerEnabled]="isScanning"
+      (url)="processUrl($event)"
+    ></app-qr-scanner>
+
+    <div *ngIf="!isScanning" class="card mt-3">
+      <div
+        class="card-header"
+        [class]="[passState.textColour, passState.backgroundColour]"
+      >
+        <strong>{{ passState.label }}</strong>
+      </div>
+      <div class="card-body">
+        <label>Park Name</label>
+        <div>
+          <strong>{{ (pass && pass["parkName"]) || "-" }}</strong>
+        </div>
+        <hr />
+
+        <label>Facility Name</label>
+        <div>
+          <strong>{{ (pass && pass["facilityName"]) || "-" }}</strong>
+        </div>
+        <hr />
+
+        <label>Date</label>
+        <div>
+          <strong>{{ (pass && pass["shortPassDate"]) || "-" }}</strong>
+        </div>
+        <hr />
+
+        <label>Name</label>
+        <div>
+          <strong>{{ (pass && pass["fullName"]) || "-" }}</strong>
+        </div>
+        <hr />
+
+        <label>Reservation Number</label>
+        <div>
+          <strong>{{ (pass && pass["registrationNumber"]) || "-" }}</strong>
+        </div>
+        <hr />
+
+        <!-- <label>Pass Status</label>
+        <div>
+          <strong>{{
+            passState && passState.label && passState.label === "Checked-in"
+              ? passState.label
+              : "-"
+          }}</strong>
+        </div>
+        <hr /> -->
+
+        <label>Check-in Time</label>
+        <div>
+          <strong>{{ (pass && pass["checkedInTime"]) || "-" }}</strong>
+        </div>
+        <br />
+
+        <!-- TODO: Limit this for the day of -->
+        <div
+          *ngIf="passState.state === 'reserved'"
+          class="alert alert-warning"
+          role="alert"
+        >
+          <strong>Warning:</strong><br />This pass is for a later timeslot!
+        </div>
+
+        <div class="d-grid gap-2">
+          <!-- Check in: active -->
+          <button
+            *ngIf="passState.state === 'active'"
+            class="btn btn-primary btn-lg"
+            [disabled]="!canCheckIn && !checkInLoading"
+            (click)="checkIn()"
+          >
+            <span *ngIf="!checkInLoading"> Check-in </span>
+            <span *ngIf="checkInLoading">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </span>
+          </button>
+
+          <!-- Check in but early: reserved -->
+          <button
+            *ngIf="passState.state === 'reserved'"
+            class="btn btn-warning btn-lg"
+            [disabled]="!canCheckIn && !checkInLoading"
+            (click)="checkIn()"
+          >
+            <span *ngIf="!checkInLoading"> Check-in </span>
+            <span *ngIf="checkInLoading">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </span>
+          </button>
+
+          <!-- Check out: checkedIn -->
+          <button
+            *ngIf="passState.state === 'checkedIn'"
+            class="btn btn-danger btn-lg"
+            [disabled]="!canCheckOut && !checkOutLoading"
+            (click)="checkOut()"
+          >
+            <span *ngIf="!checkOutLoading"> Check-out </span>
+            <span *ngIf="checkOutLoading">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </span>
+          </button>
+
+          <!-- Dismiss: all -->
+          <button
+            class="btn btn-secondary btn-lg"
+            (click)="dismiss()"
+            [disabled]="checkInLoading || checkOutLoading"
+          >
+            <span>Dismiss</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section *ngIf="mode === 'manual'">
+    TODO: This is where manual mode goes
+  </section>
+</div>

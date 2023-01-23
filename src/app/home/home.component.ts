@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { KeycloakService } from 'src/app/services/keycloak.service';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-home',
@@ -16,15 +17,19 @@ export class HomeComponent {
       navigation: 'parks',
     },
   ];
-  constructor(protected keyCloakService: KeycloakService) {
-    // if (keyCloakService.isAllowed('export-reports')) {
-    //   this.cardConfig.push({
-    //     cardHeader: 'Pass Management',
-    //     cardTitle: 'Pass Management Tools',
-    //     cardText: 'This page is a work in progress. Coming soon.',
-    //     navigation: 'export-reports',
-    //   });
-    // }
+  constructor(
+    protected keyCloakService: KeycloakService,
+    protected configService: ConfigService
+  ) {
+    if (this.configService.config.QR_CODE_ENABLED) {
+      this.cardConfig.push({
+        cardHeader: 'Pass Management',
+        cardTitle: 'Pass Management',
+        cardText: 'Check-in park guests via QR Code.',
+        navigation: 'pass-management',
+      });
+    }
+
     if (keyCloakService.isAllowed('metrics')) {
       this.cardConfig.push({
         cardHeader: 'Site Metrics',

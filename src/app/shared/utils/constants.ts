@@ -33,4 +33,43 @@ export class Constants {
     { id: 5, name: 'Friday', symbol: 'F' },
     { id: 6, name: 'Saturday', symbol: 'Sa' },
   ];
+
+  public static readonly stateLabelDictionary = {
+    expired: {
+      state: 'expired',
+      backgroundColour: 'bg-danger',
+      textColour: 'text-white',
+      label: 'Pass Expired',
+    },
+    cancelled: {
+      state: 'cancelled',
+      backgroundColour: 'bg-danger',
+      textColour: 'text-white',
+      label: 'Pass Cancelled',
+    },
+    reserved: {
+      state: 'reserved',
+      backgroundColour: 'bg-warning',
+      textColour: 'text-black',
+      label: 'Pass Reserved',
+    },
+    active: {
+      state: 'active',
+      backgroundColour: 'bg-success',
+      textColour: 'text-white',
+      label: 'Pass Active',
+    },
+    checkedIn: {
+      state: 'checkedIn',
+      backgroundColour: 'bg-warning',
+      textColour: 'text-black',
+      label: 'Checked-in',
+    },
+    none: {
+      state: 'none',
+      backgroundColour: 'bg-secondary',
+      textColour: 'text-white',
+      label: 'Searching for Pass',
+    },
+  };
 }

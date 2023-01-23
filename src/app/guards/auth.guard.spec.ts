@@ -1,6 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ConfigService } from '../services/config.service';
 import { KeycloakService } from '../services/keycloak.service';
 
 import { AuthGuard } from './auth.guard';
@@ -19,10 +21,11 @@ describe('AuthGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         AuthGuard,
+        ConfigService,
         { provide: KeycloakService, useValue: mockKeycloakService },
         { provide: Router, useValue: mockRouter },
       ],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule],
     });
   });
 
@@ -42,7 +45,7 @@ describe('AuthGuard', () => {
 
     const guard = TestBed.get(AuthGuard);
 
-    const result = guard.canActivate(null, {url: '/export-reports'});
+    const result = guard.canActivate(null, { url: '/export-reports' });
 
     expect(result).toEqual(undefined);
   });
