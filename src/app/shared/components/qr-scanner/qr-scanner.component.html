@@ -17,6 +17,7 @@
 </select>
 
 <zxing-scanner
+  *ngIf="showScannerComponent"
   [class.d-none]="!scannerEnabled"
   [enable]="scannerEnabled"
   [device]="deviceCurrent"
@@ -29,7 +30,7 @@
 >
 </zxing-scanner>
 <section
-  *ngIf="scannerEnabled"
+  *ngIf="scannerEnabled && showScanIndicator"
   id="scanner-indicator"
   class="border border-top-0 rounded-bottom position-relative p-2"
   [class.bg-success]="scanningState === 'found'"
