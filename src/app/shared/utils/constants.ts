@@ -13,6 +13,7 @@ export class Constants {
     CURRENT_CAPACITY_BAR_OBJECT: 'currentCapacityBarObj',
     ENTER_DATA_URL_PARAMS: 'enter-data-url-params',
     PASS_BREAKDOWN_BY_STATUS: 'pass-breakdown-by-status',
+    PASS_QR_CODE: 'pass-qr-code',
     MODIFIERS: 'modifiers',
   };
 

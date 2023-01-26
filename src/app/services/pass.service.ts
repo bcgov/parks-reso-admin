@@ -40,14 +40,8 @@ export class PassService {
     let dataTag;
     try {
       if (params.park && params.passId) {
-        console.log('PARK', params.park);
-        console.log('passId', params.passId);
-
         // Fetch for QR codes
-        // For now we are going to async this.
-
-        // This might be useful for online later
-        dataTag = 'get-' + params.passId;
+        dataTag = Constants.dataIds.PASS_QR_CODE;
         this.loadingService.addToFetchList(dataTag);
         const queryParams = this.filterSearchParams(params);
         res = await firstValueFrom(this.apiService.get('pass', queryParams));
