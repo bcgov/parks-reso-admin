@@ -71,7 +71,7 @@ describe('ModifiersFormComponent', () => {
         PM: -1,
         DAY: 2,
       },
-      parkName: 'Mock Park 1',
+      parkOrcs: 'MOC1',
       facility: 'Mock Facility 1',
     });
   });

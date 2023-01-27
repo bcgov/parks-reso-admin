@@ -30,7 +30,7 @@ describe('ModifierService', () => {
       PM: 0,
       DAY: 0,
     },
-    parkName: 'Mock Park 1',
+    parkOrcs: 'MOC1',
     facility: 'Mock Facility 1',
   };
 
@@ -159,7 +159,7 @@ describe('ModifierService', () => {
     // delete is actually an api put, resetting everything.
     const fetchDataSpy = spyOn(service, 'fetchData');
     await service.deleteModifier(
-      'Mock Park 1',
+      'MOC1',
       'Mock Facility 1',
       '2022-12-28'
     );
@@ -176,7 +176,7 @@ describe('ModifierService', () => {
     // throw error
     loggerDebugSpy.and.throwError('delete error');
     await service.deleteModifier(
-      'Mock Park 1',
+      'MOC1',
       'Mock Facility 1',
       '2022-12-28'
     );

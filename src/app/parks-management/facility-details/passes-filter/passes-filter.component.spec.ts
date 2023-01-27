@@ -69,7 +69,7 @@ describe('PassesFilterComponent', () => {
     expect(location.path()).toBe('/?passStatus=reserved&passType=Trail');
     expect(passServiceSpy).toHaveBeenCalledOnceWith({
       passType: 'Trail',
-      park: 'Mock Park 1',
+      park: 'MOC1',
       facilityName: 'Mock Facility 1',
       passStatus: 'reserved',
     });

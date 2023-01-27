@@ -56,7 +56,7 @@ export class ParksListComponent implements OnInit, OnDestroy {
       rowClick: (parkObj) => {
         let self = this;
         return function () {
-          self.navToPark(parkObj.name);
+          self.navToPark(parkObj.sk);
         };
       },
       columns: [
@@ -89,7 +89,7 @@ export class ParksListComponent implements OnInit, OnDestroy {
                 buttonClass: 'btn btn-outline-primary',
                 iconClass: 'bi bi-pencil-fill',
                 onClick: function () {
-                  self.navToPark(parkObj.name, true);
+                  self.navToPark(parkObj.sk, true);
                 },
               },
             };

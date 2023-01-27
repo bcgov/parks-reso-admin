@@ -163,7 +163,7 @@ describe('PassesListComponent', () => {
     expect(mergeItemSpy).toHaveBeenCalledWith(
       Constants.dataIds.PASS_SEARCH_PARAMS,
       {
-        ExclusiveStartKeyPK: 'pass::Mock Park 1',
+        ExclusiveStartKeyPK: 'pass::MOC1',
         ExclusiveStartKeySK: '1234567890',
         appendResults: true,
       }

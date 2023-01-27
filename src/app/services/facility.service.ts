@@ -91,7 +91,7 @@ export class FacilityService {
         }
         (obj.pk = `facility::${parkSk}`),
           (obj.sk = obj.name),
-          (obj.parkName = parkSk);
+          (obj.parkOrcs = parkSk);
         this.loggerService.debug(`Put Facility: ${JSON.stringify(obj)}`);
         res = await firstValueFrom(this.apiService.put('facility', obj));
         // ensure CURRENT_FACILITY in DataService is updated with new facility data.
@@ -130,7 +130,7 @@ export class FacilityService {
         }
         delete obj.pk;
         delete obj.sk;
-        obj.parkName = parkSk;
+        obj.parkOrcs = parkSk;
         this.loggerService.debug(`Post Facility: ${JSON.stringify(obj)}`);
         res = await firstValueFrom(this.apiService.post('facility', obj));
         // ensure CURRENT_FACILITY in DataService is updated with new facility data.

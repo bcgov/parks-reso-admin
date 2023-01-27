@@ -45,7 +45,7 @@ describe('ParksListComponent', () => {
     // on row click, navigate to park details
     const rowClick = component.tableSchema.rowClick(mockPark1);
     rowClick();
-    expect(navSpy).toHaveBeenCalledOnceWith(['Mock Park 1'], {
+    expect(navSpy).toHaveBeenCalledOnceWith(['MOC1'], {
       relativeTo: component['route'],
     });
     navSpy.calls.reset();

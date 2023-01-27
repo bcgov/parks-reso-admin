@@ -54,7 +54,7 @@ describe('FacilityEditComponent', () => {
     );
     component.updateModifiers();
     expect(modifierSpy).toHaveBeenCalledOnceWith(
-      'Mock Park 1',
+      'MOC1',
       'Mock Facility 1',
       '2022-12-20'
     );

@@ -24,9 +24,10 @@ describe('ParkService', () => {
 
   let mockParkObj = {
     pk: 'park',
-    sk: 'Mock Park 1',
+    sk: 'MOC1',
     park: {
       name: 'Mock Park 1',
+      orcs: 'MOC1'
     },
   };
 
@@ -38,7 +39,7 @@ describe('ParkService', () => {
       DAY: 0,
     },
     parkName: 'Mock Park 1',
-    facility: 'Mock Facility 1',
+    facility: 'MOC1',
   };
 
   let mockApiService = {
@@ -160,7 +161,7 @@ describe('ParkService', () => {
     expect(loggerDebugSpy).toHaveBeenCalledTimes(1);
     expect(apiPutSpy).toHaveBeenCalledOnceWith('park', mockParkObj);
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
-    expect(fetchSpy).toHaveBeenCalledOnceWith('Mock Park 1');
+    expect(fetchSpy).toHaveBeenCalledOnceWith('MOC1');
     expect(toastSpy).toHaveBeenCalledTimes(1);
   });
 

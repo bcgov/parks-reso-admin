@@ -33,9 +33,9 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <label><strong>BC Parks Link:</strong></label>
+        <label><strong>Park ORCS:</strong></label>
         <br />
-        <a href="{{ park?.bcParksLink }}">{{ park?.bcParksLink }}</a>
+        <p>{{ park?.orcs }}</p>
       </div>
       <div class="col-md-6">
         <label><strong>Visible:</strong></label>
@@ -43,13 +43,20 @@
         <p>{{ park?.visible }}</p>
       </div>
     </div>
-    <div class="row mb-4">
+    <div class="row">
+      <div class="col-md-6">
+        <label><strong>BC Parks Link:</strong></label>
+        <br />
+        <p><a *ngIf="park?.bcParksLink" href="{{ park?.bcParksLink }}">{{
+          park?.bcParksLink
+        }}</a></p>
+      </div>
       <div class="col-md-6">
         <label><strong>Map Link:</strong></label>
         <br />
-        <a *ngIf="park?.mapLink" href="{{ park?.mapLink }}">{{
+        <p><a *ngIf="park?.mapLink" href="{{ park?.mapLink }}">{{
           park?.mapLink
-        }}</a>
+        }}</a></p>
       </div>
     </div>
     <div class="row">

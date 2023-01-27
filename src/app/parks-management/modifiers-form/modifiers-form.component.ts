@@ -139,7 +139,7 @@ export class ModifiersFormComponent
     const postObj = {
       date: results.modifierOverrideDate,
       bookingTimes: resultTimes,
-      parkName: this.park.sk,
+      parkOrcs: this.park.sk,
       facility: this.facility.sk,
     };
 
