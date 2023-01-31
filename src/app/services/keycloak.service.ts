@@ -274,7 +274,7 @@ export class KeycloakService {
     }
 
     // bceid users will have a bceid_userid property
-    if (jwt.bceid_userid !== undefined) {
+    if (jwt.bceid_userid !== undefined || jwt.bceid_username !== undefined) {
       return this.idpHintEnum.BCEID;
     }
 
