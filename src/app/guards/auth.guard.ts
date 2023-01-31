@@ -23,25 +23,23 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | UrlTree {
-    // When a successful login occurs, we store the identity provider used in sessionStorage.
-    const lastIdp = sessionStorage.getItem(
+    // When a successful login occurs, we store the identity provider used in localStorage.
+    const lastIdp = localStorage.getItem(
       this.keycloakService.LAST_IDP_AUTHENTICATED
     );
 
     // Not authenticated
     if (!this.keycloakService.isAuthenticated()) {
+      // remove the localStorage value first, so if this authentication attempt
+      // fails then the user will get the login page next time.
+      localStorage.removeItem(this.keycloakService.LAST_IDP_AUTHENTICATED);
+
       if (lastIdp === null) {
         // If an identity provider hasn't been selected then show the login page.
         return this.router.parseUrl('/login');
       }
       // If an identity provider was already selected and successfully authenticated
       // then do a keycloak login with that identity provider.
-
-      // remove the sessionStorage value first, so if this authentication attempt
-      // fails then the user will get the login page next time.
-      sessionStorage.removeItem(this.keycloakService.LAST_IDP_AUTHENTICATED);
-
-      // log in using the last identity provider that worked
       this.keycloakService.login(lastIdp);
       return false;
     }
@@ -54,7 +52,7 @@ export class AuthGuard implements CanActivate {
       // is authenticated already.
       const idp = this.keycloakService.getIdpFromToken();
       if (idp !== '') {
-        sessionStorage.setItem(
+        localStorage.setItem(
           this.keycloakService.LAST_IDP_AUTHENTICATED,
           idp
         );
