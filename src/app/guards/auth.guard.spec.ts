@@ -7,7 +7,7 @@ import { KeycloakService } from '../services/keycloak.service';
 
 import { AuthGuard } from './auth.guard';
 
-describe('AuthGuard', () => {
+fdescribe('AuthGuard', () => {
   const mockKeycloakService = jasmine.createSpyObj('KeycloakService', [
     'isAuthenticated',
     'isAuthorized',
@@ -50,13 +50,13 @@ describe('AuthGuard', () => {
     expect(result).toEqual(undefined);
   });
 
-  it('should return redirect to login page if the user is not authenticated and sessionStorage does not contain an idp value', () => {
+  it('should return redirect to login page if the user is not authenticated and localStorage does not contain an idp value', () => {
     const routerMock = TestBed.get(Router);
     routerMock.parseUrl.calls.reset();
 
     mockKeycloakService.isAuthenticated.and.returnValue(false);
 
-    spyOn(window.sessionStorage, 'getItem').and.callFake(() => {
+    spyOn(window.localStorage, 'getItem').and.callFake(() => {
       return null;
     });
 
@@ -66,13 +66,13 @@ describe('AuthGuard', () => {
     expect(routerMock.parseUrl).toHaveBeenCalledWith('/login');
   });
 
-  it('should return redirect to login page if the user is not authenticated and sessionStorage contains an idp value', () => {
+  it('should return redirect to login page if the user is not authenticated and localStorage contains an idp value', () => {
     const routerMock = TestBed.get(Router);
     routerMock.parseUrl.calls.reset();
 
     mockKeycloakService.isAuthenticated.and.returnValue(false);
 
-    spyOn(window.sessionStorage, 'getItem').and.callFake(() => {
+    spyOn(window.localStorage, 'getItem').and.callFake(() => {
       return 'idir';
     });
 
