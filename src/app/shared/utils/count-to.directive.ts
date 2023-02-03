@@ -4,6 +4,7 @@ import {
   ElementRef,
   Input,
   OnDestroy,
+  OnInit,
   Renderer2,
 } from '@angular/core';
 import {
@@ -21,9 +22,10 @@ import {
 } from 'rxjs';
 
 @Directive({
+    // eslint-disable-next-line
   selector: '[countTo]',
 })
-export class CountToDirective implements OnDestroy {
+export class CountToDirective implements OnDestroy, OnInit {
   @Input('countTo') set count(count: number) {
     this._oldCount.next(this._count.value);
     this._count.next(count);
