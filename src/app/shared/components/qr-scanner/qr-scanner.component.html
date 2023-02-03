@@ -25,6 +25,7 @@
   (scanSuccess)="onCodeResult($event)"
   (scanError)="onCodeError($event)"
   [formats]="formatsEnabled"
+  [tryHarder]="tryHarder" 
   (permissionResponse)="onHasPermission($event)"
   (camerasFound)="onCamerasFound($event)"
 >
