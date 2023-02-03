@@ -7,7 +7,7 @@ import { KeycloakService } from '../services/keycloak.service';
 
 import { AuthGuard } from './auth.guard';
 
-fdescribe('AuthGuard', () => {
+describe('AuthGuard', () => {
   const mockKeycloakService = jasmine.createSpyObj('KeycloakService', [
     'isAuthenticated',
     'isAuthorized',

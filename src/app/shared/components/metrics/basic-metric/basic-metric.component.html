@@ -1,0 +1,11 @@
+<div class="card">
+  <div class="card-body">
+    <h4>{{label}}</h4>
+    <div *ngIf="animate">
+      <h1 class="mb-0" [countTo]="_value" [duration]="animationDuration" [jitter]="animationJitter"></h1>
+    </div>
+    <div *ngIf="!animate">
+      <h1 class="mb-0">{{ (_value | number:'1.0-0':'en-US') || '-' }}</h1>
+    </div>
+  </div>
+</div>
