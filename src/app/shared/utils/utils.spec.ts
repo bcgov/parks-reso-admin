@@ -55,8 +55,8 @@ describe('Utils', () => {
     // we cannot test any tz-respecting functions as we cannot guarantee which tz
     // these tests will run in.
     let date = new Date();
-    date.setDate(31);
     date.setMonth(11);
+    date.setDate(31);
     date.setFullYear(2014);
     // convertJSDateToNGBDate
     let NGBDate = utils.convertJSDateToNGBDate(date);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { BarcodeFormat } from '@zxing/library';
 import { Subscription } from 'rxjs';
 import { LoggerService } from 'src/app/services/logger.service';
@@ -9,7 +9,7 @@ import { QrScannerService } from './qr-scanner.service';
   templateUrl: './qr-scanner.component.html',
   styleUrls: ['./qr-scanner.component.scss'],
 })
-export class QrScannerComponent {
+export class QrScannerComponent implements OnDestroy {
   private subscriptions = new Subscription();
 
   scannerEnabled = true;
@@ -31,6 +31,8 @@ export class QrScannerComponent {
   scanningState = 'disabled';
 
   showScanIndicator = true;
+
+  tryHarder = true;
 
   constructor(
     private logger: LoggerService,

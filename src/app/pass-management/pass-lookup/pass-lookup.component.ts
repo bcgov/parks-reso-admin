@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { LoggerService } from 'src/app/services/logger.service';
@@ -11,7 +11,7 @@ import { Constants } from 'src/app/shared/utils/constants';
   templateUrl: './pass-lookup.component.html',
   styleUrls: ['./pass-lookup.component.scss'],
 })
-export class PassLookupComponent {
+export class PassLookupComponent implements OnDestroy {
   private subscriptions = new Subscription();
 
   public pass;
@@ -26,6 +26,7 @@ export class PassLookupComponent {
     private dataService: DataService,
     private qrScannerService: QrScannerService
   ) {
+    // Get from resolver:
     this.subscriptions.add(
       this.dataService
         .watchItem(Constants.dataIds.PASS_QR_CODE)

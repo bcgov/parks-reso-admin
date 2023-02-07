@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ConfigService } from '../services/config.service';
 import { LoggerService } from '../services/logger.service';
 import { PassService } from '../services/pass.service';
@@ -15,7 +16,7 @@ describe('PassManagementComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [PassManagementComponent],
       providers: [PassService, LoggerService, QrScannerService, ConfigService],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PassManagementComponent);

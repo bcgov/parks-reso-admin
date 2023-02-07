@@ -63,10 +63,20 @@
     </div>
 
     <div class="d-grid gap-2">
+      <!-- Dismiss: all -->
+      <button
+        class="btn btn-primary btn-lg"
+        (click)="enableScanner()"
+        [disabled]="submitLoading"
+      >
+        <span>Close</span>
+      </button>
+
       <!-- Check in: active -->
       <button
         *ngIf="passState.state === 'active'"
         class="btn btn-primary btn-lg"
+        [class]="[passState.textColour, passState.backgroundColour]"
         [disabled]="submitLoading"
         (click)="checkIn()"
       >
@@ -106,15 +116,6 @@
             <span class="visually-hidden">Loading...</span>
           </div>
         </span>
-      </button>
-
-      <!-- Dismiss: all -->
-      <button
-        class="btn btn-secondary btn-lg"
-        (click)="enableScanner()"
-        [disabled]="submitLoading"
-      >
-        <span>Dismiss</span>
       </button>
     </div>
   </div>
