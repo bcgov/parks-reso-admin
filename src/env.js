@@ -15,6 +15,7 @@
   window.__env.KEYCLOAK_URL = "https://dev.loginproxy.gov.bc.ca/auth";
   window.__env.KEYCLOAK_REALM = "bcparks-service-transformation";
   window.__env.KEYCLOAK_ENABLED = true;
+  window.__env.REDIRECT_KEY = "redirectToOnLogin"
 
   // Number of days in advance a pass is available
   window.__env.ADVANCE_BOOKING_LIMIT = 3;

@@ -33,6 +33,7 @@ export class AuthGuard implements CanActivate {
       // remove the localStorage value first, so if this authentication attempt
       // fails then the user will get the login page next time.
       localStorage.removeItem(this.keycloakService.LAST_IDP_AUTHENTICATED);
+      localStorage.setItem(this.configService.config.REDIRECT_KEY, window.location.href)
 
       if (lastIdp === null) {
         // If an identity provider hasn't been selected then show the login page.
@@ -42,6 +43,8 @@ export class AuthGuard implements CanActivate {
       // then do a keycloak login with that identity provider.
       this.keycloakService.login(lastIdp);
       return false;
+    } else {
+      localStorage.removeItem(this.configService.config.REDIRECT_KEY)
     }
 
     if (lastIdp === null) {
