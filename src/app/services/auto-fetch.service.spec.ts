@@ -24,10 +24,14 @@ describe('AutoFetchService', () => {
     });
     service = TestBed.inject(AutoFetchService);
     service.timeIntevalSeconds = 1;
+    // https://github.com/gruntjs/grunt-contrib-jasmine/issues/213
+    // Receiving error unless uninstall/install are both in beforeEach
+    // likely due to async nature of tests
+    jasmine.clock().uninstall();
     jasmine.clock().install();
   });
 
-  afterEach(() => {
+  afterAll(() => {
     jasmine.clock().uninstall();
   });
 
