@@ -45,6 +45,9 @@ export class PassLookupComponent implements OnDestroy {
     this.isScanning = false;
     this.pass['parkName'] = this.pass.pk.split('pass::')[1];
     this.pass['fullName'] = `${this.pass.firstName} ${this.pass.lastName}`;
+    this.pass[
+      'facilityString'
+    ] = `${this.pass.facilityName} (${this.pass.type})`;
 
     if (this.pass['checkedInTime']) {
       const checkedInTime = new Date(this.pass['checkedInTime']);
@@ -101,6 +104,14 @@ export class PassLookupComponent implements OnDestroy {
 
   enableScanner() {
     this.qrScannerService.enableScanner();
+  }
+
+  applyPassStatusCss() {
+    if (this.passState.label === 'Checked-in') {
+      return '';
+    } else {
+      return 'text-' + this.passState.bootstrapThemeColour;
+    }
   }
 
   ngOnDestroy(): void {
