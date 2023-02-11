@@ -24,7 +24,7 @@ export class ParkService {
   public utils = new Utils();
 
   // Get all parks
-  async fetchData(sk = null) {
+  async fetchData(sk = null, skipCache = false) {
     let dataTag = '';
     let res;
     let errorSubject = '';
@@ -35,7 +35,10 @@ export class ParkService {
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'park';
         this.loggerService.debug(`Park GET ${sk}`);
-        res = await firstValueFrom(this.apiService.get('park', { park: sk }));
+        res = (
+          await firstValueFrom(this.apiService.get('park', { park: sk }))
+        )[0];
+        console.log('????', res);
       } else {
         // we are getting all parks
         dataTag = Constants.dataIds.PARKS_LIST;
@@ -44,7 +47,9 @@ export class ParkService {
         this.loggerService.debug(`Park List GET`);
         res = await firstValueFrom(this.apiService.get('park'));
       }
-      this.dataService.setItemValue(dataTag, res);
+      if (!skipCache) {
+        this.dataService.setItemValue(dataTag, res);
+      }
     } catch (e) {
       this.loggerService.error(`${JSON.stringify(e)}`);
       this.toastService.addMessage(
@@ -56,7 +61,9 @@ export class ParkService {
         new EventObject(EventKeywords.ERROR, String(e), 'Park Service')
       );
       // TODO: We may want to change this.
-      this.dataService.setItemValue(dataTag, 'error');
+      if (!skipCache) {
+        this.dataService.setItemValue(dataTag, 'error');
+      }
     }
     this.loadingService.removeToFetchList(dataTag);
     return res;
@@ -68,10 +75,10 @@ export class ParkService {
     let dataTag = 'parkPut';
     try {
       errorSubject = 'park put';
-      if (this.validateParkObject(obj)){
+      if (this.validateParkObject(obj)) {
         this.loadingService.addToFetchList(dataTag);
         obj.pk = 'park';
-        obj.sk = obj.park.orcs
+        obj.sk = obj.park.orcs;
         this.loggerService.debug(`Park GET ${JSON.stringify(obj)}`);
         res = await firstValueFrom(this.apiService.put('park', obj));
         // ensure CURRENT_PARK in DataService is updated with new facility data.
@@ -96,7 +103,7 @@ export class ParkService {
     this.loadingService.removeToFetchList(dataTag);
   }
 
-  validateParkObject(obj){
+  validateParkObject(obj) {
     // TODO: write this function
     return true;
   }

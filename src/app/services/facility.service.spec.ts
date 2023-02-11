@@ -16,11 +16,12 @@ import { Constants } from '../shared/utils/constants';
 describe('FacilityService', () => {
   let service: FacilityService;
 
-  let parkFacilitiesRes = new BehaviorSubject('parkFacilitiesRes');
+  let parkFacilitiesRes = new BehaviorSubject([
+    MockData.mockFacility_1,
+    MockData.mockFacility_2,
+  ]);
 
-  let specificFacilityRes = new BehaviorSubject('specificFacilityRes');
-
-  let allFacilitiesRes = new BehaviorSubject('allFacilitiesRes');
+  let specificFacilityRes = new BehaviorSubject([MockData.mockFacility_1]);
 
   let mockFacilityPostObj = {
     pk: 'facility::Mock Park 1',
@@ -44,8 +45,6 @@ describe('FacilityService', () => {
           // We want specific facility
           return specificFacilityRes;
         }
-        // we want all facilities from all parks
-        return allFacilitiesRes;
       }
       return new BehaviorSubject(null);
     },
@@ -121,18 +120,6 @@ describe('FacilityService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('fetches all facilities from all parks', async () => {
-    await service.fetchData();
-    expect(loadingSpy).toHaveBeenCalledTimes(1);
-    expect(loggerDebugSpy).toHaveBeenCalledTimes(1);
-    expect(apiGetSpy).toHaveBeenCalledOnceWith('facility');
-    expect(setDataSpy).toHaveBeenCalledOnceWith(
-      Constants.dataIds.FACILITIES_LIST,
-      allFacilitiesRes.value
-    );
-    expect(unloadingSpy).toHaveBeenCalledTimes(1);
-  });
-
   it('fetches all facilities from specific park', async () => {
     await service.fetchData('Mock Park 1');
     expect(loadingSpy).toHaveBeenCalledTimes(1);
@@ -157,7 +144,7 @@ describe('FacilityService', () => {
     });
     expect(setDataSpy).toHaveBeenCalledOnceWith(
       Constants.dataIds.CURRENT_FACILITY,
-      specificFacilityRes.value
+      specificFacilityRes.value[0]
     );
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
   });

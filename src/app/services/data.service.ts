@@ -22,7 +22,7 @@ export class DataService {
 
   // Append array data to existing dataService id
   appendItemValue(id, value): any[] {
-    if (!this.checkIfDataExists(id)){
+    if (!this.checkIfDataExists(id)) {
       this.setItemValue(id, value);
       return [];
     } else {
@@ -32,13 +32,13 @@ export class DataService {
     }
   }
 
-   // Merge object data to existing dataService id
+  // Merge object data to existing dataService id
   mergeItemValue(id, value, attribute = null): any {
-    if (!this.checkIfDataExists(id)){
+    if (!this.checkIfDataExists(id)) {
       this.setItemValue(id, value);
       return null;
     } else {
-      const  assignObj = Object.assign(this.getItemValue(id), value);
+      const assignObj = Object.assign(this.getItemValue(id), value);
       this.data[id].next(assignObj);
       return assignObj;
     }

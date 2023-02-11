@@ -31,8 +31,8 @@ export class BreadcrumbService {
       this.dataService
         .watchItem(Constants.dataIds.CURRENT_PARK)
         .subscribe((res) => {
-          if (res && res[0]) {
-            this.park = res[0];
+          if (res) {
+            this.park = res;
             this.setBreadcrum();
           }
         })

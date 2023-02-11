@@ -16,7 +16,7 @@ describe('ParksListComponent', () => {
 
   let mockDataService = {
     watchItem: (id) => {
-      if (id === Constants.dataIds.PARKS_LIST) {
+      if (id === Constants.dataIds.PARK_AND_FACILITY_LIST) {
         return new BehaviorSubject([mockPark1, mockPark2]);
       }
       return new BehaviorSubject(null);

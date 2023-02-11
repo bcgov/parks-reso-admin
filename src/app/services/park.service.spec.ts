@@ -27,7 +27,7 @@ describe('ParkService', () => {
     sk: 'MOC1',
     park: {
       name: 'Mock Park 1',
-      orcs: 'MOC1'
+      orcs: 'MOC1',
     },
   };
 
@@ -134,7 +134,7 @@ describe('ParkService', () => {
     expect(apiGetSpy).toHaveBeenCalledOnceWith('park', { park: 'Mock Park 1' });
     expect(setDataSpy).toHaveBeenCalledOnceWith(
       Constants.dataIds.CURRENT_PARK,
-      mockParkRes.value
+      mockParkRes.value[0]
     );
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
   });

@@ -31,7 +31,9 @@ export class ReservationService {
         dataTag = Constants.dataIds.CURRENT_RESERVATIONS_OBJECT;
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'facility reservation';
-        this.loggerService.debug(`Reservation GET ${parkSk} ${facilitySk} ${resDate}`);
+        this.loggerService.debug(
+          `Reservation GET ${parkSk} ${facilitySk} ${resDate}`
+        );
         res = await firstValueFrom(
           this.apiService.get('reservation', {
             park: parkSk,
@@ -39,7 +41,6 @@ export class ReservationService {
             date: resDate,
           })
         );
-        
       }
       this.dataService.setItemValue(dataTag, res);
       if (resDate && selectedPassType) {
@@ -49,7 +50,7 @@ export class ReservationService {
           // No res Object. Use facility cap
           const facility = this.dataService.getItemValue(
             Constants.dataIds.CURRENT_FACILITY
-          )[0];
+          );
           this.dataService.setItemValue(
             Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
             {
@@ -114,15 +115,17 @@ export class ReservationService {
         reservationObj.capacities[selectedPassType].capacityModifier;
       capBarObj.capacity = modifiedCapacity;
       capBarObj.reserved =
-        modifiedCapacity + reservationObj.capacities[selectedPassType].overbooked -
+        modifiedCapacity +
+        reservationObj.capacities[selectedPassType].overbooked -
         reservationObj.capacities[selectedPassType].availablePasses;
       capBarObj.modifier =
         reservationObj.capacities[selectedPassType].capacityModifier;
-      capBarObj.overbooked = reservationObj.capacities[selectedPassType].overbooked;
+      capBarObj.overbooked =
+        reservationObj.capacities[selectedPassType].overbooked;
     }
 
     capBarObj.capPercent = capBarObj.capacity
-      ? Math.floor((capBarObj.reserved / capBarObj.capacity) * 100) 
+      ? Math.floor((capBarObj.reserved / capBarObj.capacity) * 100)
       : 0;
     capBarObj.style = this.calculateProgressBarColour(capBarObj.capPercent);
 

@@ -23,7 +23,7 @@ export class FacilityService {
   ) {}
   public utils = new Utils();
 
-  async fetchData(parkSk = null, facilitySk = null) {
+  async fetchData(parkSk = null, facilitySk = null, skipCache = false) {
     let res;
     let errorSubject = '';
     let dataTag;
@@ -44,21 +44,17 @@ export class FacilityService {
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'facility';
         this.loggerService.debug(`Facility GET: ${parkSk} ${facilitySk}`);
-        res = await firstValueFrom(
-          this.apiService.get('facility', {
-            facilityName: facilitySk,
-            park: parkSk,
-          })
-        );
-        this.dataService.setItemValue(dataTag, res);
-      } else {
-        // We are getting all facilities
-        dataTag = Constants.dataIds.FACILITIES_LIST;
-        this.loadingService.addToFetchList(dataTag);
-        errorSubject = 'facilities list';
-        this.loggerService.debug(`Facility List GET`);
-        res = await firstValueFrom(this.apiService.get('facility'));
-        this.dataService.setItemValue(dataTag, res);
+        res = (
+          await firstValueFrom(
+            this.apiService.get('facility', {
+              facilityName: facilitySk,
+              park: parkSk,
+            })
+          )
+        )[0];
+        if (!skipCache) {
+          this.dataService.setItemValue(dataTag, res);
+        }
       }
     } catch (e) {
       this.loggerService.error(`${JSON.stringify(e)}`);
@@ -72,7 +68,9 @@ export class FacilityService {
       );
       // TODO: We may want to change this.
       if (errorSubject === 'facilities list')
-        this.dataService.setItemValue(dataTag, 'error');
+        if (!skipCache) {
+          this.dataService.setItemValue(dataTag, 'error');
+        }
     }
     this.loadingService.removeToFetchList(dataTag);
     return res;

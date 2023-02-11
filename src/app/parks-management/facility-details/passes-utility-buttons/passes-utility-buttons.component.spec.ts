@@ -29,7 +29,7 @@ describe('PassesUtilityButtonsComponent', () => {
         return mockPassList;
       }
       if (id === Constants.dataIds.CURRENT_FACILITY) {
-        return new BehaviorSubject([mockFacility]);
+        return new BehaviorSubject(mockFacility);
       }
       if (id === Constants.dataIds.PASS_SEARCH_PARAMS) {
         return new BehaviorSubject(mockPassFilters);

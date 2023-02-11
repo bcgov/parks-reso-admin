@@ -55,19 +55,13 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     private modalService: BsModalService,
     private configService: ConfigService
   ) {
-    super(
-      formBuilder,
-      router,
-      dataService,
-      loadingService,
-      changeDetector
-    );
+    super(formBuilder, router, dataService, loadingService, changeDetector);
     this.subscriptions.add(
       this.dataService
         .watchItem(Constants.dataIds.CURRENT_FACILITY)
         .subscribe((res) => {
-          if (res && res[0]) {
-            this.facility = res[0];
+          if (res) {
+            this.facility = res;
             this.data = this.facility;
             this.setForm();
           } else {
@@ -77,8 +71,8 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     );
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
-        if (res && res[0]) {
-          this.park = res[0];
+        if (res) {
+          this.park = res;
         }
       })
     );

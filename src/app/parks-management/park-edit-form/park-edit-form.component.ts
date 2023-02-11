@@ -46,17 +46,11 @@ export class ParkEditFormComponent extends BaseFormComponent {
     private route: ActivatedRoute,
     private modalService: BsModalService
   ) {
-    super(
-      formBuilder,
-      router,
-      dataService,
-      loadingService,
-      changeDetector
-    );
+    super(formBuilder, router, dataService, loadingService, changeDetector);
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
-        if (res && res[0]) {
-          this.park = res[0];
+        if (res) {
+          this.park = res;
           this.data = this.park;
           this.setForm();
         }

@@ -1,7 +1,11 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { ConfigService } from '../services/config.service';
+import { DataService } from '../services/data.service';
+import { Constants } from '../shared/utils/constants';
+import { MockData } from '../shared/utils/mock-data';
 
 import { ParkResolver } from './park.resolver';
 
@@ -12,8 +16,22 @@ describe('ParkResolver', () => {
   let mockActivatedRoute = {
     snapshot: {
       params: {
-        parkId: 'Mock Park 1',
+        parkId: 'MOC1',
       },
+    },
+  };
+
+  let mockParkFacility1 = MockData.mockParkFacility_1;
+
+  let mockDataService = {
+    watchItem: (id) => {
+      if (id === Constants.dataIds.PARK_AND_FACILITY_LIST) {
+        return new BehaviorSubject(mockParkFacility1);
+      }
+      return new BehaviorSubject(null);
+    },
+    setItemValue: (id, obj) => {
+      return null;
     },
   };
 
@@ -24,6 +42,7 @@ describe('ParkResolver', () => {
         HttpHandler,
         ConfigService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: DataService, useValue: mockDataService },
       ],
     });
     resolver = TestBed.inject(ParkResolver);
@@ -35,8 +54,16 @@ describe('ParkResolver', () => {
   });
 
   it('resolves park', async () => {
-    const parkFetchSpy = spyOn(resolver['parkService'], 'fetchData');
+    const setItemSpy = spyOn(resolver['dataService'], 'setItemValue');
     await resolver.resolve(route.snapshot);
-    expect(parkFetchSpy).toHaveBeenCalledOnceWith('Mock Park 1');
+    expect(setItemSpy).toHaveBeenCalledTimes(2);
+    expect(setItemSpy).toHaveBeenCalledWith(
+      Constants.dataIds.CURRENT_PARK,
+      mockParkFacility1.MOC1
+    );
+    expect(setItemSpy).toHaveBeenCalledWith(
+      Constants.dataIds.FACILITIES_LIST,
+      Object.values(mockParkFacility1.MOC1.facilities)
+    );
   });
 });

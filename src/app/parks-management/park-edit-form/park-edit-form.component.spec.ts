@@ -35,7 +35,7 @@ describe('ParkEditFormComponent', () => {
   let mockDataService = {
     watchItem: (id) => {
       if (id === Constants.dataIds.CURRENT_PARK) {
-        return new BehaviorSubject([mockPark]);
+        return new BehaviorSubject(mockPark);
       }
       return new BehaviorSubject(null);
     },

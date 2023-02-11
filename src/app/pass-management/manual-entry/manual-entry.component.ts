@@ -15,6 +15,7 @@ export class ManualEntryComponent implements OnDestroy {
 
   public model = {
     park: null,
+    facility: null,
     reservationNumber: null,
     firstName: null,
     lastName: null,

@@ -2,8 +2,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/services/config.service';
 import { DataService } from 'src/app/services/data.service';
-import { PassService } from 'src/app/services/pass.service';
-import { ReservationService } from 'src/app/services/reservation.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
 
@@ -19,16 +17,14 @@ export class FacilityDetailsComponent implements OnDestroy {
 
   constructor(
     protected dataService: DataService,
-    protected passService: PassService,
-    protected reservationService: ReservationService,
     protected configService: ConfigService
   ) {
     this.subscriptions.add(
       dataService
         .watchItem(Constants.dataIds.CURRENT_FACILITY)
         .subscribe((res) => {
-          if (res && res[0]) {
-            this.facility = res[0];
+          if (res) {
+            this.facility = res;
           }
         })
     );

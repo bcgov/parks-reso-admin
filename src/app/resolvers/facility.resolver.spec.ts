@@ -1,7 +1,11 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { ConfigService } from '../services/config.service';
+import { DataService } from '../services/data.service';
+import { Constants } from '../shared/utils/constants';
+import { MockData } from '../shared/utils/mock-data';
 
 import { FacilityResolver } from './facility.resolver';
 
@@ -12,9 +16,23 @@ describe('FacilityResolver', () => {
   let mockActivatedRoute = {
     snapshot: {
       params: {
-        parkId: 'Mock Park 1',
+        parkId: 'MOC1',
         facilityId: 'Mock Facility 1',
       },
+    },
+  };
+
+  let mockParkFacility1 = MockData.mockParkFacility_1;
+
+  let mockDataService = {
+    watchItem: (id) => {
+      if (id === Constants.dataIds.PARK_AND_FACILITY_LIST) {
+        return new BehaviorSubject(mockParkFacility1);
+      }
+      return new BehaviorSubject(null);
+    },
+    setItemValue: (id, obj) => {
+      return null;
     },
   };
 
@@ -25,6 +43,7 @@ describe('FacilityResolver', () => {
         HttpHandler,
         ConfigService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: DataService, useValue: mockDataService },
       ],
     });
     resolver = TestBed.inject(FacilityResolver);
@@ -36,11 +55,11 @@ describe('FacilityResolver', () => {
   });
 
   it('resolves facility', async () => {
-    const facilityFetchSpy = spyOn(resolver['facilityService'], 'fetchData');
+    const setItemSpy = spyOn(resolver['dataService'], 'setItemValue');
     await resolver.resolve(route.snapshot);
-    expect(facilityFetchSpy).toHaveBeenCalledOnceWith(
-      'Mock Park 1',
-      'Mock Facility 1'
+    expect(setItemSpy).toHaveBeenCalledOnceWith(
+      Constants.dataIds.CURRENT_FACILITY,
+      mockParkFacility1.MOC1.facilities['Mock Facility 1']
     );
   });
 });
