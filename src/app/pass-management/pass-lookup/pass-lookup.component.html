@@ -1,9 +1,12 @@
 <div class="card mt-3">
   <div
     class="card-header"
-    [class]="[passState.textColour, passState.backgroundColour]"
+    [class]="[passState.textColour, 'bg-' + passState.bootstrapThemeColour]"
   >
-    <strong>{{ passState.label }}</strong>
+    <strong
+      >Pass {{ passState.label }}&nbsp;
+      <i [class]="passState['headerIcon']"></i>
+    </strong>
   </div>
   <div class="card-body">
     <label>Park Name</label>
@@ -14,7 +17,7 @@
 
     <label>Facility Name</label>
     <div>
-      <strong>{{ (pass && pass["facilityName"]) || "-" }}</strong>
+      <strong>{{ (pass && pass["facilityString"]) || "-" }}</strong>
     </div>
     <hr />
 
@@ -37,15 +40,13 @@
     </div>
     <hr />
 
-    <!-- <label>Pass Status</label>
-<div>
-<strong>{{
-  passState && passState.label && passState.label === "Checked-in"
-    ? passState.label
-    : "-"
-}}</strong>
-</div>
-<hr /> -->
+    <label>Pass Status</label>
+    <div [ngClass]="applyPassStatusCss()">
+      <strong>{{
+        passState && passState.label ? passState.label : "-"
+      }}</strong>
+    </div>
+    <hr />
 
     <label>Check-in Time</label>
     <div>
@@ -76,7 +77,7 @@
       <button
         *ngIf="passState.state === 'active'"
         class="btn btn-primary btn-lg"
-        [class]="[passState.textColour, passState.backgroundColour]"
+        [class]="[passState.textColour, 'bg-' + passState.bootstrapThemeColour]"
         [disabled]="submitLoading"
         (click)="checkIn()"
       >
