@@ -38,7 +38,6 @@ export class ParkService {
         res = (
           await firstValueFrom(this.apiService.get('park', { park: sk }))
         )[0];
-        console.log('????', res);
       } else {
         // we are getting all parks
         dataTag = Constants.dataIds.PARKS_LIST;
