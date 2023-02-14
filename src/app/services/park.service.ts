@@ -68,7 +68,11 @@ export class ParkService {
     return res;
   }
 
-  async putPark(obj) {
+  async putPark(
+    obj,
+    updateParkAndFacilityCache = false,
+    updateCurrentParkCache = false
+  ) {
     let res;
     let errorSubject = '';
     let dataTag = 'parkPut';
@@ -80,8 +84,23 @@ export class ParkService {
         obj.sk = obj.park.orcs;
         this.loggerService.debug(`Park GET ${JSON.stringify(obj)}`);
         res = await firstValueFrom(this.apiService.put('park', obj));
-        // ensure CURRENT_PARK in DataService is updated with new facility data.
-        this.fetchData(obj.sk);
+
+        try {
+          // ensure cache in DataService is updated with new park data.
+          if (updateParkAndFacilityCache) {
+            this.dataService.updateParkAndFacilityCache(res);
+          }
+          if (updateCurrentParkCache) {
+            this.dataService.setItemValue(Constants.dataIds.CURRENT_PARK, res);
+          }
+        } catch (error) {
+          this.toastService.addMessage(
+            `Please refresh the page.`,
+            `Error updating cache`,
+            ToastTypes.ERROR
+          );
+        }
+
         this.toastService.addMessage(
           `Park: ${obj.sk} updated.`,
           `Park updated`,

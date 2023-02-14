@@ -76,7 +76,12 @@ export class FacilityService {
     return res;
   }
 
-  async putFacility(obj, parkSk) {
+  async putFacility(
+    obj,
+    parkSk,
+    updateParkAndFacilityCache = false,
+    updateCurrentParkCache = false
+  ) {
     let res;
     let errorSubject = '';
     let dataTag = 'facilityPut';
@@ -92,9 +97,26 @@ export class FacilityService {
           (obj.parkOrcs = parkSk);
         this.loggerService.debug(`Put Facility: ${JSON.stringify(obj)}`);
         res = await firstValueFrom(this.apiService.put('facility', obj));
-        // ensure CURRENT_FACILITY in DataService is updated with new facility data.
-        this.fetchData(parkSk, obj.name);
-        this.fetchData(parkSk);
+
+        try {
+          // ensure cache in DataService is updated with new park data.
+          if (updateParkAndFacilityCache) {
+            this.dataService.updateParkAndFacilityCache(res);
+          }
+          if (updateCurrentParkCache) {
+            this.dataService.setItemValue(
+              Constants.dataIds.CURRENT_FACILITY,
+              res
+            );
+          }
+        } catch (error) {
+          this.toastService.addMessage(
+            `Please refresh the page.`,
+            `Error updating cache`,
+            ToastTypes.ERROR
+          );
+        }
+
         this.toastService.addMessage(
           `Facility: ${parkSk} - ${obj.name} updated.`,
           `Facility updated`,
@@ -115,7 +137,12 @@ export class FacilityService {
     this.loadingService.removeToFetchList(dataTag);
   }
 
-  async postFacility(obj, parkSk) {
+  async postFacility(
+    obj,
+    parkSk,
+    updateParkAndFacilityCache = false,
+    updateCurrentParkCache = false
+  ) {
     let res;
     let errorSubject = '';
     let dataTag = 'facilityPost';
@@ -131,9 +158,23 @@ export class FacilityService {
         obj.parkOrcs = parkSk;
         this.loggerService.debug(`Post Facility: ${JSON.stringify(obj)}`);
         res = await firstValueFrom(this.apiService.post('facility', obj));
-        // ensure CURRENT_FACILITY in DataService is updated with new facility data.
-        this.fetchData(parkSk, obj.name);
-        this.fetchData(parkSk);
+
+        // ensure cache in DataService is updated with new park data.
+        try {
+          if (updateParkAndFacilityCache) {
+            this.dataService.updateParkAndFacilityCache(res);
+          }
+          if (updateCurrentParkCache) {
+            this.dataService.setItemValue(Constants.dataIds.CURRENT_PARK, res);
+          }
+        } catch (error) {
+          this.toastService.addMessage(
+            `Please refresh the page.`,
+            `Error updating cache`,
+            ToastTypes.ERROR
+          );
+        }
+
         this.toastService.addMessage(
           `New facility ${parkSk} - ${obj.name} created.`,
           `New Facility created`,

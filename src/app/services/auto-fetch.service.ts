@@ -11,7 +11,7 @@ import { ParkService } from './park.service';
 })
 export class AutoFetchService {
   // TODO: This should come in from the config service.
-  public timeIntevalSeconds = 60 * 60;
+  public timeIntevalSeconds = 5 * 60;
   public fetchQueue = [Constants.dataIds.PARK_AND_FACILITY_LIST];
 
   constructor(

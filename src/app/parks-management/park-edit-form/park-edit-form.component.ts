@@ -94,7 +94,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
   }
 
   submitParkChanges(postObj) {
-    this.parkService.putPark(postObj);
+    this.parkService.putPark(postObj, true, true);
     this.navigateBack();
   }
 

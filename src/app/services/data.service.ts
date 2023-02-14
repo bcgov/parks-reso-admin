@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Constants } from '../shared/utils/constants';
+import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 export class DataService {
   private data;
 
-  constructor() {
+  constructor(private loggerService: LoggerService) {
     this.data = {};
   }
 
@@ -60,5 +62,33 @@ export class DataService {
 
   checkIfDataExists(id) {
     return this.data[id] ? true : false;
+  }
+
+  async updateParkAndFacilityCache(obj) {
+    const cachedObj = this.getItemValue(
+      Constants.dataIds.PARK_AND_FACILITY_LIST
+    );
+    if (obj.pk === 'park') {
+      if (cachedObj[obj.sk]) {
+        obj.facilities = cachedObj[obj.sk].facilities;
+        cachedObj[obj.sk] = obj;
+      } else {
+        this.loggerService.debug(
+          'No park found while updating cache: ' + obj.sk
+        );
+        throw 'Error updating cache, please refresh the page.';
+      }
+    } else if (obj.pk.includes('facility::')) {
+      const parkId = obj.pk.split('::')[1];
+      if (cachedObj[parkId]) {
+        cachedObj[parkId].facilities[obj.sk] = obj;
+      } else {
+        this.loggerService.debug(
+          'No park found while updating cache: ' + obj.pk.split('::')[1]
+        );
+        throw 'Error updating cache, please refresh the page.';
+      }
+    }
+    this.setItemValue(Constants.dataIds.PARK_AND_FACILITY_LIST, cachedObj);
   }
 }

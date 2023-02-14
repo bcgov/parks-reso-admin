@@ -210,9 +210,9 @@ export class FacilityEditFormComponent extends BaseFormComponent {
 
   submitFacilityChanges(facilityObj) {
     if (this.isEditMode.value === true) {
-      this.facilityService.putFacility(facilityObj, this.park.sk);
+      this.facilityService.putFacility(facilityObj, this.park.sk, true, true);
     } else {
-      this.facilityService.postFacility(facilityObj, this.park.sk);
+      this.facilityService.postFacility(facilityObj, this.park.sk, true, true);
     }
     this.navigateBack();
   }
