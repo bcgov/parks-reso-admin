@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
-import { FacilityService } from 'src/app/services/facility.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tableSchema } from 'src/app/shared/components/table/table.component';
@@ -22,16 +21,14 @@ export class ParkDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     protected dataService: DataService,
-    protected facilityService: FacilityService,
     private router: Router,
     private route: ActivatedRoute,
     protected keycloakService: KeycloakService
   ) {
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
-        if (res && res[0]) {
-          this.park = res[0];
-          this.facilityService.fetchData(this.park.sk);
+        if (res) {
+          this.park = res;
         }
       })
     );
@@ -39,7 +36,9 @@ export class ParkDetailsComponent implements OnInit, OnDestroy {
       dataService
         .watchItem(Constants.dataIds.FACILITIES_LIST)
         .subscribe((res) => {
-          this.tableRows = res;
+          if (res) {
+            this.tableRows = res;
+          }
         })
     );
     if (this.keycloakService.isAllowed('add-facility')) {

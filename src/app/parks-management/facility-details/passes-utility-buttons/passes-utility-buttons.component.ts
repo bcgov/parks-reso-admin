@@ -39,8 +39,8 @@ export class PassesUtilityButtonsComponent implements OnDestroy {
       dataService
         .watchItem(Constants.dataIds.CURRENT_FACILITY)
         .subscribe((res) => {
-          if (res && res[0]) {
-            this.facility = res[0];
+          if (res) {
+            this.facility = res;
             this.parkSk = this.facility.pk.split('::')[1];
           }
         })

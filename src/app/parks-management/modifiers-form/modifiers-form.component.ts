@@ -37,19 +37,13 @@ export class ModifiersFormComponent
     protected changeDetector: ChangeDetectorRef,
     private modifierService: ModifierService
   ) {
-    super(
-      formBuilder,
-      router,
-      dataService,
-      loadingService,
-      changeDetector
-    );
+    super(formBuilder, router, dataService, loadingService, changeDetector);
     this.subscriptions.add(
       dataService
         .watchItem(Constants.dataIds.CURRENT_FACILITY)
         .subscribe((res) => {
-          if (res && res[0]) {
-            this.facility = res[0];
+          if (res) {
+            this.facility = res;
             this.setBookingTimes();
             this.setForm();
           }
@@ -57,8 +51,8 @@ export class ModifiersFormComponent
     );
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
-        if (res && res[0]) {
-          this.park = res[0];
+        if (res) {
+          this.park = res;
           this.setForm();
         }
       })

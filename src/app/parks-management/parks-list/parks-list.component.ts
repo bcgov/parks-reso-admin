@@ -23,9 +23,15 @@ export class ParksListComponent implements OnInit, OnDestroy {
   ) {
     this.subscriptions.add(
       dataService
-        .watchItem(Constants.dataIds.PARKS_LIST)
+        .watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST)
         .subscribe((res) => {
-          this.tableRows = res;
+          if (res) {
+            let tempArray = [];
+            for (const park in res) {
+              tempArray.push(res[park]);
+            }
+            this.tableRows = tempArray;
+          }
         })
     );
   }

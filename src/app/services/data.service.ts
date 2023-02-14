@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Constants } from '../shared/utils/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class DataService {
 
   // Append array data to existing dataService id
   appendItemValue(id, value): any[] {
-    if (!this.checkIfDataExists(id)){
+    if (!this.checkIfDataExists(id)) {
       this.setItemValue(id, value);
       return [];
     } else {
@@ -32,13 +33,13 @@ export class DataService {
     }
   }
 
-   // Merge object data to existing dataService id
+  // Merge object data to existing dataService id
   mergeItemValue(id, value, attribute = null): any {
-    if (!this.checkIfDataExists(id)){
+    if (!this.checkIfDataExists(id)) {
       this.setItemValue(id, value);
       return null;
     } else {
-      const  assignObj = Object.assign(this.getItemValue(id), value);
+      const assignObj = Object.assign(this.getItemValue(id), value);
       this.data[id].next(assignObj);
       return assignObj;
     }
@@ -60,5 +61,27 @@ export class DataService {
 
   checkIfDataExists(id) {
     return this.data[id] ? true : false;
+  }
+
+  async updateParkAndFacilityCache(obj) {
+    const cachedObj = this.getItemValue(
+      Constants.dataIds.PARK_AND_FACILITY_LIST
+    );
+    if (obj.pk === 'park') {
+      if (cachedObj[obj.sk]) {
+        obj.facilities = cachedObj[obj.sk].facilities;
+        cachedObj[obj.sk] = obj;
+      } else {
+        throw 'Error updating cache, please refresh the page.';
+      }
+    } else if (obj.pk.includes('facility::')) {
+      const parkId = obj.pk.split('::')[1];
+      if (cachedObj[parkId]) {
+        cachedObj[parkId].facilities[obj.sk] = obj;
+      } else {
+        throw 'Error updating cache, please refresh the page.';
+      }
+    }
+    this.setItemValue(Constants.dataIds.PARK_AND_FACILITY_LIST, cachedObj);
   }
 }

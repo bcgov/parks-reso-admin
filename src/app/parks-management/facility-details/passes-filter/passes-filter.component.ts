@@ -51,7 +51,7 @@ export class PassesFilterComponent extends BaseFormComponent {
         .watchItem(Constants.dataIds.CURRENT_FACILITY)
         .subscribe((res) => {
           if (res) {
-            this.facility = res[0];
+            this.facility = res;
             this.bookingTimesList = this.getBookingTimesList();
           }
         })

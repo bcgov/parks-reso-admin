@@ -27,7 +27,7 @@ describe('ParkService', () => {
     sk: 'MOC1',
     park: {
       name: 'Mock Park 1',
-      orcs: 'MOC1'
+      orcs: 'MOC1',
     },
   };
 
@@ -134,7 +134,7 @@ describe('ParkService', () => {
     expect(apiGetSpy).toHaveBeenCalledOnceWith('park', { park: 'Mock Park 1' });
     expect(setDataSpy).toHaveBeenCalledOnceWith(
       Constants.dataIds.CURRENT_PARK,
-      mockParkRes.value
+      mockParkRes.value[0]
     );
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
   });
@@ -155,13 +155,11 @@ describe('ParkService', () => {
   });
 
   it('puts park object', async () => {
-    const fetchSpy = spyOn(service, 'fetchData');
     await service.putPark(mockParkObj);
     expect(loadingSpy).toHaveBeenCalledTimes(1);
     expect(loggerDebugSpy).toHaveBeenCalledTimes(1);
     expect(apiPutSpy).toHaveBeenCalledOnceWith('park', mockParkObj);
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
-    expect(fetchSpy).toHaveBeenCalledOnceWith('MOC1');
     expect(toastSpy).toHaveBeenCalledTimes(1);
   });
 

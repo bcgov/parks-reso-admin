@@ -1,6 +1,5 @@
 export class MockData {
   // For .spec tests
-
   public static readonly mockPark_1 = {
     pk: 'park',
     sk: 'MOC1',
@@ -94,6 +93,37 @@ export class MockData {
     },
     sk: 'Mock Facility 2',
     pk: 'facility::MOC1',
+    type: 'Parking',
+  };
+
+  public static readonly mockFacility_3 = {
+    bookingDays: {
+      1: false,
+      2: false,
+      3: false,
+      4: false,
+      5: false,
+      6: false,
+      7: false,
+    },
+    isUpdating: false,
+    bookingDaysAhead: 0,
+    visible: false,
+    bookingOpeningHour: null,
+    status: {
+      stateReason: 'Closed reason',
+      state: 'closed',
+    },
+    bookableHolidays: [],
+    name: 'Mock Facility 3',
+    bookingDaysRichText: '<p>Rich text for Mock Facility 3</p>',
+    bookingTimes: {
+      DAY: {
+        max: 7,
+      },
+    },
+    sk: 'Mock Facility 3',
+    pk: 'facility::MOC2',
     type: 'Parking',
   };
 
@@ -202,6 +232,26 @@ export class MockData {
     },
     sk: {
       S: 'sk',
+    },
+  };
+
+  public;
+
+  public static readonly mockParkFacility_1 = {
+    MOC1: {
+      ...this.mockPark_1,
+      ...{
+        facilities: {
+          'Mock Facility 1': this.mockFacility_1,
+          'Mock Facility 2': this.mockFacility_2,
+        },
+      },
+    },
+    MOC2: {
+      ...this.mockPark_2,
+      ...{
+        facilities: { 'Mock Facility 3': this.mockFacility_3 },
+      },
     },
   };
 }

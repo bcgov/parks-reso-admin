@@ -25,16 +25,16 @@ export class FacilityEditComponent implements OnDestroy {
       dataService
         .watchItem(Constants.dataIds.CURRENT_FACILITY)
         .subscribe((res) => {
-          if (res && res[0]) {
-            this.facility = res[0];
+          if (res) {
+            this.facility = res;
             this.updateModifiers();
           }
         })
     );
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
-        if (res && res[0]) {
-          this.park = res[0];
+        if (res) {
+          this.park = res;
           this.updateModifiers();
         }
       })

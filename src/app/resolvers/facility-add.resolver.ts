@@ -8,7 +8,7 @@ import { Constants } from '../shared/utils/constants';
 })
 export class FacilityAddResolver implements Resolve<void> {
   constructor(protected dataService: DataService) {}
-  async resolve() {
+  resolve() {
     this.dataService.setItemValue(Constants.dataIds.CURRENT_FACILITY, null);
   }
 }

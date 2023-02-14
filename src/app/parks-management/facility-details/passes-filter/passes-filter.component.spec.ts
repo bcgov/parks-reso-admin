@@ -15,7 +15,7 @@ describe('PassesFilterComponent', () => {
   let fixture: ComponentFixture<PassesFilterComponent>;
   let location: Location;
 
-  let mockFacility = [MockData.mockFacility_1];
+  let mockFacility = MockData.mockFacility_1;
 
   let mockPartialPassFilter = MockData.mockPartialPassFilters_1;
 

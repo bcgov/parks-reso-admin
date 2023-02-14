@@ -11,7 +11,7 @@ describe('FacilityDetailsComponent', () => {
   let component: FacilityDetailsComponent;
   let fixture: ComponentFixture<FacilityDetailsComponent>;
 
-  let testFacility = [MockData.mockFacility_1];
+  let testFacility = MockData.mockFacility_1;
 
   let testSubject = new BehaviorSubject(testFacility);
 

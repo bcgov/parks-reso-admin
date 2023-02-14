@@ -73,9 +73,9 @@ describe('ReservationService', () => {
     loggerDebugSpy = spyOn(service['loggerService'], 'debug');
     apiGetSpy = spyOn(service['apiService'], 'get').and.callThrough();
     setDataSpy = spyOn(service['dataService'], 'setItemValue');
-    getDataSpy = spyOn(service['dataService'], 'getItemValue').and.returnValue([
+    getDataSpy = spyOn(service['dataService'], 'getItemValue').and.returnValue(
       MockData.mockFacility_1,
-    ]);
+    );
     toastSpy = spyOn(service['toastService'], 'addMessage');
     eventSpy = spyOn(service['eventService'], 'setError');
   });

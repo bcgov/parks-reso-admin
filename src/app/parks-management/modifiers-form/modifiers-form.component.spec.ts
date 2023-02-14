@@ -19,10 +19,10 @@ describe('ModifiersFormComponent', () => {
   let mockDataService = {
     watchItem: (id) => {
       if (id === Constants.dataIds.CURRENT_FACILITY) {
-        return new BehaviorSubject([mockFacility]);
+        return new BehaviorSubject(mockFacility);
       }
       if (id === Constants.dataIds.CURRENT_PARK) {
-        return new BehaviorSubject([mockPark]);
+        return new BehaviorSubject(mockPark);
       }
       return new BehaviorSubject(null);
     },

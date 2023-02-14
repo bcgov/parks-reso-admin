@@ -19,7 +19,6 @@ export class PassesCapacityBarComponent implements OnInit {
         .watchItem(Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT)
         .subscribe((res) => {
           this.data = res;
-          console.log(this.data);
         })
     );
   }

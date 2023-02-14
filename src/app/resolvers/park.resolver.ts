@@ -1,15 +1,31 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { ParkService } from '../services/park.service';
+import { Subject, takeUntil } from 'rxjs';
+import { DataService } from '../services/data.service';
+import { Constants } from '../shared/utils/constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ParkResolver implements Resolve<void> {
-  constructor(private parkService: ParkService) {}
+  constructor(protected dataService: DataService) {}
   resolve(route: ActivatedRouteSnapshot) {
-    if (route.params['parkId']) {
-      this.parkService.fetchData(route.params['parkId']);
-    }
+    const terminate = new Subject();
+    this.dataService
+      .watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST)
+      .pipe(takeUntil(terminate))
+      .subscribe((res) => {
+        if (res) {
+          this.dataService.setItemValue(
+            Constants.dataIds.CURRENT_PARK,
+            res[route.params['parkId']]
+          );
+          this.dataService.setItemValue(
+            Constants.dataIds.FACILITIES_LIST,
+            Object.values(res[route.params['parkId']].facilities)
+          );
+          terminate.next(null);
+        }
+      });
   }
 }
