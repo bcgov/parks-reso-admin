@@ -2,7 +2,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BehaviorSubject, of } from 'rxjs';
+import { AsyncSubject, BehaviorSubject, Observable, of } from 'rxjs';
 import { ConfigService } from 'src/app/services/config.service';
 
 import { BaseFormComponent } from './base-form.component';
@@ -65,19 +65,22 @@ describe('BaseFormComponent', () => {
     ).and.callThrough();
     const setControlSpy = spyOn(comp, 'setControlStatus');
     const ruleClearSpy = spyOn(comp.disabledSubscriptions, 'unsubscribe');
-    comp.addDisabledRule(comp.form.controls['testControl1'], testSubject, [
-      true,
-    ]);
+    comp.addDisabledRule(
+      comp.form.controls['testControl1'],
+      () => {
+        return true;
+      },
+      testSubject
+    );
     await fixture.isStable();
     expect(ruleAddSpy).toHaveBeenCalledTimes(1);
-    expect(setControlSpy).toHaveBeenCalledOnceWith(
-      comp.form.controls['testControl1'],
-      false
-    );
+    // once for init, another for first subscription
+    expect(setControlSpy).toHaveBeenCalledTimes(2);
     setControlSpy.calls.reset();
+    comp.form.reset();
     testSubject.next(true);
     await fixture.isStable();
-    expect(setControlSpy).toHaveBeenCalledOnceWith(
+    expect(setControlSpy).toHaveBeenCalledWith(
       comp.form.controls['testControl1'],
       true
     );
