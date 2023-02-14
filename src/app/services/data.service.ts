@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
-import { LoggerService } from './logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +8,7 @@ import { LoggerService } from './logger.service';
 export class DataService {
   private data;
 
-  constructor(private loggerService: LoggerService) {
+  constructor() {
     this.data = {};
   }
 
@@ -73,9 +72,6 @@ export class DataService {
         obj.facilities = cachedObj[obj.sk].facilities;
         cachedObj[obj.sk] = obj;
       } else {
-        this.loggerService.debug(
-          'No park found while updating cache: ' + obj.sk
-        );
         throw 'Error updating cache, please refresh the page.';
       }
     } else if (obj.pk.includes('facility::')) {
@@ -83,9 +79,6 @@ export class DataService {
       if (cachedObj[parkId]) {
         cachedObj[parkId].facilities[obj.sk] = obj;
       } else {
-        this.loggerService.debug(
-          'No park found while updating cache: ' + obj.pk.split('::')[1]
-        );
         throw 'Error updating cache, please refresh the page.';
       }
     }

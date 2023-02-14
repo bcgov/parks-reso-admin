@@ -155,13 +155,11 @@ describe('ParkService', () => {
   });
 
   it('puts park object', async () => {
-    const fetchSpy = spyOn(service, 'fetchData');
     await service.putPark(mockParkObj);
     expect(loadingSpy).toHaveBeenCalledTimes(1);
     expect(loggerDebugSpy).toHaveBeenCalledTimes(1);
     expect(apiPutSpy).toHaveBeenCalledOnceWith('park', mockParkObj);
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
-    expect(fetchSpy).toHaveBeenCalledOnceWith('MOC1');
     expect(toastSpy).toHaveBeenCalledTimes(1);
   });
 

@@ -161,13 +161,10 @@ describe('FacilityService', () => {
   });
 
   it('puts facility', async () => {
-    const fetchDataSpy = spyOn(service, 'fetchData');
     await service.putFacility(mockFacilityPostObj, 'Mock Park 1');
     expect(loadingSpy).toHaveBeenCalledTimes(1);
     expect(loggerDebugSpy).toHaveBeenCalledTimes(1);
     expect(apiPutSpy).toHaveBeenCalledOnceWith('facility', mockFacilityPostObj);
-    // Call fetchData twice to update dataService facility and facility list
-    expect(fetchDataSpy).toHaveBeenCalledTimes(2);
     expect(toastSpy).toHaveBeenCalledTimes(1);
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
   });
@@ -185,7 +182,6 @@ describe('FacilityService', () => {
   });
 
   it('posts facility', async () => {
-    const fetchDataSpy = spyOn(service, 'fetchData');
     await service.postFacility(mockFacilityPostObj, 'Mock Park 1');
     expect(loadingSpy).toHaveBeenCalledTimes(1);
     expect(loggerDebugSpy).toHaveBeenCalledTimes(1);
@@ -193,8 +189,6 @@ describe('FacilityService', () => {
       'facility',
       mockFacilityPostObj
     );
-    // Call fetchData twice to update dataService facility and facility list
-    expect(fetchDataSpy).toHaveBeenCalledTimes(2);
     expect(toastSpy).toHaveBeenCalledTimes(1);
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
   });

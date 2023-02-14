@@ -106,7 +106,7 @@ describe('ParkEditFormComponent', () => {
     buttons[1].onClick();
     expect(modalRefSpy).toHaveBeenCalledTimes(1);
     expect(submitChangesSpy).toHaveBeenCalledTimes(1);
-    expect(parkServiceSpy).toHaveBeenCalledOnceWith(mockSubmission);
+    expect(parkServiceSpy).toHaveBeenCalledOnceWith(mockSubmission, true, true);
     expect(navBackSpy).toHaveBeenCalledTimes(1);
     expect(navSpy).toHaveBeenCalledTimes(1);
   });
