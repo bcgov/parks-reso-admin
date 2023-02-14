@@ -68,7 +68,7 @@ export class PassesFilterComponent extends BaseFormComponent {
           }
         })
     );
-    this.initializeForm();
+    this.setForm();
   }
 
   getBookingTimesList() {
@@ -80,11 +80,6 @@ export class PassesFilterComponent extends BaseFormComponent {
       return list;
     }
     return [];
-  }
-
-  initializeForm() {
-    // First pass of form initialization, establish disabledRules (if any)
-    this.setForm();
   }
 
   setForm() {

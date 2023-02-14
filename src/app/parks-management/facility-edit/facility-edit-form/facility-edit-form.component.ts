@@ -76,7 +76,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
         }
       })
     );
-    this.intializeForm();
+    this.setForm();
   }
 
   getPassesRequired() {
@@ -92,34 +92,6 @@ export class FacilityEditFormComponent extends BaseFormComponent {
 
   isFormValid() {
     return super.validate();
-  }
-
-  intializeForm() {
-    // First pass of form initialization, establish disabledRules (if any)
-    this.setForm();
-    // add special field disabling rules
-    super.addDisabledRule(this.fields.facilityName, this.isEditMode, [true]);
-    super.addDisabledRule(this.fields.facilityType, this.isEditMode, [true]);
-    super.addDisabledRule(
-      this.fields.facilityClosureReason,
-      this.fields.facilityStatus.valueChanges,
-      [true]
-    );
-    super.addDisabledRule(
-      this.fields.facilityBookingTimes.capacityAM,
-      this.fields.facilityBookingTimes.AM.valueChanges,
-      [false, null]
-    );
-    super.addDisabledRule(
-      this.fields.facilityBookingTimes.capacityPM,
-      this.fields.facilityBookingTimes.PM.valueChanges,
-      [false, null]
-    );
-    super.addDisabledRule(
-      this.fields.facilityBookingTimes.capacityDAY,
-      this.fields.facilityBookingTimes.DAY.valueChanges,
-      [false, null]
-    );
   }
 
   setForm() {
@@ -192,7 +164,42 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       facilityBookingTimes: bookingTimesFormGroup,
       facilityPassesRequired: new UntypedFormControl(this.getPassesRequired()),
     });
-    super.setFields();
+    super.updateForm();
+    // add special field disabling rules
+    super.addDisabledRule(this.fields.facilityName, () => {
+      return this.isEditMode.value;
+    });
+    super.addDisabledRule(this.fields.facilityType, () => {
+      return this.isEditMode.value;
+    });
+    super.addDisabledRule(
+      this.fields.facilityClosureReason,
+      () => {
+        return this.fields.facilityStatus.value;
+      },
+      this.fields.facilityStatus.valueChanges
+    );
+    super.addDisabledRule(
+      this.fields.facilityBookingTimes.capacityAM,
+      () => {
+        return !this.fields.facilityBookingTimes.AM.value;
+      },
+      this.fields.facilityBookingTimes.AM.valueChanges
+    );
+    super.addDisabledRule(
+      this.fields.facilityBookingTimes.capacityPM,
+      () => {
+        return !this.fields.facilityBookingTimes.PM.value;
+      },
+      this.fields.facilityBookingTimes.PM.valueChanges
+    );
+    super.addDisabledRule(
+      this.fields.facilityBookingTimes.capacityDAY,
+      () => {
+        return !this.fields.facilityBookingTimes.DAY.value;
+      },
+      this.fields.facilityBookingTimes.DAY.valueChanges
+    );
   }
 
   async onSubmit() {
@@ -204,6 +211,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
   }
 
   onFormReset() {
+    super.reset();
     this.setForm();
     this.resetEvent.emit();
   }

@@ -57,7 +57,7 @@ export class ModifiersFormComponent
         }
       })
     );
-    this.initializeForm();
+    this.setForm();
   }
 
   ngOnInit(): void {
@@ -94,14 +94,6 @@ export class ModifiersFormComponent
     return false;
   }
 
-  initializeForm() {
-    // First pass of form initialization, establish disabledRules (if any)
-    this.setForm();
-    super.addDisabledRule(this.fields.modifierAMChanges, this.hasAM, [false]);
-    super.addDisabledRule(this.fields.modifierPMChanges, this.hasPM, [false]);
-    super.addDisabledRule(this.fields.modifierDAYChanges, this.hasDAY, [false]);
-  }
-
   setForm() {
     this.form = new UntypedFormGroup({
       modifierOverrideDate: new UntypedFormControl(null),
@@ -109,7 +101,28 @@ export class ModifiersFormComponent
       modifierPMChanges: new UntypedFormControl(null),
       modifierDAYChanges: new UntypedFormControl(null),
     });
-    super.setFields();
+    super.updateForm();
+    super.addDisabledRule(
+      this.fields.modifierAMChanges,
+      () => {
+        return !this.hasAM.value;
+      },
+      this.hasAM
+    );
+    super.addDisabledRule(
+      this.fields.modifierPMChanges,
+      () => {
+        return !this.hasPM.value;
+      },
+      this.hasPM
+    );
+    super.addDisabledRule(
+      this.fields.modifierDAYChanges,
+      () => {
+        return !this.hasDAY.value;
+      },
+      this.hasDAY
+    );
   }
 
   async onSubmit() {

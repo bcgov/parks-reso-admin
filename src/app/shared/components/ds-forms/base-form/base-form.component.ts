@@ -94,30 +94,45 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   /**
    * Adds a specialized disabling rule to a control.
    * @param control - the `FormControl` that will be affected by the rule.
-   * @param subject  - a `BehaviourSubject` whose changes will be subscribed to.
-   * @param condition - an array of values of `subject` that will disable the control.
-   * Conditions are chained by OR logic, eg `condition=[false, null]` means that `control`
-   * will be disabled if `subject.value === true OR null`
+   * @param condition - a function that will disable the control if it evaluates to true.
+   * If no condition is provided, the field is permanently disabled.
+   * @param subject  - a `BehaviourSubject` whose changes will be subscribed to. When the observable
+   * is fired, the condition functions are rechecked to see if the control status will change. If no subject
+   * is provided, the control status will only be set once on initialization.
    */
-  addDisabledRule(control, subject: BehaviorSubject<any>, conditions) {
-    this.disabledSubscriptions.add(
-      subject.subscribe((changes) => {
-        let disableFlag = false;
-        for (const condition of conditions) {
-          if (changes === condition) {
-            this.setControlStatus(control, true);
-            disableFlag = true;
-          }
-        }
-        if (!disableFlag) {
-          this.setControlStatus(control, false);
-        }
-      })
-    );
+  addDisabledRule(
+    control,
+    condition?: Function,
+    subject?: BehaviorSubject<any>
+  ) {
+    // if no conditions are provided, permanently disable the field.
+    if (!condition) {
+      this.setControlStatus(control, true);
+    } else {
+      // On initial pass through, set the control status based on conditions
+      if (condition()) {
+        this.setControlStatus(control, true);
+      } else {
+        this.setControlStatus(control, false);
+      }
+      // then, if subject is provided, subscribe to changes in the subject for future status changes.
+      if (subject) {
+        this.disabledSubscriptions.add(
+          subject.subscribe(() => {
+            if (condition()) {
+              this.setControlStatus(control, true);
+            } else {
+              this.setControlStatus(control, false);
+            }
+          })
+        );
+      }
+    }
   }
 
   clearDisabledRules() {
     this.disabledSubscriptions.unsubscribe();
+    this.disabledSubscriptions = new Subscription();
   }
 
   /**
@@ -222,6 +237,14 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   }
 
   /**
+   * To be called when all controls have been initialzied, so any changes can be registered
+   */
+  updateForm() {
+    this.setFields();
+    this.clearDisabledRules();
+  }
+
+  /**
    * Gathers the key:value form data and creates a object representing the current state of form control values.
    * @returns - an Object containing the key:value pairs of the form controls.
    */
@@ -234,9 +257,10 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
     return res;
   }
 
-  clear() {
-    this.data = {};
+  reset() {
     this.isSubmitted = false;
+    this.disabledControls = [];
+    this.clearDisabledRules();
     for (const control of this.getControlsArray()) {
       control.reset();
       control.markAsUntouched();
@@ -244,6 +268,11 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
       control.updateValueAndValidity();
       control.setErrors(null);
     }
+  }
+
+  clear() {
+    this.data = {};
+    this.reset();
   }
 
   /**

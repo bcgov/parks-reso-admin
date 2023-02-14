@@ -56,14 +56,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
         }
       })
     );
-    this.initializeForm();
-  }
-
-  initializeForm() {
-    // First pass of form initialization, establish disabledRules (if any)
     this.setForm();
-    // Disabling rules:
-    super.addDisabledRule(this.fields.parkOrcs, this.isEditMode, [true]);
   }
 
   setForm() {
@@ -82,7 +75,8 @@ export class ParkEditFormComponent extends BaseFormComponent {
       parkMapLink: new UntypedFormControl(this.data.mapLink),
       parkDescription: new UntypedFormControl(this.data.description),
     });
-    super.setFields();
+    super.updateForm();
+    super.addDisabledRule(this.fields.parkOrcs);
   }
 
   async onSubmit() {
@@ -96,6 +90,11 @@ export class ParkEditFormComponent extends BaseFormComponent {
   submitParkChanges(postObj) {
     this.parkService.putPark(postObj, true, true);
     this.navigateBack();
+  }
+  
+  onFormReset() {
+    super.reset();
+    this.setForm();
   }
 
   // Format form fields for API submission
