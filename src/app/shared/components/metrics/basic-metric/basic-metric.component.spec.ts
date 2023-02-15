@@ -14,7 +14,6 @@ describe('BasicMetricComponent', () => {
     fixture = TestBed.createComponent(BasicMetricComponent);
     component = fixture.componentInstance;
     component._value = 2000;
-    component.label = 'Test Label';
     fixture.detectChanges();
   });
 
@@ -22,11 +21,8 @@ describe('BasicMetricComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the metric card properly', async () => {
-    const cardElement = fixture.debugElement.query(By.css('.card-body')).nativeElement;
-    const level = cardElement.getElementsByTagName('h4')[0];
-    expect(level.innerText).toContain('Test Label');
-    const value = cardElement.getElementsByTagName('h1')[0];
+  it('should display the metric properly', async () => {
+    const value = fixture.debugElement.nativeElement.getElementsByTagName('h1')[0];
     expect(value.innerText).toContain('2,000');
     component._value = 2500;
     fixture.detectChanges();
