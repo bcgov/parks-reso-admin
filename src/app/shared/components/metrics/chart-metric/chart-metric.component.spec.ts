@@ -34,7 +34,6 @@ describe('ChartMetricComponent', () => {
 
   it('awaits all async calls before building chart', async () => {
     expect(buildSpy).not.toHaveBeenCalled();
-    component.title = 'chart title';
     component.type = 'bar';
     component['_labels'].next(['label1', 'label2']);
     component['_datasets'].next([

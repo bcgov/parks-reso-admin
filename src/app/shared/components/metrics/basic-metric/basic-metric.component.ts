@@ -6,7 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./basic-metric.component.scss'],
 })
 export class BasicMetricComponent {
-  @Input() label: string; // metric label
   @Input() set value(value: number) {
     this._value = value;
   }

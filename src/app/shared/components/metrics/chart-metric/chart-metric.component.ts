@@ -15,7 +15,6 @@ import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
   styleUrls: ['./chart-metric.component.scss'],
 })
 export class ChartMetricComponent implements OnDestroy, AfterViewInit {
-  @Input() title: string = '';
   @Input() type: keyof ChartTypeRegistry; // bar, bubble, doughnut, pie, line, polarArea, radar, scatter
   @Input() set labels(labels: string[]) {
     this._labels.next(labels);
