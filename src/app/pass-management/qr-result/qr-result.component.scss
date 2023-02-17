@@ -1,0 +1,14 @@
+@import "src/assets/themes/variables";
+
+.home-button {
+  font-size: 1.5rem;
+
+  .bi {
+    vertical-align: middle !important;
+  }
+}
+
+.btn-link {
+  text-decoration: none !important;
+  color: $primary !important;
+}

@@ -6,15 +6,15 @@ import { LoggerService } from 'src/app/services/logger.service';
 import { PassService } from 'src/app/services/pass.service';
 import { QrScannerService } from 'src/app/shared/components/qr-scanner/qr-scanner.service';
 
-import { PassLookupComponent } from './pass-lookup.component';
+import { PassCheckInListComponent } from './pass-check-in-list.component';
 
 describe('PassLookupComponent', () => {
-  let component: PassLookupComponent;
-  let fixture: ComponentFixture<PassLookupComponent>;
+  let component: PassCheckInListComponent;
+  let fixture: ComponentFixture<PassCheckInListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PassLookupComponent],
+      declarations: [PassCheckInListComponent],
       providers: [
         PassService,
         LoggerService,
@@ -25,7 +25,7 @@ describe('PassLookupComponent', () => {
       imports: [HttpClientTestingModule],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PassLookupComponent);
+    fixture = TestBed.createComponent(PassCheckInListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
