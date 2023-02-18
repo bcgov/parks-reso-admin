@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { LoggerService } from 'src/app/services/logger.service';
 import { PassService } from 'src/app/services/pass.service';
 import { Constants } from 'src/app/shared/utils/constants';
+import { Utils } from 'src/app/shared/utils/utils';
 
 @Component({
   selector: 'app-pass-check-in-list',
@@ -65,12 +66,16 @@ export class PassCheckInListComponent implements OnChanges, OnDestroy {
       if (pass.passStatus === 'active' || pass.passStatus === 'reserved') {
         pass.passStatus = 'checkedIn';
       }
+    } else if (
+      pass.passStatus === 'reserved' &&
+      pass.shortPassDate > new Utils().getTodayAsShortDate()
+    ) {
+      // Pass is reserved but it's not day of.
+      // Biz rule: We allow early check-in for day of only.
+      pass.passStatus = 'reservedFuture';
     }
 
-    if (pass.passStatus in Constants.stateLabelDictionary) {
-      pass.passState = Constants.stateLabelDictionary[pass.passStatus];
-      // TODO: if the person is early, allow but have a warning.
-    }
+    pass.passState = Constants.stateLabelDictionary[pass.passStatus];
     // TODO: End fancy loading bar stuff
 
     return pass;

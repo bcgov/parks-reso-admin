@@ -72,11 +72,11 @@
 
       <!-- TODO: Limit this for the day of -->
       <div
-        *ngIf="pass.passState.state === 'reserved'"
+        *ngIf="pass.passState.warningText"
         class="alert alert-warning"
         role="alert"
       >
-        <strong>Warning:</strong><br />This pass is for a later timeslot!
+        <strong>Warning:</strong><br />{{ pass.passState.warningText }}
       </div>
 
       <div class="d-grid gap-2" *ngIf="!pass.passState.submitButtonHidden">
