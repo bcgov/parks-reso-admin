@@ -24,6 +24,9 @@ export class ManualEntryComponent implements OnInit, OnDestroy {
   public today = new Utils().getTodayAsShortDate();
   private disableDate = true;
   public disableSubmit = true;
+  public searching = false;
+
+  public noResults = false;
 
   constructor(
     private dataService: DataService,
@@ -161,6 +164,8 @@ export class ManualEntryComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
+    this.disableSubmit = this.searching = true;
+    this.noResults = false;
     let obj = this.searchForm.value;
     Object.keys(obj).forEach((key) => {
       if (!obj[key]) {
@@ -169,7 +174,9 @@ export class ManualEntryComponent implements OnInit, OnDestroy {
     });
     obj['date'] = this.searchForm.get('date').value;
     obj.manualLookup = true;
-    await this.passService.fetchData(obj);
+    const res = await this.passService.fetchData(obj);
+    this.noResults = res.length === 0;
+    this.disableSubmit = this.searching = false;
   }
 
   ngOnDestroy(): void {
