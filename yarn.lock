@@ -1275,6 +1275,20 @@
     bootstrap "^5.1.2"
     jquery "^3.6.0"
 
+"@digitalspace/browser@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@digitalspace/browser/-/browser-0.1.2.tgz#f6eaf47d25f4b05f6ca5a7491eccd338358f37f4"
+  integrity sha512-B+EPefNsP/4d/Kot7qivchjhbDCxSOopHTaWDbAYg306rbagdHHI1fqGOxfHIi8uqv+A8ld54VdzvMhr018qrA==
+  optionalDependencies:
+    "@zxing/text-encoding" "^0.9.0"
+
+"@digitalspace/ngx-scanner@^3.8.2":
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/@digitalspace/ngx-scanner/-/ngx-scanner-3.8.2.tgz#ae70937de57c2553ce1d012691ca6d2c6e7799f6"
+  integrity sha512-19fh+fjp00GLyXs7tk8HZtGhu2ze7sq6WqbnYPlANzYFfTqXPkJMTc2l1cmTGN7oj+9Nl7vplz0ZBOOYXPNOpA==
+  dependencies:
+    tslib "^2.3.0"
+
 "@discoveryjs/json-ext@0.5.7":
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
@@ -1929,13 +1943,6 @@
   resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
 
-"@zxing/browser@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@zxing/browser/-/browser-0.1.1.tgz#f5d6c0a57bda3b223539eadfa3d87c1260e0536f"
-  integrity sha512-fdcHrvvno1NnoiY5++kn/h2b9QnBNyqtK1JqbfY3dfmTdwyXCJr/aT2ZGyRcfe0D3I/THu1I5VJAcpoU0svQMQ==
-  optionalDependencies:
-    "@zxing/text-encoding" "^0.9.0"
-
 "@zxing/library@^0.19.1":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@zxing/library/-/library-0.19.1.tgz#68932436a9cf860e2148a6d6ae38fe1e27ea23a8"
@@ -1944,13 +1951,6 @@
     ts-custom-error "^3.0.0"
   optionalDependencies:
     "@zxing/text-encoding" "~0.9.0"
-
-"@zxing/ngx-scanner@^3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@zxing/ngx-scanner/-/ngx-scanner-3.8.0.tgz#8013e43eb1fc83b7e0ae8af84d1da8f012900b83"
-  integrity sha512-pFiZA2TUlXwRZs1TSn9Oey/jewKzscnynE6WHvf92WJA0lKbe2xQe8/J85YDOgt8GejA6QmqL1YabUe1TwpAyw==
-  dependencies:
-    tslib "^2.3.0"
 
 "@zxing/text-encoding@^0.9.0", "@zxing/text-encoding@~0.9.0":
   version "0.9.0"

@@ -1,82 +1,156 @@
-<!-- <form (ngSubmit)="onSubmit()" #passForm="ngForm">
-  <div class="row row-cols-1 row-cols-lg-3 gy-3">
-    <div class="col form-group">
-      <label class="fw-bold" for="parks">Park *</label>
-      <select
-        class="form-control form-select"
-        id="parks"
-        [(ngModel)]="model.park"
-        name="parks"
-      >
-        <option *ngFor="let park of parks" [value]="park.value">
-          {{ park.label }}
-        </option>
-      </select>
+<section class="bg-light px-3 px-lg-5 pt-5 pb-4">
+  <form [formGroup]="searchForm">
+    <div class="row row-cols-1 row-cols-lg-3 gy-3">
+      <!-- Users are not allowed to change this -->
+      <div class="col form-group">
+        <label class="fw-bold" for="date"
+          >Date <span class="text-danger">*</span></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="date"
+          formControlName="date"
+          name="date"
+        />
+      </div>
+
+      <div class="col form-group">
+        <label class="fw-bold" for="parks"
+          >Park <span class="text-danger">*</span></label
+        >
+        <select
+          #parkSelect
+          class="form-control form-select"
+          id="parks"
+          formControlName="park"
+          name="parks"
+          (change)="onParkSelect(parkSelect.value)"
+        >
+          <option *ngFor="let park of parkOptions" [value]="park.value">
+            {{ park.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col form-group">
+        <label class="fw-bold" for="facility"
+          >Facility <span class="text-danger">*</span></label
+        >
+        <select
+          #facilitySelect
+          class="form-control form-select"
+          id="facilities"
+          formControlName="facilityName"
+          name="facilities"
+          (change)="onFacilitySelect(facilitySelect.value)"
+        >
+          <option [value]="''">- Select a facility -</option>
+          <option
+            *ngFor="let facility of facilityOptions"
+            [value]="facility.value"
+          >
+            {{ facility.label }}
+          </option>
+        </select>
+      </div>
     </div>
 
-    <div class="col form-group">
-      <label class="fw-bold" for="facility">Facility</label>
-      <input
-        type="text"
-        class="form-control"
-        id="facility"
-        [(ngModel)]="model.facility"
-        name="facility"
-      />
+    <div class="mt-4 mb-3">
+      <hr />
+      <span class="fw-bold">Pass info </span>
+      <span class="text-danger">*</span>&nbsp;&nbsp;(minimum 1 field required)
     </div>
 
-    <div class="col form-group">
-      <label class="fw-bold" for="reservation-number">Reservation Number</label>
-      <input
-        type="text"
-        class="form-control"
-        id="reservation-number"
-        [(ngModel)]="model.reservationNumber"
-        name="reservation-number"
-      />
+    <div class="row row-cols-1 row-cols-lg-3 gy-3">
+      <div class="col form-group">
+        <label class="fw-bold" for="reservation-number"
+          >Reservation Number</label
+        >
+        <input
+          #reservationNumber
+          type="text"
+          class="form-control"
+          id="reservation-number"
+          formControlName="registrationNumber"
+          name="reservation-number"
+          (change)="onFilterSelect(reservationNumber)"
+        />
+      </div>
+
+      <div class="col form-group">
+        <label class="fw-bold" for="first-name">First Name</label>
+        <input
+          #firstName
+          type="text"
+          class="form-control"
+          id="first-name"
+          formControlName="firstName"
+          name="first-name"
+          (change)="onFilterSelect(firstName)"
+        />
+      </div>
+
+      <div class="col form-group">
+        <label class="fw-bold" for="last-name">Last Name</label>
+        <input
+          #lastName
+          type="text"
+          class="form-control"
+          id="last-name"
+          formControlName="lastName"
+          name="last-name"
+          (change)="onFilterSelect(lastName)"
+        />
+      </div>
+
+      <div class="col form-group">
+        <label class="fw-bold" for="email">Email</label>
+        <input
+          #email
+          type="text"
+          class="form-control"
+          id="email"
+          formControlName="email"
+          name="email"
+          (change)="onFilterSelect(email)"
+        />
+      </div>
     </div>
 
-    <div class="col form-group">
-      <label class="fw-bold" for="first-name">First Name</label>
-      <input
-        type="text"
-        class="form-control"
-        id="first-name"
-        [(ngModel)]="model.firstName"
-        name="first-name"
-      />
+    <div class="d-none d-lg-block">
+      <div class="d-flex justify-content-end my-3">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="disableSubmit"
+          (click)="onSubmit()"
+        >
+          Search
+        </button>
+      </div>
     </div>
-
-    <div class="col form-group">
-      <label class="fw-bold" for="last-name">Last Name</label>
-      <input
-        type="text"
-        class="form-control"
-        id="last-name"
-        [(ngModel)]="model.lastName"
-        name="last-name"
-      />
+    <div class="d-lg-none">
+      <div class="d-grid gap-2 mt-4 mb-3">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="disableSubmit"
+          (click)="onSubmit()"
+        >
+          Search
+        </button>
+      </div>
     </div>
+  </form>
+</section>
 
-    <div class="col form-group">
-      <label class="fw-bold" for="email">Email</label>
-      <input
-        type="text"
-        class="form-control"
-        id="email"
-        [(ngModel)]="model.email"
-        name="email"
-      />
+<div class="d-flex justify-content-center">
+  <span class="pt-5 pb-4" *ngIf="searching">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
-  </div>
+  </span>
 
-  <div class="d-flex justify-content-end my-3">
-    <button
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="!passForm.form.valid"
-    >
-      Search
-    </button>
-  </div>
-</form> -->
+  <p class="pt-5 pb-4" *ngIf="noResults">No results found.</p>
+</div>

@@ -1,0 +1,104 @@
+<div *ngIf="passes.length > 0">
+  <div
+    class="card mt-3"
+    *ngFor="let pass of passes"
+    [class.dark-mode]="pass.passState.bodyTextColour === 'text-white'"
+  >
+    <div
+      class="card-header"
+      [class]="[
+        pass.passState.headerTextColour,
+        pass.passState.headerBSBackgroundThemeColour
+      ]"
+    >
+      <strong
+        >{{ pass.passState.headerText }}&nbsp;
+        <i [class]="pass.passState['headerIcon']"></i>
+      </strong>
+    </div>
+    <div
+      class="card-body"
+      [class]="[
+        pass.passState.bodyBSBackgroundColour,
+        pass.passState.bodyTextColour
+      ]"
+    >
+      <label>Park Name</label>
+      <div>
+        <strong>{{ pass["parkName"] || "-" }}</strong>
+      </div>
+      <hr />
+
+      <label>Facility Name</label>
+      <div>
+        <strong>{{ pass["facilityString"] || "-" }}</strong>
+      </div>
+      <hr />
+
+      <label>Date</label>
+      <div>
+        <!-- TODO: Add pass type (AM, PM, DAY) -->
+        <strong>{{ pass["shortPassDate"] || "-" }}</strong>
+      </div>
+      <hr />
+
+      <label>Name</label>
+      <div>
+        <strong>{{ pass["fullName"] || "-" }}</strong>
+      </div>
+      <hr />
+
+      <label>Reservation Number</label>
+      <div>
+        <strong>{{ pass["registrationNumber"] || "-" }}</strong>
+      </div>
+      <hr />
+
+      <label>Pass Status</label>
+      <div [ngClass]="pass.passState.passStatusTextColour">
+        <strong>{{
+          pass.passState && pass.passState.statusText
+            ? pass.passState.statusText
+            : "-"
+        }}</strong>
+      </div>
+      <hr />
+
+      <label>Check-in Time</label>
+      <div>
+        <strong>{{ pass["checkedInTime"] || "-" }}</strong>
+      </div>
+      <br />
+
+      <!-- TODO: Limit this for the day of -->
+      <div
+        *ngIf="pass.passState.warningText"
+        class="alert alert-warning"
+        role="alert"
+      >
+        <strong>Warning:</strong><br />{{ pass.passState.warningText }}
+      </div>
+
+      <div class="d-grid gap-2" *ngIf="!pass.passState.submitButtonHidden">
+        <button
+          class="btn btn-lg"
+          [class]="[pass.passState.submitButtonBSThemeColour]"
+          [class.bg-white]="
+            pass.passState.submitButtonBSThemeColour.includes('outline')
+          "
+          [disabled]="pass.submitLoading"
+          (click)="checkIn(pass)"
+        >
+          <span *ngIf="!pass.submitLoading">
+            {{ pass.passState.submitButtonText }}
+          </span>
+          <span *ngIf="pass.submitLoading">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

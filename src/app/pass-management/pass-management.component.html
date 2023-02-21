@@ -1,34 +1,42 @@
-<div class="container-fluid pt-3 mb-4">
-  <h1>Pass Management</h1>
+<div class="pt-3 mb-4">
+  <section class="container-fluid mb-3">
+    <h1>Pass Management</h1>
 
-  <div class="d-grid gap-2 mb-4">
-    <div class="btn-group btn-group-lg">
-      <button
-        type="button"
-        class="btn btn-primary"
-        [class.active]="mode === 'camera'"
-        (click)="setMode('camera')"
-      >
-        Camera
-      </button>
-      <button
-        type="button"
-        class="btn btn-primary"
-        [class.active]="mode === 'manual'"
-        (click)="setMode('manual')"
-      >
-        Manual Lookup
-      </button>
+    <div class="d-grid gap-2">
+      <div class="btn-group btn-group-lg">
+        <button
+          type="button"
+          class="btn btn-primary"
+          [class.active]="mode === 'camera'"
+          (click)="setMode('camera')"
+        >
+          Camera
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [class.active]="mode === 'manual'"
+          (click)="setMode('manual')"
+        >
+          Manual Lookup
+        </button>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <section *ngIf="mode === 'camera'">
+  <section class="container-fluid" *ngIf="mode === 'camera'">
     <app-qr-scanner></app-qr-scanner>
+    <section *ngIf="!scannerSwitch">
+      <app-qr-result></app-qr-result>
+    </section>
   </section>
   <section *ngIf="mode === 'manual'">
     <app-manual-entry></app-manual-entry>
   </section>
-  <section *ngIf="!scannerSwitch">
-    <app-pass-lookup></app-pass-lookup>
+  <section class="container-fluid">
+    <app-pass-check-in-list
+      [passes]="passes"
+      (event)="passCheckInListEvent($event)"
+    ></app-pass-check-in-list>
   </section>
 </div>
