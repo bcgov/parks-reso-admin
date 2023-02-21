@@ -25,7 +25,7 @@
   (scanSuccess)="onCodeResult($event)"
   (scanError)="onCodeError($event)"
   [formats]="formatsEnabled"
-  [tryHarder]="tryHarder" 
+  [tryHarder]="tryHarder"
   (permissionResponse)="onHasPermission($event)"
   (camerasFound)="onCamerasFound($event)"
 >
@@ -33,17 +33,17 @@
 <section
   *ngIf="scannerEnabled && showScanIndicator"
   id="scanner-indicator"
-  class="border border-top-0 rounded-bottom position-relative p-2"
+  class="position-relative"
   [class.bg-success]="scanningState === 'found'"
 >
   <div *ngIf="scanningState === 'scanning'">
-    <div class="d-flex justify-content-between w-100">
+    <div class="d-flex justify-content-between pt-3 pb-4 px-1 w-100">
       <p class="fw-bold fs-3 mb-0">Searching for QR code...</p>
       <div class="spinner-grow ms-auto" role="status" aria-hidden="true"></div>
     </div>
   </div>
   <div *ngIf="scanningState === 'found'" class="text-white">
-    <div class="d-flex justify-content-between w-100">
+    <div class="d-flex justify-content-between pt-3 pb-4 px-1 w-100">
       <p class="fw-bold fs-3 mb-0">QR code found!</p>
       <i class="bi bi-check-lg" style="font-size: 1.5rem"></i>
     </div>
