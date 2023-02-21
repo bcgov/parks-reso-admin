@@ -20,6 +20,7 @@ import { Utils } from 'src/app/shared/utils/utils';
 })
 export class PassCheckInListComponent implements OnChanges, OnDestroy {
   @Input() passes = [];
+  @Input() searching = true;
   @Output() event = new EventEmitter();
 
   private subscriptions = new Subscription();
