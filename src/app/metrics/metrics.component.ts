@@ -2,10 +2,9 @@ import { Component, OnDestroy } from '@angular/core';
 import { ToastService } from '../services/toast.service';
 import { ApiService } from '../services/api.service';
 import { Constants } from '../shared/utils/constants';
-import Chart from 'chart.js/auto';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { DataService } from '../services/data.service';
-import { LoadingService } from '../services/loading.service';
+import { LoadingService } from '../services/loading.service'; 
 
 @Component({
   selector: 'app-metrics',
@@ -24,6 +23,13 @@ export class MetricsComponent implements OnDestroy {
   statusMessage: any;
   signedURL: any;
   buttonText: any = 'Export Pass Data';
+  chartType: any;
+  labels: string[];
+  datasets: any;
+  options: any = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
 
   constructor(
     private apiService: ApiService,
@@ -57,29 +63,17 @@ export class MetricsComponent implements OnDestroy {
       data.push(res[item]);
     }
 
-    this.canvas = document.getElementById('passChart');
-    this.ctx = this.canvas.getContext('2d');
-    this.passStatusChart = new Chart(this.canvas, {
-      type: 'doughnut',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            data: data,
-            backgroundColor: [
-              '#E4E4E4', //cancelled
-              '#75b343', //active
-              '#205d38', //reserved
-              '#fdb813', //expired
-            ],
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-    });
+    this.chartType = 'doughnut';
+    this.labels = labels;
+    this.datasets = [{
+      data: data, 
+      backgroundColor: [
+        '#E4E4E4', //cancelled
+        '#75b343', //active
+        '#205d38', //reserved
+        '#fdb813', //expired
+      ]
+    }];
   }
 
   async exportPassData() {

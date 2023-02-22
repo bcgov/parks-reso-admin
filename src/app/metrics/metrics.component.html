@@ -19,8 +19,15 @@
                 <div *ngIf="loading">
                     <div class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></div>
                 </div>
-                <canvas id="passChart" #passChart></canvas>
+                <app-chart-metric
+                    [type]="chartType"
+                    [labels]="labels"
+                    [datasets]="datasets"
+                    [options]="options"
+                >
+                </app-chart-metric>
             </div>
+            
         </div>
     </div>
 </div>
