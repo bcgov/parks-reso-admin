@@ -41,15 +41,21 @@ export class PassService {
     try {
       if (params.park && params.passId) {
         // Fetch for QR codes
-        dataTag = Constants.dataIds.PASS_QR_CODE;
+        dataTag = Constants.dataIds.PASS_CHECK_IN_LIST;
+        this.loadingService.addToFetchList(dataTag);
+        const queryParams = this.filterSearchParams(params);
+        res = (await firstValueFrom(this.apiService.get('pass', queryParams)))
+          .data;
+        this.dataService.setItemValue(dataTag, res);
+      } else if (params.manualLookup) {
+        //manual look up
+        dataTag = Constants.dataIds.PASS_CHECK_IN_LIST;
         this.loadingService.addToFetchList(dataTag);
         const queryParams = this.filterSearchParams(params);
         res = await firstValueFrom(this.apiService.get('pass', queryParams));
-        this.dataService.setItemValue(dataTag, res.data[0]);
-        this.loadingService.removeToFetchList(dataTag);
-        return res.data[0];
+        this.dataService.setItemValue(dataTag, res);
       } else if (
-        !params.passSk &&
+        !params.passId &&
         params.park &&
         params.facilityName &&
         params.passType
@@ -133,6 +139,7 @@ export class PassService {
       park: params.park || null,
       facilityName: params.facilityName || null,
       date: params.date || null,
+      registrationNumber: params.registrationNumber || null,
       reservationNumber: params.reservationNumber || null,
       passId: params.passId || null,
       passStatus: params.passStatus || null,
@@ -143,6 +150,7 @@ export class PassService {
       overbooked: params.overbooked || null,
       ExclusiveStartKeyPK: params.ExclusiveStartKeyPK || null,
       ExclusiveStartKeySK: params.ExclusiveStartKeySK || null,
+      manualLookup: params.manualLookup || null,
     };
 
     for (let item of Object.keys(filterMap)) {

@@ -1,0 +1,13 @@
+hr {
+  height: 2px;
+  opacity: 100%;
+}
+
+.dark-mode {
+  hr {
+    background-color: white;
+  }
+  .card-header {
+    border-bottom-color: white;
+  }
+}

@@ -1,9 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { DataService } from '../services/data.service';
 import { LoggerService } from '../services/logger.service';
 import { PassService } from '../services/pass.service';
 import { QrScannerService } from '../shared/components/qr-scanner/qr-scanner.service';
+import { Constants } from '../shared/utils/constants';
 
 @Component({
   selector: 'app-pass-management',
@@ -15,21 +17,23 @@ export class PassManagementComponent implements OnDestroy {
 
   public mode = 'camera';
   public scannerSwitch = false;
+  public passes = [];
 
   constructor(
     private passService: PassService,
     private logger: LoggerService,
     private qrScannerService: QrScannerService,
     private route: ActivatedRoute,
+    private dataService: DataService,
     private router: Router
   ) {
     if (
       this.route.snapshot.queryParamMap.get('park') &&
-      this.route.snapshot.queryParamMap.get('passId')
+      this.route.snapshot.queryParamMap.get('registrationNumber')
     ) {
       this.getPass(
         this.route.snapshot.queryParamMap.get('park'),
-        this.route.snapshot.queryParamMap.get('passId')
+        this.route.snapshot.queryParamMap.get('registrationNumber')
       );
       // Clear query params after getting pass
       this.router.navigate([], { queryParams: {} });
@@ -48,10 +52,28 @@ export class PassManagementComponent implements OnDestroy {
         }
       })
     );
+
+    this.subscriptions.add(
+      this.dataService
+        .watchItem(Constants.dataIds.PASS_CHECK_IN_LIST)
+        .subscribe((res) => {
+          if (res) {
+            this.passes = res;
+          }
+        })
+    );
+  }
+
+  passCheckInListEvent(event) {
+    this.dataService.setItemValue(
+      Constants.dataIds.PASS_CHECK_IN_LIST_EVENT,
+      event
+    );
   }
 
   setMode(modeToSet) {
     this.mode = modeToSet;
+    this.passes = [];
   }
 
   async processUrl(url) {
