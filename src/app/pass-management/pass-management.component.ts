@@ -1,9 +1,11 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../services/data.service';
 import { LoggerService } from '../services/logger.service';
 import { PassService } from '../services/pass.service';
+import { ToastService } from '../services/toast.service';
+import { QrScannerComponent } from '../shared/components/qr-scanner/qr-scanner.component';
 import { QrScannerService } from '../shared/components/qr-scanner/qr-scanner.service';
 import { Constants } from '../shared/utils/constants';
 
@@ -13,6 +15,8 @@ import { Constants } from '../shared/utils/constants';
   styleUrls: ['./pass-management.component.scss'],
 })
 export class PassManagementComponent implements OnDestroy {
+  @ViewChild(QrScannerComponent) qrScannerComponent: QrScannerComponent;
+
   private subscriptions = new Subscription();
 
   public mode = 'camera';
@@ -25,7 +29,8 @@ export class PassManagementComponent implements OnDestroy {
     private qrScannerService: QrScannerService,
     private route: ActivatedRoute,
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {
     if (
       this.route.snapshot.queryParamMap.get('park') &&
@@ -78,37 +83,49 @@ export class PassManagementComponent implements OnDestroy {
 
   async processUrl(url) {
     this.logger.debug('QR Detected: ' + url);
-    if (url) {
-      const urlParams = new URL(url);
-      const park = urlParams.searchParams.get('park');
-      // This is not a mistake, it comes in as registrationNumber
-      // We set to passId
-      const passId = urlParams.searchParams.get('registrationNumber');
-      if (park && passId) {
-        await this.getPass(park, passId);
+    try {
+      if (url) {
+        const urlParams = new URL(url);
+        const park = urlParams.searchParams.get('park');
+        // This is not a mistake, it comes in as registrationNumber
+        // We set to passId
+        const passId = urlParams.searchParams.get('registrationNumber');
+        if (park && passId) {
+          await this.getPass(park, passId);
+        } else {
+          throw 'Invalid QR Code.';
+        }
       } else {
-        // TODO: ERROR
+        throw 'Invalid QR Code.';
       }
-    } else {
-      // TODO: ERROR
+    } catch (error) {
+      this.logger.error(error);
+      this.toastService.addMessage(
+        String(error),
+        'QR Service',
+        Constants.ToastTypes.ERROR
+      );
+      this.qrScannerComponent.scanningState = 'scanning';
     }
   }
 
   async getPass(park, passId) {
     // TODO: Start fancy loading bar stuff
+    let res;
     try {
-      const res = await this.passService.fetchData({
+      res = await this.passService.fetchData({
         park: park,
         passId: passId,
       });
-      if (res) {
-        // TODO: If we got a pass successfully, make a noise
-        this.qrScannerService.disableScanner();
-      } else {
-        // TODO: error, scan again
-      }
-    } catch (e) {
-      this.logger.error(e);
+    } catch (error) {
+      this.logger.error(error);
+      throw 'Error connecting to server. Please refresh the page.';
+    }
+    if (res && res.length > 0) {
+      // TODO: If we got a pass successfully, make a noise
+      this.qrScannerService.disableScanner();
+    } else {
+      throw 'Pass not found.';
     }
   }
 
