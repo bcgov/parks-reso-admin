@@ -125,7 +125,7 @@ export class PassCheckInListComponent implements OnChanges, OnDestroy {
 
   updatePassList(pass) {
     let foundIndex = this.passes.findIndex(
-      (x) => pass.registrationNumber === pass.registrationNumber
+      (x) => x.registrationNumber === pass.registrationNumber
     );
     this.passes[foundIndex] = this.processPass(pass);
   }
