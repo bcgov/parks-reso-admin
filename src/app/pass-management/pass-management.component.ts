@@ -105,7 +105,7 @@ export class PassManagementComponent implements OnDestroy {
         'QR Service',
         Constants.ToastTypes.ERROR
       );
-      this.qrScannerComponent.scanningState = 'scanning';
+      this.qrScannerComponent.clearResult();
     }
   }
 
@@ -132,5 +132,6 @@ export class PassManagementComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
     this.qrScannerService.clearScannerOutput();
+    this.dataService.setItemValue(Constants.dataIds.PASS_CHECK_IN_LIST, []);
   }
 }
