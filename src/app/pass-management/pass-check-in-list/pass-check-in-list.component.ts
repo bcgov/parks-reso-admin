@@ -32,22 +32,21 @@ export class PassCheckInListComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     // only logged upon a change after rendering
-    if (changes['passes'].currentValue) {
-      let res = changes['passes'].currentValue;
-      if (res) {
-        let greenPasses = [];
-        let redPasses = [];
-        for (let i = 0; i < res.length; i++) {
-          const pass = res[i];
-          pass['submitLoading'] = false;
-          if (pass.passStatus === 'active' || pass.passStatus === 'reserved') {
-            greenPasses.push(this.processPass(pass));
-          } else {
-            redPasses.push(this.processPass(pass));
-          }
-          // Logic to sort expired and cancelled passes to end of list
-          this.passes = greenPasses.concat(redPasses);
+    let res = changes['passes'].currentValue;
+    if (res) {
+      let greenPasses = [];
+      let redPasses = [];
+      for (let i = 0; i < res.length; i++) {
+        const pass = res[i];
+        pass['submitLoading'] = false;
+        const processedPass = this.processPass(pass);
+        if (pass.passStatus === 'active' || pass.passStatus === 'reserved') {
+          greenPasses.push(processedPass);
+        } else {
+          redPasses.push(processedPass);
         }
+        // Logic to sort expired and cancelled passes to end of list
+        this.passes = greenPasses.concat(redPasses);
       }
     }
   }
