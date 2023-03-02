@@ -14,16 +14,16 @@ describe('PassLookupComponent', () => {
   let component: PassCheckInListComponent;
   let fixture: ComponentFixture<PassCheckInListComponent>;
 
-  let mockPassCheckedIn = MockData.mockPass_1;
+  let mockPassCheckedIn = { ...MockData.mockPass_1 };
   mockPassCheckedIn['checkedIn'] = true;
   mockPassCheckedIn['checkedInTime'] = '2023-03-01';
 
-  let mockPassCheckedOut = MockData.mockPass_1;
+  let mockPassCheckedOut = { ...MockData.mockPass_1 };
   mockPassCheckedOut['checkedIn'] = false;
 
   const mockChange = {
     passes: {
-      currentValue: [MockData.mockPass_1, MockData.mockPass_2],
+      currentValue: [{ ...MockData.mockPass_1 }, { ...MockData.mockPass_2 }],
     },
   };
   const mockInvalidChange = {
@@ -81,41 +81,40 @@ describe('PassLookupComponent', () => {
   });
 
   it('should process pass', () => {
-    const res = component.processPass(MockData.mockPass_1);
+    const res = component.processPass({ ...MockData.mockPass_1 });
     expect(res.passState).toEqual(
       Constants.stateLabelDictionary[MockData.mockPass_1.passStatus]
     );
 
-    const res2 = component.processPass(MockData.mockPass_2);
+    const res2 = component.processPass({ ...MockData.mockPass_2 });
     expect(res2.passState).toEqual(
       Constants.stateLabelDictionary[MockData.mockPass_2.passStatus]
     );
   });
 
-  it('should check in pass', () => {
-    const checkedOutPass = MockData.mockPass_1;
+  it('should check in pass', async () => {
+    const checkedOutPass = { ...MockData.mockPass_1 };
     checkedOutPass.passStatus = 'active';
-    component.passes = [MockData.mockPass_1];
-
-    component.checkIn(checkedOutPass);
+    component.passes = [{ ...MockData.mockPass_1 }];
+    await component.checkIn(checkedOutPass);
 
     expect(component.passes[0]).toEqual(mockPassCheckedIn);
   });
 
-  it('should check out pass', () => {
-    const checkedInPass = MockData.mockPass_1;
+  it('should check out pass', async () => {
+    const checkedInPass = { ...MockData.mockPass_1 };
     checkedInPass.passStatus = 'checkedIn';
 
-    component.passes = [MockData.mockPass_1];
-    component.checkIn(checkedInPass);
+    component.passes = [{ ...MockData.mockPass_1 }];
+    await component.checkIn(checkedInPass);
 
     expect(component.passes[0]).toEqual(mockPassCheckedOut);
   });
 
   it('should update pass list', () => {
     const processPassSpy = spyOn(component, 'processPass');
-    component.passes = [MockData.mockPass_1];
-    component.updatePassList(MockData.mockPass_1);
+    component.passes = [{ ...MockData.mockPass_1 }];
+    component.updatePassList({ ...MockData.mockPass_1 });
     expect(processPassSpy).toHaveBeenCalledTimes(1);
   });
 });

@@ -25,14 +25,17 @@ describe('PassManagementComponent', () => {
 
   const mockPassService = {
     fetchData: (park, passId) => {
-      return [MockData.mockPass_1];
+      return [{ ...MockData.mockPass_1 }];
     },
   };
 
   const mockDataService = {
     setItemValue: (id, value) => {},
     watchItem: (id) => {
-      return new BehaviorSubject([MockData.mockPass_1, MockData.mockPass_2]);
+      return new BehaviorSubject([
+        { ...MockData.mockPass_1 },
+        { ...MockData.mockPass_2 },
+      ]);
     },
   };
 
