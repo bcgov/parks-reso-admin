@@ -8,6 +8,7 @@ import { MockData } from 'src/app/shared/utils/mock-data';
 import { BehaviorSubject } from 'rxjs';
 import { Constants } from 'src/app/shared/utils/constants';
 import { DataService } from 'src/app/services/data.service';
+import { PassService } from 'src/app/services/pass.service';
 
 describe('PassesListComponent', () => {
   let component: PassesListComponent;
@@ -18,8 +19,6 @@ describe('PassesListComponent', () => {
 
   let mockPassList = new BehaviorSubject([mockPass1, mockPass2]);
 
-  let injectedDataService = new DataService();
-
   let mockPassLastEvaluatedKey = new BehaviorSubject({
     pk: {
       S: MockData.mockPass_1.pk,
@@ -28,6 +27,15 @@ describe('PassesListComponent', () => {
       S: MockData.mockPass_1.sk,
     },
   });
+
+  let mockPassService = {
+    fetchData: (obj) => {
+      return new BehaviorSubject(null);
+    },
+    cancelPasses: (obj) => {
+      return new BehaviorSubject(null);
+    }
+  }
 
   let mockDataService = {
     watchItem: (id) => {
@@ -40,7 +48,7 @@ describe('PassesListComponent', () => {
       return null;
     },
     mergeItemValue: (id, params) => {
-      return null;
+      return new BehaviorSubject(null);
     },
   };
 
@@ -63,12 +71,12 @@ describe('PassesListComponent', () => {
           provide: DataService,
           useValue: mockDataService,
         },
+        { provide: PassService, useValue: mockPassService }
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PassesListComponent);
     component = fixture.componentInstance;
-    injectedDataService = TestBed.inject(DataService);
     fixture.detectChanges();
   });
 
@@ -158,7 +166,8 @@ describe('PassesListComponent', () => {
   });
 
   it('loads more passes', async () => {
-    const mergeItemSpy = spyOn(injectedDataService, 'mergeItemValue');
+    const mergeItemSpy = spyOn(mockDataService, 'mergeItemValue');
+    const fetchPassSpy = spyOn(mockPassService, 'fetchData');
     component.loadMorePasses();
     expect(mergeItemSpy).toHaveBeenCalledWith(
       Constants.dataIds.PASS_SEARCH_PARAMS,
@@ -168,5 +177,6 @@ describe('PassesListComponent', () => {
         appendResults: true,
       }
     );
+    expect(fetchPassSpy).toHaveBeenCalledTimes(1);
   });
 });
