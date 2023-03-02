@@ -50,14 +50,14 @@ describe('ManualEntryComponent', () => {
 
   let mockPassService = {
     fetchData: (obj) => {
-      return [MockData.mockPass_1];
+      return [{ ...MockData.mockPass_1 }];
     },
   };
 
   let mockDataService = {
     watchItem: (id) => {
       if (id === Constants.dataIds.PARK_AND_FACILITY_LIST) {
-        return new BehaviorSubject(MockData.mockParkFacility_1);
+        return new BehaviorSubject({ ...MockData.mockParkFacility_1 });
       }
       return new BehaviorSubject(null);
     },
@@ -70,7 +70,7 @@ describe('ManualEntryComponent', () => {
   let mockDataServiceWithCache = {
     watchItem: (id) => {
       if (id === Constants.dataIds.PARK_AND_FACILITY_LIST) {
-        return new BehaviorSubject(MockData.mockParkFacility_1);
+        return new BehaviorSubject({ ...MockData.mockParkFacility_1 });
       }
       return new BehaviorSubject(null);
     },
