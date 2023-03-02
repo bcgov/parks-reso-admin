@@ -110,7 +110,6 @@ export class PassCheckInListComponent implements OnChanges, OnDestroy {
         orcId,
         pass['registrationNumber']
       );
-      console.log('res', res);
     }
     event['result'] = res;
     this.logger.debug(JSON.stringify(res));
