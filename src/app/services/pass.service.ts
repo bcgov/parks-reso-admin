@@ -39,20 +39,25 @@ export class PassService {
     let errorSubject = '';
     let dataTag;
     try {
-      if (params.park && params.passId) {
+      if (
+        params.date &&
+        params.park &&
+        params.facilityName &&
+        params.manualLookup
+      ) {
+        //manual look up
+        dataTag = Constants.dataIds.PASS_CHECK_IN_LIST;
+        this.loadingService.addToFetchList(dataTag);
+        const queryParams = this.filterSearchParams(params);
+        res = await firstValueFrom(this.apiService.get('pass', queryParams));
+        this.dataService.setItemValue(dataTag, res);
+      } else if (params.park && params.passId) {
         // Fetch for QR codes
         dataTag = Constants.dataIds.PASS_CHECK_IN_LIST;
         this.loadingService.addToFetchList(dataTag);
         const queryParams = this.filterSearchParams(params);
         res = (await firstValueFrom(this.apiService.get('pass', queryParams)))
           .data;
-        this.dataService.setItemValue(dataTag, res);
-      } else if (params.manualLookup) {
-        //manual look up
-        dataTag = Constants.dataIds.PASS_CHECK_IN_LIST;
-        this.loadingService.addToFetchList(dataTag);
-        const queryParams = this.filterSearchParams(params);
-        res = await firstValueFrom(this.apiService.get('pass', queryParams));
         this.dataService.setItemValue(dataTag, res);
       } else if (
         !params.passId &&

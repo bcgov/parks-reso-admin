@@ -19,6 +19,12 @@ describe('PassService', () => {
     data: [MockData.mockPass_1, MockData.mockPass_2],
   });
 
+  let mockQRPassGetRes = new BehaviorSubject({
+    data: [MockData.mockPass_1],
+  });
+
+  let mockManualLookupPassGetRes = new BehaviorSubject([MockData.mockPass_1]);
+
   let mockPassAppendRes = new BehaviorSubject({
     data: [MockData.mockPass_1, MockData.mockPass_2],
     LastEvaluatedKey: MockData.mockPassLastEvaluatedKey_1,
@@ -30,11 +36,28 @@ describe('PassService', () => {
     passType: 'AM',
   };
 
+  let mockQRPassGetParams = {
+    park: 'Mock Park 1',
+    passId: '1234567890',
+  };
+
+  let mockManualLookupPassGetParams = {
+    date: '2022-12-18',
+    park: 'Mock Park 1',
+    facilityName: 'Mock Facility 1',
+    manualLookup: true,
+    firstName: 'FirstName',
+  };
+
   let mockApiService = {
     get: (id, params) => {
       if (id === 'pass') {
         if (params.passType === 'append') {
           return mockPassAppendRes;
+        } else if (params.manualLookup) {
+          return mockManualLookupPassGetRes;
+        } else if (params.park && params.passId) {
+          return mockQRPassGetRes;
         }
         return mockPassGetRes;
       }
@@ -103,7 +126,7 @@ describe('PassService', () => {
     eventSpy = spyOn(service['eventService'], 'setError');
   });
 
-  it('should be created', () => {
+  it('should be created', async () => {
     expect(service).toBeTruthy();
   });
 
@@ -232,6 +255,32 @@ describe('PassService', () => {
         'Error: delete error',
         'Pass Service'
       )
+    );
+    expect(unloadingSpy).toHaveBeenCalledTimes(1);
+  });
+
+  // Pass management
+  it('finds pass with QR code params', async () => {
+    await service.fetchData(mockQRPassGetParams);
+    expect(loadingSpy).toHaveBeenCalledTimes(1);
+    expect(apiGetSpy).toHaveBeenCalledOnceWith('pass', mockQRPassGetParams);
+    expect(setDataSpy).toHaveBeenCalledWith(
+      Constants.dataIds.PASS_CHECK_IN_LIST,
+      mockQRPassGetRes.value.data
+    );
+    expect(unloadingSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('finds passes with manual lookup flag set', async () => {
+    await service.fetchData(mockManualLookupPassGetParams);
+    expect(loadingSpy).toHaveBeenCalledTimes(1);
+    expect(apiGetSpy).toHaveBeenCalledOnceWith(
+      'pass',
+      mockManualLookupPassGetParams
+    );
+    expect(setDataSpy).toHaveBeenCalledWith(
+      Constants.dataIds.PASS_CHECK_IN_LIST,
+      mockManualLookupPassGetRes.value
     );
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
   });
