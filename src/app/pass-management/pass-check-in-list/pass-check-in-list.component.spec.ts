@@ -14,6 +14,13 @@ describe('PassLookupComponent', () => {
   let component: PassCheckInListComponent;
   let fixture: ComponentFixture<PassCheckInListComponent>;
 
+  let mockPassCheckedIn = MockData.mockPass_1;
+  mockPassCheckedIn['checkedIn'] = true;
+  mockPassCheckedIn['checkedInTime'] = '2023-03-01';
+
+  let mockPassCheckedOut = MockData.mockPass_1;
+  mockPassCheckedOut['checkedIn'] = false;
+
   const mockChange = {
     passes: {
       currentValue: [MockData.mockPass_1, MockData.mockPass_2],
@@ -27,10 +34,10 @@ describe('PassLookupComponent', () => {
 
   let mockPassService = {
     checkInPass: (orcId, passRegNumber) => {
-      return MockData.mockPass_1;
+      return mockPassCheckedIn;
     },
     checkOutPass: (orcId, passRegNumber) => {
-      return MockData.mockPass_1;
+      return mockPassCheckedOut;
     },
   };
 
@@ -86,29 +93,23 @@ describe('PassLookupComponent', () => {
   });
 
   it('should check in pass', () => {
-    let checkedOutPass = MockData.mockPass_1;
+    const checkedOutPass = MockData.mockPass_1;
     checkedOutPass.passStatus = 'active';
-    const checkInPassSpy = spyOn(mockPassService, 'checkInPass');
+    component.passes = [MockData.mockPass_1];
 
     component.checkIn(checkedOutPass);
 
-    expect(checkInPassSpy).toHaveBeenCalledOnceWith(
-      checkedOutPass.pk.split('::')[1],
-      checkedOutPass.registrationNumber
-    );
+    expect(component.passes[0]).toEqual(mockPassCheckedIn);
   });
 
-  it('should check in pass', () => {
-    let checkedInPass = MockData.mockPass_1;
+  it('should check out pass', () => {
+    const checkedInPass = MockData.mockPass_1;
     checkedInPass.passStatus = 'checkedIn';
-    const checkInPassSpy = spyOn(mockPassService, 'checkOutPass');
 
+    component.passes = [MockData.mockPass_1];
     component.checkIn(checkedInPass);
 
-    expect(checkInPassSpy).toHaveBeenCalledOnceWith(
-      checkedInPass.pk.split('::')[1],
-      checkedInPass.registrationNumber
-    );
+    expect(component.passes[0]).toEqual(mockPassCheckedOut);
   });
 
   it('should update pass list', () => {
