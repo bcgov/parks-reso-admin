@@ -23,7 +23,7 @@ describe('KeycloakService', () => {
   it('idp should be `idir` if the token has an idir_userid property', () => {
     spyOn(JwtUtil, 'decodeToken').and.callFake(() => {
       return {
-        idir_userid: '12345',
+        idir_user_guid: '12345',
       };
     });
     const keycloak = TestBed.get(KeycloakService);

@@ -269,7 +269,7 @@ export class KeycloakService {
     const jwt = JwtUtil.decodeToken(token);
 
     // idir users have an idir_userid property
-    if (jwt.idir_userid !== undefined) {
+    if (jwt.idir_user_guid !== undefined) {
       return this.idpHintEnum.IDIR;
     }
 
