@@ -43,6 +43,7 @@ export class MockData {
     isUpdating: false,
     bookingDaysAhead: 2,
     visible: true,
+    qrcode: false,
     bookingOpeningHour: 7,
     status: {
       stateReason: null,

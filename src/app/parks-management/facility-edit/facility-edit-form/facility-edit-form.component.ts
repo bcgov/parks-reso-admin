@@ -145,6 +145,9 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       facilityVisibility: new UntypedFormControl(
         this.data.visible ? this.data.visible : false
       ),
+      facilityQRCode: new UntypedFormControl(
+        this.data.qrcode ? this.data.qrcode : false
+      ),
       facilityName: new UntypedFormControl(this.data.name, Validators.required),
       facilityType: new UntypedFormControl(this.data.type, Validators.required),
       facilityBookingOpeningHour: new UntypedFormControl({
@@ -262,6 +265,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
       },
       type: results.facilityType,
       visible: results.facilityVisibility,
+      qrcode: results.facilityQRCode,
       bookingTimes: resultTimes,
       bookingOpeningHour: results.facilityBookingOpeningHour?.hour,
       bookingDaysAhead: results.facilityBookingDaysAhead,
@@ -370,6 +374,16 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     message += this.utils.buildInnerHTMLRow([
       `<strong>Booking Opening Time:</strong></br>` + openingHourMsg,
       `<strong>Booking Days Ahead:</strong></br>` + daysAheadMsg,
+    ]);
+
+    let qrcodeMessage = '';
+    if (facilityObj.qrcode) {
+      qrcodeMessage += `<i class="bi bi-qr-code"></i>&nbsp;Enabled`;
+    } else {
+      qrcodeMessage += `Disabled`;
+    }
+    message += this.utils.buildInnerHTMLRow([
+      `<strong>QR Codes:</strong></br>` + qrcodeMessage
     ]);
 
     let bookingDaysList = [];

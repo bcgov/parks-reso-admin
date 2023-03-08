@@ -44,9 +44,12 @@
             </p>
           </div>
           <div class="col-md-6">
-            <label><strong>Type:</strong></label>
-            <p>
-              {{ facility.type }}
+            <label><strong>QR Codes:</strong></label>
+            <p *ngIf="!facility.qrcode">
+              Disabled
+            </p>
+            <p *ngIf="facility.qrcode">
+              <i class="bi bi-qr-code"></i>&nbsp;Enabled
             </p>
           </div>
         </div>
@@ -86,11 +89,9 @@
         </div>
         <div class="row" *ngIf="facility?.bookingTimes.PM">
           <div class="col-md-6">
-            <label>
-              <strong>PM Capacity:</strong>
-            </label>
+            <label><strong>Type:</strong></label>
             <p>
-              {{ facility?.bookingTimes.PM.max }}
+              {{ facility.type }}
             </p>
           </div>
         </div>
@@ -101,6 +102,14 @@
             </label>
             <p>
               {{ facility?.bookingTimes.DAY.max }}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <label>
+              <strong>PM Capacity:</strong>
+            </label>
+            <p>
+              {{ facility?.bookingTimes.PM.max }}
             </p>
           </div>
         </div>

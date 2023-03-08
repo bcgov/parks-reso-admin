@@ -44,14 +44,13 @@ describe('FacilityDetailsComponent', () => {
 
   it('renders in the DOM properly', async () => {
     const elements = fixture.debugElement.nativeElement.getElementsByTagName('p');
-    console.log('elements:', elements);
     expect(elements[0].innerText).toEqual('Open');
     expect(elements[1].innerText).toEqual('True');
     expect(elements[2].innerText).toEqual('-');
-    expect(elements[3].innerText).toEqual('Trail');
+    expect(elements[3].innerText).toEqual('Disabled');
     expect(elements[4].innerText).toEqual('7 AM');
     expect(elements[5].innerText).toEqual('2 days');
     expect(elements[6].innerText).toEqual('5');
-    expect(elements[7].innerText).toEqual('3');
+    expect(elements[7].innerText).toEqual('Trail');
   });
 });
