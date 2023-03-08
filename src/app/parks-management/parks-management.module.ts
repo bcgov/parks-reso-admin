@@ -27,6 +27,7 @@ import { ModifiersListComponent } from './modifiers-list/modifiers-list.componen
 import { ModifiersFormComponent } from './modifiers-form/modifiers-form.component';
 import { ParkEditFormComponent } from './park-edit-form/park-edit-form.component';
 import { FancyHeaderModule } from '../shared/components/fancy-header/fancy-header.module';
+import { TextWithIconsModule } from '../shared/components/text-with-icons/text-with-icons.module';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { FancyHeaderModule } from '../shared/components/fancy-header/fancy-heade
   ],
   imports: [
     CommonModule,
+    TextWithIconsModule,
     TableModule,
     RouterModule,
     ModalModule,

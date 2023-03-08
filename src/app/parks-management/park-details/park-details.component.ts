@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { tableSchema } from 'src/app/shared/components/table/table.component';
 import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
 import { KeycloakService } from 'src/app/services/keycloak.service';
+import { TextWithIconsComponent } from 'src/app/shared/components/text-with-icons/text-with-icons.component';
 
 @Component({
   selector: 'app-park-details',
@@ -78,6 +79,23 @@ export class ParkDetailsComponent implements OnInit, OnDestroy {
           displayHeader: 'Name',
           columnClasses: 'ps-3 pe-5',
           mapValue: (facilityObj) => facilityObj.name,
+          cellTemplate: (facilityObj) => {
+            const self = this;
+            let icons = [];
+            if (facilityObj.qrcode) {
+              icons.push('bi bi-qr-code');
+            }
+            return {
+              component: TextWithIconsComponent,
+              inputs: {
+                text: facilityObj.name,
+                icons: icons,
+                onClick: function () {
+                  self.navigate(facilityObj.name, false);
+                },
+              },
+            };
+          }
         },
         {
           id: 'type',
