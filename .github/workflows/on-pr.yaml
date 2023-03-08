@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
   install:
-    name: Lint
+    name: Install
     runs-on: ubuntu-latest
     environment: dev
     strategy:
@@ -67,3 +67,37 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - run: yarn test-ci
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    environment: dev
+    needs: install
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: actions/cache/restore@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Cache Build
+        id: cache-build
+        uses: actions/cache@v3
+        with:
+          path: |
+            "**/dist"
+            "**/src/env.js"
+          key: ${{ github.sha }}-dist
+      - name: Run Build
+        if: steps.cache-build.outputs.cache-hit != 'true'
+        run: |
+          sed 's@localConfigEndpoint@'true'@g' src/env.js.template > src/env.js
+          yarn build
