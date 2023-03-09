@@ -1,11 +1,8 @@
 import {
   Component,
   Input,
-  OnInit,
   EventEmitter,
-  OnDestroy,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { Utils } from 'src/app/shared/utils/utils';
 import { BaseInputComponent } from '../base-input/base-input.component';
 
@@ -16,23 +13,30 @@ import { BaseInputComponent } from '../base-input/base-input.component';
 })
 // Component control value must be of type NgbTimeStruct:
 // {hour: 24hour, minute: minute, second: second}
-export class TimepickerComponent
-  extends BaseInputComponent
-  implements OnInit, OnDestroy
-{
+export class TimepickerComponent extends BaseInputComponent {
   @Input() reset: EventEmitter<any>;
   @Input() showSeconds = false;
   @Input() showMinutes = true;
   @Input() is24HTime = false;
   @Input() defaultTime = { hour: 0, minute: 0, second: 0 };
 
-  private subscriptions = new Subscription();
   public initialTime;
   public isInitialLoad = true;
   public modelTime;
   public utils = new Utils();
 
-  ngOnInit(): void {
+  constructor() {
+    super();
+    this.subscriptions.add(
+      this.controlInitialized.subscribe((value) => {
+        if (value) {
+          this.initializeControl();
+        }
+      })
+    );
+  }
+
+  initializeControl(): void {
     this.initialTime = {
       hour: this.control?.value?.hour || this.defaultTime.hour,
       minute: this.control?.value?.minute || this.defaultTime.minute,
@@ -85,9 +89,5 @@ export class TimepickerComponent
     );
     this.isInitialLoad = true;
     this.control.markAsPristine();
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
   }
 }

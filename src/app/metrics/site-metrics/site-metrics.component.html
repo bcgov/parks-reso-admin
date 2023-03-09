@@ -1,0 +1,70 @@
+<div class="container-fluid">
+  <h1>Site Metrics</h1>
+  <hr />
+  <app-metrics-filter></app-metrics-filter>
+  <div>
+    <!-- Loading element when API ready -->>
+    <div>
+      <h2>Data for [Park name]: [Facility Name]</h2>
+      <div class="container-fluid p-0">
+        <div class="row d-flex justify-content-center">
+          <div class="col-12 col-md-4 pl-sm-2 row flex-column justify-content-between col-height"> 
+            <app-metric-card
+              class="metric-card"
+              [title]="'Total Number of Passes'"
+            >
+              {{ passTotal }}
+            </app-metric-card>
+            <app-metric-card
+              class="metric-card"
+              [title]="'Active Passes'"
+            >
+              {{ passActive }}
+            </app-metric-card>
+            <app-metric-card
+              class="metric-card"
+              [title]="'Reserved Passes'"
+            >
+              {{ passReserved }}
+            </app-metric-card>
+            <app-metric-card 
+              class="metric-card"
+              [title]="'Expired Passes'"
+            >
+              {{ passExpired }}
+            </app-metric-card>
+          </div>
+          <div class="col-12 col-md-8 mt-0 px-md-2" >
+            <div class="p-3 card col-height">
+              <h4 >Pass breakdown by status</h4>
+              <div *ngIf="!loading">
+                <app-chart-metric
+                  class="chart"
+                  [type]="'doughnut'"
+                  [labels]="doughnutLabels"
+                  [datasets]="doughnutData"
+                  [options]="doughnutOptions"
+                  [plugins]="doughnutPlugins"
+                ></app-chart-metric>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center pe-md-2 mt-2 mb-2">
+          <div class="col-12 row flex-column">
+            <div class="p-3 card">
+              <h4 >Pass activity by day (TBD with API info)</h4>
+              <!-- placeholder for data -->
+              <div *ngIf="false">
+                <app-chart-metric
+                  class="chart"
+                  [type]="'bar'"
+                ></app-chart-metric>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

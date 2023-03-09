@@ -16,8 +16,9 @@ resource "aws_budgets_budget" "cost" {
     subscriber_sns_topic_arns = [aws_sns_topic.billing_alert_topic.arn]
   }
 
-  cost_filters = {
-    TagKeyValue = "user:Project$BC Parks Day Pass System Admin"
+  cost_filter {
+    name   = "Service"
+    values = ["user:Project$BC Parks Day Pass System Admin"]
   }
 }
 

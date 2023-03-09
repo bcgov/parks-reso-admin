@@ -13,8 +13,9 @@
     class="form-check-input"
     [formControl]="control"
     type="checkbox"
-    value=""
+    [value]="control?.value"
     name="{{ id }}"
     id="{{ id }}"
+    [checked]="control?.value"
   />
 </div>

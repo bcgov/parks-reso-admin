@@ -16,6 +16,7 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { BaseInputComponent } from './base-input/base-input.component';
 import { WysiwygInputComponent } from './wysiwyg-input/wysiwyg-input.component';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { RadioButtonsComponent } from './radio-buttons/radio-buttons.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
     CheckboxComponent,
     BaseInputComponent,
     WysiwygInputComponent,
+    RadioButtonsComponent,
   ],
   imports: [
     CommonModule,
@@ -50,7 +52,8 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
     ToggleComponent,
     TimepickerComponent,
     CheckboxComponent,
-    WysiwygInputComponent
+    WysiwygInputComponent,
+    RadioButtonsComponent
   ],
 })
 export class DsFormsModule {}

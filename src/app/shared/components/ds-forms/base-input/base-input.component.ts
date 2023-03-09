@@ -1,12 +1,19 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-base-input',
   templateUrl: './base-input.component.html',
   styleUrls: ['./base-input.component.scss'],
 })
-export class BaseInputComponent {
+export class BaseInputComponent implements OnDestroy {
   @Input() control = new UntypedFormControl();
   @Input() label;
   @Input() subLabel;
@@ -18,7 +25,21 @@ export class BaseInputComponent {
 
   @Output() inputChange = new EventEmitter<any>();
 
-  constructor() {}
+  public subscriptions = new Subscription();
+
+  public controlInitialized = new BehaviorSubject(false);
+
+  constructor(
+  ) {}
+
+  ngOnInit() {
+    this.subscriptions.add(
+      this.control.valueChanges.subscribe((res) => {
+        this.inputChange.emit(res);
+      })
+    );
+    this.controlInitialized.next(true);
+  }
 
   isRequired() {
     if (this.control.hasValidator(Validators.required)) {
@@ -36,5 +57,9 @@ export class BaseInputComponent {
 
   onChange(event) {
     this.inputChange.emit(event);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

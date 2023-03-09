@@ -1,0 +1,32 @@
+<label
+  *ngIf="label"
+  for="{{ id }}"
+  class="fw-bold mb-2 small d-flex justify-content-center"
+  >{{ label
+  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
+>
+<div
+  class="d-flex flex-row"
+  [ngClass]="{ 'invalid-field': isInvalid(), 'btn-group': group }"
+>
+  <div
+    class="col"
+    [ngClass]="{ 'btn-group': group, 'me-2': !group && option !== options }"
+    *ngFor="let option of options"
+  >
+    <input
+      type="radio"
+      [formControl]="control"
+      class="btn-check"
+      name="{{ id }}"
+      id="{{ id }}-{{ option }}"
+      (change)="changeValue(option)"
+    />
+    <label
+      class="d-block"
+      [ngClass]="setClass(option)"
+      for="{{ id }}-{{ option }}"
+      >{{ optionsLabels[options.indexOf(option)] }}</label
+    >
+  </div>
+</div>
