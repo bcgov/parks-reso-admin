@@ -87,7 +87,7 @@
             </p>
           </div>
         </div>
-        <div class="row" *ngIf="facility?.bookingTimes.PM">
+        <div class="row">
           <div class="col-md-6">
             <label><strong>Type:</strong></label>
             <p>
@@ -104,7 +104,7 @@
               {{ facility?.bookingTimes.DAY.max }}
             </p>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="facility?.bookingTimes.PM">
             <label>
               <strong>PM Capacity:</strong>
             </label>
