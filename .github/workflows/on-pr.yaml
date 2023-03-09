@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-        cache: "yarn"
+          cache: "yarn"
       - run: yarn install --silent --frozen-lockfile
 
   lint:
@@ -39,7 +39,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-        cache: "yarn"
+          cache: "yarn"
       - run: yarn install --silent --frozen-lockfile
 
       - run: yarn lint
@@ -61,7 +61,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-        cache: "yarn"
+          cache: "yarn"
       - run: yarn install --silent --frozen-lockfile
 
       - run: yarn test-ci
@@ -83,7 +83,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-        cache: "yarn"
+          cache: "yarn"
       - run: yarn install --silent --frozen-lockfile
 
       - name: Cache Build
