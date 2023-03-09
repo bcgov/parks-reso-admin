@@ -38,7 +38,6 @@ jobs:
         with:
           path: |
             **/dist
-            **/src/env.js
           key: ${{ github.sha }}-dist
       - name: Run Build
         if: steps.cache-build.outputs.cache-hit != 'true'
@@ -46,7 +45,7 @@ jobs:
           sed 's@localConfigEndpoint@'true'@g' src/env.js.template > src/env.js
           yarn build
 
-      ### Get params from AWS ###
+      ### Get environment variables from AWS Parameter Store ###
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
