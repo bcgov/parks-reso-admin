@@ -1,4 +1,4 @@
-name: Linting & Unit Tests on PR
+name: PR Checks
 
 on: [pull_request]
 
@@ -13,16 +13,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      ### Install if no cache exists ###
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/cache@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Install dependencies
-        run: yarn install --silent --frozen-lockfile
+        cache: "yarn"
+      - run: yarn install --silent --frozen-lockfile
 
   lint:
     name: Lint
@@ -35,14 +33,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      ### Install if no cache exists ###
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/cache/restore@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        cache: "yarn"
+      - run: yarn install --silent --frozen-lockfile
 
       - run: yarn lint
 
@@ -57,14 +55,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      ### Install if no cache exists ###
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/cache/restore@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        cache: "yarn"
+      - run: yarn install --silent --frozen-lockfile
 
       - run: yarn test-ci
 
@@ -79,22 +77,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      ### Install if no cache exists ###
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/cache/restore@v3
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        cache: "yarn"
+      - run: yarn install --silent --frozen-lockfile
 
       - name: Cache Build
         id: cache-build
         uses: actions/cache@v3
         with:
           path: |
-            "**/dist"
-            "**/src/env.js"
+            **/dist
+            **/src/env.js
           key: ${{ github.sha }}-dist
       - name: Run Build
         if: steps.cache-build.outputs.cache-hit != 'true'
