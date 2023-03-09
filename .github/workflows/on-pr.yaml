@@ -6,7 +6,6 @@ jobs:
   install:
     name: Install
     runs-on: ubuntu-latest
-    environment: dev
     strategy:
       matrix:
         node-version: [16.x]
@@ -25,7 +24,6 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    environment: dev
     needs: install
     strategy:
       matrix:
@@ -47,7 +45,6 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    environment: dev
     needs: install
     strategy:
       matrix:
