@@ -47,9 +47,9 @@ jobs:
           role-skip-session-tagging: true
 
       - name: Get admin variables
-          uses: dkershner6/aws-ssm-getparameters-action@v1
-          with:
-            parameterPairs: "/parks-reso-admin/s3-bucket = S3_BUCKET, /parks-reso-admin/origin-id = ORIGIN_ID"
+        uses: dkershner6/aws-ssm-getparameters-action@v1
+        with:
+          parameterPairs: "/parks-reso-admin/s3-bucket = S3_BUCKET, /parks-reso-admin/origin-id = ORIGIN_ID"
 
       - name: Get API variables
         uses: dkershner6/aws-ssm-getparameters-action@v1
