@@ -109,7 +109,7 @@ export class PassManagementComponent implements OnDestroy {
         'QR Service',
         Constants.ToastTypes.ERROR
       );
-      this.qrScannerComponent.clearResult();
+      this.qrScannerComponent.scanningState = 'scanning';
     }
   }
 
