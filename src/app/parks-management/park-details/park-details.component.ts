@@ -35,10 +35,10 @@ export class ParkDetailsComponent implements OnInit, OnDestroy {
     );
     this.subscriptions.add(
       dataService
-        .watchItem(Constants.dataIds.FACILITIES_LIST)
+        .watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST)
         .subscribe((res) => {
-          if (res) {
-            this.tableRows = res;
+          if (res && this.park.sk && res[this.park.sk].facilities) {
+            this.tableRows = Object.values(res[this.park.sk].facilities);
           }
         })
     );
