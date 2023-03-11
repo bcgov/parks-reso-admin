@@ -78,6 +78,10 @@ export class PassManagementComponent implements OnDestroy {
 
   setMode(modeToSet) {
     this.mode = modeToSet;
+    if (this.mode === 'camera') {
+      this.qrScannerComponent.clearResult();
+      this.qrScannerService.enableScanner();
+    }
     this.passes = [];
   }
 
