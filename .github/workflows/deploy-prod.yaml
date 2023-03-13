@@ -90,4 +90,5 @@ jobs:
           api_gateway_origin_id: ${{ env.API_GATEWAY_ORIGIN_ID }}
           api_gateway_path_pattern: ${{ env.API_GATEWAY_PATH_PATTERN }}
           origin_id_assets: ${{ env.ORIGIN_ID_ASSETS }}
+          ssl_cert_arn: ${{ secrets.PARKS_SSL_CERT_ARN }}
         run: terragrunt apply-all --terragrunt-non-interactive
