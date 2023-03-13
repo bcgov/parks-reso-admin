@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AutoFetchService } from './auto-fetch.service';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
+import { ApiService } from './api.service';
 
 describe('AutoFetchService', () => {
   let service: AutoFetchService;
@@ -13,6 +14,12 @@ describe('AutoFetchService', () => {
     },
   };
 
+  let mockAPIService = {
+    get isNetworkOffline(): boolean {
+      return false;
+    },
+  };
+
   beforeEach(async () => {
     TestBed.configureTestingModule({
       providers: [
@@ -20,6 +27,7 @@ describe('AutoFetchService', () => {
         HttpHandler,
         ConfigService,
         { provide: LoggerService, useValue: mockLoggerService },
+        { provide: ApiService, useValue: mockAPIService }
       ],
     });
     service = TestBed.inject(AutoFetchService);
