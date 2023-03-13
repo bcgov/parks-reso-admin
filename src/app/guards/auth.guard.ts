@@ -47,21 +47,6 @@ export class AuthGuard implements CanActivate {
       localStorage.removeItem(this.configService.config.REDIRECT_KEY)
     }
 
-    if (lastIdp === null) {
-      // Store the identity provider that was used to successfully log in.
-      // Even if the user is unauthorized, we still want to store this because
-      // we don't have a logout, so there is no point allowing the user to select
-      // a different IDP, as Keycloak will just ignore the selection when the user
-      // is authenticated already.
-      const idp = this.keycloakService.getIdpFromToken();
-      if (idp !== '') {
-        localStorage.setItem(
-          this.keycloakService.LAST_IDP_AUTHENTICATED,
-          idp
-        );
-      }
-    }
-
     // Not authorized / feature flagged
     if (!this.keycloakService.isAuthorized()) {
       // login was successful but the user doesn't have necessary Keycloak roles.
