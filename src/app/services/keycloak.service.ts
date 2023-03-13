@@ -52,6 +52,13 @@ export class KeycloakService {
 
         this.keycloakAuth.onAuthSuccess = () => {
           this.loggerService.debug('onAuthSuccess');
+          const idp = this.getIdpFromToken();
+          if (idp !== '') {
+            localStorage.setItem(
+              this.LAST_IDP_AUTHENTICATED,
+              idp
+            );
+          }
         };
 
         this.keycloakAuth.onAuthError = () => {
