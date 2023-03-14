@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
-import { Subscription, merge, of, fromEvent, map } from 'rxjs';
+import { Subscription, merge, of, fromEvent, map, throwError, catchError } from 'rxjs';
 import { ConfigService } from './config.service';
 
 @Injectable({
@@ -20,6 +20,10 @@ export class ApiService implements OnDestroy {
   // Provide a getter for others to check current state.
   get isNetworkOffline() {
     return !this.networkStatus;
+  }
+
+  errorHandler(error: HttpErrorResponse) {
+    return throwError(() => new Error(error.message));
   }
 
   ngOnDestroy(): void {
@@ -55,7 +59,8 @@ export class ApiService implements OnDestroy {
   get(pk, queryParamsObject = null as any) {
     if (this.networkStatus) {
       let queryString = this.generateQueryString(queryParamsObject);
-      return this.http.get<any>(`${this.apiPath}/${pk}?${queryString}`);
+      return this.http.get<any>(`${this.apiPath}/${pk}?${queryString}`)
+        .pipe(catchError(this.errorHandler));
     } else {
       throw 'Network Offline';
     }
@@ -64,7 +69,8 @@ export class ApiService implements OnDestroy {
   put(pk, obj, queryParamsObject = null as any) {
     if (this.networkStatus) {
       let queryString = this.generateQueryString(queryParamsObject);
-      return this.http.put<any>(`${this.apiPath}/${pk}?${queryString}`, obj);
+      return this.http.put<any>(`${this.apiPath}/${pk}?${queryString}`, obj)
+        .pipe(catchError(this.errorHandler));
     } else {
       throw 'Network Offline';
     }
@@ -73,7 +79,8 @@ export class ApiService implements OnDestroy {
   post(pk, obj, queryParamsObject = null as any) {
     if (this.networkStatus) {
       let queryString = this.generateQueryString(queryParamsObject);
-      return this.http.post<any>(`${this.apiPath}/${pk}?${queryString}`, obj);
+      return this.http.post<any>(`${this.apiPath}/${pk}?${queryString}`, obj)
+        .pipe(catchError(this.errorHandler));
     } else {
       throw 'Network Offline';
     }
@@ -82,7 +89,8 @@ export class ApiService implements OnDestroy {
   delete(pk, queryParamsObject = null as any) {
     if (this.networkStatus) {
       let queryString = this.generateQueryString(queryParamsObject);
-      return this.http.delete<any>(`${this.apiPath}/${pk}?${queryString}`);
+      return this.http.delete<any>(`${this.apiPath}/${pk}?${queryString}`)
+        .pipe(catchError(this.errorHandler));
     } else {
       throw 'Network Offline';
     }
