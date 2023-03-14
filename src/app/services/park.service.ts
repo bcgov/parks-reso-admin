@@ -50,7 +50,7 @@ export class ParkService {
         this.dataService.setItemValue(dataTag, res);
       }
     } catch (e) {
-      this.loggerService.error(`${JSON.stringify(e)}`);
+      this.loggerService.error(e);
       this.toastService.addMessage(
         `Please refresh the page.`,
         `Error getting ${errorSubject}`,
