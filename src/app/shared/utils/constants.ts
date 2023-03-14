@@ -17,6 +17,7 @@ export class Constants {
     PASS_CHECK_IN_LIST: 'pass-check-in-list',
     PASS_CHECK_IN_LIST_EVENT: 'pass-check-in-list-event',
     MODIFIERS: 'modifiers',
+    METRICS_FILTERS_PARAMS: 'metrics-filters-params',
     PASS_LOOKUP_PARK_SELECT_CACHE: 'passLookupParkSelectCache',
     PASS_LOOKUP_FACILITY_SELECT_CACHE: 'passLookupFacilitySelectCache',
   };
