@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -27,22 +29,30 @@ export class ApiService {
 
   get(pk, queryParamsObject = null as any) {
     let queryString = this.generateQueryString(queryParamsObject);
-    return this.http.get<any>(`${this.apiPath}/${pk}?${queryString}`);
+    return this.http.get<any>(`${this.apiPath}/${pk}?${queryString}`)
+      .pipe(catchError(this.errorHandler))
+  }
+
+  errorHandler(error: HttpErrorResponse) {
+    return throwError(() => new Error(error.message));
   }
 
   put(pk, obj, queryParamsObject = null as any) {
     let queryString = this.generateQueryString(queryParamsObject);
-    return this.http.put<any>(`${this.apiPath}/${pk}?${queryString}`, obj);
+    return this.http.put<any>(`${this.apiPath}/${pk}?${queryString}`, obj)
+      .pipe(catchError(this.errorHandler))
   }
 
   post(pk, obj, queryParamsObject = null as any) {
     let queryString = this.generateQueryString(queryParamsObject);
-    return this.http.post<any>(`${this.apiPath}/${pk}?${queryString}`, obj);
+    return this.http.post<any>(`${this.apiPath}/${pk}?${queryString}`, obj)
+      .pipe(catchError(this.errorHandler))
   }
 
   delete(pk, queryParamsObject = null as any) {
     let queryString = this.generateQueryString(queryParamsObject);
-    return this.http.delete<any>(`${this.apiPath}/${pk}?${queryString}`);
+    return this.http.delete<any>(`${this.apiPath}/${pk}?${queryString}`)
+      .pipe(catchError(this.errorHandler))
   }
 
   private generateQueryString(queryParamsObject) {

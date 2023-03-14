@@ -41,7 +41,7 @@ export class AutoFetchService {
     const parks = await this.parkService.fetchData(null, true);
 
     let observables: Array<Promise<any>> = [];
-    for (let i = 0; i < parks.length; i++) {
+    for (let i = 0; i < parks?.length; i++) {
       observables.push(
         this.facilityService.fetchData(parks[i].sk, null, true).then((res) => {
           let facilityHash = {};
@@ -56,6 +56,10 @@ export class AutoFetchService {
       );
     }
     let parksObj = {};
+    // Network failures can cause no observables.
+    if (observables.length === 0) {
+      return;
+    }
     forkJoin(observables)
       .pipe(first())
       .subscribe((res) => {
