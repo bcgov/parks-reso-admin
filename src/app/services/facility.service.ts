@@ -140,10 +140,8 @@ export class FacilityService {
   async postFacility(
     obj,
     parkSk,
-    updateParkAndFacilityCache = false,
-    updateCurrentParkCache = false
+    updateParkAndFacilityCache = false
   ) {
-    let res;
     let errorSubject = '';
     let dataTag = 'facilityPost';
     try {
@@ -153,19 +151,17 @@ export class FacilityService {
         if (parkSk === '' || !parkSk) {
           throw 'Must provide a park.';
         }
+        // Build the cachedObject for the front-end.
+        const cachedObject = Object.assign({ pk: `facility::${parkSk}`, sk: obj.name}, obj);
         delete obj.pk;
         delete obj.sk;
         obj.parkOrcs = parkSk;
         this.loggerService.debug(`Post Facility: ${JSON.stringify(obj)}`);
-        res = await firstValueFrom(this.apiService.post('facility', obj));
-
+        await firstValueFrom(this.apiService.post('facility', obj));
         // ensure cache in DataService is updated with new park data.
         try {
           if (updateParkAndFacilityCache) {
-            this.dataService.updateParkAndFacilityCache(res);
-          }
-          if (updateCurrentParkCache) {
-            this.dataService.setItemValue(Constants.dataIds.CURRENT_PARK, res);
+            this.dataService.updateParkAndFacilityCache(cachedObject);
           }
         } catch (error) {
           this.toastService.addMessage(
