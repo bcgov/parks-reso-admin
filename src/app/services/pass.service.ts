@@ -36,7 +36,6 @@ export class PassService {
   // }
   async fetchData(params) {
     let res;
-    let errorSubject = '';
     let dataTag;
     try {
       if (
@@ -92,12 +91,14 @@ export class PassService {
     } catch (e) {
       this.toastService.addMessage(
         `Please refresh the page.`,
-        `Error getting ${errorSubject}`,
+        `${e}`,
         ToastTypes.ERROR
       );
       this.eventService.setError(
         new EventObject(EventKeywords.ERROR, String(e), 'Pass Service')
       );
+      // Rethrow the error up.
+      throw e;
     }
     this.loadingService.removeToFetchList(dataTag);
     return res;

@@ -15,7 +15,6 @@ export class AppComponent implements OnInit, OnDestroy {
   toastSubscription: Subscription;
   showSideBar = false;
   showBreadCrumb = false;
-
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,

@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
 import { ConfigService } from 'src/app/services/config.service';
 
 import { QrScannerComponent } from './qr-scanner.component';
@@ -33,12 +34,19 @@ describe('QrScannerComponent', () => {
     setScannerOutput: (resultString) => {},
   };
 
+  let mockApiService = {
+    get isNetworkOffline(): boolean {
+      return false;
+    }
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [QrScannerComponent],
       providers: [
         ConfigService,
         { provide: QrScannerService, useValue: mockQrScannerService },
+        { provide: ApiService, useValue: mockApiService },
       ],
       imports: [HttpClientTestingModule],
     }).compileComponents();

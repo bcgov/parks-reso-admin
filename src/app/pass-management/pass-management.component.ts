@@ -122,14 +122,18 @@ export class PassManagementComponent implements OnDestroy {
         passId: passId,
       });
     } catch (error) {
-      this.logger.error(error);
-      throw 'Error connecting to server. Please refresh the page.';
+      if (error === 'Network Offline') {
+        // In this mode, the service layer will pop a message instead. We don't want
+        // multiple msgs.
+        return;
+      } else {
+        this.logger.error(error);
+        throw 'Error connecting to server. Please refresh the page.';
+      }
     }
     if (res && res.length > 0) {
       // TODO: If we got a pass successfully, make a noise
       this.qrScannerService.disableScanner();
-    } else {
-      throw 'Pass not found.';
     }
   }
 

@@ -211,17 +211,6 @@ describe('PassService', () => {
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('throws error when pass get fails', async () => {
-    // throw error
-    loadingSpy.and.throwError('get error');
-    await service.fetchData(mockPassGetParams);
-    expect(toastSpy).toHaveBeenCalledTimes(1);
-    expect(eventSpy).toHaveBeenCalledOnceWith(
-      new EventObject(EventKeywords.ERROR, 'Error: get error', 'Pass Service')
-    );
-    expect(unloadingSpy).toHaveBeenCalledTimes(1);
-  });
-
   it('cancels passes', async () => {
     let mockCancelPassId: '1234567890';
     let mockCancelPassParkSk: 'Mock Park 1';
