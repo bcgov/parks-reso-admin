@@ -54,10 +54,11 @@
               <app-basic-metric [value]="passExpired"> </app-basic-metric>
             </app-metric-card>
           </div>
-          <div *ngIf="doughnutData" class="col-12 col-md-8 mt-0 pt-3">
+          <div class="col-12 col-md-8 mt-0 pt-3">
             <div class="p-3 card h-100">
               <h4>Pass breakdown by status</h4>
               <app-chart-metric
+                *ngIf="doughnutData"
                 class="d-block position-relative h-100"
                 [type]="'doughnut'"
                 [labels]="doughnutLabels"

@@ -43,10 +43,10 @@ export class SiteMetricsComponent implements OnDestroy {
   scatterData: any;
   scatterOptions: any;
   scatterPlugins: any;
-  passTotal: number = 0;
-  passActive: number = 0;
-  passReserved: number = 0;
-  passExpired: number = 0;
+  passTotal: number = undefined;
+  passActive: number = undefined;
+  passReserved: number = undefined;
+  passExpired: number = undefined;
 
   constructor(
     private apiService: ApiService,
