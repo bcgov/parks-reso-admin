@@ -42,6 +42,7 @@ export class SiteMetricsComponent implements OnDestroy {
   scatterLabels: any;
   scatterData: any;
   scatterOptions: any;
+  scatterPlugins: any;
   passTotal: number = 0;
   passActive: number = 0;
   passReserved: number = 0;

@@ -52,7 +52,6 @@ export class ShortdatePickerComponent
   }
 
   clearDate() {
-    console.log('cleared');
     this.modelDate = null as any;
     this.control.setValue(null);
     this.control.markAsDirty();

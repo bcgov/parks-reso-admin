@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   OnDestroy,
   Output,
 } from '@angular/core';
@@ -13,7 +14,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
   templateUrl: './base-input.component.html',
   styleUrls: ['./base-input.component.scss'],
 })
-export class BaseInputComponent implements OnDestroy {
+export class BaseInputComponent implements OnInit, OnDestroy {
   @Input() control = new UntypedFormControl();
   @Input() label;
   @Input() subLabel;
