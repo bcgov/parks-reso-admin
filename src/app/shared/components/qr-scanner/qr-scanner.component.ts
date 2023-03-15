@@ -1,6 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { BarcodeFormat } from '@zxing/library';
 import { Subscription } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import { QrScannerService } from './qr-scanner.service';
 
@@ -36,6 +37,7 @@ export class QrScannerComponent implements OnDestroy {
 
   constructor(
     private logger: LoggerService,
+    public apiService: ApiService,
     private qrScannerService: QrScannerService
   ) {
     this.qrScannerService.enableScanner();
@@ -63,7 +65,8 @@ export class QrScannerComponent implements OnDestroy {
   }
 
   onCodeResult(resultString: string) {
-    if (resultString !== this.qrResultString) {
+    // Hide this when offline so as not to confuse the user.
+    if (resultString !== this.qrResultString && this.apiService.isNetworkOffline === false) {
       this.scanningState = 'found';
       this.qrResultString = resultString;
       this.qrScannerService.setScannerOutput(this.qrResultString);

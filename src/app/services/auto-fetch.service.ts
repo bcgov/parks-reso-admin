@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { first, forkJoin } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
+import { ApiService } from './api.service';
 import { DataService } from './data.service';
 import { FacilityService } from './facility.service';
 import { LoggerService } from './logger.service';
@@ -18,7 +19,8 @@ export class AutoFetchService {
     private parkService: ParkService,
     private facilityService: FacilityService,
     private dataService: DataService,
-    private loggerService: LoggerService
+    private loggerService: LoggerService,
+    private apiService: ApiService
   ) {}
 
   async run() {
@@ -29,10 +31,13 @@ export class AutoFetchService {
     }, this.timeIntevalSeconds * 1000);
   }
   runFetches(fetchQueue) {
-    for (let i = 0; i < fetchQueue.length; i++) {
-      const fetchId = fetchQueue[i];
-      if (fetchId === Constants.dataIds.PARK_AND_FACILITY_LIST) {
-        this.fetchParkAndFacility();
+    // Only if we are online
+    if (this.apiService.isNetworkOffline === false) {
+      for (let i = 0; i < fetchQueue.length; i++) {
+        const fetchId = fetchQueue[i];
+        if (fetchId === Constants.dataIds.PARK_AND_FACILITY_LIST) {
+          this.fetchParkAndFacility();
+        }
       }
     }
   }
@@ -41,7 +46,7 @@ export class AutoFetchService {
     const parks = await this.parkService.fetchData(null, true);
 
     let observables: Array<Promise<any>> = [];
-    for (let i = 0; i < parks.length; i++) {
+    for (let i = 0; i < parks?.length; i++) {
       observables.push(
         this.facilityService.fetchData(parks[i].sk, null, true).then((res) => {
           let facilityHash = {};
@@ -54,6 +59,10 @@ export class AutoFetchService {
           return parksHash;
         })
       );
+    }
+    // Network failures can cause no observables.
+    if (observables.length === 0) {
+      return;
     }
     let parksObj = {};
     forkJoin(observables)
