@@ -3,7 +3,7 @@
   }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
 >
 
-<div class="mb-3 input-group" [ngClass]="{ 'invalid-field': isInvalid() }">
+<div class="input-group" [ngClass]="{ 'invalid-field': isInvalid() }">
   <span
     *ngIf="icon"
     class="input-group-text"
@@ -12,12 +12,29 @@
     ><i class="bi"></i
   ></span>
   <input
-    id="{{id}}"
+    *ngIf="!range"
+    id="{{ id }}"
     title="Select a Date"
     class="form-control with-item-right"
     [class.with-item-left]="icon"
     [disabled]="checkDisabled()"
     bsDatepicker
+    placeholder="Select date"
+    type="text"
+    name="{{ id }}"
+    [minDate]="minDate"
+    [(ngModel)]="modelDate"
+    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+    (ngModelChange)="onDateChange()"
+  />
+  <input
+    *ngIf="range"
+    id="{{ id }}"
+    title="Select a Date"
+    class="form-control with-item-right"
+    [class.with-item-left]="icon"
+    [disabled]="checkDisabled()"
+    bsDaterangepicker
     placeholder="Select date"
     type="text"
     name="{{ id }}"

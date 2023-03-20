@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
-import { MetricsComponent } from './metrics.component';
+import { SiteMetricsComponent } from './site-metrics/site-metrics.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MetricsComponent,
+    component: SiteMetricsComponent,
     canActivate: [AuthGuard],
     data: {
       breadcrumb: '',

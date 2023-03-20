@@ -1,7 +1,6 @@
 import {
   Component,
   Input,
-  OnInit,
 } from '@angular/core';
 import { ViewEncapsulation } from '@angular/core';
 import { BaseInputComponent } from '../base-input/base-input.component';
@@ -15,14 +14,25 @@ import { BaseInputComponent } from '../base-input/base-input.component';
 })
 export class MultiselectComponent
   extends BaseInputComponent
-  implements OnInit
 {
   @Input() multiSelectOptions;
 
   public selectedOptions: any[] = [];
   public isDisabled;
 
-  ngOnInit(): void {
+  constructor(
+  ){
+    super();
+    this.subscriptions.add(
+      this.controlInitialized.subscribe((value) => {
+        if (value) {
+          this.initializeControl();
+        }
+      })
+    )
+  } 
+
+  initializeControl(): void {
     if (!this.control.value) {
       this.control.setValue(this.selectedOptions);
     }

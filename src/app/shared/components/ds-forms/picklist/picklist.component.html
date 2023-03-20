@@ -19,6 +19,7 @@
     [class.with-item-left]="icon"
     class="form-control"
     [formControl]="control"
+    [value]="control?.value"
   >
     <option selected *ngIf="defaultNullDisplay" value="null">
       {{ defaultNullDisplay }}
