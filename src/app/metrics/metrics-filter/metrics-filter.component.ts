@@ -128,13 +128,13 @@ export class MetricsFilterComponent extends BaseFormComponent {
             display: selectedPark.facilities[facility].name,
           });
         }
+        // this.fields.park.setValue(selectedPark, {emitEvent: false});
         this.fields.facility.setValue(this.facilityOptions[0]?.value || null);
       }
     }
   }
 
   selectAllExports(select: boolean) {
-    console.log('select:', select);
     if (select) {
       this.fields.exportBusiestDays.setValue(true);
       this.fields.exportPassActivityByDay.setValue(true);
