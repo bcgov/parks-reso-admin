@@ -128,7 +128,6 @@ export class MetricsFilterComponent extends BaseFormComponent {
             display: selectedPark.facilities[facility].name,
           });
         }
-        // this.fields.park.setValue(selectedPark, {emitEvent: false});
         this.fields.facility.setValue(this.facilityOptions[0]?.value || null);
       }
     }
