@@ -255,4 +255,18 @@ export class MockData {
       },
     },
   };
+
+  public static readonly metricsData1 = {
+    'active': 2,
+    'reserved': 30,
+    'cancelled': 400,
+    'expired': 5000
+  }
+
+  public static readonly metricsData2 = {
+    'active': 1,
+    'reserved': 20,
+    'cancelled': 300,
+    'expired': 4000
+  }
 }

@@ -80,7 +80,6 @@ export class SiteMetricsComponent implements OnDestroy {
       labels.push(item);
       data.push(res[item]);
       passTotal += res[item];
-      console.log(item);
       switch (item) {
         case Constants.stateLabelDictionary.active.state:
           this.passActive = res[item];

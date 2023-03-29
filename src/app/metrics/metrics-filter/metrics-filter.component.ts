@@ -134,7 +134,6 @@ export class MetricsFilterComponent extends BaseFormComponent {
   }
 
   selectAllExports(select: boolean) {
-    console.log('select:', select);
     if (select) {
       this.fields.exportBusiestDays.setValue(true);
       this.fields.exportPassActivityByDay.setValue(true);
