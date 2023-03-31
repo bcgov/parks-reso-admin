@@ -11,18 +11,18 @@ import { BaseInputComponent } from '../base-input/base-input.component';
   styleUrls: ['./shortdate-picker.component.scss'],
 })
 export class ShortdatePickerComponent
-  extends BaseInputComponent
-{
+  extends BaseInputComponent {
   @Input() minDate: Date = null as any;
   @Input() maxDate: Date = null as any;
   @Input() range: boolean = false;
+  @Input() maxDateRange: number = 366; // 1 year is the default max range
 
   public modelDate;
 
   private utils = new Utils();
 
   constructor(
-  ){
+  ) {
     super();
     this.subscriptions.add(
       this.controlInitialized.subscribe((value) => {
@@ -34,10 +34,24 @@ export class ShortdatePickerComponent
   }
 
   initializeControl() {
-    this.modelDate = this.control?.value || null;
+    if (this.range) {
+      this.modelDate = [
+        this.utils.convertShortDateToJSDate(this.control.value[0] || null),
+        this.utils.convertShortDateToJSDate(this.control.value[1] || null)
+      ];
+    } else {
+      this.modelDate = this.control.value || null;
+    }
     this.subscriptions.add(
       this.control.valueChanges.subscribe((res) => {
-        this.modelDate = res || null;
+        if (this.range && res) {
+          this.modelDate = [
+            this.utils.convertShortDateToJSDate(res[0]),
+            this.utils.convertShortDateToJSDate(res[1])
+          ];
+        } else {
+          this.modelDate = res || null;
+        }
       })
     );
   }
@@ -47,7 +61,14 @@ export class ShortdatePickerComponent
   }
 
   onDateChange() {
-    this.control.setValue(this.utils.convertJSDateToShortDate(this.modelDate));
+    if (this.range) {
+      this.control.setValue([
+        this.utils.convertJSDateToShortDate(this.modelDate[0]),
+        this.utils.convertJSDateToShortDate(this.modelDate[1])
+      ])
+    } else {
+      this.control.setValue(this.utils.convertJSDateToShortDate(this.modelDate));
+    }
     this.control.markAsDirty();
   }
 

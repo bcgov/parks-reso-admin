@@ -8,8 +8,10 @@ import {
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { MetricsService } from 'src/app/services/metrics.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { Constants } from 'src/app/shared/utils/constants';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-metrics-filter',
@@ -23,17 +25,19 @@ export class MetricsFilterComponent extends BaseFormComponent {
   public timeSpanLabels = ['12M', '30D', '7D'];
   public parkOptions = [];
   public facilityOptions = [];
-  public fileTypeOptions = [
-    { value: 'pdf', display: 'PDF' },
-    { value: 'csv', display: 'CSV' },
-    { value: 'json', display: 'JSON' },
-  ];
+  public metrics = [];
+  public timezone = 'America/Vancouver';
+  public count = 0;
+  public minDate;
+  public maxDate;
+
   constructor(
     protected formBuilder: UntypedFormBuilder,
     protected router: Router,
     protected dataService: DataService,
     protected loadingService: LoadingService,
-    protected changeDetector: ChangeDetectorRef
+    protected changeDetector: ChangeDetectorRef,
+    protected metricsService: MetricsService,
   ) {
     super(formBuilder, router, dataService, loadingService, changeDetector);
     this.subscriptions.add(
@@ -46,106 +50,152 @@ export class MetricsFilterComponent extends BaseFormComponent {
           }
         })
     );
-    this.subscriptions.add(
-      this.dataService
-        .watchItem(Constants.dataIds.METRICS_FILTERS_PARAMS)
-        .subscribe((res) => {
-          if (res) {
-            this.params = res;
-            this.data = this.params;
-            this.setForm();
-          }
-        })
-    );
+    // grab existing metrics filter params, if theres any. 
+    this.data = this.dataService.getItemValue(Constants.dataIds.METRICS_FILTERS_PARAMS);
+    if (this.data.park) {
+      this.createParksOptions(this.parkFacilitiesList);
+      this.createFacilityOptions(this.parkFacilitiesList[this.data.park].facilities);
+    };
     this.setForm();
   }
 
   setForm() {
-    if (!this.data?.timeSpan) {
-      this.data.timeSpan = this.timeSpanOptions[0];
-    }
     this.form = new UntypedFormGroup({
       timeSpan: new UntypedFormControl(this.data.timeSpan),
-      startDate: new UntypedFormControl(
-        this.data.startDate,
+      dateRange: new UntypedFormControl(
+        this.data.dateRange,
         Validators.required
       ),
-      endDate: new UntypedFormControl(this.data.endDate, Validators.required),
       park: new UntypedFormControl(this.data.park),
       facility: new UntypedFormControl(this.data.facility),
-      fileType: new UntypedFormControl(this.data.fileType),
-      exportPassBreakdownByStatus: new UntypedFormControl(
-        this.data.exportPassBreakdownByStatus
-      ),
-      exportPassTrendsByHour: new UntypedFormControl(
-        this.data.exportPassTrendsByHour
-      ),
-      exportReturningGuests: new UntypedFormControl(
-        this.data.exportReturningGuests
-      ),
-      exportPassActivityByDay: new UntypedFormControl(
-        this.data.exportPassActivityByDay
-      ),
-      exportBusiestDays: new UntypedFormControl(this.data.exportBusiestDays),
     });
     super.updateForm();
     super.addDisabledRule(
       this.fields.facility,
       () => {
-        return this.fields.park.value ? false : true;
+        const park = this.fields?.park?.value;
+        if (!park || park === 'all') {
+          return true;
+        }
+        return false;
       },
       this.fields.park.valueChanges
     );
+    super.subscribeToControlValueChanges(this.fields.facility, () => { this.onSubmit() })
+    super.subscribeToControlValueChanges(this.fields.dateRange, () => { this.onSubmit() })
   }
 
   async onSubmit() {
     let res = await super.submit();
-  }
-
-  createParksOptions(list) {
-    for (const park of Object.keys(list)) {
-      this.parkOptions.push({ value: park, display: list[park].name });
-    }
-  }
-
-  createFacilityOptions(list) {
-    for (const facility of Object.keys(list)) {
-      this.facilityOptions.push({
-        value: list[facility].sk,
-        display: list[facility].facilityName,
-      });
-    }
-  }
-
-  parkChange(event) {
-    if (this.parkFacilitiesList) {
-      const selectedPark = this.parkFacilitiesList[this.fields?.park?.value];
-      if (selectedPark) {
-        this.facilityOptions = [];
-        for (const facility of Object.keys(selectedPark.facilities)) {
-          this.facilityOptions.push({
-            value: selectedPark.facilities[facility].sk,
-            display: selectedPark.facilities[facility].name,
-          });
-        }
-        this.fields.facility.setValue(this.facilityOptions[0]?.value || null);
+    let fields = res.fields;
+    if (this.validateMetricsParams(fields) && !this.loading) {
+      this.metricsService.setFilterParams(fields);
+      // Get everything
+      if (fields.park === 'all') {
+        this.metricsService.fetchData(fields.dateRange[0], fields.dateRange[1]);
+        return;
+      } else if (fields.facility === 'all') {
+        // Get all facilities
+        this.metricsService.fetchData(fields.dateRange[0], fields.dateRange[1], fields.park);
+        return;
+      } else {
+        this.metricsService.fetchData(fields.dateRange[0], fields.dateRange[1], fields.park, fields.facility);
       }
     }
   }
 
-  selectAllExports(select: boolean) {
-    if (select) {
-      this.fields.exportBusiestDays.setValue(true);
-      this.fields.exportPassActivityByDay.setValue(true);
-      this.fields.exportPassTrendsByHour.setValue(true);
-      this.fields.exportPassBreakdownByStatus.setValue(true);
-      this.fields.exportReturningGuests.setValue(true);
-    } else {
-      this.fields.exportBusiestDays.setValue(false);
-      this.fields.exportPassActivityByDay.setValue(false);
-      this.fields.exportPassTrendsByHour.setValue(false);
-      this.fields.exportPassBreakdownByStatus.setValue(false);
-      this.fields.exportReturningGuests.setValue(false);
+  validateMetricsParams(fields): boolean {
+    if (
+      !fields.park ||
+      !fields.dateRange
+    ) {
+      return false;
     }
+    if (fields.park !== 'all' && !fields.facility) {
+      return false;
+    }
+    return true;
+  }
+
+  createParksOptions(list) {
+    let optionsList = [{
+      value: 'all',
+      display: 'All Parks'
+    },
+    {
+      value: null,
+      display: null,
+      disabled: true,
+      breakpoint: true
+    }
+    ];
+    for (const park of Object.keys(list)) {
+      optionsList.push({ value: park, display: list[park].name });
+    }
+    this.parkOptions = optionsList;
+  }
+
+  createFacilityOptions(list) {
+    let optionsList = [{
+      value: 'all',
+      display: 'All Facilities'
+    },
+    {
+      value: null,
+      display: null,
+      disabled: true,
+      breakpoint: true
+    }
+    ];
+    for (const facility in list) {
+      optionsList.push({
+        value: list[facility].sk,
+        display: list[facility].name,
+      });
+    }
+    this.facilityOptions = optionsList;
+  }
+
+  parkChange(event) {
+    const park = this.fields?.park?.value;
+    if (!park || park === 'all') {
+      this.fields.facility.setValue(undefined);
+      return;
+    }
+    if (this.parkFacilitiesList) {
+      const selectedPark = this.parkFacilitiesList[this.fields?.park?.value];
+      if (selectedPark) {
+        this.createFacilityOptions(selectedPark.facilities);
+        this.fields.facility.setValue(this.facilityOptions[2]?.value || this.facilityOptions[0]?.value || null);
+      }
+    }
+  }
+
+  facilityChange(event) {
+    const facility = this.fields?.facility?.value;
+    if (!facility || facility === 'all') {
+      this.fields.passType.setValue(undefined);
+      return;
+    }
+  }
+
+  presetRange(range) {
+    const today = DateTime.now().setZone(this.timezone);
+    const endDate = today.toISODate();
+    let startDate;
+    switch (range) {
+      case 'year':
+        startDate = today.minus({ months: 12 }).toISODate();
+        break;
+      case 'month':
+        startDate = today.minus({ days: 30 }).toISODate();
+        break;
+      case 'week':
+        startDate = today.minus({ days: 7 }).toISODate();
+        break;
+      default:
+        startDate = endDate;
+    }
+    this.fields.dateRange.setValue([startDate, endDate]);
   }
 }

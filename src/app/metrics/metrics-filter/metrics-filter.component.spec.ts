@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 import { MetricsFilterComponent } from './metrics-filter.component';
 import { SharedMetricsModule } from '../../shared/components/metrics/shared-metrics.module';
 import { DsFormsModule } from '../../shared/components/ds-forms/ds-forms.module'
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('MetricsFilterComponent', () => {
   let component: MetricsFilterComponent;
@@ -18,21 +19,28 @@ describe('MetricsFilterComponent', () => {
   let mockData = MockData.mockParkFacility_1
 
   let mockPark1 = MockData.mockPark_1;
-  let mockPark2 = MockData.mockPark_2;
+
+  let mockDateRange = ['2023-01-31', '2023-02-01'];
 
   let mockFacility1 = MockData.mockFacility_1
-  let mockFacility2 = MockData.mockFacility_2
-  let mockFacility3 = MockData.mockFacility_3
 
   let mockDataService = {
     watchItem: (id) => {
       if (id === Constants.dataIds.PARK_AND_FACILITY_LIST) {
-        return new BehaviorSubject(mockData); 
-      } else if (id === Constants.dataIds.METRICS_FILTERS_PARAMS) {
-        return new BehaviorSubject([mockFacility1,mockFacility2,mockFacility3])
+        return new BehaviorSubject(mockData);
       }
       return new BehaviorSubject(null);
     },
+    getItemValue: (id) => {
+      if (id === Constants.dataIds.METRICS_FILTERS_PARAMS) {
+        return new BehaviorSubject({
+          dateRange: mockDateRange,
+          park: mockPark1.sk,
+          facility: mockFacility1.sk
+        })
+      }
+      return new BehaviorSubject(null);
+    }
   };
 
   beforeEach(async () => {
@@ -43,7 +51,8 @@ describe('MetricsFilterComponent', () => {
         FormsModule,
         HttpClientModule,
         SharedMetricsModule,
-        DsFormsModule
+        DsFormsModule,
+        RouterTestingModule
       ],
       providers: [
         ConfigService,
@@ -63,40 +72,67 @@ describe('MetricsFilterComponent', () => {
   it('should have initial values', () => {
     expect(component.timeSpanOptions).toEqual(['year', 'month', 'week']);
     expect(component.timeSpanLabels).toEqual(['12M', '30D', '7D']);
-    expect(component.fileTypeOptions).toEqual([
-      { value: 'pdf', display: 'PDF' },
-      { value: 'csv', display: 'CSV' },
-      { value: 'json', display: 'JSON' },
-    ]);
   });
 
-  it('should toggle outputs to true', () => {
-    component.selectAllExports(false);
-    component.selectAllExports(true);
-
-    expect(component.fields.exportBusiestDays.value).toBeTrue();
-    expect(component.fields.exportPassActivityByDay.value).toBeTrue();
-    expect(component.fields.exportPassTrendsByHour.value).toBeTrue();
-    expect(component.fields.exportPassBreakdownByStatus.value).toBeTrue();
-    expect(component.fields.exportReturningGuests.value).toBeTrue();
-  });
-
-  it('should toggle outputs to false', () => {
-    component.selectAllExports(true);
-    component.selectAllExports(false);
-
-    expect(component.fields.exportBusiestDays.value).toBeFalse();
-    expect(component.fields.exportPassActivityByDay.value).toBeFalse();
-    expect(component.fields.exportPassTrendsByHour.value).toBeFalse();
-    expect(component.fields.exportPassBreakdownByStatus.value).toBeFalse();
-    expect(component.fields.exportReturningGuests.value).toBeFalse();
-  });
-
-  it('should populate park list', () => {
-    let tempParkOptions = []
+  it('should populate park list', async () => {
+    let tempParkOptions = [
+      { value: 'all', display: 'All Parks' },
+      { value: null, display: null, disabled: true, breakpoint: true }
+    ];
     for (const park of Object.keys(component.parkFacilitiesList)) {
       tempParkOptions.push({ value: park, display: component.parkFacilitiesList[park].name });
     }
     expect(component.parkOptions).toEqual(tempParkOptions)
   })
+
+  it('should populate facility list', async () => {
+    let tempFacilityOptions = [
+      { value: 'all', display: 'All Facilities' },
+      { value: null, display: null, disabled: true, breakpoint: true }
+    ]
+    const park = Object.keys(component.parkFacilitiesList)[0]
+    let facilityList = component.parkFacilitiesList[park].facilities;
+    for (const facility in facilityList) {
+      tempFacilityOptions.push({ value: facilityList[facility].sk, display: facilityList[facility].name });
+    }
+    component.fields.park.setValue(park);
+    expect(component.facilityOptions).toEqual(tempFacilityOptions)
+  })
+
+  it('validates metrics params', async () => {
+    expect(component.validateMetricsParams({})).toBeFalse();
+    expect(component.validateMetricsParams({ park: mockPark1.orcs })).toBeFalse();
+    expect(component.validateMetricsParams({ park: mockPark1.orcs, dateRange: mockDateRange, facility: mockFacility1.sk })).toBeTrue();
+  })
+
+  it('submits data correctly', async () => {
+    const filterSpy = spyOn(component['metricsService'], 'setFilterParams');
+    await component.onSubmit();
+    expect(filterSpy).not.toHaveBeenCalled();
+    component.fields.park.setValue('all');
+    filterSpy.calls.reset();
+    component.fields.dateRange.setValue(mockDateRange);
+    await component.onSubmit();
+    expect(filterSpy).toHaveBeenCalledWith({
+      timeSpan: null,
+      park: 'all',
+      dateRange: mockDateRange,
+      facility: undefined
+    });
+    component.fields.park.setValue(mockPark1.sk);
+    filterSpy.calls.reset();
+    component.fields.facility.setValue(mockFacility1.sk);
+    const dataSpy = spyOn(component['metricsService'], 'fetchData');
+    await component.onSubmit();
+    expect(filterSpy).toHaveBeenCalledWith({
+      timeSpan: null,
+      park: mockPark1.sk,
+      dateRange: mockDateRange,
+      facility: mockFacility1.sk
+    });
+    expect(dataSpy).toHaveBeenCalledWith(
+      mockDateRange[0], mockDateRange[1], mockPark1.sk, mockFacility1.sk
+    )
+  })
+
 });

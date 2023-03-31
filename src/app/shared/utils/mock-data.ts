@@ -269,4 +269,134 @@ export class MockData {
     'cancelled': 300,
     'expired': 4000
   }
+
+  public static readonly mockMetrics1 = {
+      lastUpdated: '2023-03-28T10:09:37.713-07:00',
+      sk: '2023-01-31',
+      cancelled: 0,
+      capacities: {
+          AM: {
+              baseCapacity: 14,
+              capacityModifier: 0,
+              checkedIn: 5,
+              passStatuses: {
+                  active: 5,
+                  reserved: 3,
+                  expired: 1,
+                  cancelled: 4,
+              },
+              availablePasses: 5,
+              overbooked: 0
+          },
+          PM: {
+              baseCapacity: 10,
+              capacityModifier: 0,
+              checkedIn: 0,
+              passStatuses: {},
+              availablePasses: 10,
+              overbooked: 0
+          }
+      },
+      pk: 'metrics::MOC1::Mock Facility 1',
+      totalPasses: 9,
+      fullyBooked: false,
+      hourlyData: [
+          {
+              hour: 0,
+              checkedIn: 0
+          },
+          {
+              hour: 1,
+              checkedIn: 0
+          },
+          {
+              hour: 2,
+              checkedIn: 0
+          },
+          {
+              hour: 3,
+              checkedIn: 0
+          },
+          {
+              hour: 4,
+              checkedIn: 0
+          },
+          {
+              hour: 5,
+              checkedIn: 0
+          },
+          {
+              hour: 6,
+              checkedIn: 0
+          },
+          {
+              hour: 7,
+              checkedIn: 0
+          },
+          {
+              hour: 8,
+              checkedIn: 0
+          },
+          {
+              hour: 9,
+              checkedIn: 5
+          },
+          {
+              hour: 10,
+              checkedIn: 0
+          },
+          {
+              hour: 11,
+              checkedIn: 0
+          },
+          {
+              hour: 12,
+              checkedIn: 0
+          },
+          {
+              hour: 13,
+              checkedIn: 0
+          },
+          {
+              hour: 14,
+              checkedIn: 0
+          },
+          {
+              hour: 15,
+              checkedIn: 0
+          },
+          {
+              hour: 16,
+              checkedIn: 0
+          },
+          {
+              hour: 17,
+              checkedIn: 0
+          },
+          {
+              hour: 18,
+              checkedIn: 0
+          },
+          {
+              hour: 19,
+              checkedIn: 0
+          },
+          {
+              hour: 20,
+              checkedIn: 0
+          },
+          {
+              hour: 21,
+              checkedIn: 0
+          },
+          {
+              hour: 22,
+              checkedIn: 0
+          },
+          {
+              hour: 23,
+              checkedIn: 0
+          }
+      ]
+  }
 }

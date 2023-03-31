@@ -39,8 +39,9 @@
     type="text"
     name="{{ id }}"
     [minDate]="minDate"
+    [maxDate]="maxDate"
     [(ngModel)]="modelDate"
-    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+    [bsConfig]="{ rangeInputFormat: 'YYYY-MM-DD', maxDateRange: maxDateRange }"
     (ngModelChange)="onDateChange()"
   />
 

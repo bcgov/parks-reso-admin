@@ -73,6 +73,14 @@ export class ChartMetricComponent implements OnDestroy, AfterViewInit {
         options: this._options?.value || {},
         plugins: this._plugins?.value || [],
       });
+    } else {
+      this.chart.data = {
+        labels: this._labels?.value || [],
+        datasets: this._datasets?.value || [],
+      };
+      this.chart.options = this._options?.value || {};
+      this.chart.plugins = this._plugins?.value || [];
+      this.chart.update();
     }
   }
 

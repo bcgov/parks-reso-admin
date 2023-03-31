@@ -212,7 +212,7 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
    */
   async disable() {
     await setTimeout(() => {
-      this.form.disable();
+      this.form.disable({emitEvent: false});
     });
   }
 
@@ -229,7 +229,7 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
           continue;
         } else {
           setTimeout(() => {
-            control.enable();
+            control.enable({emitEvent: false});
           });
         }
       }

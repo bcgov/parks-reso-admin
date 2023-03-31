@@ -1,86 +1,56 @@
 <div class="container-fluid">
   <h1>Site Metrics</h1>
   <hr />
-  <!--<app-metrics-filter></app-metrics-filter>-->
-  <!-- Temporary filler for report downloading -->
-  <div class="card">
-    <div class="card-body">
-      <h2>Export Report</h2>
-      <button
-        [disabled]="isGenerating"
-        class="btn btn-primary mr-1"
-        (click)="exportPassData()"
-      >
-        {{ buttonText }}&nbsp;
-        <div
-          style="vertical-align: middle"
-          *ngIf="isGenerating"
-          class="spinner-border"
-          role="status"
-        >
-          <span class="sr-only"></span>
-        </div>
-      </button>
-    </div>
-  </div>
+  <app-metrics-filter></app-metrics-filter>
   <div>
     <!-- Loading element when API ready -->
     <div class="mb-4">
-        <h2 *ngIf="parkName">Data for {{ parkName }}: {{ facilityName }}</h2>
-        <div class="row d-flex">
-          <div class="col-12 col-md-4 row flex-column mx-auto gy-3 justify-content-between">
-            <app-metric-card
-              class="metric-card px-0 mt-0"
-              [title]="'Total Number of Passes'"
-            >
-              <app-basic-metric [value]="passTotal"> </app-basic-metric>
-            </app-metric-card>
-            <app-metric-card
-              class="metric-card px-0"
-              [title]="'Active Passes'"
-            >
-              <app-basic-metric [value]="passActive"> </app-basic-metric>
-            </app-metric-card>
-            <app-metric-card
-              class="metric-card px-0"
-              [title]="'Reserved Passes'"
-            >
-              <app-basic-metric [value]="passReserved"> </app-basic-metric>
-            </app-metric-card>
-            <app-metric-card
-              class="metric-card px-0 mb-0"
-              [title]="'Expired Passes'"
-            >
-              <app-basic-metric [value]="passExpired"> </app-basic-metric>
-            </app-metric-card>
-          </div>
-          <div class="col-12 col-md-8 mt-0 pt-3">
-            <div class="p-3 card h-100">
-              <h4>Pass breakdown by status</h4>
-              <app-chart-metric
-                *ngIf="doughnutData"
-                class="d-block position-relative h-100"
-                [type]="'doughnut'"
-                [labels]="doughnutLabels"
-                [datasets]="doughnutData"
-                [options]="doughnutOptions"
-                [plugins]="doughnutPlugins"
-              ></app-chart-metric>
+      <h2 *ngIf="parkName && !facilityName">Data for {{ parkName }}</h2>
+      <h2 *ngIf="parkName && facilityName">Data for {{ parkName }}: {{ facilityName }}</h2>
+      <h3 *ngIf="dateRange && dateRange[0] === dateRange[1]">On {{dateRange[0] | date: 'longDate'}}</h3>
+      <h3 *ngIf="dateRange && dateRange[0] !== dateRange[1]">From {{dateRange[0] | date: 'longDate'}} to {{dateRange[1]
+        | date: 'longDate'}}</h3>
+      <div class="row d-flex">
+        <div class="col-12 col-md-4 row flex-column mx-auto gy-3 justify-content-between">
+          <app-metric-card class="metric-card px-0 mt-0" [title]="'Total Number of Passes'">
+            <app-basic-metric [value]="passTotals?.total" [animate]="true" [animationJitter]="true"> </app-basic-metric>
+          </app-metric-card>
+          <app-metric-card class="metric-card px-0" [title]="'Active Passes'">
+            <app-basic-metric [value]="passTotals?.active" [animate]="true" [animationJitter]="true">
+            </app-basic-metric>
+          </app-metric-card>
+          <app-metric-card class="metric-card px-0" [title]="'Reserved Passes'">
+            <app-basic-metric [value]="passTotals?.reserved" [animate]="true" [animationJitter]="true">
+            </app-basic-metric>
+          </app-metric-card>
+          <app-metric-card class="metric-card px-0 mb-0" [title]="'Expired Passes'">
+            <app-basic-metric [value]="passTotals?.expired" [animate]="true" [animationJitter]="true">
+            </app-basic-metric>
+          </app-metric-card>
+        </div>
+        <div class="col-12 col-md-8 mt-0 pt-3">
+          <div class="p-3 card h-100">
+            <h4>Pass breakdown by status</h4>
+            <div *ngIf="!doughnutData"
+              class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2">
+              No passes found.
             </div>
+            <app-chart-metric *ngIf="doughnutData" class="d-block position-relative h-100" [type]="'doughnut'"
+              [labels]="doughnutLabels" [datasets]="doughnutData" [options]="doughnutOptions"
+              [plugins]="doughnutPlugins"></app-chart-metric>
           </div>
-          <div *ngIf="scatterData" class="col-12 mt-0 pt-3">
-            <div class="p-3 card h-100">
-              <h4>Pass activity by day</h4>
-              <app-chart-metric
-                class="d-block position-relative h-100"
-                [type]="'doughnut'"
-                [labels]="scatterLabels"
-                [datasets]="scatterData"
-                [options]="scatterOptions"
-                [plugins]="scatterPlugins"
-              ></app-chart-metric>
+        </div>
+        <div class="col-12 mt-0 pt-3">
+          <div class="p-3 card" style="height: 450px">
+            <h4>Pass activity by day</h4>
+            <div *ngIf="!barChartData"
+              class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2">
+              Please select a single facility to view daily pass activity.
             </div>
+            <app-chart-metric *ngIf="singleFacility" class="h-100" [type]="'bar'" [labels]="barChartLabels"
+              [datasets]="barChartData" [options]="barChartOptions" [plugins]="barChartPlugins"></app-chart-metric>
           </div>
+        </div>
       </div>
     </div>
   </div>
