@@ -52,6 +52,7 @@ export class MetricsService {
     try {
       this.loadingService.addToFetchList(dataTag); 0
       let data = [];
+      this.dataService.setItemValue(dataTag, null);
       for (const item in getList) {
         for (const facility of getList[item]) {
           const res = await firstValueFrom(

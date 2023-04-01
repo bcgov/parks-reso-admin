@@ -1,12 +1,11 @@
 <form [formGroup]="form">
   <div class="row d-flex justify-content-between mb-4">
     <app-radio-buttons class="col-md-3 col-sm-12 mb-2 mb-md-0" [control]="fields?.timeSpan" [options]="timeSpanOptions"
-      [optionsLabels]="timeSpanLabels" [group]="false" [id]="'timeSpan'"
-      (inputChange)="presetRange($event)"></app-radio-buttons>
+      [optionsLabels]="timeSpanLabels" [group]="false" [id]="'timeSpan'" (inputChange)="presetRange()"></app-radio-buttons>
     <div class="col">
       <div class="d-flex flex-column flex-md-row justify-content-end">
         <app-shortdate-picker class="p-0 me-md-2 mb-2 mb-md-0" [range]="true" [control]="fields.dateRange"
-          [id]="'dateRange'" [maxDateRange]="366">
+          [id]="'dateRange'" [maxDateRange]="366" [icon]="'bi-calendar'">
         </app-shortdate-picker>
 
         <!-- medium screen or greater  -->
@@ -62,13 +61,12 @@
   <div class="m-4">
     <div class="row">
       <div class="col">
-        <app-picklist [label]="'Park'" [selectOptions]="parkOptions" [control]="fields.park" [id]="'downloadChartsPark'"
-          (inputChange)="parkChange($event)">
+        <app-picklist [label]="'Park'" [selectOptions]="parkOptions" [control]="fields.park" [id]="'downloadChartsPark'">
         </app-picklist>
       </div>
       <div class="col">
         <app-picklist [label]="'Facility'" [selectOptions]="facilityOptions" [placeholder]="'All Facilities'"
-          [control]="fields.facility" [id]="'downloadChartsFacility'" (inputChange)="facilityChange($event)">
+          [control]="fields.facility" [id]="'downloadChartsFacility'">
         </app-picklist>
       </div>
     </div>

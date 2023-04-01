@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { Constants } from '../shared/utils/constants';
-import { DateTime } from 'luxon';
 import { MetricsService } from '../services/metrics.service';
 
 @Injectable({
@@ -15,11 +14,12 @@ export class MetricsResolver implements Resolve<void> {
   ) { }
   resolve() {
     const params = this.dataService.getItemValue(Constants.dataIds.METRICS_FILTERS_PARAMS);
-    if (!params || !params.dateRange) {
-      // set date to today
-      const today = DateTime.now().setZone('America/Vancouver').toISODate();
+    if (!params || !params.park) {
       this.metricsService.setFilterParams({
-        dateRange: [today, today],
+        dateRange: null,
+        park: 'all',
+        facility: null,
+        timeSpan: null
       })
     }
   }

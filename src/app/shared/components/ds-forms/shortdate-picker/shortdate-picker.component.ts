@@ -35,10 +35,12 @@ export class ShortdatePickerComponent
 
   initializeControl() {
     if (this.range) {
-      this.modelDate = [
-        this.utils.convertShortDateToJSDate(this.control.value[0] || null),
-        this.utils.convertShortDateToJSDate(this.control.value[1] || null)
-      ];
+      if (this.control.value) {
+        this.modelDate = [
+          this.utils.convertShortDateToJSDate(this.control.value[0] || null),
+          this.utils.convertShortDateToJSDate(this.control.value[1] || null)
+        ];
+      }
     } else {
       this.modelDate = this.control.value || null;
     }

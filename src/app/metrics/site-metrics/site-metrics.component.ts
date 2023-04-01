@@ -41,6 +41,7 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
   public barChartData: any;
   public barChartOptions: any;
   public barChartPlugins = [ChartPlugins.barHighlightColumnPlugin];
+  public noData = false;
 
   passExport;
   isGenerating: any = false;
@@ -69,6 +70,9 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
         .watchItem(Constants.dataIds.METRICS_FILTERS_PARAMS)
         .subscribe((res) => {
           if (res) {
+            this.barChartData = null;
+            this.doughnutData = null;
+            this.singleFacility = false;
             this.filterParams = res;
             this.parseFilterParams();
           }
@@ -144,19 +148,25 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
   parseFilterParams() {
     if (this.filterParams?.park) {
       if (this.filterParams?.park === 'all') {
+        this.singleFacility = false;
         this.parkName = 'All Parks';
       } else {
         this.parkName = this.parksAndFacilities[this.filterParams.park]?.name;
+        if (this.filterParams?.facility === 'all') {
+          this.singleFacility = false;
+          this.facilityName = 'All Facilities';
+        } else {
+          this.singleFacility = true;
+          this.facilityName = this.parksAndFacilities[this.filterParams.park]?.facilities?.[this.filterParams.facility]?.name;
+        }
       }
-      if (this.filterParams?.facility === 'all') {
-        this.singleFacility = false;
-        this.facilityName = 'All Facilities';
+      if (this.filterParams.dateRange) {
+        this.dateRange = [this.filterParams.dateRange[0], this.filterParams.dateRange[1]];
+        this.dateInterval = this.createDateInterval(this.dateRange[0], this.dateRange[1]);
+        this.noData = false;
       } else {
-        this.singleFacility = true;
-        this.facilityName = this.parksAndFacilities[this.filterParams.park]?.facilities?.[this.filterParams.facility]?.name;
+        this.noData = true;
       }
-      this.dateRange = [this.filterParams.dateRange[0], this.filterParams.dateRange[1]];
-      this.dateInterval = this.createDateInterval(this.dateRange[0], this.dateRange[1]);
     }
   }
 

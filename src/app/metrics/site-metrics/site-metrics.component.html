@@ -2,7 +2,11 @@
   <h1>Site Metrics</h1>
   <hr />
   <app-metrics-filter></app-metrics-filter>
-  <div>
+  <div *ngIf="noData"
+    class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2 empty-page mb-3 text-center">
+    {{loading ? 'Loading...' : 'Select date range or choose filters to display data.'}}
+  </div>
+  <div *ngIf="!noData">
     <!-- Loading element when API ready -->
     <div class="mb-4">
       <h2 *ngIf="parkName && !facilityName">Data for {{ parkName }}</h2>
@@ -32,8 +36,8 @@
           <div class="p-3 card h-100">
             <h4>Pass breakdown by status</h4>
             <div *ngIf="!doughnutData"
-              class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2">
-              No passes found.
+              class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2 text-center">
+              {{loading ? 'Loading...' : 'No passes found.'}}
             </div>
             <app-chart-metric *ngIf="doughnutData" class="d-block position-relative h-100" [type]="'doughnut'"
               [labels]="doughnutLabels" [datasets]="doughnutData" [options]="doughnutOptions"
@@ -44,8 +48,8 @@
           <div class="p-3 card" style="height: 450px">
             <h4>Pass activity by day</h4>
             <div *ngIf="!barChartData"
-              class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2">
-              Please select a single facility to view daily pass activity.
+              class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2 text-center">
+              {{loading ? 'Loading...' : 'Please select a single facility to view daily pass activity.'}}
             </div>
             <app-chart-metric *ngIf="singleFacility" class="h-100" [type]="'bar'" [labels]="barChartLabels"
               [datasets]="barChartData" [options]="barChartOptions" [plugins]="barChartPlugins"></app-chart-metric>

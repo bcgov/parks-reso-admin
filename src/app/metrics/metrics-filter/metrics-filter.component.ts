@@ -3,7 +3,6 @@ import {
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
-  Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
@@ -41,22 +40,33 @@ export class MetricsFilterComponent extends BaseFormComponent {
   ) {
     super(formBuilder, router, dataService, loadingService, changeDetector);
     this.subscriptions.add(
-      this.dataService
-        .watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST)
-        .subscribe((res) => {
-          if (res) {
-            this.parkFacilitiesList = res;
-            this.createParksOptions(res);
-          }
-        })
-    );
-    // grab existing metrics filter params, if theres any. 
+      this.dataService.watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST).subscribe((res) => {
+        if (res) {
+          this.parkFacilitiesList = res;
+          this.createParksOptions(this.parkFacilitiesList);
+        }
+      })
+    )
+    this.subscriptions.add(
+      this.dataService.watchItem(Constants.dataIds.METRICS_FILTERS_PARAMS).subscribe((res) => {
+        if (res) {
+          this.data = res;
+          if (this.validateMetricsParams(this.data)) {
+            this.onSubmit(this.data);
+          };
+        }
+      })
+    )
+    this.parkFacilitiesList = this.dataService.getItemValue(Constants.dataIds.PARK_AND_FACILITY_LIST);
     this.data = this.dataService.getItemValue(Constants.dataIds.METRICS_FILTERS_PARAMS);
-    if (this.data.park) {
+    if (this.parkFacilitiesList) {
       this.createParksOptions(this.parkFacilitiesList);
-      this.createFacilityOptions(this.parkFacilitiesList[this.data.park].facilities);
-    };
+      if (this.data.park && this.data.park !== 'all') {
+        this.createFacilityOptions(this.parkFacilitiesList[this.data.park].facilities);
+      }
+    }
     this.setForm();
+
   }
 
   setForm() {
@@ -64,7 +74,6 @@ export class MetricsFilterComponent extends BaseFormComponent {
       timeSpan: new UntypedFormControl(this.data.timeSpan),
       dateRange: new UntypedFormControl(
         this.data.dateRange,
-        Validators.required
       ),
       park: new UntypedFormControl(this.data.park),
       facility: new UntypedFormControl(this.data.facility),
@@ -81,25 +90,30 @@ export class MetricsFilterComponent extends BaseFormComponent {
       },
       this.fields.park.valueChanges
     );
-    super.subscribeToControlValueChanges(this.fields.facility, () => { this.onSubmit() })
-    super.subscribeToControlValueChanges(this.fields.dateRange, () => { this.onSubmit() })
+    super.subscribeToControlValueChanges(this.fields.timeSpan, () => { this.presetRange() })
+    super.subscribeToControlValueChanges(this.fields.park, () => { this.parkChange() })
+    super.subscribeToControlValueChanges(this.fields.facility, () => { this.updateFilterParams() })
+    super.subscribeToControlValueChanges(this.fields.dateRange, () => { this.updateFilterParams() })
   }
 
-  async onSubmit() {
+  async updateFilterParams() {
     let res = await super.submit();
     let fields = res.fields;
-    if (this.validateMetricsParams(fields) && !this.loading) {
-      this.metricsService.setFilterParams(fields);
+    this.metricsService.setFilterParams(fields);
+  }
+
+  async onSubmit(params) {
+    if (this.validateMetricsParams(params) && !this.loading) {
       // Get everything
-      if (fields.park === 'all') {
-        this.metricsService.fetchData(fields.dateRange[0], fields.dateRange[1]);
+      if (params.park === 'all') {
+        this.metricsService.fetchData(params.dateRange[0], params.dateRange[1]);
         return;
-      } else if (fields.facility === 'all') {
+      } else if (params.facility === 'all') {
         // Get all facilities
-        this.metricsService.fetchData(fields.dateRange[0], fields.dateRange[1], fields.park);
+        this.metricsService.fetchData(params.dateRange[0], params.dateRange[1], params.park);
         return;
       } else {
-        this.metricsService.fetchData(fields.dateRange[0], fields.dateRange[1], fields.park, fields.facility);
+        this.metricsService.fetchData(params.dateRange[0], params.dateRange[1], params.park, params.facility);
       }
     }
   }
@@ -156,14 +170,14 @@ export class MetricsFilterComponent extends BaseFormComponent {
     this.facilityOptions = optionsList;
   }
 
-  parkChange(event) {
-    const park = this.fields?.park?.value;
+  parkChange() {
+    const park = this.fields.park.value;
     if (!park || park === 'all') {
       this.fields.facility.setValue(undefined);
       return;
     }
     if (this.parkFacilitiesList) {
-      const selectedPark = this.parkFacilitiesList[this.fields?.park?.value];
+      const selectedPark = this.parkFacilitiesList[this.fields.park.value];
       if (selectedPark) {
         this.createFacilityOptions(selectedPark.facilities);
         this.fields.facility.setValue(this.facilityOptions[2]?.value || this.facilityOptions[0]?.value || null);
@@ -171,31 +185,25 @@ export class MetricsFilterComponent extends BaseFormComponent {
     }
   }
 
-  facilityChange(event) {
-    const facility = this.fields?.facility?.value;
-    if (!facility || facility === 'all') {
-      this.fields.passType.setValue(undefined);
-      return;
-    }
-  }
-
-  presetRange(range) {
+  presetRange() {
     const today = DateTime.now().setZone(this.timezone);
     const endDate = today.toISODate();
-    let startDate;
-    switch (range) {
-      case 'year':
-        startDate = today.minus({ months: 12 }).toISODate();
-        break;
-      case 'month':
-        startDate = today.minus({ days: 30 }).toISODate();
-        break;
-      case 'week':
-        startDate = today.minus({ days: 7 }).toISODate();
-        break;
-      default:
-        startDate = endDate;
+    if (this.fields.timeSpan.value) {
+      let startDate;
+      switch (this.fields.timeSpan.value) {
+        case 'year':
+          startDate = today.minus({ months: 12 }).toISODate();
+          break;
+        case 'month':
+          startDate = today.minus({ days: 30 }).toISODate();
+          break;
+        case 'week':
+          startDate = today.minus({ days: 7 }).toISODate();
+          break;
+        default:
+          startDate = endDate;
+      }
+      this.fields.dateRange.setValue([startDate, endDate]);
     }
-    this.fields.dateRange.setValue([startDate, endDate]);
   }
 }

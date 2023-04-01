@@ -81,20 +81,16 @@ describe('SiteMetricsComponent', () => {
 
   it('should parse capacityData', async () => {
     let date = mockMetricsData.sk;
-    component.dateInterval = component.createDateInterval(date, date);
+    component.dateInterval = ['2023-01-30', '2023-01-31', '2023-02-01'];
     let capacityData = component.getCapacityData();
     await fixture.isStable();
     fixture.detectChanges();
-    expect(capacityData).toEqual({
-      [date]: {
-        booked: 9,
-        capacity: 24,
-        cancelled: 4
-      }
+    expect(capacityData[date]).toEqual({
+      booked: 9,
+      capacity: 24,
+      cancelled: 4
     });
   });
-
-
 
   it('should test when API call finds no export report', async () => {
     let toastService = spyOn(component['toastService'], 'addMessage')

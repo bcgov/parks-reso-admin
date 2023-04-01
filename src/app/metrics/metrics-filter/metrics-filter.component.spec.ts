@@ -39,6 +39,9 @@ describe('MetricsFilterComponent', () => {
           facility: mockFacility1.sk
         })
       }
+      if (id === Constants.dataIds.PARK_AND_FACILITY_LIST) {
+        return mockData;
+      }
       return new BehaviorSubject(null);
     }
   };
@@ -106,13 +109,14 @@ describe('MetricsFilterComponent', () => {
   })
 
   it('submits data correctly', async () => {
+    const params = { park: mockPark1.orcs, dateRange: mockDateRange, facility: mockFacility1.sk };
     const filterSpy = spyOn(component['metricsService'], 'setFilterParams');
-    await component.onSubmit();
+    await component.onSubmit(params);
     expect(filterSpy).not.toHaveBeenCalled();
     component.fields.park.setValue('all');
     filterSpy.calls.reset();
     component.fields.dateRange.setValue(mockDateRange);
-    await component.onSubmit();
+    await component.onSubmit(params);
     expect(filterSpy).toHaveBeenCalledWith({
       timeSpan: null,
       park: 'all',
@@ -123,7 +127,7 @@ describe('MetricsFilterComponent', () => {
     filterSpy.calls.reset();
     component.fields.facility.setValue(mockFacility1.sk);
     const dataSpy = spyOn(component['metricsService'], 'fetchData');
-    await component.onSubmit();
+    await component.onSubmit(params);
     expect(filterSpy).toHaveBeenCalledWith({
       timeSpan: null,
       park: mockPark1.sk,
