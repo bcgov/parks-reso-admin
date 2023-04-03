@@ -73,8 +73,8 @@ describe('MetricsFilterComponent', () => {
   });
 
   it('should have initial values', () => {
-    expect(component.timeSpanOptions).toEqual(['year', 'month', 'week']);
-    expect(component.timeSpanLabels).toEqual(['12M', '30D', '7D']);
+    expect(component.timeSpanOptions).toEqual(['week', 'month', 'year']);
+    expect(component.timeSpanLabels).toEqual(['7D', '30D', '12M']);
   });
 
   it('should populate park list', async () => {

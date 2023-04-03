@@ -5,7 +5,7 @@
     <div class="col">
       <div class="d-flex flex-column flex-md-row justify-content-end">
         <app-shortdate-picker class="p-0 me-md-2 mb-2 mb-md-0" [range]="true" [control]="fields.dateRange"
-          [id]="'dateRange'" [maxDateRange]="366" [icon]="'bi-calendar'">
+          [id]="'dateRange'" [maxDateRange]="366" [icon]="'bi-calendar'" (click)="unsetRange()">
         </app-shortdate-picker>
 
         <!-- medium screen or greater  -->

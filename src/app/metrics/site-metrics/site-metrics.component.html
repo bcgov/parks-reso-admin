@@ -49,9 +49,14 @@
             <h4>Pass activity by day</h4>
             <div *ngIf="!barChartData"
               class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2 text-center">
-              {{loading ? 'Loading...' : 'Please select a single facility to view daily pass activity.'}}
+              <div *ngIf="loading">
+                Loading...
+              </div>
+              <div *ngIf="!loading">
+                {{singleFacility ? 'No data.' : 'Please select a single facility to view daily pass activity.'}}
+              </div>
             </div>
-            <app-chart-metric *ngIf="singleFacility" class="h-100" [type]="'bar'" [labels]="barChartLabels"
+            <app-chart-metric *ngIf="singleFacility && barChartData" class="h-100" [type]="'bar'" [labels]="barChartLabels"
               [datasets]="barChartData" [options]="barChartOptions" [plugins]="barChartPlugins"></app-chart-metric>
           </div>
         </div>

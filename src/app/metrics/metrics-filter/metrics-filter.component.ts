@@ -20,8 +20,8 @@ import { DateTime } from 'luxon';
 export class MetricsFilterComponent extends BaseFormComponent {
   public params;
   public parkFacilitiesList;
-  public timeSpanOptions = ['year', 'month', 'week'];
-  public timeSpanLabels = ['12M', '30D', '7D'];
+  public timeSpanOptions = ['week', 'month', 'year'];
+  public timeSpanLabels = ['7D', '30D', '12M'];
   public parkOptions = [];
   public facilityOptions = [];
   public metrics = [];
@@ -205,5 +205,9 @@ export class MetricsFilterComponent extends BaseFormComponent {
       }
       this.fields.dateRange.setValue([startDate, endDate]);
     }
+  }
+
+  unsetRange() {
+    this.fields.timeSpan.setValue(null);
   }
 }

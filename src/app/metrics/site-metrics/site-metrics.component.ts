@@ -188,6 +188,15 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
       } else {
         this.barChartData = null;
       }
+    } else {
+      this.barChartData = null;
+      this.passTotals = {
+        active: 0,
+        reserved: 0,
+        expired: 0,
+        cancelled: 0,
+        total: 0
+      }
     }
   }
 
