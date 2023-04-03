@@ -21,14 +21,26 @@ describe('SiteMetricsComponent', () => {
   let buildSpy;
   const testSk = '37bbecdf38089efe13af862dc9d6f460'
 
-  let testMetricsData1 = MockData.metricsData1;
-  let testMetricsData2 = MockData.metricsData2;
 
-  let testSubject = new BehaviorSubject(testMetricsData1);
+  let mockParksAndFacilities = MockData.mockParkFacility_1;
+  let mockDateRange = ['2023-01-30', '2023-02-01'];
+  let mockMetricsData = MockData.mockMetrics1;
+  let mockMetricsParams = {
+    timeSpan: null,
+    park: MockData.mockPark_1.sk,
+    facility: MockData.mockFacility_1.sk,
+    dateRange: mockDateRange
+  }
 
   let fakeDataService = {
-    watchItem: () => {
-      return testSubject;
+    watchItem: (id) => {
+      if (id === Constants.dataIds.CURRENT_METRICS)
+        return new BehaviorSubject([mockMetricsData]);
+      if (id === Constants.dataIds.METRICS_FILTERS_PARAMS)
+        return new BehaviorSubject(mockMetricsParams);
+      if (id === Constants.dataIds.PARK_AND_FACILITY_LIST)
+        return new BehaviorSubject(mockParksAndFacilities);
+      return new BehaviorSubject(null);
     },
   };
 
@@ -44,7 +56,7 @@ describe('SiteMetricsComponent', () => {
 
     fixture = TestBed.createComponent(SiteMetricsComponent);
     component = fixture.componentInstance;
-    buildSpy = spyOn(component, 'buildCharts').and.callThrough();
+    buildSpy = spyOn(component, 'buildDoughnutChart').and.callThrough();
     fixture.detectChanges();
   });
 
@@ -54,48 +66,31 @@ describe('SiteMetricsComponent', () => {
     expect(buildSpy).toHaveBeenCalledTimes(0);
   });
 
-  it('should load metrics data into component', async () => {
-    let data = testMetricsData1;
-    expect(component.passActive).toEqual(data.active);
-    expect(component.passExpired).toEqual(data.expired);
-    expect(component.passReserved).toEqual(data.reserved);
-    expect(component.passExpired).toEqual(data.expired);
-  });
-
-  it('should update metrics with new data', async () => {
-    let data = testMetricsData2;
-
-    component.buildCharts(data);
-
-    await fixture.isStable();
-    expect(component.passActive).toEqual(data.active);
-    expect(component.passExpired).toEqual(data.expired);
-    expect(component.passReserved).toEqual(data.reserved);
-    expect(component.passExpired).toEqual(data.expired);
-  });
-
-  it('should handle generate export report click', fakeAsync(async () => {
-    let getPassExportSpy = spyOn(component, 'getPassExport');
-    let apiSpy = spyOn(component['apiService'], 'get').and.returnValue(
-      new BehaviorSubject({
-        status: 'Export job created',
-        sk: '37bbecdf38089efe13af862dc9d6f460',
-      })
-    );
-
-    const buttons =
-      fixture.debugElement.nativeElement.querySelectorAll('button');
-    buttons[0].click();
-    tick(1200);
+  it('should parse statusData', async () => {
+    component.getStatusData();
     await fixture.isStable();
     fixture.detectChanges();
+    expect(component['passTotals']).toEqual({
+      active: 5,
+      reserved: 3,
+      expired: 1,
+      cancelled: 4,
+      total: 9
+    });
+  });
 
-    expect(getPassExportSpy).toHaveBeenCalledTimes(1);
-    expect(apiSpy).toHaveBeenCalledTimes(1);
-    expect(component.isGenerating).toBeTrue();
-    expect(component.signedURL).toBeNull();
-    expect(component.statusMessage).toBeTruthy();
-  }));
+  it('should parse capacityData', async () => {
+    let date = mockMetricsData.sk;
+    component.dateInterval = ['2023-01-30', '2023-01-31', '2023-02-01'];
+    let capacityData = component.getCapacityData();
+    await fixture.isStable();
+    fixture.detectChanges();
+    expect(capacityData[date]).toEqual({
+      booked: 9,
+      capacity: 24,
+      cancelled: 4
+    });
+  });
 
   it('should test when API call finds no export report', async () => {
     let toastService = spyOn(component['toastService'], 'addMessage')

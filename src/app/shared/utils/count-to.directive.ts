@@ -22,12 +22,12 @@ import {
 } from 'rxjs';
 
 @Directive({
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   selector: '[countTo]',
 })
 export class CountToDirective implements OnDestroy, OnInit {
   @Input('countTo') set count(count: number) {
-    this._oldCount.next(this._count.value);
+    this._oldCount.next(this._count.value || 0);
     this._count.next(count);
   }
   @Input() set duration(duration: number) {
@@ -37,7 +37,7 @@ export class CountToDirective implements OnDestroy, OnInit {
     this._jitter.next(jitter);
   }
 
-  private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
   // default count
   private readonly _count = new BehaviorSubject(0);
   private readonly _oldCount = new BehaviorSubject(0);
@@ -76,7 +76,7 @@ export class CountToDirective implements OnDestroy, OnInit {
   constructor(
     private readonly elementRef: ElementRef,
     private readonly renderer: Renderer2
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.displayCurrentCount();
@@ -91,9 +91,10 @@ export class CountToDirective implements OnDestroy, OnInit {
     this._currentValue
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((currentValue) => {
-        const displayValue = currentValue
-          ? formatNumber(currentValue, 'en-US')
-          : '-';
+        let displayValue = formatNumber(currentValue, 'en-US');
+        if (isNaN(currentValue)) {
+          displayValue = '-';
+        }
         this.renderer.setProperty(
           this.elementRef.nativeElement,
           'innerHTML',
@@ -103,6 +104,7 @@ export class CountToDirective implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-      this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

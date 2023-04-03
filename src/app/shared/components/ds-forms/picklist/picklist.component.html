@@ -24,11 +24,13 @@
     <option selected *ngIf="defaultNullDisplay" value="null">
       {{ defaultNullDisplay }}
     </option>
-    <option
-      *ngFor="let option of selectOptions; index as i"
-      value="{{ option?.value }}"
-    >
-      {{ option?.display }}
+    <option *ngFor="let option of selectOptions; index as i" value="{{ option?.value }}" [disabled]="option?.disabled">
+      <div *ngIf="!option?.breakpoint">
+        {{ option?.display }}
+      </div>
+      <div *ngIf="option?.breakpoint" class="text-light">
+        {{drawStrikeoutBar()}}
+      </div>
     </option>
   </select>
 </div>

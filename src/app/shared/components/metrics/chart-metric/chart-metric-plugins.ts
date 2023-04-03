@@ -16,6 +16,11 @@ const barHighlightColumn = {
       scales: { x, y },
     } = chart;
 
+    // check if data is decimated
+    if (x.ticks?.length !== x.max + 1) {
+      return;
+    }
+
     if (tooltip._active[0]) {
       const index = tooltip._active[0].index;
 
@@ -30,7 +35,7 @@ const barHighlightColumn = {
 
 export class ChartPlugins {
   // List non-global plugins here. These plugins have to be manually added to each chart that uses them.
-  public readonly barHighlightColumnPlugin = barHighlightColumn;
+  public static readonly barHighlightColumnPlugin = barHighlightColumn;
 }
 
 export function registerGlobalChartPlugins() {

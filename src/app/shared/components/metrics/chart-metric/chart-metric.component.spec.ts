@@ -22,16 +22,6 @@ describe('ChartMetricComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('handles observables', async () => {
-    component.labels = ['label1', 'label2'];
-    component.datasets = ['dataset1', 'dataset2'];
-    component.options = { option1: 'option1' };
-    component.plugins = ['plugin1'];
-    component['_isChartReady'].next(true);
-    await fixture.isStable();
-    fixture.detectChanges();
-  });
-
   it('awaits all async calls before building chart', async () => {
     expect(buildSpy).not.toHaveBeenCalled();
     component.type = 'bar';

@@ -9,4 +9,8 @@ import { BaseInputComponent } from '../base-input/base-input.component';
 export class PicklistComponent extends BaseInputComponent {
   @Input() selectOptions;
   @Input() defaultNullDisplay;
+
+  drawStrikeoutBar() {
+    return ('─').repeat(25);
+  }
 }

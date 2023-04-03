@@ -31,12 +31,14 @@ export class BaseInputComponent implements OnInit, OnDestroy {
   public controlInitialized = new BehaviorSubject(false);
 
   constructor(
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.subscriptions.add(
       this.control.valueChanges.subscribe((res) => {
-        this.inputChange.emit(res);
+        if (res) {
+          this.inputChange.emit(res);
+        }
       })
     );
     this.controlInitialized.next(true);

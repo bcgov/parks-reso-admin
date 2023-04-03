@@ -1,49 +1,23 @@
 <form [formGroup]="form">
   <div class="row d-flex justify-content-between mb-4">
-    <app-radio-buttons
-      class="col-md-3 col-sm-12 mb-2 mb-md-0"
-      [control]="fields?.timeSpan"
-      [options]="timeSpanOptions"
-      [optionsLabels]="timeSpanLabels"
-      [group]="false"
-      [id]="'timeSpan'"
-    ></app-radio-buttons>
+    <app-radio-buttons class="col-md-3 col-sm-12 mb-2 mb-md-0" [control]="fields?.timeSpan" [options]="timeSpanOptions"
+      [optionsLabels]="timeSpanLabels" [group]="false" [id]="'timeSpan'" (inputChange)="presetRange()"></app-radio-buttons>
     <div class="col">
       <div class="d-flex flex-column flex-md-row justify-content-end">
-        <app-shortdate-picker class="p-0 me-md-2 mb-2 mb-md-0" [range]="true">
+        <app-shortdate-picker class="p-0 me-md-2 mb-2 mb-md-0" [range]="true" [control]="fields.dateRange"
+          [id]="'dateRange'" [maxDateRange]="366" [icon]="'bi-calendar'" (click)="unsetRange()">
         </app-shortdate-picker>
 
         <!-- medium screen or greater  -->
         <div class="d-none d-md-flex">
           <div class="dropdown">
-            <button
-              class="btn btn-outline-primary dropdown-toggle me-2"
-              type="button"
-              id="filtersDropdown"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="outside"
-              aria-expanded="false"
-            >
+            <button class="btn btn-outline-primary dropdown-toggle me-2" type="button" id="filtersDropdown"
+              data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
               <i class="bi bi-list"></i>
               Open Filters
             </button>
             <div class="dropdown-menu" aria-labelledby="filtersDropdown">
-              <ng-container *ngTemplateOutlet="openFilters"></ng-container>
-            </div>
-          </div>
-          <div class="dropdown">
-            <button
-              class="btn btn-primary dropdown-toggle me-2"
-              type="button"
-              id="chartDownloadsDropdown"
-              data-bs-toggle="dropdown"
-              data-bs-auto-close="outside"
-              aria-expanded="false"
-            >
-              Download Charts
-            </button>
-            <div class="dropdown-menu" aria-labelledby="chartDownloadsDropdown">
-              <ng-container *ngTemplateOutlet="downloadCharts"></ng-container>
+              <ng-container *ngTemplateOutlet="parkFacilitySelect"></ng-container>
             </div>
           </div>
         </div>
@@ -53,203 +27,48 @@
           <div class="accordion" id="filterAccordion">
             <div class="accordion-item">
               <div class="d-flex flex-row">
-                <button
-                  class="col btn btn-outline-primary my-1"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#openFilterAccordionContent"
-                  aria-expanded="false"
-                  aria-controls="openFilterAccordionToggle"
-                >
+                <button class="col btn btn-outline-primary my-1" data-bs-toggle="collapse"
+                  data-bs-target="#openFilterAccordionContent" aria-expanded="false"
+                  aria-controls="openFilterAccordionToggle">
                   <i class="bi bi-list"></i>
                   Open Filters
                 </button>
               </div>
               <div class="d-flex flex-row">
-                <div
-                  class="col mb-2 accordion-card accordion-collapse collapse"
-                  id="openFilterAccordionContent"
-                  data-bs-parent="#filterAccordion"
-                >
-                  <ng-container *ngTemplateOutlet="openFilters"></ng-container>
+                <div class="col mb-2 accordion-card accordion-collapse collapse" id="openFilterAccordionContent"
+                  data-bs-parent="#filterAccordion">
+                  <ng-container *ngTemplateOutlet="parkFacilitySelect"></ng-container>
                 </div>
               </div>
             </div>
             <div class="accordion-item">
               <div class="d-flex flex-row">
-                <button
-                  class="col btn btn-block btn-primary my-1"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#downloadChartsAccordionContent"
-                  aria-expanded="false"
-                  aria-controls="openFilterAccordionToggle"
-                >
+                <button class="col btn btn-block btn-primary my-1" data-bs-toggle="collapse"
+                  data-bs-target="#downloadChartsAccordionContent" aria-expanded="false"
+                  aria-controls="openFilterAccordionToggle">
                   Download Charts
                 </button>
-              </div>
-              <div class="d-flex flex-row">
-                <div
-                  class="col mb-1 accordion-card accordion-collapse collapse"
-                  id="downloadChartsAccordionContent"
-                  data-bs-parent="#filterAccordion"
-                >
-                  <ng-container
-                    *ngTemplateOutlet="downloadCharts"
-                  ></ng-container>
-                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <button class="mt-1 mt-md-0 mb-2 mb-md-0 btn btn-primary">
-          Export .csv
-        </button>
       </div>
     </div>
   </div>
 </form>
 
 <ng-template #parkFacilitySelect>
-  <div class="col">
-    <app-picklist
-      [label]="'Park'"
-      [selectOptions]="parkOptions"
-      [control]="fields.park"
-      [id]="'downloadChartsPark'"
-      (inputChange)="parkChange($event)"
-    >
-    </app-picklist>
-  </div>
-  <div class="col">
-    <app-picklist
-      [label]="'Facility'"
-      [selectOptions]="facilityOptions"
-      [placeholder]="'All Facilities'"
-      [control]="fields.facility"
-      [id]="'downloadChartsFacility'"
-    >
-    </app-picklist>
-  </div>
-</ng-template>
-
-<ng-template #openFilters>
   <div class="m-4">
-    <div class="row">
-      <ng-container *ngTemplateOutlet="parkFacilitySelect"></ng-container>
-    </div>
-    <div class="d-flex flex-row-reverse">
-      <button class="btn btn-primary"><div class="px-4">Apply</div></button>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #downloadCharts>
-  <div class="m-4">
-    <div class="row">
-      <ng-container *ngTemplateOutlet="parkFacilitySelect"></ng-container>
-    </div>
     <div class="row">
       <div class="col">
-        <app-picklist
-          [label]="'File Type'"
-          [selectOptions]="fileTypeOptions"
-          [control]="fields.fileType"
-          [id]="'downloadChartsFileType'"
-          (inputChange)="parkChange($event)"
-        >
+        <app-picklist [label]="'Park'" [selectOptions]="parkOptions" [control]="fields.park" [id]="'downloadChartsPark'">
         </app-picklist>
       </div>
       <div class="col">
-        <!-- dummy column -->
+        <app-picklist [label]="'Facility'" [selectOptions]="facilityOptions" [placeholder]="'All Facilities'"
+          [control]="fields.facility" [id]="'downloadChartsFacility'">
+        </app-picklist>
       </div>
-    </div>
-    <h4>Charts to Export</h4>
-    <div class="row">
-      <div class="col">
-        <app-checkbox
-          [label]="'Pass breakdown by status'"
-          [control]="fields.exportPassBreakdownByStatus"
-          [id]="'downloadChartsExportPassBreakdownByStatus'"
-          class="d-flex flex-row-reverse justify-content-end"
-        ></app-checkbox>
-      </div>
-      <div class="col">
-        <app-checkbox
-          [label]="'Pass activity by day'"
-          [control]="fields.exportPassActivityByDay"
-          [id]="'downloadChartsExportPassActivityByDay'"
-          class="d-flex flex-row-reverse justify-content-end"
-        ></app-checkbox>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <app-checkbox
-          [label]="'Pass trends by hour'"
-          [control]="fields.exportPassTrendsByHour"
-          [id]="'downloadChartsExportPassTrendsByHour'"
-          class="d-flex flex-row-reverse justify-content-end"
-        ></app-checkbox>
-      </div>
-      <div class="col">
-        <app-checkbox
-          [label]="'Busiest days'"
-          [control]="fields.exportBusiestDays"
-          [id]="'downloadChartsExportBusiestDays'"
-          class="d-flex flex-row-reverse justify-content-end"
-        ></app-checkbox>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <app-checkbox
-          [label]="'Returning guests'"
-          [control]="fields.exportReturningGuests"
-          [id]="'downloadChartsExportReturningGuests'"
-          class="d-flex flex-row-reverse justify-content-end"
-        ></app-checkbox>
-      </div>
-      <div class="col">
-        <!-- dummy column -->
-      </div>
-    </div>
-    <div class="d-flex justify-content-end">
-      <button
-        class="btn btn-outline-primary me-2"
-        *ngIf="
-          fields?.exportBusiestDays.value !== true ||
-          fields?.exportPassActivityByDay.value !== true ||
-          fields?.exportPassBreakdownByStatus.value !== true ||
-          fields?.exportPassTrendsByHour.value !== true ||
-          fields?.exportReturningGuests.value !== true
-        "
-        (click)="selectAllExports(true)"
-      >
-        <div class="px-4">Select All</div>
-      </button>
-      <button
-        class="btn btn-outline-primary me-2"
-        *ngIf="
-          fields?.exportBusiestDays.value === true &&
-          fields?.exportPassActivityByDay.value === true &&
-          fields?.exportPassBreakdownByStatus.value === true &&
-          fields?.exportPassTrendsByHour.value === true &&
-          fields?.exportReturningGuests.value === true
-        "
-        (click)="selectAllExports(false)"
-      >
-        <div class="px-4">Deselect All</div>
-      </button>
-      <button
-        class="btn btn-primary"
-        [disabled]="
-          !fields?.park?.value ||
-          !fields?.facility?.value ||
-          !fields?.fileType?.value
-        "
-      >
-        <div class="px-4">Download</div>
-      </button>
     </div>
   </div>
 </ng-template>

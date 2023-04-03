@@ -3,13 +3,14 @@ import {
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
-  Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { MetricsService } from 'src/app/services/metrics.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { Constants } from 'src/app/shared/utils/constants';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-metrics-filter',
@@ -19,133 +20,197 @@ import { Constants } from 'src/app/shared/utils/constants';
 export class MetricsFilterComponent extends BaseFormComponent {
   public params;
   public parkFacilitiesList;
-  public timeSpanOptions = ['year', 'month', 'week'];
-  public timeSpanLabels = ['12M', '30D', '7D'];
+  public timeSpanOptions = ['week', 'month', 'year'];
+  public timeSpanLabels = ['7D', '30D', '12M'];
   public parkOptions = [];
   public facilityOptions = [];
-  public fileTypeOptions = [
-    { value: 'pdf', display: 'PDF' },
-    { value: 'csv', display: 'CSV' },
-    { value: 'json', display: 'JSON' },
-  ];
+  public metrics = [];
+  public timezone = 'America/Vancouver';
+  public count = 0;
+  public minDate;
+  public maxDate;
+
   constructor(
     protected formBuilder: UntypedFormBuilder,
     protected router: Router,
     protected dataService: DataService,
     protected loadingService: LoadingService,
-    protected changeDetector: ChangeDetectorRef
+    protected changeDetector: ChangeDetectorRef,
+    protected metricsService: MetricsService,
   ) {
     super(formBuilder, router, dataService, loadingService, changeDetector);
     this.subscriptions.add(
-      this.dataService
-        .watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST)
-        .subscribe((res) => {
-          if (res) {
-            this.parkFacilitiesList = res;
-            this.createParksOptions(res);
+      this.dataService.watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST).subscribe((res) => {
+        this.updateFilterParams();
+        if (res && !this.parkFacilitiesList) {
+          this.parkFacilitiesList = res;
+          this.createParksOptions(this.parkFacilitiesList);
+          if (this.data.park && this.data.park !== 'all') {
+            this.createFacilityOptions(this.parkFacilitiesList[this.data.park].facilities);
           }
-        })
-    );
+        }
+      })
+    )
     this.subscriptions.add(
-      this.dataService
-        .watchItem(Constants.dataIds.METRICS_FILTERS_PARAMS)
-        .subscribe((res) => {
-          if (res) {
-            this.params = res;
-            this.data = this.params;
-            this.setForm();
-          }
-        })
-    );
+      this.dataService.watchItem(Constants.dataIds.METRICS_FILTERS_PARAMS).subscribe((res) => {
+        if (res) {
+          this.data = res;
+          if (this.validateMetricsParams(this.data)) {
+            this.onSubmit(this.data);
+          };
+        }
+      })
+    )
+    this.parkFacilitiesList = this.dataService.getItemValue(Constants.dataIds.PARK_AND_FACILITY_LIST);
+    this.data = this.dataService.getItemValue(Constants.dataIds.METRICS_FILTERS_PARAMS);
+    if (this.parkFacilitiesList) {
+      this.createParksOptions(this.parkFacilitiesList);
+      if (this.data.park && this.data.park !== 'all') {
+        this.createFacilityOptions(this.parkFacilitiesList[this.data.park].facilities);
+      }
+    }
     this.setForm();
   }
 
   setForm() {
-    if (!this.data?.timeSpan) {
-      this.data.timeSpan = this.timeSpanOptions[0];
-    }
     this.form = new UntypedFormGroup({
       timeSpan: new UntypedFormControl(this.data.timeSpan),
-      startDate: new UntypedFormControl(
-        this.data.startDate,
-        Validators.required
+      dateRange: new UntypedFormControl(
+        this.data.dateRange,
       ),
-      endDate: new UntypedFormControl(this.data.endDate, Validators.required),
       park: new UntypedFormControl(this.data.park),
       facility: new UntypedFormControl(this.data.facility),
-      fileType: new UntypedFormControl(this.data.fileType),
-      exportPassBreakdownByStatus: new UntypedFormControl(
-        this.data.exportPassBreakdownByStatus
-      ),
-      exportPassTrendsByHour: new UntypedFormControl(
-        this.data.exportPassTrendsByHour
-      ),
-      exportReturningGuests: new UntypedFormControl(
-        this.data.exportReturningGuests
-      ),
-      exportPassActivityByDay: new UntypedFormControl(
-        this.data.exportPassActivityByDay
-      ),
-      exportBusiestDays: new UntypedFormControl(this.data.exportBusiestDays),
     });
     super.updateForm();
     super.addDisabledRule(
       this.fields.facility,
       () => {
-        return this.fields.park.value ? false : true;
+        const park = this.fields?.park?.value;
+        if (!park || park === 'all') {
+          return true;
+        }
+        return false;
       },
       this.fields.park.valueChanges
     );
+    super.subscribeToControlValueChanges(this.fields.timeSpan, () => { this.presetRange() })
+    super.subscribeToControlValueChanges(this.fields.park, () => { this.parkChange() })
+    super.subscribeToControlValueChanges(this.fields.facility, () => { this.updateFilterParams() })
+    super.subscribeToControlValueChanges(this.fields.dateRange, () => { this.updateFilterParams() })
   }
 
-  async onSubmit() {
+  async updateFilterParams() {
     let res = await super.submit();
+    this.metricsService.setFilterParams(res?.fields);
   }
 
-  createParksOptions(list) {
-    for (const park of Object.keys(list)) {
-      this.parkOptions.push({ value: park, display: list[park].name });
-    }
-  }
-
-  createFacilityOptions(list) {
-    for (const facility of Object.keys(list)) {
-      this.facilityOptions.push({
-        value: list[facility].sk,
-        display: list[facility].facilityName,
-      });
-    }
-  }
-
-  parkChange(event) {
-    if (this.parkFacilitiesList) {
-      const selectedPark = this.parkFacilitiesList[this.fields?.park?.value];
-      if (selectedPark) {
-        this.facilityOptions = [];
-        for (const facility of Object.keys(selectedPark.facilities)) {
-          this.facilityOptions.push({
-            value: selectedPark.facilities[facility].sk,
-            display: selectedPark.facilities[facility].name,
-          });
-        }
-        this.fields.facility.setValue(this.facilityOptions[0]?.value || null);
+  async onSubmit(params) {
+    if (this.validateMetricsParams(params) && !this.loading) {
+      // Get everything
+      if (params.park === 'all') {
+        this.metricsService.fetchData(params.dateRange[0], params.dateRange[1]);
+        return;
+      } else if (params.facility === 'all') {
+        // Get all facilities
+        this.metricsService.fetchData(params.dateRange[0], params.dateRange[1], params.park);
+        return;
+      } else {
+        this.metricsService.fetchData(params.dateRange[0], params.dateRange[1], params.park, params.facility);
       }
     }
   }
 
-  selectAllExports(select: boolean) {
-    if (select) {
-      this.fields.exportBusiestDays.setValue(true);
-      this.fields.exportPassActivityByDay.setValue(true);
-      this.fields.exportPassTrendsByHour.setValue(true);
-      this.fields.exportPassBreakdownByStatus.setValue(true);
-      this.fields.exportReturningGuests.setValue(true);
-    } else {
-      this.fields.exportBusiestDays.setValue(false);
-      this.fields.exportPassActivityByDay.setValue(false);
-      this.fields.exportPassTrendsByHour.setValue(false);
-      this.fields.exportPassBreakdownByStatus.setValue(false);
-      this.fields.exportReturningGuests.setValue(false);
+  validateMetricsParams(fields): boolean {
+    if (
+      !fields.park ||
+      !fields.dateRange
+    ) {
+      return false;
     }
+    if (fields.park !== 'all' && !fields.facility) {
+      return false;
+    }
+    return true;
+  }
+
+  createParksOptions(list) {
+    let optionsList = [{
+      value: 'all',
+      display: 'All Parks'
+    },
+    {
+      value: null,
+      display: null,
+      disabled: true,
+      breakpoint: true
+    }
+    ];
+    for (const park of Object.keys(list)) {
+      optionsList.push({ value: park, display: list[park].name });
+    }
+    this.parkOptions = optionsList;
+  }
+
+  createFacilityOptions(list) {
+    let optionsList = [{
+      value: 'all',
+      display: 'All Facilities'
+    },
+    {
+      value: null,
+      display: null,
+      disabled: true,
+      breakpoint: true
+    }
+    ];
+    for (const facility in list) {
+      optionsList.push({
+        value: list[facility].sk,
+        display: list[facility].name,
+      });
+    }
+    this.facilityOptions = optionsList;
+  }
+
+  parkChange() {
+    const park = this.fields?.park?.value;
+    if (!park || park === 'all') {
+      this.fields.facility.setValue(null);
+      return;
+    }
+    if (this.parkFacilitiesList) {
+      const selectedPark = this.parkFacilitiesList[this.fields.park.value];
+      if (selectedPark) {
+        this.createFacilityOptions(selectedPark.facilities);
+        this.fields.facility.setValue(this.facilityOptions[2]?.value || this.facilityOptions[0]?.value || null);
+      }
+    }
+    return;
+  }
+
+  presetRange() {
+    const today = DateTime.now().setZone(this.timezone);
+    const endDate = today.toISODate();
+    if (this.fields.timeSpan.value) {
+      let startDate;
+      switch (this.fields.timeSpan.value) {
+        case 'year':
+          startDate = today.minus({ months: 12 }).toISODate();
+          break;
+        case 'month':
+          startDate = today.minus({ days: 30 }).toISODate();
+          break;
+        case 'week':
+          startDate = today.minus({ days: 7 }).toISODate();
+          break;
+        default:
+          startDate = endDate;
+      }
+      this.fields.dateRange.setValue([startDate, endDate]);
+    }
+  }
+
+  unsetRange() {
+    this.fields.timeSpan.setValue(null);
   }
 }
