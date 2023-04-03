@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="pt-3 container-fluid">
   <h1>Site Metrics</h1>
   <hr />
   <app-metrics-filter></app-metrics-filter>
@@ -16,18 +16,18 @@
         | date: 'longDate'}}</h3>
       <div class="row d-flex">
         <div class="col-12 col-md-4 row flex-column mx-auto gy-3 justify-content-between">
-          <app-metric-card class="metric-card px-0 mt-0" [title]="'Total Number of Passes'">
+          <app-metric-card class="metric-card px-0 mt-0" [title]="'Total number of passes'">
             <app-basic-metric [value]="passTotals?.total" [animate]="true" [animationJitter]="true"> </app-basic-metric>
           </app-metric-card>
-          <app-metric-card class="metric-card px-0" [title]="'Active Passes'">
+          <app-metric-card class="metric-card px-0" [title]="'Active passes'">
             <app-basic-metric [value]="passTotals?.active" [animate]="true" [animationJitter]="true">
             </app-basic-metric>
           </app-metric-card>
-          <app-metric-card class="metric-card px-0" [title]="'Reserved Passes'">
+          <app-metric-card class="metric-card px-0" [title]="'Reserved passes'">
             <app-basic-metric [value]="passTotals?.reserved" [animate]="true" [animationJitter]="true">
             </app-basic-metric>
           </app-metric-card>
-          <app-metric-card class="metric-card px-0 mb-0" [title]="'Expired Passes'">
+          <app-metric-card class="metric-card px-0 mb-0" [title]="'Expired passes'">
             <app-basic-metric [value]="passTotals?.expired" [animate]="true" [animationJitter]="true">
             </app-basic-metric>
           </app-metric-card>
