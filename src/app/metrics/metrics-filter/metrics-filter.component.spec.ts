@@ -121,7 +121,7 @@ describe('MetricsFilterComponent', () => {
       timeSpan: null,
       park: 'all',
       dateRange: mockDateRange,
-      facility: undefined
+      facility: null
     });
     component.fields.park.setValue(mockPark1.sk);
     filterSpy.calls.reset();

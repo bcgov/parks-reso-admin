@@ -41,9 +41,13 @@ export class MetricsFilterComponent extends BaseFormComponent {
     super(formBuilder, router, dataService, loadingService, changeDetector);
     this.subscriptions.add(
       this.dataService.watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST).subscribe((res) => {
-        if (res) {
+        this.updateFilterParams();
+        if (res && !this.parkFacilitiesList) {
           this.parkFacilitiesList = res;
           this.createParksOptions(this.parkFacilitiesList);
+          if (this.data.park && this.data.park !== 'all') {
+            this.createFacilityOptions(this.parkFacilitiesList[this.data.park].facilities);
+          }
         }
       })
     )
@@ -66,7 +70,6 @@ export class MetricsFilterComponent extends BaseFormComponent {
       }
     }
     this.setForm();
-
   }
 
   setForm() {
@@ -98,8 +101,7 @@ export class MetricsFilterComponent extends BaseFormComponent {
 
   async updateFilterParams() {
     let res = await super.submit();
-    let fields = res.fields;
-    this.metricsService.setFilterParams(fields);
+    this.metricsService.setFilterParams(res?.fields);
   }
 
   async onSubmit(params) {
@@ -171,9 +173,9 @@ export class MetricsFilterComponent extends BaseFormComponent {
   }
 
   parkChange() {
-    const park = this.fields.park.value;
+    const park = this.fields?.park?.value;
     if (!park || park === 'all') {
-      this.fields.facility.setValue(undefined);
+      this.fields.facility.setValue(null);
       return;
     }
     if (this.parkFacilitiesList) {
@@ -183,6 +185,7 @@ export class MetricsFilterComponent extends BaseFormComponent {
         this.fields.facility.setValue(this.facilityOptions[2]?.value || this.facilityOptions[0]?.value || null);
       }
     }
+    return;
   }
 
   presetRange() {

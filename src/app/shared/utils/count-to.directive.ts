@@ -37,7 +37,7 @@ export class CountToDirective implements OnDestroy, OnInit {
     this._jitter.next(jitter);
   }
 
-  private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
   // default count
   private readonly _count = new BehaviorSubject(0);
   private readonly _oldCount = new BehaviorSubject(0);
@@ -104,6 +104,7 @@ export class CountToDirective implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 }

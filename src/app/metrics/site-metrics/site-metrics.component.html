@@ -4,7 +4,7 @@
   <app-metrics-filter></app-metrics-filter>
   <div *ngIf="noData"
     class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2 empty-page mb-3 text-center">
-    {{loading ? 'Loading...' : 'Select date range or choose filters to display data.'}}
+    {{loading ? 'Loading...' : 'Select a date range display data.'}}
   </div>
   <div *ngIf="!noData">
     <!-- Loading element when API ready -->

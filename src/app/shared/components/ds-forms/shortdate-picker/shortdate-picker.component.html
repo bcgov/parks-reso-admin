@@ -47,9 +47,14 @@
 
   <div
     class="input-group-text clear-button"
-    (click)="clearDate()"
-    title="Clear Date"
-  >
-    <i class="bi bi-x-lg"></i>
+    >
+    <div *ngIf="control?.enabled"
+      title="Clear Date"
+      (click)="clearDate()">
+      <i class="bi bi-x-lg"></i>
+    </div>
+    <div *ngIf="!control?.enabled">
+      <i class="spinner-border spinner-border-sm"></i>
+    </div>
   </div>
 </div>
