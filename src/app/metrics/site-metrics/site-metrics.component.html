@@ -34,7 +34,15 @@
         </div>
         <div class="col-12 col-md-8 mt-0 pt-3">
           <div class="p-3 card h-100">
-            <h4>Pass breakdown by status</h4>
+            <div class="d-flex justify-content-between mb-3"> 
+              <h4>Pass breakdown by status</h4>
+              <button
+                [disabled]="loading || !doughnutData"
+                class="btn btn-primary mr-1 d-none" 
+                (click)="exportChartData()">
+                <i class="bi bi-download"></i>
+              </button>
+            </div>
             <div *ngIf="!doughnutData"
               class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2 text-center">
               {{loading ? 'Loading...' : 'No passes found.'}}
@@ -46,7 +54,15 @@
         </div>
         <div class="col-12 mt-0 pt-3">
           <div class="p-3 card" style="height: 450px">
-            <h4>Pass activity by day</h4>
+            <div class="d-flex justify-content-between mb-3"> 
+              <h4>Pass activity by day</h4>
+              <button 
+                [disabled]="loading || !barChartData"
+                class="btn btn-primary mr-1 d-none" 
+                (click)="exportChartData()">
+                <i class="bi bi-download"></i>
+              </button>
+            </div>
             <div *ngIf="!barChartData"
               class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-2 text-center">
               <div *ngIf="loading">
