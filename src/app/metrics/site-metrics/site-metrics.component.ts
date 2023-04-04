@@ -325,6 +325,10 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
     }, 1000);
   }
 
+  async exportChartData() {
+    //TODO: export chart data
+  }
+
   async getPassExport(sk) {
     const self = this;
     const params = {
