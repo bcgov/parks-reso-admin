@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
 import { JwtUtil } from '../shared/utils/jwt-utils';
@@ -24,6 +25,7 @@ export class KeycloakService {
 
   constructor(
     private configService: ConfigService,
+    private router: Router,
     private loggerService: LoggerService,
     private toastService: ToastService
   ) {}
@@ -86,6 +88,7 @@ export class KeycloakService {
             })
             .catch((err) => {
               this.loggerService.log(`KC refresh error: ${err}`);
+              this.router.navigate(['/login']);
             });
         };
 
