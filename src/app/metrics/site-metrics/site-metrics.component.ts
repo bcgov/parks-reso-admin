@@ -6,7 +6,8 @@ import { firstValueFrom, Subscription } from 'rxjs';
 import { DataService } from '../../services/data.service';
 import { LoadingService } from '../../services/loading.service';
 import { ChartPlugins } from 'src/app/shared/components/metrics/chart-metric/chart-metric-plugins';
-import { DateTime, Interval } from 'luxon';
+import { Utils } from 'src/app/shared/utils/utils';
+import { MetricsService } from 'src/app/services/metrics.service';
 
 @Component({
   selector: 'app-site-metrics',
@@ -42,6 +43,7 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
   public barChartOptions: any;
   public barChartPlugins = [ChartPlugins.barHighlightColumnPlugin];
   public noData = false;
+  public utils = new Utils;
 
   passExport;
   isGenerating: any = false;
@@ -52,8 +54,9 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
   constructor(
     private apiService: ApiService,
     private toastService: ToastService,
+    private metricsService: MetricsService,
     protected dataService: DataService,
-    protected loadingService: LoadingService
+    protected loadingService: LoadingService,
   ) {
     this.subscriptions.add(
       dataService
@@ -162,20 +165,12 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
       }
       if (this.filterParams.dateRange) {
         this.dateRange = [this.filterParams.dateRange[0], this.filterParams.dateRange[1]];
-        this.dateInterval = this.createDateInterval(this.dateRange[0], this.dateRange[1]);
+        this.dateInterval = this.utils.createShortDateInterval(this.dateRange[0], this.dateRange[1]);
         this.noData = false;
       } else {
         this.noData = true;
       }
     }
-  }
-
-  createDateInterval(startDate, endDate) {
-    const interval = Interval.fromDateTimes(
-      DateTime.fromISO(startDate).setZone(this.timezone).startOf('day'),
-      DateTime.fromISO(endDate).setZone(this.timezone).endOf('day'),
-    ).splitBy({ day: 1 }).map(d => d.start.toISODate());
-    return interval;
   }
 
   parseMetrics() {
@@ -325,8 +320,12 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
     }, 1000);
   }
 
-  async exportChartData() {
-    //TODO: export chart data
+  exportPassStatusData(){
+    // TODO: write this
+  }
+
+  exportCapacityData() {
+    return this.metricsService.generateCapacityReportCSV(this.metrics, this.filterParams);
   }
 
   async getPassExport(sk) {

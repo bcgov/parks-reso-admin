@@ -8,8 +8,8 @@ import { ApiService } from './api.service';
 import { ConfigService } from './config.service';
 import { DataService } from './data.service';
 import { LoggerService } from './logger.service';
-
 import { MetricsService } from './metrics.service';
+import { EventKeywords, EventObject, EventService } from './event.service';
 
 describe('MetricsService', () => {
   let service: MetricsService;
@@ -94,4 +94,46 @@ describe('MetricsService', () => {
       'params'
     )
   })
+
+  it('verifies metrics filter params', async () => {
+    let mockParams = {};
+    expect(service.validateMetricsParams(mockParams)).toBeFalse();
+    mockParams = {
+      park: 'MOC1'
+    }
+    expect(service.validateMetricsParams(mockParams)).toBeFalse();
+    mockParams = {
+      park: 'all',
+      dateRange: ['2023-01-01', '2023-01-02'],
+      facility: 'all'
+    }
+    expect(service.validateMetricsParams(mockParams)).toBeTrue();
+    expect(service.validateMetricsParams(mockParams, true)).toBeFalse();
+  })
+
+  it('generates capacity report csv', async () => {
+    // prevent test from actually downloading csv
+    const downloadSpy = spyOn(service['utils'], 'downloadCSV').and.callFake(() => {
+      console.log('Mocking csv download...');
+    })
+    const eventService = TestBed.inject(EventService);
+    const error1 = new EventObject(EventKeywords.ERROR, 'Invalid parameters. Please ensure only 1 facility is selected.', 'Metrics Service')
+    const error2 = new EventObject(EventKeywords.ERROR, 'No data to be exported.', 'Metrics Service')
+    const errorSpy = spyOn(service['eventService'], 'setError');
+    service.generateCapacityReportCSV([], {});
+    expect(errorSpy).toHaveBeenCalledOnceWith(error1);
+    errorSpy.calls.reset();
+    let mockParams = {
+      park: 'MOC1',
+      dateRange: ['2023-01-01', '2023-01-02'],
+      facility: 'Mock Facility'
+    }
+    service.generateCapacityReportCSV([], mockParams);
+    expect(errorSpy).toHaveBeenCalledOnceWith(error2);
+    errorSpy.calls.reset();
+    service.generateCapacityReportCSV([mockMetrics], mockParams);
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(downloadSpy).toHaveBeenCalledTimes(1);
+  })
+
 });
