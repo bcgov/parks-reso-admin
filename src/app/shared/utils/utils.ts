@@ -100,8 +100,8 @@ export class Utils {
   // returns an array of every date in the interval between startDate & endDate inclusive
   public createShortDateInterval(startDate, endDate): string[] {
     const interval = Interval.fromDateTimes(
-      DateTime.fromISO(startDate).setZone(TIMEZONE).startOf('day'),
-      DateTime.fromISO(endDate).setZone(TIMEZONE).endOf('day'),
+      DateTime.fromISO(startDate).startOf('day'),
+      DateTime.fromISO(endDate).endOf('day'),
     ).splitBy({ day: 1 }).map(d => d.start.toISODate());
     return interval;
   }
