@@ -13,6 +13,7 @@ import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { SiteMetricsComponent } from './site-metrics.component';
 import { SharedMetricsModule } from '../../shared/components/metrics/shared-metrics.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SiteMetricsComponent', () => {
   let component: SiteMetricsComponent;
@@ -47,7 +48,7 @@ describe('SiteMetricsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SiteMetricsComponent],
-      imports: [HttpClientModule, SharedMetricsModule],
+      imports: [HttpClientModule, SharedMetricsModule, RouterTestingModule],
       providers: [
         ConfigService,
         { provide: DataService, useValue: fakeDataService },
@@ -156,4 +157,13 @@ describe('SiteMetricsComponent', () => {
     component.ngOnDestroy();
     expect(subSpy).toHaveBeenCalledTimes(1);
   });
+
+  it('downloads capacity report when clicked', async () => {
+    const capacityReportSpy = spyOn(component, 'exportCapacityData').and.callFake(() => {
+      console.log('Mocking capacity report export...');
+    })
+    const dlButton = fixture.debugElement.nativeElement.querySelector('#exportCapacityReportButton');
+    dlButton.click();
+    expect(capacityReportSpy).toHaveBeenCalledTimes(1);
+  })
 });

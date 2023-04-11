@@ -37,9 +37,10 @@
             <div class="d-flex justify-content-between mb-3"> 
               <h4>Pass breakdown by status</h4>
               <button
+                id="exportStatusReportButton"
                 [disabled]="loading || !doughnutData"
                 class="btn btn-primary mr-1 d-none" 
-                (click)="exportChartData()">
+                (click)="exportPassStatusData()">
                 <i class="bi bi-download"></i>
               </button>
             </div>
@@ -57,9 +58,10 @@
             <div class="d-flex justify-content-between mb-3"> 
               <h4>Pass activity by day</h4>
               <button 
+                id="exportCapacityReportButton"
                 [disabled]="loading || !barChartData"
-                class="btn btn-primary mr-1 d-none" 
-                (click)="exportChartData()">
+                class="btn btn-primary mr-1" 
+                (click)="exportCapacityData()">
                 <i class="bi bi-download"></i>
               </button>
             </div>

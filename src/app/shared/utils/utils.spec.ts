@@ -87,6 +87,9 @@ describe('Utils', () => {
     expect(utils.convert12hTo24hTime('6', 'AM')).toEqual(6);
     expect(utils.convert12hTo24hTime('12', 'PM')).toEqual(12);
     expect(utils.convert12hTo24hTime('6', 'PM')).toEqual(18);
+    // createShortDateInterval
+    expect(utils.createShortDateInterval('2023-01-01', '2023-01-01')).toEqual(['2023-01-01']);
+    expect(utils.createShortDateInterval('2023-01-01', '2023-01-03')).toEqual(['2023-01-01', '2023-01-02', '2023-01-03']);
   });
 
   it('handles various utils', async () => {

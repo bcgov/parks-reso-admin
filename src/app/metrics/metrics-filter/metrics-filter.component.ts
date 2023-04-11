@@ -55,7 +55,7 @@ export class MetricsFilterComponent extends BaseFormComponent {
       this.dataService.watchItem(Constants.dataIds.METRICS_FILTERS_PARAMS).subscribe((res) => {
         if (res) {
           this.data = res;
-          if (this.validateMetricsParams(this.data)) {
+          if (this.metricsService.validateMetricsParams(this.data)) {
             this.onSubmit(this.data);
           };
         }
@@ -105,7 +105,7 @@ export class MetricsFilterComponent extends BaseFormComponent {
   }
 
   async onSubmit(params) {
-    if (this.validateMetricsParams(params) && !this.loading) {
+    if (this.metricsService.validateMetricsParams(params) && !this.loading) {
       // Get everything
       if (params.park === 'all') {
         this.metricsService.fetchData(params.dateRange[0], params.dateRange[1]);

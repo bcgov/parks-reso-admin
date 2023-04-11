@@ -6,18 +6,24 @@ import { ApiService } from "./api.service";
 import { DataService } from "./data.service";
 import { EventKeywords, EventObject, EventService } from "./event.service";
 import { LoadingService } from "./loading.service";
-import { ToastService } from "./toast.service";
+import { ToastService, ToastTypes } from "./toast.service";
+import { Utils } from "../shared/utils/utils";
+import { LoggerService } from "./logger.service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class MetricsService {
+
+  public utils = new Utils();
+
   constructor(
     private apiService: ApiService,
     private dataService: DataService,
     private toastService: ToastService,
     private eventService: EventService,
     private loadingService: LoadingService,
+    private loggerService: LoggerService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
@@ -95,4 +101,85 @@ export class MetricsService {
     this.dataService.setItemValue(Constants.dataIds.METRICS_FILTERS_PARAMS, fields);
   }
 
+  generateCapacityReportCSV(metricsList, metricsParams) {
+    const { park, facility, dateRange } = metricsParams;
+    try {
+      if (!this.validateMetricsParams(metricsParams, true)) {
+        // no capacity reports spanning multiple facilities (yet)
+        throw 'Invalid parameters. Please ensure only 1 facility is selected.'
+      }
+      if (!metricsList || !metricsList.length) {
+        throw 'No data to be exported.';
+      }
+      const dateInterval = this.utils.createShortDateInterval(dateRange[0], dateRange[1]);
+      let content = [['Park', 'Facility', 'Date', 'Status', 'AM base capacity', 'AM capacity modifier', 'AM total passes', 'AM booked passes', 'AM cancellations', 'PM base capacity', 'PM capacity modifier', 'PM total passes', 'PM booked passes', 'PM cancellations', 'All-Day base capacity', 'All-Day capacity modifier', 'All-Day total passes', 'All-Day booked passes', 'All-Day cancellations']];
+      for (const date of dateInterval) {
+        let metric = metricsList.find((item) => item.sk === date);
+        content.push([park, facility, date,
+          '', // TODO: update metrics to include open/closed status
+          metric?.capacities?.AM?.baseCapacity ?? '',
+          metric?.capacities?.AM?.capacityModifier ?? '',
+          isNaN(metric?.capacities?.AM?.baseCapacity + metric?.capacities?.AM?.capacityModifier) ?
+            '' : metric?.capacities?.AM?.baseCapacity + metric?.capacities?.AM?.capacityModifier,
+          isNaN(metric?.capacities?.AM?.baseCapacity + metric?.capacities?.AM?.capacityModifier - metric?.capacities?.AM?.availablePasses) ?
+            '' : metric?.capacities?.AM?.baseCapacity + metric?.capacities?.AM?.capacityModifier - metric?.capacities?.AM?.availablePasses,
+          metric?.capacities?.AM?.passStatuses?.cancelled ?? '',
+          metric?.capacities?.PM?.baseCapacity ?? '',
+          metric?.capacities?.PM?.capacityModifier ?? '',
+          isNaN(metric?.capacities?.PM?.baseCapacity + metric?.capacities?.PM?.capacityModifier) ?
+            '' : metric?.capacities?.PM?.baseCapacity + metric?.capacities?.PM?.capacityModifier,
+          isNaN(metric?.capacities?.PM?.baseCapacity + metric?.capacities?.PM?.capacityModifier - metric?.capacities?.PM?.availablePasses) ?
+            '' : metric?.capacities?.PM?.baseCapacity + metric?.capacities?.PM?.capacityModifier - metric?.capacities?.PM?.availablePasses,
+          metric?.capacities?.PM?.passStatuses?.cancelled ?? '',
+          metric?.capacities?.DAY?.baseCapacity ?? '',
+          metric?.capacities?.DAY?.capacityModifier ?? '',
+          isNaN(metric?.capacities?.DAY?.baseCapacity + metric?.capacities?.DAY?.capacityModifier) ?
+            '' : metric?.capacities?.DAY?.baseCapacity + metric?.capacities?.DAY?.capacityModifier,
+          isNaN(metric?.capacities?.DAY?.baseCapacity + metric?.capacities?.DAY?.capacityModifier - metric?.capacities?.DAY?.availablePasses) ?
+            '' : metric?.capacities?.DAY?.baseCapacity + metric?.capacities?.DAY?.capacityModifier - metric?.capacities?.DAY?.availablePasses,
+          metric?.capacities?.DAY?.passStatuses?.cancelled ?? '',
+        ]);
+      }
+      let csvData = '';
+      for (const csvRow of content) {
+        csvData += csvRow.join(',') + "\r\n";
+      };
+      const fileName = 'capacityReport_' + Math.random().toString().substring(2, 10);
+      this.utils.downloadCSV(fileName, csvData);
+    } catch (error) {
+      this.loggerService.error(`${JSON.stringify(error)}`);
+      this.toastService.addMessage(
+        `Error downloading .csv`,
+        `${error}`,
+        ToastTypes.ERROR
+      );
+      this.eventService.setError(
+        new EventObject(EventKeywords.ERROR, String(error), 'Metrics Service')
+      );
+    }
+  }
+
+  // set enforceSingleFacility to true if park === 'all' or facility === 'all' is not permitted.
+  validateMetricsParams(params, enforceSingleFacility = false): boolean {
+    if (
+      !params?.park ||
+      !params?.dateRange
+    ) {
+      return false;
+    }
+    if (enforceSingleFacility) {
+      if (
+        !params?.facility ||
+        params?.park === 'all' ||
+        params?.facility === 'all'
+      ) {
+        return false;
+      }
+    } else {
+      if (params.park !== 'all' && !params.facility) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
 const TIMEZONE = 'America/Vancouver';
@@ -96,6 +96,26 @@ export class Utils {
       second: date.getSeconds(),
     };
   }
+
+  // returns an array of every date in the interval between startDate & endDate inclusive
+  public createShortDateInterval(startDate, endDate): string[] {
+    const interval = Interval.fromDateTimes(
+      DateTime.fromISO(startDate).startOf('day'),
+      DateTime.fromISO(endDate).endOf('day'),
+    ).splitBy({ day: 1 }).map(d => d.start.toISODate());
+    return interval;
+  }
+
+  // Provides an html link to download a csv file
+  downloadCSV(filename: string, csv: string): void {
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+  }
+
 
   public capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
