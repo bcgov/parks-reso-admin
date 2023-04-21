@@ -13,19 +13,20 @@ import { Constants } from 'src/app/shared/utils/constants';
 import { MockData } from 'src/app/shared/utils/mock-data';
 import { ParkDetailsComponent } from './park-details.component';
 import { By } from '@angular/platform-browser';
+import { ParkService } from 'src/app/services/park.service';
 
 describe('ParkDetailsComponent', () => {
   let component: ParkDetailsComponent;
   let fixture: ComponentFixture<ParkDetailsComponent>;
 
   let mockFacility1 = MockData.mockFacility_1;
-  let mockFacility2 = MockData.mockFacility_2;
 
   let mockPark = MockData.mockPark_1;
+  let mockParkKey = {pk: mockPark.pk, sk: mockPark.sk};
 
   let mockDataService = {
     watchItem: (id) => {
-      if (id === Constants.dataIds.CURRENT_PARK) {
+      if (id === Constants.dataIds.CURRENT_PARK_KEY) {
         return new BehaviorSubject(mockPark);
       }
       // TODO: fix this to reflect data accurately
@@ -36,7 +37,16 @@ describe('ParkDetailsComponent', () => {
     },
   };
 
-  let mockKeyCloakService = {
+  let mockParkService = {
+    getCachedPark: (key) => {
+      if (key.pk === mockParkKey.pk && key.sk === mockParkKey.sk) {
+        return mockPark;
+      }
+      return null;
+    },
+  };
+
+    let mockKeyCloakService = {
     isAllowed: (perm) => {
       if (perm === 'add-facility') {
         return true;
@@ -57,6 +67,7 @@ describe('ParkDetailsComponent', () => {
         RouterTestingModule,
         { provide: DataService, useValue: mockDataService },
         { provide: KeycloakService, useValue: mockKeyCloakService },
+        { provide: ParkService, useValue: mockParkService },
       ],
     }).compileComponents();
 

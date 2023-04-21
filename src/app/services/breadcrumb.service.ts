@@ -10,6 +10,7 @@ import { filter } from 'rxjs/operators';
 import { Breadcrumb } from '../models/breadcrumb.model';
 import { Constants } from '../shared/utils/constants';
 import { DataService } from './data.service';
+import { ParkService } from './park.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,16 +24,16 @@ export class BreadcrumbService {
   // Observable exposing the breadcrumb hierarchy
   readonly breadcrumbs = this._breadcrumbs.asObservable();
 
-  constructor(private router: Router, private dataService: DataService) {
+  constructor(private router: Router, private dataService: DataService, private parkService: ParkService) {
     // Initial seed
     this.setBreadcrum();
 
     this.subscriptions.add(
       this.dataService
-        .watchItem(Constants.dataIds.CURRENT_PARK)
+        .watchItem(Constants.dataIds.CURRENT_PARK_KEY)
         .subscribe((res) => {
           if (res) {
-            this.park = res;
+            this.park = this.parkService.getCachedPark(res);
             this.setBreadcrum();
           }
         })

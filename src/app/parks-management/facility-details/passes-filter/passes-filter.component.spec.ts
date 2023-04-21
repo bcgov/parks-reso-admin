@@ -9,6 +9,7 @@ import { DataService } from 'src/app/services/data.service';
 import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { PassesFilterComponent } from './passes-filter.component';
+import { FacilityService } from 'src/app/services/facility.service';
 
 describe('PassesFilterComponent', () => {
   let component: PassesFilterComponent;
@@ -16,10 +17,20 @@ describe('PassesFilterComponent', () => {
   let location: Location;
 
   let mockFacility = MockData.mockFacility_1;
+  let mockFacilityKey = { pk: mockFacility.pk, sk: mockFacility.sk}
 
   let mockPartialPassFilter = MockData.mockPartialPassFilters_1;
 
   let mockSubject = new BehaviorSubject(mockFacility);
+
+  let mockFacilityService = {
+    getCachedFacility: (key) => {
+      if (key.pk === mockFacilityKey.pk && key.sk === mockFacilityKey.sk) {
+        return mockFacility;
+      }
+      return null;
+    },
+  };
 
   let mockDataService = {
     watchItem: () => {
@@ -42,6 +53,7 @@ describe('PassesFilterComponent', () => {
         HttpHandler,
         ConfigService,
         { provide: DataService, useValue: mockDataService },
+        { provide: FacilityService, useValue: mockFacilityService },
       ],
     }).compileComponents();
 

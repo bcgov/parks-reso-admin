@@ -18,6 +18,7 @@ import { ConfigService } from 'src/app/services/config.service';
 import { DataService } from 'src/app/services/data.service';
 import { FacilityService } from 'src/app/services/facility.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { ParkService } from 'src/app/services/park.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { modalSchema } from 'src/app/shared/components/modal/modal.component';
 import { Constants } from 'src/app/shared/utils/constants';
@@ -51,6 +52,7 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     protected loadingService: LoadingService,
     protected changeDetector: ChangeDetectorRef,
     private facilityService: FacilityService,
+    private parkService: ParkService,
     private route: ActivatedRoute,
     private modalService: BsModalService,
     private configService: ConfigService
@@ -58,10 +60,10 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     super(formBuilder, router, dataService, loadingService, changeDetector);
     this.subscriptions.add(
       this.dataService
-        .watchItem(Constants.dataIds.CURRENT_FACILITY)
+        .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)
         .subscribe((res) => {
           if (res) {
-            this.facility = res;
+            this.facility = this.facilityService.getCachedFacility(res);
             this.data = this.facility;
             this.setForm();
           } else {
@@ -70,9 +72,9 @@ export class FacilityEditFormComponent extends BaseFormComponent {
         })
     );
     this.subscriptions.add(
-      dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
+      dataService.watchItem(Constants.dataIds.CURRENT_PARK_KEY).subscribe((res) => {
         if (res) {
-          this.park = res;
+          this.park = this.parkService.getCachedPark(res);
         }
       })
     );
@@ -98,69 +100,69 @@ export class FacilityEditFormComponent extends BaseFormComponent {
     // Create booking days subform:
     let bookableDaysFormGroup = new UntypedFormGroup({
       Monday: new UntypedFormControl(
-        this.data.bookingDays ? this.data.bookingDays['1'] : true
+        this.data?.bookingDays ? this.data?.bookingDays['1'] : true
       ),
       Tuesday: new UntypedFormControl(
-        this.data.bookingDays ? this.data.bookingDays['2'] : true
+        this.data?.bookingDays ? this.data?.bookingDays['2'] : true
       ),
       Wednesday: new UntypedFormControl(
-        this.data.bookingDays ? this.data.bookingDays['3'] : true
+        this.data?.bookingDays ? this.data?.bookingDays['3'] : true
       ),
       Thursday: new UntypedFormControl(
-        this.data.bookingDays ? this.data.bookingDays['4'] : true
+        this.data?.bookingDays ? this.data?.bookingDays['4'] : true
       ),
       Friday: new UntypedFormControl(
-        this.data.bookingDays ? this.data.bookingDays['5'] : true
+        this.data?.bookingDays ? this.data?.bookingDays['5'] : true
       ),
       Saturday: new UntypedFormControl(
-        this.data.bookingDays ? this.data.bookingDays['6'] : true
+        this.data?.bookingDays ? this.data?.bookingDays['6'] : true
       ),
       Sunday: new UntypedFormControl(
-        this.data.bookingDays ? this.data.bookingDays['7'] : true
+        this.data?.bookingDays ? this.data?.bookingDays['7'] : true
       ),
     });
     // Create booking time capacities subform
     let bookingTimesFormGroup = new UntypedFormGroup({
-      AM: new UntypedFormControl(this.data.bookingTimes?.AM ? true : false),
-      PM: new UntypedFormControl(this.data.bookingTimes?.PM ? true : false),
-      DAY: new UntypedFormControl(this.data.bookingTimes?.DAY ? true : false),
+      AM: new UntypedFormControl(this.data?.bookingTimes?.AM ? true : false),
+      PM: new UntypedFormControl(this.data?.bookingTimes?.PM ? true : false),
+      DAY: new UntypedFormControl(this.data?.bookingTimes?.DAY ? true : false),
       capacityAM: new UntypedFormControl(
-        this.data.bookingTimes?.AM?.max || null
+        this.data?.bookingTimes?.AM?.max || null
       ),
       capacityPM: new UntypedFormControl(
-        this.data.bookingTimes?.PM?.max || null
+        this.data?.bookingTimes?.PM?.max || null
       ),
       capacityDAY: new UntypedFormControl(
-        this.data.bookingTimes?.DAY?.max || null
+        this.data?.bookingTimes?.DAY?.max || null
       ),
     });
     // Create base form
     this.form = new UntypedFormGroup({
       facilityStatus: new UntypedFormControl(
-        this.data.status?.state === 'open' ? true : false
+        this.data?.status?.state === 'open' ? true : false
       ),
       facilityClosureReason: new UntypedFormControl(
-        this.data.status?.stateReason || null
+        this.data?.status?.stateReason || null
       ),
       facilityVisibility: new UntypedFormControl(
-        this.data.visible ? this.data.visible : false
+        this.data?.visible ? this.data?.visible : false
       ),
       facilityQRCode: new UntypedFormControl(
-        this.data.qrcode ? this.data.qrcode : false
+        this.data?.qrcode ? this.data?.qrcode : false
       ),
-      facilityName: new UntypedFormControl(this.data.name, Validators.required),
-      facilityType: new UntypedFormControl(this.data.type, Validators.required),
+      facilityName: new UntypedFormControl(this.data?.name, Validators.required),
+      facilityType: new UntypedFormControl(this.data?.type, Validators.required),
       facilityBookingOpeningHour: new UntypedFormControl({
-        hour: this.data.bookingOpeningHour || 7,
+        hour: this.data?.bookingOpeningHour || 7,
         minute: 0,
         second: 0,
       } as NgbTimeStruct),
       facilityBookingDaysAhead: new UntypedFormControl(
-        this.data.bookingDaysAhead
+        this.data?.bookingDaysAhead
       ),
       facilityBookingDaysRichText: new UntypedFormControl(
         this.data
-          ? this.data.bookingDaysRichText
+          ? this.data?.bookingDaysRichText
           : this.defaultBookingDaysRichText
       ),
       facilityBookingDays: bookableDaysFormGroup,

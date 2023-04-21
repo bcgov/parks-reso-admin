@@ -40,7 +40,7 @@ export class FacilityService {
         this.dataService.setItemValue(dataTag, res);
       } else if (facilitySk && parkSk) {
         // We are getting a single facility.
-        dataTag = Constants.dataIds.CURRENT_FACILITY;
+        dataTag = Constants.dataIds.CURRENT_FACILITY_KEY;
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'facility';
         this.loggerService.debug(`Facility GET: ${parkSk} ${facilitySk}`);
@@ -52,8 +52,8 @@ export class FacilityService {
             })
           )
         )[0];
-        if (!skipCache) {
-          this.dataService.setItemValue(dataTag, res);
+        if (!skipCache && res?.pk && res?.sk) {
+          this.dataService.setItemValue(dataTag, {pk: res.pk, sk: res.sk});
         }
       }
     } catch (e) {
@@ -103,10 +103,10 @@ export class FacilityService {
           if (updateParkAndFacilityCache) {
             this.dataService.updateParkAndFacilityCache(res);
           }
-          if (updateCurrentParkCache) {
+          if (updateCurrentParkCache && res?.pk && res?.sk) {
             this.dataService.setItemValue(
-              Constants.dataIds.CURRENT_FACILITY,
-              res
+              Constants.dataIds.CURRENT_FACILITY_KEY,
+              { pk: res.pk, sk: res.sk }
             );
           }
         } catch (error) {
@@ -194,5 +194,20 @@ export class FacilityService {
   validateFacilityObject(obj) {
     // TODO: write this function
     return true;
+  }
+
+  // Get current facility, key is stored in DataService.
+  getCurrentFacility() {
+    const key = this.dataService.getItemValue(Constants.dataIds.CURRENT_FACILITY_KEY);
+    if (key) {
+      return this.getCachedFacility(key);
+    }
+    return null;
+  }
+
+  // Get facility from cache using provided key.
+  getCachedFacility(key) {
+    const orcs = key?.pk.split('::')[1];
+    return this.dataService.getItemValue(Constants.dataIds.PARK_AND_FACILITY_LIST)[orcs].facilities[key?.sk] || null;
   }
 }

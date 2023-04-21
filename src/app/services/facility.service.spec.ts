@@ -16,9 +16,12 @@ import { Constants } from '../shared/utils/constants';
 describe('FacilityService', () => {
   let service: FacilityService;
 
+  let mockFacility1 = MockData.mockFacility_1;
+  let mockFacility2 = MockData.mockFacility_2;
+
   let parkFacilitiesRes = new BehaviorSubject([
-    MockData.mockFacility_1,
-    MockData.mockFacility_2,
+    mockFacility1,
+    mockFacility2,
   ]);
 
   let specificFacilityRes = new BehaviorSubject([MockData.mockFacility_1]);
@@ -143,8 +146,8 @@ describe('FacilityService', () => {
       park: 'Mock Park 1',
     });
     expect(setDataSpy).toHaveBeenCalledOnceWith(
-      Constants.dataIds.CURRENT_FACILITY,
-      specificFacilityRes.value[0]
+      Constants.dataIds.CURRENT_FACILITY_KEY,
+      { pk: mockFacility1.pk, sk: mockFacility1.sk }
     );
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
   });
@@ -203,5 +206,25 @@ describe('FacilityService', () => {
         'Facility Service'
       )
     );
+  });
+
+  it('gets facility by key', async () => {
+    spyOn(service['dataService'], 'getItemValue').and.callFake((dataId) => {
+      if (dataId === Constants.dataIds.PARK_AND_FACILITY_LIST) {
+        return {
+          MOC1: {
+            facilities: {
+              "Mock Facility 1": mockFacility1
+            }
+          }
+        }
+      }
+      if (dataId === Constants.dataIds.CURRENT_FACILITY_KEY) {
+        return { pk: mockFacility1.pk, sk: mockFacility1.sk }
+      }
+      return null;
+    });
+    expect(service.getCachedFacility({ pk: mockFacility1.pk, sk: mockFacility1.sk })).toEqual(mockFacility1);
+    expect(service.getCurrentFacility()).toEqual(mockFacility1);
   });
 });

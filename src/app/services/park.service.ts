@@ -31,13 +31,19 @@ export class ParkService {
     try {
       if (sk) {
         // we are getting a single park based on sk
-        dataTag = Constants.dataIds.CURRENT_PARK;
+        dataTag = Constants.dataIds.CURRENT_PARK_KEY;
         this.loadingService.addToFetchList(dataTag);
         errorSubject = 'park';
         this.loggerService.debug(`Park GET ${sk}`);
         res = (
           await firstValueFrom(this.apiService.get('park', { park: sk }))
         )[0];
+        if (!skipCache && res?.pk && res?.sk) {
+          this.dataService.setItemValue(
+            dataTag,
+            { pk: res.pk, sk: res.sk }
+          );
+        }
       } else {
         // we are getting all parks
         dataTag = Constants.dataIds.PARKS_LIST;
@@ -45,9 +51,9 @@ export class ParkService {
         errorSubject = 'parks list';
         this.loggerService.debug(`Park List GET`);
         res = await firstValueFrom(this.apiService.get('park'));
-      }
-      if (!skipCache) {
-        this.dataService.setItemValue(dataTag, res);
+        if (!skipCache) {
+          this.dataService.setItemValue(dataTag, res);
+        }
       }
     } catch (e) {
       this.loggerService.error(e);
@@ -90,8 +96,8 @@ export class ParkService {
           if (updateParkAndFacilityCache) {
             this.dataService.updateParkAndFacilityCache(res);
           }
-          if (updateCurrentParkCache) {
-            this.dataService.setItemValue(Constants.dataIds.CURRENT_PARK, res);
+          if (updateCurrentParkCache && res?.pk && res?.sk) {
+            this.dataService.setItemValue(Constants.dataIds.CURRENT_PARK_KEY, { pk: res.pk, sk: res.sk });
           }
         } catch (error) {
           this.toastService.addMessage(
@@ -125,4 +131,19 @@ export class ParkService {
     // TODO: write this function
     return true;
   }
+
+  // Get current park, key is stored in DataService
+  getCurrentPark() {
+    const key = this.dataService.getItemValue(Constants.dataIds.CURRENT_PARK_KEY);
+    if (key && key.sk) {
+      return this.getCachedPark(key)
+    }
+    return null;
+  }
+
+  // Get park from cache using provided key
+  getCachedPark(key) {
+    return this.dataService.getItemValue(Constants.dataIds.PARK_AND_FACILITY_LIST)[key?.sk] || null;
+  }
+
 }

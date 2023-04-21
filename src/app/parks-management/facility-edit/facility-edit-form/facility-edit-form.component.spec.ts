@@ -10,20 +10,48 @@ import { Constants } from 'src/app/shared/utils/constants';
 import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { FacilityEditFormComponent } from './facility-edit-form.component';
+import { ParkService } from 'src/app/services/park.service';
+import { FacilityService } from 'src/app/services/facility.service';
 
 describe('FacilityEditFormComponent', () => {
   let component: FacilityEditFormComponent;
   let fixture: ComponentFixture<FacilityEditFormComponent>;
 
   let mockFacility1 = MockData.mockFacility_1;
+  let mockFacility1Key = { pk: mockFacility1.pk, sk: mockFacility1.sk };
   let mockPark = MockData.mockPark_1;
+  let mockParkKey = { pk: mockPark.pk, sk: mockPark.sk };
+
+  let mockParkService = {
+    getCachedPark: (key) => {
+      if (key.pk === mockParkKey.pk && key.sk === mockParkKey.sk) {
+        return mockPark;
+      }
+      return null;
+    }
+  }
+
+  let mockFacilityService = {
+    getCachedFacility: (key) => {
+      if (key.pk === mockFacility1Key.pk && key.sk === mockFacility1Key.sk) {
+        return mockFacility1;
+      }
+      return null;
+    },
+    postFacility: (facility) => {
+      return null;
+    },
+    putFacility: (facility) => {
+      return null;
+    }
+  }
 
   let mockDataService = {
     watchItem: (id) => {
-      if (id === Constants.dataIds.CURRENT_FACILITY) {
+      if (id === Constants.dataIds.CURRENT_FACILITY_KEY) {
         return new BehaviorSubject([mockFacility1]);
       }
-      if (id === Constants.dataIds.CURRENT_PARK) {
+      if (id === Constants.dataIds.CURRENT_PARK_KEY) {
         return new BehaviorSubject([mockPark]);
       }
       return null;
@@ -46,6 +74,8 @@ describe('FacilityEditFormComponent', () => {
         { provide: ConfigService, useValue: mockConfigService },
         BsModalService,
         { provide: DataService, useValue: mockDataService },
+        { provide: ParkService, useValue: mockParkService },
+        { provide: FacilityService, useValue: mockFacilityService },
       ],
     }).compileComponents();
 
@@ -108,6 +138,7 @@ describe('FacilityEditFormComponent', () => {
   });
 
   it('submits formatted facility 1 to facilityService', async () => {
+    component.park = mockPark;
     const putSpy = spyOn(component['facilityService'], 'putFacility');
     const postSpy = spyOn(component['facilityService'], 'postFacility');
     component.submitFacilityChanges(mockFacility1);
@@ -121,11 +152,37 @@ describe('FacilityAddFormComponent', () => {
   let fixture: ComponentFixture<FacilityEditFormComponent>;
 
   let mockFacility2 = MockData.mockFacility_2;
+  let mockFacility2Key = { pk: mockFacility2.pk, sk: mockFacility2.sk };
   let mockPark = MockData.mockPark_1;
+  let mockParkKey = { pk: mockPark.pk, sk: mockPark.sk };
+
+  let mockParkService = {
+    getCachedPark: (key) => {
+      if (key.pk === mockParkKey.pk && key.sk === mockParkKey.sk) {
+        return mockPark;
+      }
+      return null;
+    }
+  }
+
+  let mockFacilityService = {
+    getCachedFacility: (key) => {
+      if (key.pk === mockFacility2Key.pk && key.sk === mockFacility2Key.sk) {
+        return mockFacility2;
+      }
+      return null;
+    },
+    postFacility: (facility) => {
+      return null;
+    },
+    putFacility: (facility) => {
+      return null;
+    }
+  }
 
   let mockDataService = {
     watchItem: (id) => {
-      if (id === Constants.dataIds.CURRENT_PARK) {
+      if (id === Constants.dataIds.CURRENT_PARK_KEY) {
         return new BehaviorSubject([mockPark]);
       }
       return new BehaviorSubject(false);
@@ -148,6 +205,8 @@ describe('FacilityAddFormComponent', () => {
         { provide: ConfigService, useValue: mockConfigService },
         BsModalService,
         { provide: DataService, useValue: mockDataService },
+        { provide: ParkService, useValue: mockParkService },
+        { provide: FacilityService, useValue: mockFacilityService },
       ],
     }).compileComponents();
 
@@ -176,6 +235,7 @@ describe('FacilityAddFormComponent', () => {
   });
 
   it('submits formatted facility 2 to facilityService', async () => {
+    component.park = mockPark;
     const putSpy = spyOn(component['facilityService'], 'putFacility');
     const postSpy = spyOn(component['facilityService'], 'postFacility');
     component.submitFacilityChanges(mockFacility2);

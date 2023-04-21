@@ -9,6 +9,7 @@ import { Constants } from '../shared/utils/constants';
 import { MockData } from '../shared/utils/mock-data';
 
 import { FacilityDetailsResolver } from './facility-details.resolver';
+import { FacilityService } from '../services/facility.service';
 
 describe('FacilityDetailsResolver', () => {
   let resolver: FacilityDetailsResolver;
@@ -21,13 +22,23 @@ describe('FacilityDetailsResolver', () => {
   };
 
   let mockFacility1 = MockData.mockFacility_1;
+  let mockFacility1Key = {pk: mockFacility1.pk, sk: mockFacility1.sk};
 
   let mockDataService = {
     watchItem: (id) => {
-      if (id === Constants.dataIds.CURRENT_FACILITY) {
-        return new BehaviorSubject(mockFacility1);
+      if (id === Constants.dataIds.CURRENT_FACILITY_KEY) {
+        return new BehaviorSubject(mockFacility1Key);
       }
       return new BehaviorSubject(null);
+    },
+  };
+
+  let mockFacilityService = {
+    getCachedFacility: (facilityKey) => {
+      if (facilityKey === mockFacility1Key) {
+        return mockFacility1;
+      }
+      return null;
     },
   };
 
@@ -51,6 +62,7 @@ describe('FacilityDetailsResolver', () => {
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         { provide: DataService, useValue: mockDataService },
         { provide: PassService, useValue: mockPassService },
+        { provide: FacilityService, useValue: mockFacilityService },
       ],
     });
     resolver = TestBed.inject(FacilityDetailsResolver);

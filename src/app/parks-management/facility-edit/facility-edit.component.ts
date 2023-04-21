@@ -1,7 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
+import { FacilityService } from 'src/app/services/facility.service';
 import { ModifierService } from 'src/app/services/modifier.service';
+import { ParkService } from 'src/app/services/park.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
 
@@ -19,23 +21,24 @@ export class FacilityEditComponent implements OnDestroy {
 
   constructor(
     protected dataService: DataService,
-    protected modifierService: ModifierService
+    protected modifierService: ModifierService,
+    protected facilityService: FacilityService,
+    protected parkService: ParkService
   ) {
     this.subscriptions.add(
       dataService
-        .watchItem(Constants.dataIds.CURRENT_FACILITY)
+        .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)
         .subscribe((res) => {
           if (res) {
-            this.facility = res;
+            this.facility = this.facilityService.getCachedFacility(res);
             this.updateModifiers();
           }
         })
     );
     this.subscriptions.add(
-      dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
+      dataService.watchItem(Constants.dataIds.CURRENT_PARK_KEY).subscribe((res) => {
         if (res) {
-          this.park = res;
-          this.updateModifiers();
+          this.park = this.parkService.getCachedPark(res);
         }
       })
     );

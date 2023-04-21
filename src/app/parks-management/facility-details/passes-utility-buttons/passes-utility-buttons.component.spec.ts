@@ -9,6 +9,7 @@ import { MockData } from 'src/app/shared/utils/mock-data';
 import { PassUtils } from 'src/app/utils/pass-utils';
 
 import { PassesUtilityButtonsComponent } from './passes-utility-buttons.component';
+import { FacilityService } from 'src/app/services/facility.service';
 
 describe('PassesUtilityButtonsComponent', () => {
   let component: PassesUtilityButtonsComponent;
@@ -23,12 +24,21 @@ describe('PassesUtilityButtonsComponent', () => {
 
   let mockPassList = new BehaviorSubject([mockPass1, mockPass2]);
 
+  let mockFacilityService = {
+    getCachedFacility: (key) => {
+      if (key.pk === mockFacility.pk && key.sk === mockFacility.sk) {
+        return mockFacility;
+      }
+      return null;
+    }
+  }
+
   let mockDataService = {
     watchItem: (id) => {
       if (id === Constants.dataIds.PASSES_LIST) {
         return mockPassList;
       }
-      if (id === Constants.dataIds.CURRENT_FACILITY) {
+      if (id === Constants.dataIds.CURRENT_FACILITY_KEY) {
         return new BehaviorSubject(mockFacility);
       }
       if (id === Constants.dataIds.PASS_SEARCH_PARAMS) {
@@ -53,6 +63,7 @@ describe('PassesUtilityButtonsComponent', () => {
         ConfigService,
         { provide: KeycloakService, useValue: mockKeyCloakService },
         { provide: DataService, useValue: mockDataService },
+        { provide: FacilityService, useValue: mockFacilityService },
       ],
     }).compileComponents();
 

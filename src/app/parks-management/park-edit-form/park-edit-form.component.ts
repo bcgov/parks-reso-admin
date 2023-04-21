@@ -48,9 +48,9 @@ export class ParkEditFormComponent extends BaseFormComponent {
   ) {
     super(formBuilder, router, dataService, loadingService, changeDetector);
     this.subscriptions.add(
-      dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
+      dataService.watchItem(Constants.dataIds.CURRENT_PARK_KEY).subscribe((res) => {
         if (res) {
-          this.park = res;
+          this.park = this.parkService.getCachedPark(res);
           this.data = this.park;
           this.setForm();
         }

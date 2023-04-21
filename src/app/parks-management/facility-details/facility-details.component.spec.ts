@@ -6,6 +6,7 @@ import { DataService } from 'src/app/services/data.service';
 import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { FacilityDetailsComponent } from './facility-details.component';
+import { FacilityService } from 'src/app/services/facility.service';
 
 describe('FacilityDetailsComponent', () => {
   let component: FacilityDetailsComponent;
@@ -14,12 +15,22 @@ describe('FacilityDetailsComponent', () => {
   let testFacility = MockData.mockFacility_1;
 
   let testSubject = new BehaviorSubject(testFacility);
+  let mockFacilityKey = {pk: testFacility.pk, sk: testFacility.sk};
 
   let fakeDataService = {
     watchItem: () => {
       return testSubject;
     },
   };
+
+  let mockFacilityService = {
+    getCachedFacility: (facilityKey) => {
+      if (facilityKey.pk === mockFacilityKey.pk && facilityKey.sk === mockFacilityKey.sk) {
+        return testFacility;
+      }
+      return null;
+    }
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -29,6 +40,7 @@ describe('FacilityDetailsComponent', () => {
         HttpHandler,
         ConfigService,
         { provide: DataService, useValue: fakeDataService },
+        { provide: FacilityService, useValue: mockFacilityService },
       ],
     }).compileComponents();
 
