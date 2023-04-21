@@ -18,7 +18,7 @@ describe('ParkEditFormComponent', () => {
   let fixture: ComponentFixture<ParkEditFormComponent>;
 
   let mockPark = MockData.mockPark_1;
-  let mockParkKey = {pk: mockPark.pk, sk: mockPark.sk}
+  let mockParkKey = { pk: mockPark.pk, sk: mockPark.sk }
 
   // Have to format the object how the API is expecting it.
   let mockSubmission = {

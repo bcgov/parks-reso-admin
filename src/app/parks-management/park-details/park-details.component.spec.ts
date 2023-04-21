@@ -22,7 +22,7 @@ describe('ParkDetailsComponent', () => {
   let mockFacility1 = MockData.mockFacility_1;
 
   let mockPark = MockData.mockPark_1;
-  let mockParkKey = {pk: mockPark.pk, sk: mockPark.sk};
+  let mockParkKey = { pk: mockPark.pk, sk: mockPark.sk };
 
   let mockDataService = {
     watchItem: (id) => {

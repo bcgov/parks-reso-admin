@@ -20,7 +20,7 @@ export class FacilityService {
     private loggerService: LoggerService,
     private apiService: ApiService,
     private loadingService: LoadingService
-  ) {}
+  ) { }
   public utils = new Utils();
 
   async fetchData(parkSk = null, facilitySk = null, skipCache = false) {
@@ -53,7 +53,7 @@ export class FacilityService {
           )
         )[0];
         if (!skipCache && res?.pk && res?.sk) {
-          this.dataService.setItemValue(dataTag, {pk: res.pk, sk: res.sk});
+          this.dataService.setItemValue(dataTag, { pk: res.pk, sk: res.sk });
         }
       }
     } catch (e) {
@@ -152,7 +152,7 @@ export class FacilityService {
           throw 'Must provide a park.';
         }
         // Build the cachedObject for the front-end.
-        const cachedObject = Object.assign({ pk: `facility::${parkSk}`, sk: obj.name}, obj);
+        const cachedObject = Object.assign({ pk: `facility::${parkSk}`, sk: obj.name }, obj);
         delete obj.pk;
         delete obj.sk;
         obj.parkOrcs = parkSk;

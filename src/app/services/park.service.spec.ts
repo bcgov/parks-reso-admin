@@ -134,7 +134,7 @@ describe('ParkService', () => {
     expect(apiGetSpy).toHaveBeenCalledOnceWith('park', { park: 'Mock Park 1' });
     expect(setDataSpy).toHaveBeenCalledOnceWith(
       Constants.dataIds.CURRENT_PARK_KEY,
-      {pk: 'park', sk: 'MOC1'}
+      { pk: 'park', sk: 'MOC1' }
     );
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
   });
@@ -186,7 +186,7 @@ describe('ParkService', () => {
       }
       return null;
     });
-    expect(service.getCachedPark({pk: mockParkObj.pk, sk: mockParkObj.sk})).toEqual(mockParkObj);
+    expect(service.getCachedPark({ pk: mockParkObj.pk, sk: mockParkObj.sk })).toEqual(mockParkObj);
     expect(service.getCurrentPark()).toEqual(mockParkObj);
   });
 });

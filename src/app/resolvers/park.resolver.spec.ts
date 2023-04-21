@@ -59,7 +59,7 @@ describe('ParkResolver', () => {
     expect(setItemSpy).toHaveBeenCalledTimes(2);
     expect(setItemSpy).toHaveBeenCalledWith(
       Constants.dataIds.CURRENT_PARK_KEY,
-      {pk: mockParkFacility1.MOC1.pk, sk: mockParkFacility1.MOC1.sk}
+      { pk: mockParkFacility1.MOC1.pk, sk: mockParkFacility1.MOC1.sk }
     );
     expect(setItemSpy).toHaveBeenCalledWith(
       Constants.dataIds.FACILITIES_LIST,

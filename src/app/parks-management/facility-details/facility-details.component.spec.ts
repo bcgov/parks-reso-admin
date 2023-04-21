@@ -15,7 +15,7 @@ describe('FacilityDetailsComponent', () => {
   let testFacility = MockData.mockFacility_1;
 
   let testSubject = new BehaviorSubject(testFacility);
-  let mockFacilityKey = {pk: testFacility.pk, sk: testFacility.sk};
+  let mockFacilityKey = { pk: testFacility.pk, sk: testFacility.sk };
 
   let fakeDataService = {
     watchItem: () => {

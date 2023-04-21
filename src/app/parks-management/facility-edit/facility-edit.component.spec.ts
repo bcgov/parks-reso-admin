@@ -15,9 +15,9 @@ describe('FacilityEditComponent', () => {
   let fixture: ComponentFixture<FacilityEditComponent>;
 
   let mockFacility = MockData.mockFacility_1;
-  let mockFacilityKey = {pk: mockFacility.pk, sk: mockFacility.sk};
+  let mockFacilityKey = { pk: mockFacility.pk, sk: mockFacility.sk };
   let mockPark = MockData.mockPark_1;
-  let mockParkKey = {pk: mockPark.pk, sk: mockPark.sk};
+  let mockParkKey = { pk: mockPark.pk, sk: mockPark.sk };
 
   let mockDataService = {
     watchItem: (id) => {

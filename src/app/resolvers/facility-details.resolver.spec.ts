@@ -22,7 +22,7 @@ describe('FacilityDetailsResolver', () => {
   };
 
   let mockFacility1 = MockData.mockFacility_1;
-  let mockFacility1Key = {pk: mockFacility1.pk, sk: mockFacility1.sk};
+  let mockFacility1Key = { pk: mockFacility1.pk, sk: mockFacility1.sk };
 
   let mockDataService = {
     watchItem: (id) => {
