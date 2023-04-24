@@ -7,25 +7,47 @@ import { Constants } from 'src/app/shared/utils/constants';
 import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { FacilityEditComponent } from './facility-edit.component';
+import { ParkService } from 'src/app/services/park.service';
+import { FacilityService } from 'src/app/services/facility.service';
 
 describe('FacilityEditComponent', () => {
   let component: FacilityEditComponent;
   let fixture: ComponentFixture<FacilityEditComponent>;
 
   let mockFacility = MockData.mockFacility_1;
+  let mockFacilityKey = { pk: mockFacility.pk, sk: mockFacility.sk };
   let mockPark = MockData.mockPark_1;
+  let mockParkKey = { pk: mockPark.pk, sk: mockPark.sk };
 
   let mockDataService = {
     watchItem: (id) => {
-      if (id === Constants.dataIds.CURRENT_FACILITY) {
-        return new BehaviorSubject(mockFacility);
+      if (id === Constants.dataIds.CURRENT_FACILITY_KEY) {
+        return new BehaviorSubject(mockFacilityKey);
       }
-      if (id === Constants.dataIds.CURRENT_PARK) {
-        return new BehaviorSubject(mockPark);
+      if (id === Constants.dataIds.CURRENT_PARK_KEY) {
+        return new BehaviorSubject(mockParkKey);
       }
       return null;
     },
   };
+
+  let mockParkService = {
+    getCachedPark: (key) => {
+      if (key.pk === mockParkKey.pk && key.sk === mockParkKey.sk) {
+        return mockPark;
+      }
+      return null;
+    }
+  }
+
+  let mockFacilityService = {
+    getCachedFacility: (key) => {
+      if (key.pk === mockFacilityKey.pk && key.sk === mockFacilityKey.sk) {
+        return mockFacility;
+      }
+      return null;
+    }
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -35,6 +57,8 @@ describe('FacilityEditComponent', () => {
         HttpHandler,
         ConfigService,
         { provide: DataService, useValue: mockDataService },
+        { provide: ParkService, useValue: mockParkService },
+        { provide: FacilityService, useValue: mockFacilityService },
       ],
     }).compileComponents();
 

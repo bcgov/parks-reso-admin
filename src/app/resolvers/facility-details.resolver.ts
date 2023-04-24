@@ -20,11 +20,11 @@ export class FacilityDetailsResolver implements Resolve<void> {
   async resolve(route: ActivatedRouteSnapshot) {
     const terminate = new Subject();
     this.dataService
-      .watchItem(Constants.dataIds.CURRENT_FACILITY)
+      .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)
       .pipe(takeUntil(terminate))
       .subscribe(async (res) => {
         if (res) {
-          const facility = res;
+          const facility = this.facilityService.getCachedFacility(res);
           if (facility) {
             const filteredParams = await this.passService.setParamsFromUrl(
               facility,

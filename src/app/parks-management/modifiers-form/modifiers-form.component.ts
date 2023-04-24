@@ -7,8 +7,10 @@ import {
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
+import { FacilityService } from 'src/app/services/facility.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { ModifierService } from 'src/app/services/modifier.service';
+import { ParkService } from 'src/app/services/park.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { Constants } from 'src/app/shared/utils/constants';
 
@@ -35,24 +37,26 @@ export class ModifiersFormComponent
     protected dataService: DataService,
     protected loadingService: LoadingService,
     protected changeDetector: ChangeDetectorRef,
-    private modifierService: ModifierService
+    private modifierService: ModifierService,
+    private facilityService: FacilityService,
+    private parkService: ParkService,
   ) {
     super(formBuilder, router, dataService, loadingService, changeDetector);
     this.subscriptions.add(
       dataService
-        .watchItem(Constants.dataIds.CURRENT_FACILITY)
+        .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)
         .subscribe((res) => {
           if (res) {
-            this.facility = res;
+            this.facility = this.facilityService.getCachedFacility(res);
             this.setBookingTimes();
             this.setForm();
           }
         })
     );
     this.subscriptions.add(
-      dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
+      dataService.watchItem(Constants.dataIds.CURRENT_PARK_KEY).subscribe((res) => {
         if (res) {
-          this.park = res;
+          this.park = this.parkService.getCachedPark(res);
           this.setForm();
         }
       })

@@ -8,6 +8,7 @@ import { Constants } from 'src/app/shared/utils/constants';
 import { PassUtils } from 'src/app/utils/pass-utils';
 import { DateTime } from 'luxon';
 import { KeycloakService } from 'src/app/services/keycloak.service';
+import { FacilityService } from 'src/app/services/facility.service';
 
 @Component({
   selector: 'app-passes-utility-buttons',
@@ -27,7 +28,8 @@ export class PassesUtilityButtonsComponent implements OnDestroy {
     protected toastService: ToastService,
     protected dataService: DataService,
     protected keyCloakService: KeycloakService,
-    protected passService: PassService
+    protected passService: PassService,
+    protected facilityService: FacilityService
   ) {
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.PASSES_LIST).subscribe((res) => {
@@ -37,10 +39,10 @@ export class PassesUtilityButtonsComponent implements OnDestroy {
 
     this.subscriptions.add(
       dataService
-        .watchItem(Constants.dataIds.CURRENT_FACILITY)
+        .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)
         .subscribe((res) => {
           if (res) {
-            this.facility = res;
+            this.facility = this.facilityService.getCachedFacility(res);
             this.parkSk = this.facility.pk.split('::')[1];
           }
         })

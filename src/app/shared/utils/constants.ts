@@ -2,9 +2,9 @@ export class Constants {
   public static readonly dataIds = {
     PARK_AND_FACILITY_LIST: 'parksFaciltiyList',
     PARKS_LIST: 'parksList',
-    CURRENT_PARK: 'currentPark',
+    CURRENT_PARK_KEY: 'currentParkKey',
     FACILITIES_LIST: 'facilitiesList',
-    CURRENT_FACILITY: 'currentFacility',
+    CURRENT_FACILITY_KEY: 'currentFacilityKey',
     PASSES_LIST: 'passesList',
     PASS_SEARCH_PARAMS: 'passSearchParams',
     PASS_LAST_EVALUATED_KEY: 'passLastEvaluatedKey',

@@ -19,7 +19,7 @@ describe('FacilityAddResolver', () => {
     const setItemSpy = spyOn(resolver['dataService'], 'setItemValue');
     await resolver.resolve();
     expect(setItemSpy).toHaveBeenCalledOnceWith(
-      Constants.dataIds.CURRENT_FACILITY,
+      Constants.dataIds.CURRENT_FACILITY_KEY,
       null
     );
   });

@@ -25,8 +25,11 @@ export class FacilityResolver implements Resolve<void> {
       .subscribe((res) => {
         if (res) {
           this.dataService.setItemValue(
-            Constants.dataIds.CURRENT_FACILITY,
-            res[route.params['parkId']].facilities[route.params['facilityId']]
+            Constants.dataIds.CURRENT_FACILITY_KEY,
+            {
+              pk: `facility::${route.params['parkId']}`,
+              sk: route.params['facilityId']
+            }
           );
           terminate.next(null);
         }

@@ -133,8 +133,8 @@ describe('ParkService', () => {
     expect(loggerDebugSpy).toHaveBeenCalledTimes(1);
     expect(apiGetSpy).toHaveBeenCalledOnceWith('park', { park: 'Mock Park 1' });
     expect(setDataSpy).toHaveBeenCalledOnceWith(
-      Constants.dataIds.CURRENT_PARK,
-      mockParkRes.value[0]
+      Constants.dataIds.CURRENT_PARK_KEY,
+      { pk: 'park', sk: 'MOC1' }
     );
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
   });
@@ -172,5 +172,21 @@ describe('ParkService', () => {
       new EventObject(EventKeywords.ERROR, 'Error: put error', 'Park Service')
     );
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('gets park by key', async () => {
+    spyOn(service['dataService'], 'getItemValue').and.callFake((dataId) => {
+      if (dataId === Constants.dataIds.PARK_AND_FACILITY_LIST) {
+        return {
+          MOC1: mockParkObj
+        }
+      }
+      if (dataId === Constants.dataIds.CURRENT_PARK_KEY) {
+        return { pk: mockParkObj.pk, sk: mockParkObj.sk }
+      }
+      return null;
+    });
+    expect(service.getCachedPark({ pk: mockParkObj.pk, sk: mockParkObj.sk })).toEqual(mockParkObj);
+    expect(service.getCurrentPark()).toEqual(mockParkObj);
   });
 });

@@ -9,6 +9,7 @@ import { LoadingService } from './loading.service';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { EventKeywords, EventObject } from './event.service';
+import { FacilityService } from './facility.service';
 
 describe('ReservationService', () => {
   let service: ReservationService;
@@ -16,6 +17,12 @@ describe('ReservationService', () => {
   let mockReservationGetRes = new BehaviorSubject([
     MockData.mockReservationObj_1,
   ]);
+
+  let mockFacilityService = {
+    getCurrentFacility: () => {
+      return MockData.mockFacility_1;
+    },
+  }
 
   let mockApiService = {
     get: (id, params) => {
@@ -65,6 +72,7 @@ describe('ReservationService', () => {
         { provide: LoggerService, useValue: mockLoggerService },
         { provide: LoadingService, useValue: mockLoadingService },
         { provide: ApiService, useValue: mockApiService },
+        { provide: FacilityService, useValue: mockFacilityService },
       ],
     });
     service = TestBed.inject(ReservationService);
@@ -146,6 +154,7 @@ describe('ReservationService', () => {
   });
 
   it('sets the capacity bar if reservation object does not exist', async () => {
+    const curFacilitySpy = spyOn(service['facilityService'], 'getCurrentFacility').and.callThrough();
     await service.fetchData('noResObj', 'Mock Facility 1', '2022-12-29', 'AM');
     expect(loadingSpy).toHaveBeenCalledTimes(1);
     expect(loggerDebugSpy).toHaveBeenCalledTimes(1);
@@ -159,9 +168,7 @@ describe('ReservationService', () => {
       []
     );
     // gets current facility instead
-    expect(getDataSpy).toHaveBeenCalledOnceWith(
-      Constants.dataIds.CURRENT_FACILITY
-    );
+    expect(curFacilitySpy).toHaveBeenCalledTimes(1);
     expect(setDataSpy).toHaveBeenCalledWith(
       Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
       {

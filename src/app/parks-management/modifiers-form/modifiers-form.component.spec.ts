@@ -8,20 +8,42 @@ import { Constants } from 'src/app/shared/utils/constants';
 import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { ModifiersFormComponent } from './modifiers-form.component';
+import { ParkService } from 'src/app/services/park.service';
+import { FacilityService } from 'src/app/services/facility.service';
 
 describe('ModifiersFormComponent', () => {
   let component: ModifiersFormComponent;
   let fixture: ComponentFixture<ModifiersFormComponent>;
 
   let mockFacility = MockData.mockFacility_1;
+  let mockFacilityKey = { pk: mockFacility.pk, sk: mockFacility.sk };
   let mockPark = MockData.mockPark_1;
+  let mockParkKey = { pk: mockPark.pk, sk: mockPark.sk };
+
+  let mockParkService = {
+    getCachedPark: (key) => {
+      if (key.pk === mockParkKey.pk && key.sk === mockParkKey.sk) {
+        return mockPark;
+      }
+      return null;
+    }
+  }
+
+  let mockFacilityService = {
+    getCachedFacility: (key) => {
+      if (key.pk === mockFacilityKey.pk && key.sk === mockFacilityKey.sk) {
+        return mockFacility;
+      }
+      return null;
+    },
+  }
 
   let mockDataService = {
     watchItem: (id) => {
-      if (id === Constants.dataIds.CURRENT_FACILITY) {
+      if (id === Constants.dataIds.CURRENT_FACILITY_KEY) {
         return new BehaviorSubject(mockFacility);
       }
-      if (id === Constants.dataIds.CURRENT_PARK) {
+      if (id === Constants.dataIds.CURRENT_PARK_KEY) {
         return new BehaviorSubject(mockPark);
       }
       return new BehaviorSubject(null);
@@ -37,6 +59,8 @@ describe('ModifiersFormComponent', () => {
         HttpHandler,
         ConfigService,
         { provide: DataService, useValue: mockDataService },
+        { provide: ParkService, useValue: mockParkService },
+        { provide: FacilityService, useValue: mockFacilityService },
       ],
     }).compileComponents();
 

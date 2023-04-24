@@ -7,6 +7,7 @@ import { EventKeywords, EventObject, EventService } from './event.service';
 import { LoadingService } from './loading.service';
 import { LoggerService } from './logger.service';
 import { ToastService, ToastTypes } from './toast.service';
+import { FacilityService } from './facility.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,8 @@ export class ReservationService {
     private toastService: ToastService,
     private loggerService: LoggerService,
     private apiService: ApiService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private facilityService: FacilityService
   ) {}
 
   async fetchData(parkSk, facilitySk, resDate = null, selectedPassType = null) {
@@ -48,9 +50,7 @@ export class ReservationService {
           this.setCapacityBar(res[0], selectedPassType);
         } else {
           // No res Object. Use facility cap
-          const facility = this.dataService.getItemValue(
-            Constants.dataIds.CURRENT_FACILITY
-          );
+          const facility = this.facilityService.getCurrentFacility();
           this.dataService.setItemValue(
             Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
             {

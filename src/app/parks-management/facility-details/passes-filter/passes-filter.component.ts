@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { FacilityService } from 'src/app/services/facility.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { PassService } from 'src/app/services/pass.service';
 import { ReservationService } from 'src/app/services/reservation.service';
@@ -36,7 +37,8 @@ export class PassesFilterComponent extends BaseFormComponent {
     protected changeDetector: ChangeDetectorRef,
     protected passService: PassService,
     protected reservationService: ReservationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private facilityService: FacilityService
   ) {
     super(
       formBuilder,
@@ -48,10 +50,10 @@ export class PassesFilterComponent extends BaseFormComponent {
 
     this.subscriptions.add(
       this.dataService
-        .watchItem(Constants.dataIds.CURRENT_FACILITY)
+        .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)
         .subscribe((res) => {
           if (res) {
-            this.facility = res;
+            this.facility = this.facilityService.getCachedFacility(res);
             this.bookingTimesList = this.getBookingTimesList();
           }
         })

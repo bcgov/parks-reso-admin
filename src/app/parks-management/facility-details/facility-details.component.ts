@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/services/config.service';
 import { DataService } from 'src/app/services/data.service';
+import { FacilityService } from 'src/app/services/facility.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
 
@@ -17,14 +18,15 @@ export class FacilityDetailsComponent implements OnDestroy {
 
   constructor(
     protected dataService: DataService,
-    protected configService: ConfigService
+    protected configService: ConfigService,
+    protected facilityService: FacilityService
   ) {
     this.subscriptions.add(
       dataService
-        .watchItem(Constants.dataIds.CURRENT_FACILITY)
+        .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)
         .subscribe((res) => {
           if (res) {
-            this.facility = res;
+            this.facility = this.facilityService.getCachedFacility(res);
           }
         })
     );

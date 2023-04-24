@@ -7,6 +7,7 @@ import { tableSchema } from 'src/app/shared/components/table/table.component';
 import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
 import { KeycloakService } from 'src/app/services/keycloak.service';
 import { TextWithIconsComponent } from 'src/app/shared/components/text-with-icons/text-with-icons.component';
+import { ParkService } from 'src/app/services/park.service';
 
 @Component({
   selector: 'app-park-details',
@@ -24,12 +25,13 @@ export class ParkDetailsComponent implements OnInit, OnDestroy {
     protected dataService: DataService,
     private router: Router,
     private route: ActivatedRoute,
-    protected keycloakService: KeycloakService
+    protected keycloakService: KeycloakService,
+    private parkService: ParkService,
   ) {
     this.subscriptions.add(
-      dataService.watchItem(Constants.dataIds.CURRENT_PARK).subscribe((res) => {
+      dataService.watchItem(Constants.dataIds.CURRENT_PARK_KEY).subscribe((res) => {
         if (res) {
-          this.park = res;
+          this.park = this.parkService.getCachedPark(res);
         }
       })
     );

@@ -32,6 +32,9 @@ describe('FacilityResolver', () => {
       return new BehaviorSubject(null);
     },
     setItemValue: (id, obj) => {
+      if (id === Constants.dataIds.CURRENT_FACILITY_KEY) {
+        return obj;
+      }
       return null;
     },
   };
@@ -58,8 +61,11 @@ describe('FacilityResolver', () => {
     const setItemSpy = spyOn(resolver['dataService'], 'setItemValue');
     await resolver.resolve(route.snapshot);
     expect(setItemSpy).toHaveBeenCalledOnceWith(
-      Constants.dataIds.CURRENT_FACILITY,
-      mockParkFacility1.MOC1.facilities['Mock Facility 1']
+      Constants.dataIds.CURRENT_FACILITY_KEY,
+      {
+        pk: 'facility::MOC1',
+        sk: 'Mock Facility 1',
+      }
     );
   });
 });

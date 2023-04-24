@@ -8,7 +8,7 @@ import { Constants } from '../shared/utils/constants';
   providedIn: 'root',
 })
 export class ParkResolver implements Resolve<void> {
-  constructor(protected dataService: DataService) {}
+  constructor(protected dataService: DataService) { }
   resolve(route: ActivatedRouteSnapshot) {
     const terminate = new Subject();
     this.dataService
@@ -17,8 +17,8 @@ export class ParkResolver implements Resolve<void> {
       .subscribe((res) => {
         if (res) {
           this.dataService.setItemValue(
-            Constants.dataIds.CURRENT_PARK,
-            res[route.params['parkId']]
+            Constants.dataIds.CURRENT_PARK_KEY,
+            { pk: 'park', sk: route.params['parkId']}
           );
           this.dataService.setItemValue(
             Constants.dataIds.FACILITIES_LIST,
