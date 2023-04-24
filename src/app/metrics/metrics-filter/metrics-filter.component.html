@@ -1,7 +1,8 @@
 <form [formGroup]="form">
   <div class="row d-flex justify-content-between mb-4">
     <app-radio-buttons class="col-md-3 col-sm-12 mb-2 mb-md-0" [control]="fields?.timeSpan" [options]="timeSpanOptions"
-      [optionsLabels]="timeSpanLabels" [group]="false" [id]="'timeSpan'" (inputChange)="presetRange()"></app-radio-buttons>
+      [optionsLabels]="timeSpanLabels" [group]="false" [id]="'timeSpan'"
+      (inputChange)="presetRange()"></app-radio-buttons>
     <div class="col">
       <div class="d-flex flex-column flex-md-row justify-content-end">
         <app-shortdate-picker class="p-0 me-md-2 mb-2 mb-md-0" [range]="true" [control]="fields.dateRange"
@@ -41,15 +42,6 @@
                 </div>
               </div>
             </div>
-            <div class="accordion-item">
-              <div class="d-flex flex-row">
-                <button class="col btn btn-block btn-primary my-1" data-bs-toggle="collapse"
-                  data-bs-target="#downloadChartsAccordionContent" aria-expanded="false"
-                  aria-controls="openFilterAccordionToggle">
-                  Download Charts
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -61,7 +53,8 @@
   <div class="m-4">
     <div class="row">
       <div class="col">
-        <app-picklist [label]="'Park'" [selectOptions]="parkOptions" [control]="fields.park" [id]="'downloadChartsPark'">
+        <app-picklist [label]="'Park'" [selectOptions]="parkOptions" [control]="fields.park"
+          [id]="'downloadChartsPark'">
         </app-picklist>
       </div>
       <div class="col">
