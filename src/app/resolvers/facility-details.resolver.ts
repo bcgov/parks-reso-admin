@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, filter, takeUntil } from 'rxjs';
 import { DataService } from '../services/data.service';
 import { FacilityService } from '../services/facility.service';
 import { PassService } from '../services/pass.service';
@@ -31,13 +31,15 @@ export class FacilityDetailsResolver implements Resolve<void> {
               route.queryParams
             );
 
-            // Initialize reservation data
-            this.reservationService.fetchData(
-              filteredParams['park'],
-              filteredParams['facilityName'],
-              filteredParams['date'],
-              filteredParams['passType']
-            );
+            if (filteredParams) {
+              // Initialize reservation data
+              this.reservationService.fetchData(
+                filteredParams['park'],
+                filteredParams['facilityName'],
+                filteredParams['date'],
+                filteredParams['passType']
+              );
+            }
           } else {
             // TODO: Handle the error
           }
