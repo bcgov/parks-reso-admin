@@ -22,7 +22,7 @@ describe('MetricsFilterComponent', () => {
 
   let mockDateRange = ['2023-01-31', '2023-02-01'];
 
-  let mockFacility1 = MockData.mockFacility_1
+  let mockFacility1 = MockData.mockFacility_1;
 
   let mockDataService = {
     watchItem: (id) => {
@@ -43,6 +43,9 @@ describe('MetricsFilterComponent', () => {
         return mockData;
       }
       return new BehaviorSubject(null);
+    },
+    setItemValue: () => {
+      // Stub
     }
   };
 
@@ -59,7 +62,7 @@ describe('MetricsFilterComponent', () => {
       ],
       providers: [
         ConfigService,
-        { provide: DataService, useValue: mockDataService },
+        { provide: DataService, useValue: mockDataService }
       ],
     }).compileComponents();
 
@@ -108,7 +111,7 @@ describe('MetricsFilterComponent', () => {
     expect(component.validateMetricsParams({ park: mockPark1.orcs, dateRange: mockDateRange, facility: mockFacility1.sk })).toBeTrue();
   })
 
-  it('submits data correctly', async () => {
+ it('submits data correctly', async () => {
     const params = { park: mockPark1.orcs, dateRange: mockDateRange, facility: mockFacility1.sk };
     const filterSpy = spyOn(component['metricsService'], 'setFilterParams');
     await component.onSubmit(params);

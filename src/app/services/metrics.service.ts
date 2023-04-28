@@ -77,13 +77,13 @@ export class MetricsService {
     } catch (e) {
       this.toastService.addMessage(
         `An error has occured while getting ${errorSubject}.`,
-        'Pass Service',
+        'Metrics Service',
         Constants.ToastTypes.ERROR
       );
       this.eventService.setError(
         new EventObject(EventKeywords.ERROR, e as string, 'Metrics Service')
       );
-      this.router.navigate(['../', { relativeTo: this.route }]);
+      this.router.navigate(['../']);
     }
     this.loadingService.removeToFetchList(dataTag);
   }
