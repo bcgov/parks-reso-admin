@@ -208,6 +208,11 @@ export class FacilityService {
   // Get facility from cache using provided key.
   getCachedFacility(key) {
     const orcs = key?.pk.split('::')[1];
-    return this.dataService.getItemValue(Constants.dataIds.PARK_AND_FACILITY_LIST)[orcs].facilities[key?.sk] || null;
+    let listData = this.dataService.getItemValue(Constants.dataIds.PARK_AND_FACILITY_LIST)
+    if (listData) {
+      return listData[orcs].facilities[key?.sk] || null;
+    } else {
+      return null;
+    }
   }
 }

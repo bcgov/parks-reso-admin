@@ -1,13 +1,5 @@
 <div class="row py-2">
   <div class="input-box col-md-4">
-    <app-picklist
-      id="passTypeID"
-      [selectOptions]="passTypeOptions"
-      [label]="'Pass Type'"
-      [control]="passType"
-    ></app-picklist>
-  </div>
-  <div class="input-box col-md-4">
     <app-shortdate-picker
       id="datePicker"
       [label]="'Pass Date'"
@@ -15,13 +7,23 @@
     </app-shortdate-picker>
   </div>
   <div class="input-box col-md-4">
-    <app-multiselect
-      [label]="'Pass Status'"
-      [control]="passStatus"
-      [multiSelectOptions]="passStatusOptions"
-      [id]="'passStatus'"
-    ></app-multiselect>
+    <app-picklist
+      id="park"
+      [label]="'Park'"
+      [control]="park"
+      [selectOptions]="parkOptions"
+      >
+    </app-picklist>
   </div>
+  <div class="input-box col-md-4">
+    <app-picklist
+      id="passTypeID"
+      [label]="'Facility'"
+      [control]="facility"
+      [selectOptions]="facilityOptions"
+    ></app-picklist>
+  </div>
+  <hr>
 </div>
 
 <div class="row py-2">
@@ -50,8 +52,15 @@
     ></app-text-input>
   </div>
 </div>
-
 <div class="row py-2">
+  <div class="input-box col-md-4">
+    <app-picklist
+      [label]="'Pass Type'"
+      [control]="passType"
+      [selectOptions]="passTypeOptions"
+      [id]="'passType'"
+    ></app-picklist>
+  </div> 
   <div class="input-box col-md-4">
     <app-text-input
       id="reservationNumber"

@@ -37,6 +37,6 @@ describe('HomeComponent', () => {
     fakeKeyCloakService.isAllowed();
     expect(component).toBeTruthy();
     let cardElement = fixture.debugElement.nativeElement.getElementsByTagName('app-nav-card');
-    expect(cardElement.length).toEqual(2);
+    expect(cardElement.length).toEqual(3);
   });
 });

@@ -22,6 +22,9 @@ describe('ReservationService', () => {
     getCurrentFacility: () => {
       return MockData.mockFacility_1;
     },
+    getCachedFacility: () => {
+      return MockData.mockFacility_1;
+    },
   }
 
   let mockApiService = {
@@ -154,8 +157,10 @@ describe('ReservationService', () => {
   });
 
   it('sets the capacity bar if reservation object does not exist', async () => {
-    const curFacilitySpy = spyOn(service['facilityService'], 'getCurrentFacility').and.callThrough();
+    const curFacilitySpy = spyOn(service['facilityService'], 'getCachedFacility').and.callThrough();
     await service.fetchData('noResObj', 'Mock Facility 1', '2022-12-29', 'AM');
+    // we have to trick the subscriber
+    service['dataService'].watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST).next('haha got you')
     expect(loadingSpy).toHaveBeenCalledTimes(1);
     expect(loggerDebugSpy).toHaveBeenCalledTimes(1);
     expect(apiGetSpy).toHaveBeenCalledOnceWith('reservation', {

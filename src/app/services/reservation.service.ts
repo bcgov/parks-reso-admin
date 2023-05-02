@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { Subject, firstValueFrom, takeUntil } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
 import { ApiService } from './api.service';
 import { DataService } from './data.service';
@@ -21,7 +21,7 @@ export class ReservationService {
     private apiService: ApiService,
     private loadingService: LoadingService,
     private facilityService: FacilityService
-  ) {}
+  ) { }
 
   async fetchData(parkSk, facilitySk, resDate = null, selectedPassType = null) {
     let res;
@@ -50,18 +50,27 @@ export class ReservationService {
           this.setCapacityBar(res[0], selectedPassType);
         } else {
           // No res Object. Use facility cap
-          const facility = this.facilityService.getCurrentFacility();
-          this.dataService.setItemValue(
-            Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
-            {
-              capPercent: 0,
-              reserved: 0,
-              capacity: facility.bookingTimes[selectedPassType].max,
-              modifier: 0,
-              overbooked: 0,
-              style: 'success',
-            }
-          );
+          // If this is an initial load we have to make sure we wait until the facility is available.
+          const facilityReady = new Subject();
+          this.dataService.watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST)
+            .pipe(takeUntil(facilityReady))
+            .subscribe((res) => {
+              if (res) {
+                const facility = this.facilityService.getCachedFacility({ pk: `facility::${parkSk}`, sk: facilitySk });
+                this.dataService.setItemValue(
+                  Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+                  {
+                    capPercent: 0,
+                    reserved: 0,
+                    capacity: facility?.bookingTimes[selectedPassType].max,
+                    modifier: 0,
+                    overbooked: 0,
+                    style: 'success',
+                  }
+                );
+                facilityReady.next(null);
+              }
+            });
         }
       } else {
         // Set to initialized but invalid state
