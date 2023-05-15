@@ -35,7 +35,7 @@ describe('PassesUtilityButtonsComponent', () => {
 
   let mockDataService = {
     watchItem: (id) => {
-      if (id === Constants.dataIds.PASSES_LIST) {
+      if (id === Constants.dataIds.FILTERED_PASSES_LIST) {
         return mockPassList;
       }
       if (id === Constants.dataIds.CURRENT_FACILITY_KEY) {

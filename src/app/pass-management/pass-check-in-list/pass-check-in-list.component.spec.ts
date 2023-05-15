@@ -94,6 +94,7 @@ describe('PassLookupComponent', () => {
 
   it('should check in pass', async () => {
     const checkedOutPass = { ...MockData.mockPass_1 };
+    delete checkedOutPass.checkedIn
     checkedOutPass.passStatus = 'active';
     component.passes = [{ ...MockData.mockPass_1 }];
     await component.checkIn(checkedOutPass);

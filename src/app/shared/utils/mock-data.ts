@@ -166,6 +166,8 @@ export class MockData {
     registrationNumber: '1234567890',
     shortPassDate: '2022-12-18',
     type: 'PM',
+    checkedIn: true,
+    checkedInTime: '2022-12-18T19:00:00.000Z'
   };
 
   public static readonly mockPass_2 = {

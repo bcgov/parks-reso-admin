@@ -23,6 +23,7 @@ import { DsFormsModule } from '../shared/components/ds-forms/ds-forms.module';
 import { TableModule } from '../shared/components/table/table.module';
 import { PassesFilterFieldsComponent } from './pass-search/passes-filter/passes-filter-fields/passes-filter-fields.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { PassAccordionComponent } from './pass-search/passes-list/pass-accordion/pass-accordion.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
     PassesFilterComponent,
     PassesListComponent,
     PassesUtilityButtonsComponent,
-    PassesFilterFieldsComponent
+    PassesFilterFieldsComponent,
+    PassAccordionComponent,
   ],
   imports: [
     CommonModule,

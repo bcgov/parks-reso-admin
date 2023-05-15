@@ -50,6 +50,9 @@ describe('PassesListComponent', () => {
     mergeItemValue: (id, params) => {
       return new BehaviorSubject(null);
     },
+    setItemValue: (id, params) => {
+      return new BehaviorSubject(null);
+    }
   };
 
   let mockKeyCloakService = {
@@ -86,64 +89,21 @@ describe('PassesListComponent', () => {
     expect(component.tableRows.length).toEqual(2);
     expect(component.lastEvaluatedKey).toBeDefined();
     // seven columns if cancellation allowed.
-    const row = component.tableSchema.columns;
-    expect(row.length).toEqual(7);
+    const row = component.rowSchema;
+    expect(row.length).toEqual(12);
     // check row values;
-    expect(row[0].mapValue(mockPass1)).toEqual('1234567890');
-    expect(row[1].mapValue(mockPass1)).toEqual('mock@email.ca');
-    expect(row[2].mapValue(mockPass1)).toEqual(4);
-    expect(row[3].mapValue(mockPass1)).toEqual('2022-12-18');
-    expect(row[4].mapValue(mockPass1)).toEqual('expired');
-    expect(row[5].mapValue(mockPass1)).toBeNull();
-    expect(row[6].mapValue(mockPass1)).toBeNull();
-    expect(row[6].cellTemplate(mockPass1)).toBeDefined();
-  });
-
-  it('displays modals when clicked', async () => {
-    // Information modal
-    const modalServiceSpy = spyOn(
-      component['modalService'],
-      'show'
-    ).and.callThrough();
-    const passModalConstructorSpy = spyOn(component, 'constructPassModalBody');
-    const passModalSpy = spyOn(component, 'displayPassModal').and.callThrough();
-    const passModalFn = component.tableSchema.rowClick(mockPass1);
-    passModalFn();
-    expect(passModalSpy).toHaveBeenCalledTimes(1);
-    expect(modalServiceSpy).toHaveBeenCalledTimes(1);
-    expect(component.passModalRef).toBeDefined();
-    expect(passModalConstructorSpy).toHaveBeenCalledTimes(1);
-    // Cancellation Modal
-    modalServiceSpy.calls.reset();
-    const cancelModalSpy = spyOn(
-      component,
-      'displayCancelModal'
-    ).and.callThrough();
-    const cancelModalConstructorSpy = spyOn(
-      component,
-      'constructCancelPassModal'
-    );
-    const cancelModalTemplate =
-      component.tableSchema.columns[6].cellTemplate(mockPass1);
-    cancelModalTemplate.inputs.onClick();
-    expect(cancelModalSpy).toHaveBeenCalledTimes(1);
-    expect(component.cancelModalRef).toBeDefined();
-    expect(modalServiceSpy).toHaveBeenCalledTimes(1);
-    expect(cancelModalConstructorSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it('creates pass modal', async () => {
-    // Overkill to check every field as the biz req's change often.
-    // Check conditional fields & modal functionality instead.
-    component.displayPassModal(mockPass1);
-    const message = component.passModal.body;
-    let body = document.createElement('div');
-    body.innerHTML = message;
-    expect(body.innerText).not.toContain('Phone Number');
-    expect(body.innerText).not.toContain('License Plate');
-    const modalHideSpy = spyOn(component.passModalRef, 'hide');
-    component.passModal.buttons[0].onClick();
-    expect(modalHideSpy).toHaveBeenCalledTimes(1);
+    expect(mockPass1[row[0].key]).toEqual('1234567890'); // pass id
+    expect(mockPass1[row[1].key]).toEqual(4); // number of guests
+    expect(mockPass1[row[2].key]).toEqual('2022-12-18'); // date
+    expect(mockPass1[row[3].key]).toEqual('mock@email.ca'); // email
+    expect(row[4].display(mockPass1)).toEqual('FirstName LastName'); // name
+    expect(mockPass1[row[5].key]).toEqual('expired'); // status
+    expect(mockPass1[row[6].key]).toBeTrue(); // checked in
+    expect(mockPass1[row[7].key]).toBeFalse(); // is overbooked
+    expect(mockPass1[row[8].key]).toEqual('Mock Park 1'); // park
+    expect(mockPass1[row[9].key]).toEqual('Mock Facility 1'); // facility
+    expect(mockPass1[row[10].key]).toEqual('PM'); // pass type
+    expect(row[11].display(mockPass1)).toEqual('12/18/2022, 11:00 AM'); // checkinTime
   });
 
   it('creates cancel modal', async () => {
@@ -178,5 +138,46 @@ describe('PassesListComponent', () => {
       }
     );
     expect(fetchPassSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('adapts the column widths', async () => {
+    let widthSpy = spyOn(component, 'setWidth');
+    component.ngAfterViewInit();
+    await fixture.whenStable();
+    expect(widthSpy).toHaveBeenCalledTimes(1);
+    window.dispatchEvent(new Event('resize'));
+    expect(widthSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it('updates the capacity bar with checked-in count', async () => {
+    let dataSpy = spyOn(component['dataService'], 'mergeItemValue');
+    component.passes = [MockData.mockPass_1];
+    component.updateCapacityBarCheckIns();
+    await fixture.whenStable();
+    expect(dataSpy).toHaveBeenCalledWith(
+      Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT, {
+      checkInCount: 4
+    })
+  });
+
+  it('formatsCheckedInTime', async () => {
+    expect(component.formatCheckedInTime({...mockPass1})).toEqual('12/18/2022, 11:00 AM');
+    expect(component.formatCheckedInTime(null)).toEqual('N/A');
+  });
+
+  it('filters pass list by checked-in status', async () => {
+    component.passes = [{...MockData.mockPass_1}];
+    component.changeCheckInState({ value: 'checkedIn' });
+    expect(component.tableRows.length).toEqual(1);
+    expect(component.checkedInState).toEqual('checkedIn');
+    component.changeCheckInState({ value: 'notCheckedIn' });
+    expect(component.tableRows.length).toEqual(0);
+    expect(component.checkedInState).toEqual('notCheckedIn');
+    component.changeCheckInState({ value: 'all' });
+    expect(component.tableRows.length).toEqual(1);
+    expect(component.checkedInState).toEqual('all');
+    component.changeCheckInState(undefined);
+    expect(component.tableRows.length).toEqual(1);
+    expect(component.checkedInState).toEqual('all');
   });
 });

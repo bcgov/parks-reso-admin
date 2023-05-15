@@ -1,17 +1,103 @@
-<app-table
-  [tableSchema]="tableSchema"
-  [data]="tableRows"
-  [emptyTableMsg]="'No passes found.'"
-  [lastEvaluatedKey]="lastEvaluatedKey"
-  (loadMore)="loadMorePasses()"
-></app-table>
+<!-- checkedIn filters -->
+<div class="mb-5 mt-3 d-flex row">
+  <div *ngFor="let state of checkedInStates"
+    class="col-md-4 col-lg-auto border-bottom border-2 text-center filter-button"
+    [ngClass]="state?.value === checkedInState ? 'border-primary' : 'border-light'" (click)="changeCheckInState(state)">
+    <h4 class="px-4 mb-2 mt-3" [ngClass]="state?.value === checkedInState ? 'text-primary 
+    ' : 'text-muted'">
+      {{state?.label}}
+    </h4>
+  </div>
+</div>
 
-<!-- Here is where we store the templates for the specific modals shown from this page.  -->
-<!-- They are not rendered until clicked. -->
-<ng-template #passModalTemplate>
-  <app-modal [modal]="passModal"></app-modal>
-</ng-template>
+<!-- Results table -->
+<div id='pass-list'>
+  <div class="d-flex row">
+    <app-pass-accordion [rowSchema]="rowSchema" [isHeader]="true"></app-pass-accordion>
+  </div>
+  <div *ngIf="!loading">
+    <div *ngIf="!tableRows || tableRows?.length === 0"
+      class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-3 text-center">
+      No passes to display.
+    </div>
+    <div *ngFor="let pass of tableRows">
+      <app-pass-accordion [pass]="pass" [cancelTemplate]="passCancelButtonTemplate" [rowSchema]="rowSchema"
+        [dropDownSchema]="dropDownSchema"></app-pass-accordion>
+    </div>
+  </div>
+  <div *ngIf="loading"
+    class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-3 text-center">
+    <span class="spinner-border text-secondary"></span>
+  </div>
+</div>
 
+<!-- Load more button -->
+<div *ngIf="lastEvaluatedKey" class="d-flex flex-column h-100 align-items-center m-2">
+  <button class="btn btn-outline-secondary" (click)="loadMorePasses()">Load more</button>
+</div>
+
+<!-- Here is where we store the templates for elements within the accoridion table -->
+<!-- Cancel modal -->
 <ng-template #cancelModalTemplate>
   <app-modal [modal]="cancelModal"></app-modal>
+</ng-template>
+
+<!-- Pass status template -->
+<ng-template #passStatusTemplate let-pass="pass">
+  <div class="d-flex align-items-center overflow-hidden">
+    <div class="me-2">
+      <div *ngIf="pass?.passStatus === 'active'">
+        <i class="fs-3 bi bi-check-circle text-success"></i>
+      </div>
+      <div *ngIf="pass?.passStatus === 'reserved'">
+        <i class="fs-3 bi bi-clock text-warning"></i>
+      </div>
+      <div *ngIf="pass?.passStatus === 'expired'">
+        <i class="fs-3 bi bi-clock-history text-secondary pass-list-icon"></i>
+      </div>
+      <div *ngIf="pass?.passStatus === 'cancelled'">
+        <i class="fs-3 bi bi-x-circle text-danger pass-list-icon"></i>
+      </div>
+    </div>
+    <div>
+      {{pass?.passStatus}}
+    </div>
+  </div>
+</ng-template>
+
+<!-- Pass overbooked template -->
+<ng-template #passIsOverbookedTemplate let-pass="pass">
+  <div class="d-flex align-items-center overflow-hidden">
+    <div *ngIf="pass?.isOverbooked" class="d-flex">
+      <i class="text-danger fs-3 bi bi-exclamation-triangle-fill"></i>
+      <div class="d-flex d-md-none ms-2 text-danger">
+        Overbooked
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Pass checked in template -->
+<ng-template #passCheckedInTemplate let-pass="pass">
+  <div class="d-flex align-items-center overflow-hidden">
+    <div>
+      <div *ngIf="!pass.checkedIn && pass?.passStatus !== 'active'">
+        <i class="fs-3 bi bi-circle text-secondary pass-list-icon"></i>
+      </div>
+      <div *ngIf="!pass.checkedIn && pass?.passStatus === 'active'">
+        <i class="fs-3 bi bi-circle text-success"></i>
+      </div>
+      <div *ngIf="pass.checkedIn">
+        <i class="fs-3 bi bi-check-circle-fill text-success"></i>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Cancellation button template -->
+<ng-template #passCancelButtonTemplate let-pass="pass">
+  <button class="btn btn-outline-danger" [disabled]="pass?.passStatus === 'cancelled' || pass?.passStatus === 'expired'"
+    (click)="displayCancelModal(pass)">
+    <i class="fs-3 bi bi-x-lg"></i>
+  </button>
 </ng-template>

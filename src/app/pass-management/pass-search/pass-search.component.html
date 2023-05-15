@@ -15,6 +15,11 @@
       </div>
     </div>
   </div>
+  <div class="m-4">
+    <h2><span *ngIf="currentPark">{{currentPark}}: </span><span *ngIf="currentFacility">{{currentFacility}}</span><span
+        *ngIf="currentPassType"> ({{currentPassType}})</span></h2>
+    <h3 *ngIf="currentDate">{{currentDate | date: 'mediumDate'}}</h3>
+  </div>
   <div class="mx-4 mt-4">
     <div class="row">
       <div class="col-12">
@@ -22,7 +27,7 @@
       </div>
     </div>
   </div>
-  <div class="mt-4">
+  <div class="m-4">
     <app-passes-list></app-passes-list>
   </div>
 </section>

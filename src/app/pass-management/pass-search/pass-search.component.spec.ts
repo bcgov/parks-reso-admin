@@ -38,18 +38,4 @@ describe('PassSearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('gets opening hour text', async () => {
-    component.facility = mockFacility;
-    expect(component.bookingOpeningHourText).toEqual('7 AM');
-    component.facility = null;
-    expect(component.bookingOpeningHourText).toEqual('8 AM');
-  });
-
-  it('gets booking days ahead text', async () => {
-    component.facility = mockFacility;
-    expect(component.bookingDaysAheadText).toEqual('2 days');
-    component.facility = null;
-    expect(component.bookingDaysAheadText).toEqual('Same Day');
-  
-  });
 });

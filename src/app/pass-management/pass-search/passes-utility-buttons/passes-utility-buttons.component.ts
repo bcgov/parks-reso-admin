@@ -32,7 +32,7 @@ export class PassesUtilityButtonsComponent implements OnDestroy {
     protected facilityService: FacilityService
   ) {
     this.subscriptions.add(
-      dataService.watchItem(Constants.dataIds.PASSES_LIST).subscribe((res) => {
+      dataService.watchItem(Constants.dataIds.FILTERED_PASSES_LIST).subscribe((res) => {
         this.passes = res;
       })
     );
