@@ -11,12 +11,17 @@ export class NavCardComponent implements OnInit {
   @Input() cardTitle;
   @Input() cardText;
   @Input() navigation;
+  @Input() relative: boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   navigate(nav) {
-    this.router.navigate(['/' + nav]);
+    if (this.relative) {
+      this.router.navigate([nav], { relativeTo: this.route });
+    } else {
+      this.router.navigate([nav]);
+    }
   }
 }

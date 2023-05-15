@@ -1,0 +1,50 @@
+<div class="pt-3 mb-4">
+  <section class="container-fluid">
+    <div class="d-flex justify-content-center">
+      <div class="btn-group btn-group-lg">
+        <button
+          type="button"
+          class="btn btn-primary btn-camera"
+          [class.active]="mode === 'camera'"
+          (click)="setMode('camera')"
+        >
+          Camera
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-manual"
+          [class.active]="mode === 'manual'"
+          (click)="setMode('manual')"
+        >
+          Manual Lookup
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-2 border-primary border-top">
+    <div *ngIf="mode === 'camera'">
+      <div class="container-fluid bg-light">
+        <div class="gutters">
+          <div *ngIf="scannerSwitch" class="pt-4"></div>
+          <app-qr-scanner></app-qr-scanner>
+        </div>
+      </div>
+      <div class="mt-3 gutters" *ngIf="!scannerSwitch">
+        <app-qr-result></app-qr-result>
+      </div>
+    </div>
+    <div class="container-fluid bg-light">
+      <div class="gutters py-4" *ngIf="mode === 'manual'">
+        <app-manual-entry></app-manual-entry>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-fluid gutters">
+    <app-pass-check-in-list
+      [passes]="passes"
+      (event)="passCheckInListEvent($event)"
+    ></app-pass-check-in-list>
+  </section>
+</div>

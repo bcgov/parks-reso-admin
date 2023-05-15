@@ -1,10 +1,13 @@
 <form [formGroup]="form">
   <div class="form-section">
     <app-passes-filter-fields
-      *ngIf="bookingTimesList"
       [passType]="fields?.passType"
-      [passTypeOptions]="bookingTimesList"
+      [passTypeOptions]="passTypeOptions"
       [date]="fields?.date"
+      [park]="fields?.park"
+      [parkOptions]="parkOptions"
+      [facility]="fields?.facilityName"
+      [facilityOptions]="facilityOptions"
       [passStatus]="fields?.passStatus"
       [passStatusOptions]="statusesList"
       [firstName]="fields?.firstName"
@@ -17,7 +20,8 @@
     >
     </app-passes-filter-fields>
     <div class="d-flex justify-content-lg-end">
-      <button class="btn btn-primary" (click)="onSubmit()">Submit</button>
+      <button class="btn btn-secondary" (click)="clearForm()">Clear</button>
+      <button [disabled]="!checkFieldsForSubmission()" class="btn btn-primary ms-2" (click)="onSubmit()">Submit</button>
     </div>
   </div>
 </form>
