@@ -20,15 +20,17 @@
           <small><i class="bi bi-exclamation-triangle-fill"></i> {{ data.overbooked }} passes overbooked</small>
         </div>
       </div>
-      <div *ngIf="data.modifier > 0 || data.modifier < 0" class="text-muted">
-        <small>Modifier applied</small>
+      <div *ngIf="data.reserved !== null">
+        <small>{{data?.checkInCount ? data.checkInCount : '0'}} pass{{data?.checkInCount === 1 ? '' : 'es'}} checked in</small>
       </div>
     </strong>
+    <div *ngIf="data.modifier > 0 || data.modifier < 0" class="text-muted">
+      <small>Modifier applied</small>
+    </div>
   </label>
-  <ngb-progressbar
-    [showValue]="true"
-    type="{{ data.style }}"
-    [value]="data.capPercent"
-    height="1.5rem"
-  ></ngb-progressbar>
+  <div *ngIf="data.reserved !== null">
+    <ngb-progressbar class="capacity-bar-top" [showValue]="true" type="{{ data.style }}" [value]="data.capPercent"
+    height="1.5rem"></ngb-progressbar>
+    <ngb-progressbar class="capacity-bar-bottom" [showValue]="false" type="success" [value]="data.checkInCount" [max]="data.capacity" height="1.0rem"></ngb-progressbar>
+  </div>
 </div>

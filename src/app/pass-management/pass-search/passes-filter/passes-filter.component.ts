@@ -13,6 +13,7 @@ import { ReservationService } from 'src/app/services/reservation.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { Constants } from 'src/app/shared/utils/constants';
 import { DateTime } from 'luxon';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-passes-filter',
@@ -195,7 +196,14 @@ export class PassesFilterComponent extends BaseFormComponent {
 
     // If there are mandatory params in the url, search for them now
     if (this.searchOnPageLoadFlag && this.checkFieldsForSubmission()) {
-      this.onSubmit();
+      // wait for parksAndFacilities to be loaded
+      let autofetchReady = new Subject();
+      this.dataService.watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST).pipe(
+        takeUntil(autofetchReady)
+      ).subscribe(() => {
+        this.onSubmit();
+        autofetchReady.complete();
+      });
     }
     this.searchOnPageLoadFlag = false;
   }
@@ -284,7 +292,7 @@ export class PassesFilterComponent extends BaseFormComponent {
         res.fields?.date || null,
         res.fields?.passType || null
       );
-      this.updateUrl();
+      this.dataService.setItemValue(Constants.dataIds.PASS_SEARCH_PARAMS, this.updateUrl());
     }
   }
 
@@ -325,12 +333,11 @@ export class PassesFilterComponent extends BaseFormComponent {
       }
     }
 
-    // set cached filter params
-    this.dataService.setItemValue(Constants.dataIds.PASS_SEARCH_PARAMS, queryParams);
-
     this.router.navigate(['.'], {
       relativeTo: this.route,
       queryParams: queryParams,
     });
+
+    return queryParams;
   }
 }

@@ -1,0 +1,62 @@
+<section>
+  <div *ngIf="isHeader && getCurrentScreenSize() > 2" class="d-flex row text-nowrap border border-2 border-white">
+    <div class="fw-bold px-3 pb-1 accordion-header overflow-hidden {{col?.columnClasses}}"
+      *ngFor="let col of getHeaderColumns()" [attr.id]="col?.id">
+      <div *ngIf="col?.displayHeader">
+        {{col?.displayHeader}}
+      </div>
+    </div>
+    <div class="col-auto" id="cancelButton">
+      <!-- Empty col for cancel button header -->
+    </div>
+    <hr class="mb-1">
+  </div>
+  <div *ngIf="!isHeader" class="d-flex row mt-2 text-nowrap justify-content-between">
+    <div class="col">
+      <div class="row d-flex border border-2 accordion-item align-items-center"
+        [ngClass]="pass?.isOverbooked ? 'border-danger' : 'border-secondary'">
+        <div *ngFor="let col of getHeaderColumns()" class="p-3 overflow-hidden {{col?.columnClasses}}"
+          [attr.id]="col?.id" [ngClass]="[pass?.isOverbooked ? 'overbooked text-danger' : '']" data-bs-toggle="collapse"
+          [attr.data-bs-target]="'#p' + pass?.sk">
+          <div *ngIf="col?.display">
+            {{col?.display(pass)}}
+          </div>
+          <div *ngIf="col?.template">
+            <ng-container [ngTemplateOutlet]="col.template" [ngTemplateOutletContext]="{pass: pass}">
+            </ng-container>
+          </div>
+          <div *ngIf="!col?.display && !col?.template">
+            {{pass[col?.key]}}
+          </div>
+        </div>
+      </div>
+      <!-- Dropdown template for when you click on the pass row -->
+      <!-- You can't have an id tag that starts with a digit -->
+      <div *ngIf="!isHeader" [attr.id]="'p'+pass?.sk" class="collapse">
+        <div class="d-flex row overflow-hidden accordion-item" data-bs-toggle="collapse"
+          [attr.data-bs-target]="'#p' + pass?.sk">
+          <div class="bg-light">
+            <div class="row">
+              <div class="col-xs-12 col-sm-auto p-3" *ngFor="let col of getDropdownColumns()">
+                <strong>{{col?.displayHeader}}</strong>
+                <div *ngIf="col?.display && !col?.template">
+                  {{col?.display(pass)}}
+                </div>
+                <div *ngIf="col?.template">
+                  <ng-container [ngTemplateOutlet]="col.template" [ngTemplateOutletContext]="{pass: pass}">
+                  </ng-container>
+                </div>
+                <div *ngIf="!col?.display && !col?.template">
+                  {{pass[col?.key]}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto pt-2 border border-2 border-white" id="cancelButton">
+      <ng-container [ngTemplateOutlet]="cancelTemplate" [ngTemplateOutletContext]="{pass: pass}"></ng-container>
+    </div>
+  </div>
+</section>

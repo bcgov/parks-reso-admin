@@ -110,6 +110,7 @@ describe('ReservationService', () => {
       overbooked: 0,
       modifier: 8,
       style: 'success',
+      checkInCount: 0,
     };
     service.setCapacityBar(MockData.mockReservationObj_1, 'AM');
     expect(setDataSpy).toHaveBeenCalledOnceWith(

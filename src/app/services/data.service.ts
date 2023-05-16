@@ -23,7 +23,8 @@ export class DataService {
 
   // Append array data to existing dataService id
   appendItemValue(id, value): any[] {
-    if (!this.checkIfDataExists(id)) {
+    // We cannot concatenate an undefined object
+    if (!this.checkIfDataExists(id) || !this.getItemValue(id)) {
       this.setItemValue(id, value);
       return [];
     } else {
@@ -35,7 +36,8 @@ export class DataService {
 
   // Merge object data to existing dataService id
   mergeItemValue(id, value, attribute = null): any {
-    if (!this.checkIfDataExists(id)) {
+    // We cannot merge to an undefined object
+    if (!this.checkIfDataExists(id) || !this.getItemValue(id)) {
       this.setItemValue(id, value);
       return null;
     } else {

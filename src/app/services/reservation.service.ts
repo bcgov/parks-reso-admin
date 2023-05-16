@@ -138,6 +138,14 @@ export class ReservationService {
       : 0;
     capBarObj.style = this.calculateProgressBarColour(capBarObj.capPercent);
 
+    // get current checked-in count, if any
+    let currentCapBar = this.dataService.getItemValue(Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT);
+    if (currentCapBar?.checkInCount) {
+      capBarObj['checkInCount'] = currentCapBar.checkInCount;
+    } else {
+      capBarObj['checkInCount'] = 0;
+    }
+
     this.dataService.setItemValue(
       Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
       capBarObj

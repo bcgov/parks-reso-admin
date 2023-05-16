@@ -1,21 +1,22 @@
 import {
+  ChangeDetectorRef,
   Component,
+  HostListener,
   OnDestroy,
   OnInit,
   TemplateRef,
   ViewChild,
-  ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { PassService } from 'src/app/services/pass.service';
-import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
-import { TableIconComponent } from 'src/app/shared/components/table/table-components/table-icon/table-icon.component';
 import { tableSchema } from 'src/app/shared/components/table/table.component';
 import { Constants } from 'src/app/shared/utils/constants';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { modalSchema } from 'src/app/shared/components/modal/modal.component';
 import { KeycloakService } from 'src/app/services/keycloak.service';
+import { DateTime } from 'luxon';
+import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-passes-list',
@@ -25,26 +26,51 @@ import { KeycloakService } from 'src/app/services/keycloak.service';
 export class PassesListComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   public tableSchema: tableSchema;
+  public passes: any[] = [];
   public tableRows: any[] = [];
   public passModal: modalSchema;
   public cancelModal: modalSchema;
   public passModalRef: BsModalRef;
   public cancelModalRef: BsModalRef;
   public lastEvaluatedKey = null;
+  public rowSchema: any[];
+  public dropDownSchema: any[];
+  public checkedInStates: any[] = [{ value: 'all', label: 'All Passes' }, { value: 'checkedIn', label: 'Checked-in' }, { value: 'notCheckedIn', label: 'Not Checked-in' }];
+  public checkedInState;
+  public loading;
 
   @ViewChild('passModalTemplate') passModalTemplate: TemplateRef<any>;
   @ViewChild('cancelModalTemplate') cancelModalTemplate: TemplateRef<any>;
+  @ViewChild('passStatusTemplate') passStatusTemplate: TemplateRef<any>;
+  @ViewChild('passCheckedInTemplate') passCheckedInTemplate: TemplateRef<any>;
+  @ViewChild('rowTemplate') rowTemplate: TemplateRef<any>;
+  @ViewChild('passCancelButtonTemplate') passCancelButtonTemplate: TemplateRef<any>;
+  @ViewChild('passIsOverbookedTemplate') passIsOverbookedTemplate: TemplateRef<any>;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.setWidth();
+  }
 
   constructor(
     protected dataService: DataService,
     protected keyCloakService: KeycloakService,
     protected passService: PassService,
     protected modalService: BsModalService,
-    protected vcr: ViewContainerRef
+    protected loadingService: LoadingService,
+    protected cd: ChangeDetectorRef,
   ) {
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.PASSES_LIST).subscribe((res) => {
-        this.tableRows = res;
+        if (res) {
+          this.passes = res;
+          this.changeCheckInState({ value: this.checkedInState }, true);
+        }
+      })
+    );
+    this.subscriptions.add(
+      loadingService.getLoadingStatus().subscribe((res) => {
+        this.loading = res;
       })
     );
     this.subscriptions.add(
@@ -57,7 +83,179 @@ export class PassesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.createTable();
+    this.checkedInState = 'all'
+  }
+
+  setWidth() {
+    let columns = [...this.rowSchema];
+    // don't forget about the cancel button column
+    columns.push({ id: 'cancelButton' });
+    // get groups of column ids
+    for (const col of columns) {
+      const columns = document.querySelectorAll<HTMLElement>(`#${col.id}`);
+      let maxWidth = 0;
+      for (let i = 0; i < columns.length; i++) {
+        maxWidth = Math.max(maxWidth, columns[i].scrollWidth);
+      }
+      for (let i = 0; i < columns.length; i++) {
+        columns[i].style.width = maxWidth + 'px';
+      }
+    }
+  }
+
+  ngAfterViewInit() {
+    this.rowSchema = [
+      {
+        id: 'passId', // column identifier
+        displayHeader: 'Res Number', // table header display name
+        dropdown: 0, // when does this column collapse into the dropdown? 0-never, 1-mobile, 2<xs, 3<sm, 4<md, 5<lg, 6<xl, 7-always
+        columnClasses: 'col-sm-auto col-3', // additional column classes - for column sizing at different screen sizes
+        grow: false, // if true, column grows to fill available space. if false, column is minimum width
+        key: 'registrationNumber' // value of pass object associated with column
+      },
+      {
+        id: 'numberOfGuests',
+        dropdown: 4,
+        grow: false,
+        columnClasses: 'col-auto',
+        displayHeader: 'Passes',
+        key: 'numberOfGuests'
+      },
+      {
+        id: 'date',
+        dropdown: 0,
+        grow: false,
+        columnClasses: 'col-sm-auto col-3',
+        displayHeader: 'Date',
+        key: 'shortPassDate'
+      },
+      {
+        id: 'email',
+        dropdown: 3,
+        columnClasses: 'col',
+        grow: true,
+        displayHeader: 'Email',
+        key: 'email'
+      },
+      {
+        id: 'name',
+        displayHeader: 'Name',
+        columnClasses: 'col',
+        dropdown: 5,
+        grow: true,
+        key: 'lastName',
+        display: (pass) => `${pass.firstName} ${pass.lastName}`
+      },
+      {
+        id: 'status',
+        displayHeader: 'Status',
+        columnClasses: 'col-auto',
+        dropdown: 2,
+        grow: false,
+        key: 'passStatus',
+        template: this.passStatusTemplate
+      },
+      {
+        id: 'checkedIn',
+        dropdown: 2,
+        columnClasses: 'col-auto',
+        grow: false,
+        displayHeader: 'Checked-In',
+        key: 'checkedIn',
+        template: this.passCheckedInTemplate
+      },
+      {
+        id: 'isOverbooked',
+        dropdown: 3,
+        columnClasses: 'col-auto',
+        grow: false,
+        key: 'isOverbooked',
+        template: this.passIsOverbookedTemplate
+      },
+      {
+        id: 'park',
+        displayHeader: 'Park',
+        grow: false,
+        dropdown: 7,
+        key: 'parkName',
+      },
+      {
+        id: 'facility',
+        displayHeader: 'Facility',
+        grow: false,
+        dropdown: 7,
+        key: 'facilityName',
+      },
+      {
+        id: 'passType',
+        displayHeader: 'Pass Type',
+        grow: false,
+        dropdown: 7,
+        key: 'type',
+      },
+      {
+        id: 'checkInTime',
+        displayHeader: 'Check-in Time',
+        grow: false,
+        dropdown: 7,
+        key: 'checkedInTime',
+        display: (pass) => this.formatCheckedInTime(pass),
+      },
+    ];
+    this.setWidth();
+    this.cd.detectChanges();
+  }
+
+  ngAfterViewChecked() {
+    this.setWidth();
+  }
+
+  changeCheckInState(state, forceUpdate = false) {
+    this.loadingService.addToFetchList(Constants.dataIds.FILTERED_PASSES_LIST);
+    this.tableRows = this.passes;
+    if (state === undefined) {
+      state = this.checkedInStates[0];
+      this.checkedInState = state.value
+    }
+    if (state?.value !== this.checkedInState || forceUpdate === true) {
+      this.checkedInState = state.value;
+      // filter current passList
+      if (this.passes?.length) {
+        switch (state.value) {
+          case 'checkedIn':
+            this.tableRows = [];
+            for (const row of this.passes) {
+              if (row?.checkedIn) {
+                this.tableRows.push(row);
+              }
+            }
+            break;
+          case 'notCheckedIn':
+            this.tableRows = [];
+            for (const row of this.passes) {
+              if (!row?.checkedIn || row?.checkedIn === false) {
+                this.tableRows.push(row);
+              }
+            }
+            break;
+          case 'all':
+          default:
+            this.tableRows = this.passes;
+            break;
+        }
+      }
+      this.loadingService.removeToFetchList(Constants.dataIds.FILTERED_PASSES_LIST);
+      this.dataService.setItemValue(Constants.dataIds.FILTERED_PASSES_LIST, this.tableRows);
+      this.updateCapacityBarCheckIns();
+    }
+  }
+
+  formatCheckedInTime(pass) {
+    if (pass?.checkedInTime) {
+      const time = DateTime.fromISO(pass?.checkedInTime).setZone('America/Vancouver');
+      return time.toLocaleString(DateTime.DATETIME_SHORT);
+    }
+    return 'N/A';
   }
 
   cancelPass(pass) {
@@ -88,58 +286,6 @@ export class PassesListComponent implements OnInit, OnDestroy {
     this.passService.fetchData(loadMoreObj);
   }
 
-  displayPassModal(passObj) {
-    const self = this;
-    this.passModal = {
-      id: 'passModal',
-      title: 'Pass Information',
-      body: this.constructPassModalBody(passObj),
-      buttons: [
-        {
-          text: 'Ok',
-          classes: 'btn btn-primary',
-          onClick: function () {
-            self.passModalRef.hide();
-          },
-        },
-      ],
-    };
-    this.passModalRef = this.modalService.show(this.passModalTemplate, {
-      class: 'modal-lg',
-    });
-  }
-
-  constructPassModalBody(passObj) {
-    let message = `<strong>First Name:</strong></br>` + passObj.firstName;
-    message += `</br></br><strong>Last Name:</strong></br>` + passObj.lastName;
-    message += `</br></br><strong>Email:</strong></br>` + passObj.email;
-    if (passObj.phoneNumber) {
-      message +=
-        `</br></br><strong>Phone Number:</strong></br>` + passObj.phoneNumber;
-    }
-    if (passObj.facilityType === 'Parking') {
-      message +=
-        `</br></br><strong>License Plate:</strong></br>` + passObj.license;
-    }
-    message +=
-      `<hr><strong>Registration Number:</strong></br>` +
-      passObj.registrationNumber;
-    message +=
-      `</br></br><strong>Facility Name:</strong></br>` + passObj.facilityName;
-    message += `</br></br><strong>Booking Time:</strong></br>` + passObj.type;
-    message += `</br></br><strong>Date:</strong></br>` + passObj.shortPassDate;
-    message +=
-      `</br></br><strong>Pass Status:</strong></br>` + passObj.passStatus;
-    if (passObj.isOverbooked === true) {
-      if (passObj.passStatus === 'active' || passObj.passStatus === 'reserved') {
-        message += `</br></br><i class="bi bi-exclamation-triangle-fill text-danger"></i> <strong class="text-danger">Pass is overbooked</strong></br>`;
-      } else {
-        message += `</br></br><i class="bi bi-exclamation-triangle-fill"></i> <strong>Pass is overbooked</strong></br>`;
-      }
-    }
-    return message;
-  }
-
   displayCancelModal(passObj) {
     const self = this;
     this.cancelModal = {
@@ -168,118 +314,19 @@ export class PassesListComponent implements OnInit, OnDestroy {
     return message;
   }
 
-  displayOverbookedWarning(passObj) {
-    if (passObj.isOverbooked === true) {
-      //show icon in red if pass is still actived/reserved
-      if (
-        passObj.passStatus === 'active' ||
-        passObj.passStatus === 'reserved'
-      ) {
-        return {
-          component: TableIconComponent,
-          inputs: {
-            altText: 'Overbooked',
-            iconClass: 'bi bi-exclamation-triangle-fill text-danger',
-          },
-        };
-        //otherwise, greyed out
-      } else {
-        return {
-          component: TableIconComponent,
-          inputs: {
-            altText: 'Overbooked',
-            iconClass: 'bi bi-exclamation-triangle-fill',
-          },
-        };
+  updateCapacityBarCheckIns() {
+    let checkInCount = 0;
+    if (this.passes) {
+      for (const pass of this.passes) {
+        if (pass.checkedIn) {
+          checkInCount += pass.numberOfGuests;
+        }
       }
     }
-    return {
-      component: TableIconComponent,
-      inputs: {
-        iconClass: '',
-      },
-    };
+    // merge the checkInCount to the current capacity bar object
+    this.dataService.mergeItemValue(Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT, { checkInCount: checkInCount });
   }
 
-  createTable() {
-
-    let columns = [
-      {
-        id: 'passId',
-        displayHeader: 'Reg #',
-        columnClasses: 'ps-3 pe-3',
-        mapValue: (passObj) => passObj.sk,
-      },
-      {
-        id: 'email',
-        displayHeader: 'Email',
-        columnClasses: 'px-3',
-        mapValue: (passObj) => passObj.email,
-      },
-      {
-        id: 'numberOfGuests',
-        displayHeader: 'Guests',
-        columnClasses: 'px-3',
-        mapValue: (passObj) => passObj.numberOfGuests,
-      },
-      {
-        id: 'date',
-        displayHeader: 'Date',
-        columnClasses: 'px-3',
-        mapValue: (passObj) => passObj.shortPassDate,
-      },
-      {
-        id: 'status',
-        displayHeader: 'Status',
-        columnClasses: 'px-3',
-        mapValue: (passObj) => passObj.passStatus,
-      },
-      {
-        id: 'overbooked',
-        displayHeader: '',
-        columnClasses: 'px-3',
-        mapValue: () => null,
-        cellTemplate: (passObj) => this.displayOverbookedWarning(passObj),
-      },
-    ];
-
-    if (this.isAllowed('cancel-passes')) {
-      let cancelLayout = {
-        id: 'cancel-button',
-        displayHeader: 'Actions',
-        columnClasses: 'ps-5 pe-3',
-        width: '10%',
-        mapValue: () => null,
-        cellTemplate: (passObj) => {
-          const self = this;
-          return {
-            component: TableButtonComponent,
-            inputs: {
-              altText: 'Cancel',
-              buttonClass: 'btn btn-outline-danger',
-              iconClass: 'bi bi-x-circle-fill',
-              isDisabled: this.disableCancelButton(passObj),
-              onClick: function () {
-                self.displayCancelModal(passObj);
-              },
-            },
-          };
-        },
-      };
-      columns.push(cancelLayout);
-    }
-
-    this.tableSchema = {
-      id: 'passes-list',
-      rowClick: (passObj) => {
-        const self = this;
-        return function () {
-          self.displayPassModal(passObj);
-        };
-      },
-      columns: columns,
-    };
-  }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
