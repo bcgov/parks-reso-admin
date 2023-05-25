@@ -13,7 +13,7 @@ export class HomeComponent {
     {
       cardHeader: 'Parks Management',
       cardTitle: 'Parks Management',
-      cardText: 'Manage parks, facilities and passes.',
+      cardText: 'Manage parks and facilities.',
       navigation: '/parks',
     },
   ];
@@ -24,7 +24,7 @@ export class HomeComponent {
     this.cardConfig.push({
       cardHeader: 'Pass Management',
       cardTitle: 'Pass Management',
-      cardText: 'Check-in park guests via QR Code.',
+      cardText: 'Look up passes and check-in park guests via QR code.',
       navigation: '/pass-management',
     });
 
