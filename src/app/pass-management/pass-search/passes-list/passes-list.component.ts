@@ -1,4 +1,6 @@
 import {
+  AfterViewChecked,
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   HostListener,
@@ -23,7 +25,7 @@ import { LoadingService } from 'src/app/services/loading.service';
   templateUrl: './passes-list.component.html',
   styleUrls: ['./passes-list.component.scss'],
 })
-export class PassesListComponent implements OnInit, OnDestroy {
+export class PassesListComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
   private subscriptions = new Subscription();
   public tableSchema: tableSchema;
   public passes: any[] = [];

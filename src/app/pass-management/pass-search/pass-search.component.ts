@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/services/config.service';
 import { DataService } from 'src/app/services/data.service';
@@ -12,7 +12,7 @@ import { Utils } from 'src/app/shared/utils/utils';
   templateUrl: './pass-search.component.html',
   styleUrls: ['./pass-search.component.scss']
 })
-export class PassSearchComponent {
+export class PassSearchComponent implements OnDestroy {
   private subscriptions = new Subscription();
   public Utils = new Utils();
   public currentFacility;
