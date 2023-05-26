@@ -1,7 +1,4 @@
-import {
-  Component,
-  Input,
-} from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { Utils } from '../../../utils/utils';
 import { BaseInputComponent } from '../base-input/base-input.component';
 
@@ -10,8 +7,7 @@ import { BaseInputComponent } from '../base-input/base-input.component';
   templateUrl: './shortdate-picker.component.html',
   styleUrls: ['./shortdate-picker.component.scss'],
 })
-export class ShortdatePickerComponent
-  extends BaseInputComponent {
+export class ShortdatePickerComponent extends BaseInputComponent {
   @Input() minDate: Date = null as any;
   @Input() maxDate: Date = null as any;
   @Input() range: boolean = false;
@@ -21,8 +17,7 @@ export class ShortdatePickerComponent
 
   private utils = new Utils();
 
-  constructor(
-  ) {
+  constructor() {
     super();
     this.subscriptions.add(
       this.controlInitialized.subscribe((value) => {
@@ -30,7 +25,13 @@ export class ShortdatePickerComponent
           this.initializeControl();
         }
       })
-    )
+    );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes['control'].currentValue.value) {
+      this.modelDate = null as any;
+    }
   }
 
   initializeControl() {
@@ -38,7 +39,7 @@ export class ShortdatePickerComponent
       if (this.control.value) {
         this.modelDate = [
           this.utils.convertShortDateToJSDate(this.control.value[0] || null),
-          this.utils.convertShortDateToJSDate(this.control.value[1] || null)
+          this.utils.convertShortDateToJSDate(this.control.value[1] || null),
         ];
       }
     } else {
@@ -49,7 +50,7 @@ export class ShortdatePickerComponent
         if (this.range && res) {
           this.modelDate = [
             this.utils.convertShortDateToJSDate(res[0]),
-            this.utils.convertShortDateToJSDate(res[1])
+            this.utils.convertShortDateToJSDate(res[1]),
           ];
         } else {
           this.modelDate = res || null;
@@ -66,10 +67,12 @@ export class ShortdatePickerComponent
     if (this.range) {
       this.control.setValue([
         this.utils.convertJSDateToShortDate(this.modelDate[0]),
-        this.utils.convertJSDateToShortDate(this.modelDate[1])
-      ])
+        this.utils.convertJSDateToShortDate(this.modelDate[1]),
+      ]);
     } else {
-      this.control.setValue(this.utils.convertJSDateToShortDate(this.modelDate));
+      this.control.setValue(
+        this.utils.convertJSDateToShortDate(this.modelDate)
+      );
     }
     this.control.markAsDirty();
   }
