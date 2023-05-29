@@ -68,11 +68,34 @@ export class AutoFetchService {
     forkJoin(observables)
       .pipe(first())
       .subscribe((res) => {
+
+        const existingParkAndFacilityList = this.dataService.getItemValue(Constants.dataIds.PARK_AND_FACILITY_LIST);
+        if (existingParkAndFacilityList) {
+          // convert existingParkAndFacilityList to array in order to check if they are the same.
+          const result = Object.entries(existingParkAndFacilityList).map(([k, v]) => ({ [k]: v }));
+
+          if (this.ignoreOrderCompare(result, res)) {
+            // The park and facility list is the same.  Don't re-set it, it is a noop.
+            return;
+          }
+        }
+
         Object.assign(parksObj, ...res);
         this.dataService.setItemValue(
           Constants.dataIds.PARK_AND_FACILITY_LIST,
           parksObj
         );
       });
+  }
+
+  ignoreOrderCompare(a, b) {
+    if (a.length !== b.length) return false;
+    const elements = new Set([...a, ...b]);
+    for (const x of elements) {
+      const count1 = a.filter(e => e === x).length;
+      const count2 = b.filter(e => e === x).length;
+      if (count1 !== count2) return false;
+    }
+    return true;
   }
 }
