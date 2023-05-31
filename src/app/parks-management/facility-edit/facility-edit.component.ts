@@ -31,23 +31,25 @@ export class FacilityEditComponent implements OnDestroy {
         .subscribe((res) => {
           if (res) {
             this.facility = this.facilityService.getCachedFacility(res);
-            this.updateModifiers();
+            this.updateModifiers(res.pk.split('::')[1], res.sk);
           }
         })
     );
     this.subscriptions.add(
-      dataService.watchItem(Constants.dataIds.CURRENT_PARK_KEY).subscribe((res) => {
-        if (res) {
-          this.park = this.parkService.getCachedPark(res);
-        }
-      })
+      dataService
+        .watchItem(Constants.dataIds.CURRENT_PARK_KEY)
+        .subscribe((res) => {
+          if (res) {
+            this.park = this.parkService.getCachedPark(res);
+          }
+        })
     );
   }
 
-  updateModifiers() {
-    if (this.park && this.facility) {
+  updateModifiers(parkSk, facilitySk) {
+    if (parkSk && facilitySk) {
       const today = this.utils.getTodaysDate();
-      this.modifierService.fetchData(this.park.sk, this.facility.sk, today);
+      this.modifierService.fetchData(parkSk, facilitySk, today);
     }
   }
 
