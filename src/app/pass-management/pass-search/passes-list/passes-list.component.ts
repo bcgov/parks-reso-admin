@@ -162,7 +162,7 @@ export class PassesListComponent implements OnInit, OnDestroy, AfterViewInit, Af
         dropdown: 2,
         columnClasses: 'col-auto',
         grow: false,
-        displayHeader: 'Checked-In',
+        displayHeader: 'Checked-in',
         key: 'checkedIn',
         template: this.passCheckedInTemplate
       },
