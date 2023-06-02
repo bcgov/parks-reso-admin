@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Utils } from '../../../utils/utils';
 import { BaseInputComponent } from '../base-input/base-input.component';
 
@@ -7,7 +7,7 @@ import { BaseInputComponent } from '../base-input/base-input.component';
   templateUrl: './shortdate-picker.component.html',
   styleUrls: ['./shortdate-picker.component.scss'],
 })
-export class ShortdatePickerComponent extends BaseInputComponent {
+export class ShortdatePickerComponent extends BaseInputComponent implements OnChanges {
   @Input() minDate: Date = null as any;
   @Input() maxDate: Date = null as any;
   @Input() range: boolean = false;
