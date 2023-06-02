@@ -37,8 +37,8 @@ describe('FacilityEditComponent', () => {
         return mockPark;
       }
       return null;
-    }
-  }
+    },
+  };
 
   let mockFacilityService = {
     getCachedFacility: (key) => {
@@ -46,8 +46,8 @@ describe('FacilityEditComponent', () => {
         return mockFacility;
       }
       return null;
-    }
-  }
+    },
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -73,10 +73,8 @@ describe('FacilityEditComponent', () => {
 
   it('updates modifiers', async () => {
     const modifierSpy = spyOn(component['modifierService'], 'fetchData');
-    spyOn(component['utils'], 'getTodaysDate').and.returnValue(
-      '2022-12-20'
-    );
-    component.updateModifiers();
+    spyOn(component['utils'], 'getTodaysDate').and.returnValue('2022-12-20');
+    component.updateModifiers('MOC1', 'Mock Facility 1');
     expect(modifierSpy).toHaveBeenCalledOnceWith(
       'MOC1',
       'Mock Facility 1',
