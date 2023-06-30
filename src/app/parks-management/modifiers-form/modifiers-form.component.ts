@@ -49,7 +49,6 @@ export class ModifiersFormComponent
           if (res) {
             this.facility = this.facilityService.getCachedFacility(res);
             this.setBookingTimes();
-            this.setForm();
           }
         })
     );
@@ -57,7 +56,6 @@ export class ModifiersFormComponent
       dataService.watchItem(Constants.dataIds.CURRENT_PARK_KEY).subscribe((res) => {
         if (res) {
           this.park = this.parkService.getCachedPark(res);
-          this.setForm();
         }
       })
     );
@@ -99,6 +97,7 @@ export class ModifiersFormComponent
   }
 
   setForm() {
+    console.log("Set form called");
     this.form = new UntypedFormGroup({
       modifierOverrideDate: new UntypedFormControl(null),
       modifierAMChanges: new UntypedFormControl(null),
@@ -134,6 +133,7 @@ export class ModifiersFormComponent
     const postObj = this.formatFormResults(res.fields);
     this.modifierService.setModifier(postObj);
     super.clear();
+    this.setForm();
   }
 
   formatFormResults(results) {
