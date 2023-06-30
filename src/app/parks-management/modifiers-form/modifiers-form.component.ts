@@ -97,7 +97,6 @@ export class ModifiersFormComponent
   }
 
   setForm() {
-    console.log("Set form called");
     this.form = new UntypedFormGroup({
       modifierOverrideDate: new UntypedFormControl(null),
       modifierAMChanges: new UntypedFormControl(null),
