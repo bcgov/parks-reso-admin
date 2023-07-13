@@ -1,6 +1,12 @@
 # Parks Reservation - Admin
 ![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)
 
+# Introduction 
+This repository consists of code for the Public Service Administration for BC Parks. When Park Operators need to update and track statistics such as attendees or park conditions, they use this front end service.
+
+# Contribuition Guidelines
+To contribute to this code, follow the steps through this link: https://bcgov.github.io/bcparks/collaborate 
+
 Associated repos:
 * https://github.com/bcgov/parks-reso-public
 * https://github.com/bcgov/parks-reso-admin
