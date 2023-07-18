@@ -154,7 +154,7 @@ export class MetricsFilterComponent extends BaseFormComponent {
   createFacilityOptions(list) {
     let optionsList = [{
       value: 'all',
-      display: 'All Facilities'
+      display: 'All Facilities',
     },
     {
       value: null,
@@ -182,7 +182,7 @@ export class MetricsFilterComponent extends BaseFormComponent {
       const selectedPark = this.parkFacilitiesList[this.fields.park.value];
       if (selectedPark) {
         this.createFacilityOptions(selectedPark.facilities);
-        this.fields.facility.setValue(this.facilityOptions[2]?.value || this.facilityOptions[0]?.value || null);
+        this.fields.facility.setValue(this.facilityOptions[0]?.value || this.facilityOptions[2]?.value || null);
       }
     }
     return;
