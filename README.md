@@ -1,10 +1,32 @@
 # Parks Reservation - Admin
 ![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)
 
+# Introduction 
+This repository consists of code for the Public Service Administration for BC Parks. When Park Operators need to update and track statistics such as attendees or park conditions, they use this front end service.
+
+# Contribuition Guidelines
+To contribute to this code, follow the steps through this link: https://bcgov.github.io/bcparks/collaborate 
+
 Associated repos:
 * https://github.com/bcgov/parks-reso-public
 * https://github.com/bcgov/parks-reso-admin
 * https://github.com/bcgov/parks-reso-api
+
+# Local Development 
+
+## Development Server
+
+```yarn install```
+
+```yarn start```
+
+Navigate to http://localhost:4200/. The application will automatically reload if you change any of the source files.
+
+## Running Unit Tests
+
+```yarn test-ci --```  to run all tests. 
+ 
+```yarn test-ci -- --include src/app/shared/components/metrics``` to run on a specific file
 
 # Deployment Pipeline
 
