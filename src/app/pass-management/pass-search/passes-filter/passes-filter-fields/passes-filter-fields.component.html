@@ -78,6 +78,16 @@
       [selectOptions]="overbookedOptions"
     ></app-picklist>
   </div>
+
+  <div class="input-box col-md-4">
+    <app-picklist
+      id="passStatus"
+      [label]="'Pass Status'"
+      [control]="passStatus"
+      [selectOptions]="passStatusOptions"
+      [defaultNullDisplay]="'All'"
+    ></app-picklist>
+  </div>
 </div>
 
 
