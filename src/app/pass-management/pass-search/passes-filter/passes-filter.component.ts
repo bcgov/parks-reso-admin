@@ -24,7 +24,12 @@ export class PassesFilterComponent extends BaseFormComponent {
 
   public parksAndFacilities;
   public passTypeOptions;
-  public statusesList = ['reserved', 'active', 'expired', 'cancelled'];
+  public statusesList = [
+    { value: 'reserved', display: 'Reserved' },
+    { value: 'active', display: 'Active' },
+    { value: 'expired', display: 'Expired' },
+    { value: 'cancelled', display: 'Cancelled' },
+  ]
   public overbookedList = [
     { value: 'all', display: 'Show all passes' },
     { value: 'show', display: 'Show overbooked only' },
