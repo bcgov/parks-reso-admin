@@ -73,13 +73,11 @@ export class AutoFetchService {
         if (existingParkAndFacilityList) {
           // convert existingParkAndFacilityList to array in order to check if they are the same.
           const result = Object.entries(existingParkAndFacilityList).map(([k, v]) => ({ [k]: v }));
-
           if (this.ignoreOrderCompare(result, res)) {
             // The park and facility list is the same.  Don't re-set it, it is a noop.
             return;
           }
         }
-
         Object.assign(parksObj, ...res);
         this.dataService.setItemValue(
           Constants.dataIds.PARK_AND_FACILITY_LIST,
@@ -89,12 +87,41 @@ export class AutoFetchService {
   }
 
   ignoreOrderCompare(a, b) {
-    if (a.length !== b.length) return false;
-    const elements = new Set([...a, ...b]);
-    for (const x of elements) {
-      const count1 = a.filter(e => e === x).length;
-      const count2 = b.filter(e => e === x).length;
-      if (count1 !== count2) return false;
+    if (!Array.isArray(a) || !Array.isArray(b)) {
+      this.loggerService.debug("Both inputs must be arrays.");
+      return false;
+    }
+
+    if (a.length !== b.length) {
+      this.loggerService.debug("Arrays have different sizes.");
+      return false;
+    }
+
+    const elementCount = new Map();
+
+    // Count occurrences of objects in array 'a'
+    for (const obj of a) {
+      const key = JSON.stringify(obj);
+      elementCount.set(key, (elementCount.get(key) || 0) + 1);
+    }
+
+    // Compare the counts with array 'b'
+    for (const obj of b) {
+      const key = JSON.stringify(obj);
+      const count = elementCount.get(key);
+      if (!count) {
+        this.loggerService.debug(`Object not found or has a different count: ${JSON.stringify(obj)}`);
+        return false;
+      }
+      elementCount.set(key, count - 1);
+    }
+
+    // Ensure all objects in array 'b' have been accounted for
+    for (const count of elementCount.values()) {
+      if (count !== 0) {
+        this.loggerService.debug("Object count mismatch for some objects.");
+        return false;
+      }
     }
     return true;
   }
