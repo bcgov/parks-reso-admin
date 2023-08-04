@@ -246,6 +246,9 @@ export class PassesFilterComponent extends BaseFormComponent {
     if (!this.checkFieldsForSubmission) {
       return false;
     }
+    if (fields.passStatus === null || fields.passStatus === 'null') {
+      delete fields.passStatus;
+    }
     if (this.parksAndFacilities) {
       let hasPark = Object.keys(this.parksAndFacilities).find((park) =>
         park === fields.park
