@@ -16,12 +16,13 @@
       [reservationNumber]="fields?.reservationNumber"
       [overbooked]="fields?.overbooked"
       [overbookedOptions]="overbookedList"
-
     >
     </app-passes-filter-fields>
     <div class="d-flex justify-content-lg-end">
-      <button class="btn btn-secondary" (click)="clearForm()">Clear</button>
-      <button [disabled]="!checkFieldsForSubmission()" class="btn btn-primary ms-2" (click)="onSubmit()">Search</button>
+      <button class="btn btn-secondary" (click)="clearForm()" type="reset">Clear</button>
+      <button [disabled]="!checkFieldsForSubmission()" class="btn btn-primary ms-2" (click)="onSubmit()" type="submit">
+        Search
+      </button>
     </div>
   </div>
 </form>
