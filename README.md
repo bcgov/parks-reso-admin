@@ -1,5 +1,5 @@
 # Parks Reservation - Admin
-![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)
+![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=bcgov_parks-reso-admin&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=bcgov_parks-reso-admin)
 
 # Introduction 
 This repository consists of code for the Public Service Administration for BC Parks. When Park Operators need to update and track statistics such as attendees or park conditions, they use this front end service.
