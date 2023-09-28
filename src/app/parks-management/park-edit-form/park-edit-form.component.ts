@@ -73,6 +73,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
         Validators.required
       ),
       parkMapLink: new UntypedFormControl(this.data.mapLink),
+      parkVideoLink: new UntypedFormControl(this.data.videoLink),
       parkDescription: new UntypedFormControl(this.data.description),
     });
     super.updateForm();
@@ -105,6 +106,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
         orcs: results.parkOrcs,
         bcParksLink: results.parkSiteLink,
         mapLink: results.parkMapLink,
+        videoLink: results.parkVideoLink,
         status: results.parkStatus === true ? 'open' : 'closed',
         capacity: results.parkCapacity,
       },
@@ -173,6 +175,8 @@ export class ParkEditFormComponent extends BaseFormComponent {
     message +=
       `</br></br><strong>Link to map:</strong></br>` + parkObj.park?.mapLink;
     message +=
+    `</br></br><strong>Link to video:</strong></br>` + parkObj.park?.videoLink;
+    message +=
       `</br></br><strong>Description:</strong></br>` + parkObj.description;
     return message;
   }
@@ -185,6 +189,11 @@ export class ParkEditFormComponent extends BaseFormComponent {
   testMapLink(event) {
     event.preventDefault();
     window.open(this.fields.parkMapLink.value);
+  }
+
+  testVideoLink(event) {
+    event.preventDefault();
+    window.open(this.fields.parkVideoLink.value);
   }
 
   navigateBack() {

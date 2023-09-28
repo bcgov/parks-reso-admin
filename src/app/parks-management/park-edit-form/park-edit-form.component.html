@@ -102,6 +102,22 @@
           </button>
         </div>
       </div>
+      <div class="row align-items-end">
+        <div class="col-10">
+          <app-text-input
+            [control]="fields?.parkVideoLink"
+            [label]="'Link to Video'"
+            [type]="'text'"
+            [id]="'parkVideoLink'"
+          >
+          </app-text-input>
+        </div>
+        <div class="col">
+          <button class="btn btn-primary mb-3" (click)="testVideoLink($event)">
+            Test Link
+          </button>
+        </div>
+      </div>
     </section>
 
     <section class="form-section">
