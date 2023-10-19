@@ -27,6 +27,7 @@ describe('ParkEditFormComponent', () => {
       orcs: mockPark.orcs,
       bcParksLink: mockPark.bcParksLink,
       mapLink: mockPark.bcParksLink,
+      videoLink: null,
       status: mockPark.status,
       capacity: mockPark.capacity,
     },
