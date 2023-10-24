@@ -78,6 +78,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
     });
     super.updateForm();
     super.addDisabledRule(this.fields.parkOrcs);
+    super.addDisabledRule(this.fields.parkName);
   }
 
   async onSubmit() {
