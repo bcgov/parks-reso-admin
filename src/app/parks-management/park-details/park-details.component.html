@@ -60,6 +60,15 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-md-6">
+        <label><strong>Video Link:</strong></label>
+        <br />
+        <p><a *ngIf="park?.videoLink" href="{{ park?.videoLink }}">{{
+          park?.videoLink
+        }}</a></p>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-12">
         <label><strong>Description:</strong></label>
         <p [innerHTML]="park?.description"></p>
