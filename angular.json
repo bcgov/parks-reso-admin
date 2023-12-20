@@ -37,14 +37,13 @@
               }
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/@digitalspace/bcparks-bootstrap-theme/dist/css/bootstrap-theme.min.css",
               "src/styles.scss"
             ],
             "scripts": [
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/@digitalspace/bcparks-bootstrap-theme/dist/js/bootstrap-theme.min.js",
               "node_modules/keycloak-js/dist/keycloak.min.js",
               "node_modules/tinymce/tinymce.min.js"
             ],
