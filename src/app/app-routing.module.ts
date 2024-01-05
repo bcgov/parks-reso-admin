@@ -17,6 +17,7 @@ const routes: Routes = [
     data: {
       label: 'Home',
       breadcrumb: 'Home',
+      sidebar: true,
       icon: 'bi-house-fill',
     },
   },
@@ -27,6 +28,7 @@ const routes: Routes = [
     data: {
       label: 'Parks Management',
       breadcrumb: 'Parks',
+      sidebar: true,
       icon: 'bi-tree-fill',
     },
     loadChildren: () =>
@@ -41,6 +43,7 @@ const routes: Routes = [
     data: {
       label: 'Pass Management',
       breadcrumb: 'Pass Management',
+      sidebar: true,
       icon: 'bi-pass-fill',
     },
     loadChildren: () =>
@@ -56,6 +59,7 @@ const routes: Routes = [
     data: {
       label: 'Metrics',
       breadcrumb: 'Metrics',
+      sidebar: true,
       icon: 'bi-bar-chart-fill',
     },
     loadChildren: () =>

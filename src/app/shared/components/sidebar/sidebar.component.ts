@@ -25,7 +25,14 @@ export class SidebarComponent implements OnDestroy {
   ) {
     this.subscriptions.add(
       sideBarService.routes.subscribe((routes) => {
-        this.routes = routes;
+        // Peel out the non-active routes.
+        let displayedRoutes = [];
+        for(let r of routes) {
+          if (r.data.sidebar === true) {
+            displayedRoutes.push(r);
+          }
+        }
+        this.routes = displayedRoutes;
       })
     );
 
