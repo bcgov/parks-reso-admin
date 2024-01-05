@@ -17,8 +17,8 @@ describe('SidebarComponent', () => {
   let router;
 
   let mockRoutes = [
-    { path: 'mock1', component: HomeComponent, data: { icon: 'bi-circle' } },
-    { path: 'mock2', component: HomeComponent, data: { icon: 'bi-circle' } },
+    { path: 'mock1', component: HomeComponent, data: { icon: 'bi-circle', sidebar: true } },
+    { path: 'mock2', component: HomeComponent, data: { icon: 'bi-circle', sidebar: false } },
   ];
 
   let mockSideBarService = {
@@ -48,7 +48,7 @@ describe('SidebarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.routes.length).toEqual(2);
+    expect(component.routes.length).toEqual(1);
     expect(component.hide).toBeFalse();
   });
 
