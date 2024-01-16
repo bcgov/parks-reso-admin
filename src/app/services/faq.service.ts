@@ -30,7 +30,7 @@ export class FaqService {
         await firstValueFrom(this.apiService.get('readfaq', { faq: 'faq' }))
       )[0];
 
-      if (res && res.text) {
+      if (res?.text) {
         console.log("Valid response with 'text' property:", res.text);
         return res.text;
       } else {
@@ -51,7 +51,6 @@ export class FaqService {
   async putFaq(obj) {
     let res;
     let errorSubject = '';
-    let dataTag = 'parkFaq';
     try {
       errorSubject = 'Faq put';
       if (this.validateFaqObject(obj)) {
@@ -59,7 +58,7 @@ export class FaqService {
         obj.pk = 'faq';
         obj.sk = 'faq';
         this.loggerService.debug(`Put FAQ: ${JSON.stringify(obj)}`);
-        res = await firstValueFrom(this.apiService.put('writefaq', obj));
+        await firstValueFrom(this.apiService.put('writefaq', obj));
         this.toastService.addMessage(
           `Park: ${obj.sk} updated.`,
           `Park updated`,
@@ -74,12 +73,12 @@ export class FaqService {
         ToastTypes.ERROR
       );
       this.eventService.setError(
-        new EventObject(EventKeywords.ERROR, String(e), 'FAQ ERROR??')
+        new EventObject(EventKeywords.ERROR, String(e), 'FAQ ERROR')
       );
     }
   }
   validateFaqObject(obj){
-    //TODO:: MAKE ONE OF THESE LIKE IN PARK.SERVICE
+    //If Validation Requirements come later on validate here
     return true
   }
 }

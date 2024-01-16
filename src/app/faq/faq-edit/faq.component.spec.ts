@@ -1,5 +1,5 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { ComponentFixture, TestBed, tick, fakeAsync} from '@angular/core/testing';
+import { ComponentFixture, TestBed} from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BsModalService } from 'ngx-bootstrap/modal';

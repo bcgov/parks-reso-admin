@@ -9,18 +9,14 @@ import {
   UntypedFormBuilder,
   UntypedFormControl,
   UntypedFormGroup,
-  Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { FaqService } from 'src/app/services/faq.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { modalSchema } from 'src/app/shared/components/modal/modal.component';
-import { Constants } from 'src/app/shared/utils/constants';
-import { Utils } from 'src/app/shared/utils/utils';
 
 @Component({
   selector: 'app-faq-edit',
