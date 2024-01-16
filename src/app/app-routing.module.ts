@@ -8,7 +8,7 @@ import { ParksManagementComponent } from './parks-management/parks-management.co
 import { MetricsComponent } from './metrics/metrics.component';
 import { MetricsResolver } from './resolvers/metrics.resolver';
 import { PassManagementComponent } from './pass-management/pass-management.component';
-
+import { FaqComponent } from './faq/faq.component'
 const routes: Routes = [
   {
     path: '',
@@ -50,6 +50,18 @@ const routes: Routes = [
       import('./pass-management/pass-management.module').then(
         (m) => m.PassManagementModule
       ),
+  },
+  {
+    path: 'faq',
+    canActivate: [AuthGuard],
+    component: FaqComponent,
+    data: {
+      label: 'FAQ',
+      breadcrumb: 'Frequently Asked Questions',
+      icon: 'bi-bar-chart',
+    },
+    loadChildren: () =>
+      import('./faq/faq.module').then((m) => m.FaqModule),
   },
   {
     path: 'metrics',
