@@ -58,7 +58,8 @@ const routes: Routes = [
     data: {
       label: 'FAQ',
       breadcrumb: 'Frequently Asked Questions',
-      icon: 'bi-bar-chart',
+      sidebar: true,
+      icon: 'bi-patch-question',
     },
     loadChildren: () =>
       import('./faq/faq.module').then((m) => m.FaqModule),
