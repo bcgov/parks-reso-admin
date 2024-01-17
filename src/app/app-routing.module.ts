@@ -52,19 +52,6 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'faq',
-    canActivate: [AuthGuard],
-    component: FaqComponent,
-    data: {
-      label: 'FAQ',
-      breadcrumb: 'Frequently Asked Questions',
-      sidebar: true,
-      icon: 'bi-patch-question',
-    },
-    loadChildren: () =>
-      import('./faq/faq.module').then((m) => m.FaqModule),
-  },
-  {
     path: 'metrics',
     canActivate: [AuthGuard],
     component: MetricsComponent,
@@ -77,6 +64,19 @@ const routes: Routes = [
     },
     loadChildren: () =>
       import('./metrics/metrics.module').then((m) => m.MetricsModule),
+  },
+  {
+    path: 'faq',
+    canActivate: [AuthGuard],
+    component: FaqComponent,
+    data: {
+      label: 'FAQ',
+      breadcrumb: 'Frequently Asked Questions',
+      sidebar: true,
+      icon: 'bi-chat-left-text',
+    },
+    loadChildren: () =>
+      import('./faq/faq.module').then((m) => m.FaqModule),
   },
   {
     path: 'unauthorized',

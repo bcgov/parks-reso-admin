@@ -58,11 +58,6 @@ export class FaqEditComponent extends BaseFormComponent implements OnInit {
     super.updateForm();
   }
 
-  onFormReset(){
-    super.reset();
-    this.setForm();
-  }
-
   onSubmit() {
     this.displayConfirmationModal();
   }
@@ -86,38 +81,6 @@ export class FaqEditComponent extends BaseFormComponent implements OnInit {
           classes: 'btn btn-primary',
           onClick: function () {
             self.submitFaqChanges();
-            self.faqEditModalRef.hide();
-          },
-        },
-      ],
-    };
-    this.faqEditModalRef = this.modalService.show(
-      this.faqEditTemplate,
-      {
-        class: 'modal-lg',
-      }
-    );
-  }
-
-  displayResetModal() {
-    const self = this;
-    this.faqEditModal = {
-      id: 'faqEditModal',
-      title: 'Reset:',
-      body: "Are you sure you want to undo your changes?",
-      buttons: [
-        {
-          text: 'Cancel',
-          classes: 'btn btn-outline-secondary',
-          onClick: function () {
-            self.faqEditModalRef.hide();
-          },
-        },
-        {
-          text: 'Confirm',
-          classes: 'btn btn-primary',
-          onClick: function () {
-            self.onFormReset();
             self.faqEditModalRef.hide();
           },
         },

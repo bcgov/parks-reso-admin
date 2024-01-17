@@ -37,9 +37,6 @@ describe('FaqEditComponent', () => {
     const submitButton = fixture.nativeElement.querySelector('.btn-primary');
     expect(submitButton).toBeTruthy();
 
-    const resetButton = fixture.nativeElement.querySelector('.btn-secondary');
-    expect(resetButton).toBeTruthy();
-
     const cancelButton = fixture.nativeElement.querySelector('.btn-outline-danger');
     expect(cancelButton).toBeTruthy();
   });

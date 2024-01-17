@@ -12,18 +12,12 @@
   <section class="d-flex flex-row-reverse mt-4 mx-4">
     <button
       id="submitButton"
-      class="btn btn-primary"
+      class="btn btn-primary ms-2 me-2"
       (click)="onSubmit()"
     >
       Submit
     </button>
-    <button
-      id="resetButton"
-      class="btn btn-secondary ms-2 me-2"
-      (click)="displayResetModal()"
-      [disabled]="form?.pristine"
-    >
-    Reset</button>
+   
     <button
       class="btn btn-outline-danger"
       (click)="navigateBack()"
