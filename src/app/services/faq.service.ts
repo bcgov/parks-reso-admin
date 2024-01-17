@@ -31,10 +31,8 @@ export class FaqService {
       )[0];
 
       if (res?.text) {
-        console.log("Valid response with 'text' property:", res.text);
         return res.text;
       } else {
-        console.log("Throwing error!");
         throw new Error('Invalid response object or missing "text" property.');
       }
     } catch (e) {
@@ -53,7 +51,6 @@ export class FaqService {
     try {
       errorSubject = 'Faq put';
       if (this.validateFaqObject(obj)) {
-        console.log("VALIDATED");
         obj.pk = 'faq';
         obj.sk = 'faq';
         this.loggerService.debug(`Put FAQ: ${JSON.stringify(obj)}`);

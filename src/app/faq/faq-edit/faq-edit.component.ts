@@ -100,8 +100,6 @@ export class FaqEditComponent extends BaseFormComponent implements OnInit {
         faq: this.form.value.wysiwygFaq,
       };
       this.faqService.putFaq(formData);
-    } else {
-      console.log('Form is invalid. Please check the fields.');
     }
   }
 
