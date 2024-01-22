@@ -1,0 +1,31 @@
+<div class="mb-4">
+  <form>
+    <section class="form-section">
+    <app-wysiwyg-input *ngIf="fields?.wysiwygFaq"
+      [control]="fields?.wysiwygFaq"
+      [label]="'Frequently Asked Questions'"
+      [ariaLabel]="'FAW'"
+      [id]="'wysiwygFaq'"   
+    ></app-wysiwyg-input>
+  </section>
+  </form>
+  <section class="d-flex flex-row-reverse mt-4 mx-4">
+    <button
+      id="submitButton"
+      class="btn btn-primary ms-2 me-2"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+   
+    <button
+      class="btn btn-outline-danger"
+      (click)="navigateBack()"
+    >
+      Cancel
+    </button>
+  </section>
+</div>
+<ng-template #faqEditTemplate>
+  <app-modal [modal]="faqEditModal"></app-modal>
+</ng-template>

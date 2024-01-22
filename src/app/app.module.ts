@@ -27,6 +27,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingService } from './services/loading.service';
 import { PassManagementModule } from './pass-management/pass-management.module';
+import { FaqModule } from './faq/faq.module';
 
 export function initConfig(
   configService: ConfigService,
@@ -61,6 +62,7 @@ export function initConfig(
     InfiniteLoadingBarModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    FaqModule
   ],
   providers: [
     {
