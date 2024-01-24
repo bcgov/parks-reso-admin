@@ -27,7 +27,7 @@ export class FaqService {
     try {
       this.loggerService.debug(`faq GET: GET THE FAQ`);
       res = (
-        await firstValueFrom(this.apiService.get('readfaq', { faq: 'faq' }))
+        await firstValueFrom(this.apiService.get('faq', { faq: 'faq' }))
       )[0];
 
       if (res?.text) {
@@ -54,7 +54,7 @@ export class FaqService {
         obj.pk = 'faq';
         obj.sk = 'faq';
         this.loggerService.debug(`Put FAQ: ${JSON.stringify(obj)}`);
-        await firstValueFrom(this.apiService.put('writefaq', obj));
+        await firstValueFrom(this.apiService.put('faq', obj));
         this.toastService.addMessage(
           `Park: ${obj.sk} updated.`,
           `Park updated`,
