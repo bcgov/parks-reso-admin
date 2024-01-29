@@ -47,9 +47,7 @@ export class FaqService {
   }
 
   async putFaq(obj) {
-    let errorSubject = '';
     try {
-      errorSubject = 'Faq put';
       if (this.validateFaqObject(obj)) {
         obj.pk = 'faq';
         obj.sk = 'faq';
