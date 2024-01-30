@@ -46,7 +46,7 @@ describe('HomeComponent', () => {
     expect(cardElement[3].cardHeader === 'Site Metrics');
   });
 
-  it('should create home cards without site metrics', async () => {
+  it('should create home cards without site metrics or FAQ', async () => {
     TestBed.overrideProvider(KeycloakService, {
       useValue: fakeKeyCloakServiceNotAllowed,
     });
@@ -55,9 +55,8 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     let cardElement = fixture.debugElement.nativeElement.getElementsByTagName('app-nav-card');
-    expect(cardElement.length).toEqual(3);
+    expect(cardElement.length).toEqual(2);
     expect(cardElement[0].cardHeader === 'Parks Management');
     expect(cardElement[1].cardHeader === 'Pass Management');
-    expect(cardElement[2].cardHeader === 'Frequently Asked Questions');
   });
 });
