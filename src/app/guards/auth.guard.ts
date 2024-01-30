@@ -74,10 +74,7 @@ export class AuthGuard implements CanActivate {
       return this.router.parseUrl('/');
     }
 
-    if (
-      !this.keycloakService.isAllowed('faq') &&
-      state.url === '/faq'
-      ) {
+    if (!this.keycloakService.isAllowed('faq') && state.url === '/faq') {
       return this.router.parseUrl('/unauthorized');
     }
     // Show the requested page.
