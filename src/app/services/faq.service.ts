@@ -47,25 +47,23 @@ export class FaqService {
   }
 
   async putFaq(obj) {
-    let errorSubject = '';
     try {
-      errorSubject = 'Faq put';
       if (this.validateFaqObject(obj)) {
         obj.pk = 'faq';
         obj.sk = 'faq';
         this.loggerService.debug(`Put FAQ: ${JSON.stringify(obj)}`);
         await firstValueFrom(this.apiService.put('faq', obj));
         this.toastService.addMessage(
-          `Park: ${obj.sk} updated.`,
-          `Park updated`,
+          ``,
+          `Your changes were saved.`,
           ToastTypes.SUCCESS
         );
       }
     } catch (e) {
       this.loggerService.error(`${JSON.stringify(e)}`);
       this.toastService.addMessage(
-        `There was a problem updating the FAQ.`,
-        `Error putting ${errorSubject}`,
+        ``,
+        `Something went wrong. Please try again.`,
         ToastTypes.ERROR
       );
       this.eventService.setError(
