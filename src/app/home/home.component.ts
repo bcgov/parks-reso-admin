@@ -34,13 +34,12 @@ export class HomeComponent {
         cardText: 'See pass counts for various states.',
         navigation: '/metrics',
       });
-      this.cardConfig.push({
-        cardHeader: 'FAQ',
-        cardTitle: 'Frequently Asked Questions',
-        cardText: 'View or edit the FAQ info.',
-        navigation: '/faq',
-      });
-      
     }
+    this.cardConfig.push({
+      cardHeader: 'FAQ',
+      cardTitle: 'Frequently Asked Questions',
+      cardText: 'View or edit the FAQ info.',
+      navigation: '/faq',
+     });
   }
 }
