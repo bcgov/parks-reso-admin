@@ -108,3 +108,9 @@ jobs:
           origin_id_assets: ${{ env.ORIGIN_ID_ASSETS }}
           ssl_cert_arn: ${{ secrets.PARKS_SSL_CERT_ARN }}
         run: terragrunt apply -auto-approve --terragrunt-non-interactive -var target_aws_account_id=${{ vars.ACCOUNT_ID }} -var target_env=prod
+
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
+          PATHS: "/*"
