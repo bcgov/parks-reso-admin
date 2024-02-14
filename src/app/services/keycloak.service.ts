@@ -175,7 +175,8 @@ export class KeycloakService {
       service !== 'lock-records' &&
       service !== 'add-facility' &&
       service !== 'metrics' &&
-      service !== 'cancel-passes'
+      service !== 'cancel-passes' && 
+      service !== 'faq'
     ) {
       return true;
     }
@@ -186,6 +187,7 @@ export class KeycloakService {
     }
 
     const jwt = JwtUtil.decodeToken(token);
+
     return jwt?.resource_access?.['parking-pass']?.roles.includes('sysadmin');
   }
 

@@ -27,13 +27,20 @@ export class HomeComponent {
       cardText: 'Look up passes and check-in park guests via QR code.',
       navigation: '/pass-management',
     });
-
     if (keyCloakService.isAllowed('metrics')) {
       this.cardConfig.push({
         cardHeader: 'Site Metrics',
         cardTitle: 'Site Metrics',
         cardText: 'See pass counts for various states.',
         navigation: '/metrics',
+      });
+    }
+    if (keyCloakService.isAllowed('metrics')){
+      this.cardConfig.push({
+        cardHeader: 'FAQ',
+        cardTitle: 'Frequently Asked Questions',
+        cardText: 'View or edit the FAQ info.',
+        navigation: '/faq',
       });
     }
   }

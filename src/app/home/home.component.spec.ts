@@ -30,7 +30,7 @@ describe('HomeComponent', () => {
     }).compileComponents();
   });
 
-  it('should create home cards wit site metrics', async () => {
+  it('should create home cards with site metrics and frequently asked questions', async () => {
     TestBed.overrideProvider(KeycloakService, {
       useValue: fakeKeyCloakServiceIsAllowed,
     });
@@ -39,13 +39,14 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     let cardElement = fixture.debugElement.nativeElement.getElementsByTagName('app-nav-card');
-    expect(cardElement.length).toEqual(3);
+    expect(cardElement.length).toEqual(4);
     expect(cardElement[0].cardHeader === 'Parks Management');
     expect(cardElement[1].cardHeader === 'Pass Management');
-    expect(cardElement[2].cardHeader === 'Site Metrics');
+    expect(cardElement[2].cardHeader === 'Frequently Asked Questions');
+    expect(cardElement[3].cardHeader === 'Site Metrics');
   });
 
-  it('should create home cards without site metrics', async () => {
+  it('should create home cards without site metrics or FAQ', async () => {
     TestBed.overrideProvider(KeycloakService, {
       useValue: fakeKeyCloakServiceNotAllowed,
     });
