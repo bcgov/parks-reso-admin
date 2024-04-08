@@ -36,6 +36,15 @@
         [ariaLabel]="'Park Visibility'"
       >
       </app-toggle>
+      <app-toggle
+        [control]="fields?.parkSpecialClosure"
+        [description]="'Status: '"
+        [trueText]="'Special closure notice'"
+        [falseText]="'Special closure notice'"
+        [id]="'specialClosure'"
+        [ariaLabel]="'Park Visibility'"
+      >
+      </app-toggle>
     </section>
 
     <section class="form-section">
@@ -126,6 +135,16 @@
         [label]="'Park Description'"
         [ariaLabel]="'Park Description'"
         [id]="'parkDescription'"
+      >
+      </app-wysiwyg-input>
+    </section>
+
+    <section class="form-section">
+      <app-wysiwyg-input *ngIf="fields?.parkSpecialClosure.value === true"
+        [control]="fields?.parkSpecialClosureText"
+        [label]="'Special Closure Statement'"
+        [ariaLabel]="'Special Closure Statement'"
+        [id]="'parkSpecialClosureText'"
       >
       </app-wysiwyg-input>
     </section>
