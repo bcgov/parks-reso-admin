@@ -67,6 +67,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
         this.data.status === 'open' ? true : false
       ),
       parkVisibility: new UntypedFormControl(this.data.visible),
+      parkSpecialClosure: new UntypedFormControl(this.data.specialClosure),
       parkCapacity: new UntypedFormControl(this.data.capacity),
       parkSiteLink: new UntypedFormControl(
         this.data.bcParksLink,
@@ -75,6 +76,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
       parkMapLink: new UntypedFormControl(this.data.mapLink),
       parkVideoLink: new UntypedFormControl(this.data.videoLink),
       parkDescription: new UntypedFormControl(this.data.description),
+      parkSpecialClosureText: new UntypedFormControl(this.data.specialClosureText),
     });
     super.updateForm();
     super.addDisabledRule(this.fields.parkOrcs);
@@ -93,7 +95,7 @@ export class ParkEditFormComponent extends BaseFormComponent {
     this.parkService.putPark(postObj, true, true);
     this.navigateBack();
   }
-  
+
   onFormReset() {
     super.reset();
     this.setForm();
@@ -110,6 +112,8 @@ export class ParkEditFormComponent extends BaseFormComponent {
         videoLink: results.parkVideoLink,
         status: results.parkStatus === true ? 'open' : 'closed',
         capacity: results.parkCapacity,
+        specialClosure: results.parkSpecialClosure,
+        specialClosureText: results.parkSpecialClosureText,
       },
       description: results.parkDescription,
       visible: results.parkVisibility,
@@ -179,7 +183,10 @@ export class ParkEditFormComponent extends BaseFormComponent {
     `</br></br><strong>Link to video:</strong></br>` + parkObj.park?.videoLink;
     message +=
       `</br></br><strong>Description:</strong></br>` + parkObj.description;
-    return message;
+    if(parkObj.park?.specialClosureText){
+      message += `</br><strong>Special Closure Text: </strong></br>` + parkObj.park?.specialClosureText;
+    }
+      return message;
   }
 
   testParkSiteLink(event) {

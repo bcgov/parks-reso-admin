@@ -30,6 +30,8 @@ describe('ParkEditFormComponent', () => {
       videoLink: null,
       status: mockPark.status,
       capacity: mockPark.capacity,
+      specialClosureText: null,
+      specialClosure: null
     },
     description: mockPark.description,
     visible: mockPark.visible,
