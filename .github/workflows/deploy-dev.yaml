@@ -5,7 +5,7 @@ run-name: Deploying ${{ github.ref_name }} (Admin) to dev
 on:
   push:
     branches: [main]
-    paths: "dup-admin/**"
+    paths: "**"
   workflow_dispatch:
 
 permissions:
