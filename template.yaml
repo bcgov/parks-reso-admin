@@ -55,7 +55,7 @@ Resources:
         MaxTTL: 1
         MinTTL: 1
         Name:
-          Fn::Sub: ${ApiGatewayId}-CFCachePolicy
+          Fn::Sub: ${ApiGatewayId}-admin-CFCachePolicy
         ParametersInCacheKeyAndForwardedToOrigin:
           CookiesConfig:
             CookieBehavior: none
