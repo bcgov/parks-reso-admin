@@ -164,8 +164,7 @@ Resources:
           - DELETE
           CachePolicyId:
             Ref: CloudFrontAPICachePolicy
-          TargetOriginId:
-            Fn::Sub: {ApiGatewayId}
+          TargetOriginId: !Sub ${ApiGatewayId}
           ViewerProtocolPolicy: redirect-to-https
           ResponseHeadersPolicyId: 60669652-455b-4ae9-85a4-c4c02393f86c
         - PathPattern:
