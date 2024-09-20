@@ -55,7 +55,7 @@ Resources:
         DefaultTTL: 1
         MaxTTL: 1
         MinTTL: 1
-        Name: !Sub ${ApiGatewayId}-admin-CFCachePolicy
+        Name: !Sub ${ApiGatewayId}-CFCachePolicy
         ParametersInCacheKeyAndForwardedToOrigin:
           CookiesConfig:
             CookieBehavior: none
@@ -120,8 +120,10 @@ Resources:
           S3OriginConfig:
             OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
           OriginPath: !Sub /${DistOriginPath}
-        - Id: !Sub ${ApiGatewayId}
-          DomainName: !Sub ${ApiGatewayId}.execute-api.${AWSRegion}.amazonaws.com
+        - Id: 
+            Fn::Sub: ${ApiGatewayId}
+          DomainName: 
+            Fn::Sub: ${ApiGatewayId}.execute-api.${AWSRegion}.amazonaws.com
           CustomOriginConfig:
             HTTPSPort: 443
             OriginProtocolPolicy: https-only
@@ -148,7 +150,8 @@ Resources:
           - PATCH
           - DELETE
           CachePolicyId: !Ref CloudFrontAPICachePolicy
-          TargetOriginId: !Sub$ {ApiGatewayId}
+          TargetOriginId:
+            Fn::Sub: {ApiGatewayId}
           ViewerProtocolPolicy: redirect-to-https
           ResponseHeadersPolicyId: 60669652-455b-4ae9-85a4-c4c02393f86c
         - PathPattern: !Sub ${BaseHref}*
