@@ -36,7 +36,7 @@
     "guid-typescript": "^1.0.9",
     "jquery": "^3.6.0",
     "keycloak-angular": "^13.0.0",
-    "keycloak-js": "21.1.1",
+    "keycloak-js": "25.0.6",
     "luxon": "^3.2.1",
     "moment": "^2.29.4",
     "ngx-bootstrap": "^10.1.0",
