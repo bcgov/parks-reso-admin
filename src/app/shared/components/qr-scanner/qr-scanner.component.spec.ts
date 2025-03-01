@@ -42,14 +42,13 @@ describe('QrScannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [QrScannerComponent],
-      providers: [
+    providers: [
         ConfigService,
         { provide: QrScannerService, useValue: mockQrScannerService },
         { provide: ApiService, useValue: mockApiService },
-      ],
-      imports: [HttpClientTestingModule],
-    }).compileComponents();
+    ],
+    imports: [HttpClientTestingModule, QrScannerComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(QrScannerComponent);
     component = fixture.componentInstance;

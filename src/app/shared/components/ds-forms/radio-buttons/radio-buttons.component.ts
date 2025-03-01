@@ -1,10 +1,20 @@
 import { Component, Input } from '@angular/core';
 import { BaseInputComponent } from '../base-input/base-input.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgIf, NgClass, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-radio-buttons',
-  templateUrl: './radio-buttons.component.html',
-  styleUrls: ['./radio-buttons.component.scss'],
+    selector: 'app-radio-buttons',
+    templateUrl: './radio-buttons.component.html',
+    styleUrls: ['./radio-buttons.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgClass,
+        NgFor,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
 })
 export class RadioButtonsComponent extends BaseInputComponent {
   @Input() options;

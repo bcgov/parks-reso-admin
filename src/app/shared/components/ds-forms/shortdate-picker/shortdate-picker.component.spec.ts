@@ -8,8 +8,8 @@ describe('ShortdatePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ShortdatePickerComponent],
-    }).compileComponents();
+    imports: [ShortdatePickerComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(ShortdatePickerComponent);
     component = fixture.componentInstance;

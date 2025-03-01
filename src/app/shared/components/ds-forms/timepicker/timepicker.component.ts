@@ -5,11 +5,21 @@ import {
 } from '@angular/core';
 import { Utils } from 'src/app/shared/utils/utils';
 import { BaseInputComponent } from '../base-input/base-input.component';
+import { FormsModule } from '@angular/forms';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { NgIf, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-timepicker',
-  templateUrl: './timepicker.component.html',
-  styleUrls: ['./timepicker.component.scss'],
+    selector: 'app-timepicker',
+    templateUrl: './timepicker.component.html',
+    styleUrls: ['./timepicker.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgClass,
+        TimepickerModule,
+        FormsModule,
+    ],
 })
 // Component control value must be of type NgbTimeStruct:
 // {hour: 24hour, minute: minute, second: second}

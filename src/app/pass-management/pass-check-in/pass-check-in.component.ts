@@ -8,11 +8,24 @@ import { ToastService } from 'src/app/services/toast.service';
 import { QrScannerComponent } from 'src/app/shared/components/qr-scanner/qr-scanner.component';
 import { QrScannerService } from 'src/app/shared/components/qr-scanner/qr-scanner.service';
 import { Constants } from 'src/app/shared/utils/constants';
+import { PassCheckInListComponent } from '../pass-check-in-list/pass-check-in-list.component';
+import { ManualEntryComponent } from '../manual-entry/manual-entry.component';
+import { QrResultComponent } from '../qr-result/qr-result.component';
+import { QrScannerComponent as QrScannerComponent_1 } from '../../shared/components/qr-scanner/qr-scanner.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-pass-check-in',
-  templateUrl: './pass-check-in.component.html',
-  styleUrls: ['./pass-check-in.component.scss'],
+    selector: 'app-pass-check-in',
+    templateUrl: './pass-check-in.component.html',
+    styleUrls: ['./pass-check-in.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        QrScannerComponent_1,
+        QrResultComponent,
+        ManualEntryComponent,
+        PassCheckInListComponent,
+    ],
 })
 export class PassCheckInComponent implements OnDestroy {
   @ViewChild(QrScannerComponent) qrScannerComponent: QrScannerComponent;

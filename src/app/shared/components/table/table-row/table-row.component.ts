@@ -10,16 +10,19 @@ import {
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { columnSchema } from '../table.component';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-  // Throws the following linting error: https://angular.io/guide/styleguide#style-05-03
-  // This component is given an [attribute] selector because it augments
-  // the HTML element <tr>. We do this so that the child <tr> elements of a <table>
-  // can be custom components while remaining aligned with the parent <table> component.
-  // eslint-disable-next-line
-  selector: '[app-table-row]',
-  templateUrl: './table-row.component.html',
-  styleUrls: ['./table-row.component.scss'],
+    // Throws the following linting error: https://angular.io/guide/styleguide#style-05-03
+    // This component is given an [attribute] selector because it augments
+    // the HTML element <tr>. We do this so that the child <tr> elements of a <table>
+    // can be custom components while remaining aligned with the parent <table> component.
+    // eslint-disable-next-line
+    selector: '[app-table-row]',
+    templateUrl: './table-row.component.html',
+    styleUrls: ['./table-row.component.scss'],
+    standalone: true,
+    imports: [NgFor, NgIf],
 })
 export class TableRowComponent implements AfterViewInit, OnDestroy {
   @Input() columnSchema: columnSchema[];

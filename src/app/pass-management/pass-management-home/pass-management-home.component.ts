@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigService } from 'src/app/services/config.service';
+import { NavCardComponent } from '../../shared/components/nav-card/nav-card.component';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-pass-management-home',
-  templateUrl: './pass-management-home.component.html',
-  styleUrls: ['./pass-management-home.component.scss']
+    selector: 'app-pass-management-home',
+    templateUrl: './pass-management-home.component.html',
+    styleUrls: ['./pass-management-home.component.scss'],
+    standalone: true,
+    imports: [NgFor, NavCardComponent]
 })
 export class PassManagementHomeComponent implements OnInit {
   public cardConfig;

@@ -25,9 +25,9 @@ describe('ModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModalComponent],
-      providers: [BsModalService],
-    }).compileComponents();
+    imports: [ModalComponent],
+    providers: [BsModalService],
+}).compileComponents();
 
     fixture = TestBed.createComponent(ModalComponent);
     component = fixture.componentInstance;

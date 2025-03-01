@@ -10,9 +10,9 @@ describe('PassesFilterFieldsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PassesFilterFieldsComponent ],
-      providers: [HttpClient, HttpHandler, ConfigService],
-    })
+    imports: [PassesFilterFieldsComponent],
+    providers: [HttpClient, HttpHandler, ConfigService],
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(PassesFilterFieldsComponent);

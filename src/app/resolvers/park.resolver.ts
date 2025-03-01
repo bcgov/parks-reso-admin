@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { DataService } from '../services/data.service';
 import { Constants } from '../shared/utils/constants';
@@ -7,7 +7,7 @@ import { Constants } from '../shared/utils/constants';
 @Injectable({
   providedIn: 'root',
 })
-export class ParkResolver implements Resolve<void> {
+export class ParkResolver  {
   constructor(protected dataService: DataService) { }
   resolve(route: ActivatedRouteSnapshot) {
     const terminate = new Subject();

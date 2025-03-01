@@ -10,9 +10,9 @@ describe('TypeaheadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, NgbModule, NgbTypeaheadModule],
-      declarations: [TypeaheadComponent],
-    }).compileComponents();
+    imports: [FormsModule, NgbModule, NgbTypeaheadModule],
+    declarations: [TypeaheadComponent],
+}).compileComponents();
   });
 
   beforeEach(() => {

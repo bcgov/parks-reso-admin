@@ -4,11 +4,14 @@ import { Subscription } from 'rxjs';
 import { BreadcrumbService } from 'src/app/services/breadcrumb.service';
 import { DataService } from 'src/app/services/data.service';
 import { Constants } from '../../utils/constants';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-breadcrumb',
-  templateUrl: './breadcrumb.component.html',
-  styleUrls: ['./breadcrumb.component.scss'],
+    selector: 'app-breadcrumb',
+    templateUrl: './breadcrumb.component.html',
+    styleUrls: ['./breadcrumb.component.scss'],
+    standalone: true,
+    imports: [NgFor],
 })
 export class BreadcrumbComponent implements OnDestroy {
   private subscriptions = new Subscription();

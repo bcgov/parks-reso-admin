@@ -47,13 +47,12 @@ describe('SiteMetricsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SiteMetricsComponent],
-      imports: [HttpClientModule, SharedMetricsModule, RouterTestingModule],
-      providers: [
+    imports: [HttpClientModule, SharedMetricsModule, RouterTestingModule, SiteMetricsComponent],
+    providers: [
         ConfigService,
         { provide: DataService, useValue: fakeDataService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(SiteMetricsComponent);
     component = fixture.componentInstance;

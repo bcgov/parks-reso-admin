@@ -91,14 +91,13 @@ describe('ManualEntryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ManualEntryComponent],
-      imports: [HttpClientTestingModule, FormsModule, ReactiveFormsModule],
-      providers: [
+    imports: [HttpClientTestingModule, FormsModule, ReactiveFormsModule, ManualEntryComponent],
+    providers: [
         ConfigService,
         { provide: PassService, useValue: mockPassService },
         { provide: DataService, useValue: mockDataService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   it('should create', async () => {

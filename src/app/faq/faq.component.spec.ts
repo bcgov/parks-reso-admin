@@ -12,10 +12,9 @@ describe('FaqComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule], 
-      declarations: [FaqComponent],
-      providers: [ConfigService, DataService],
-    }).compileComponents();
+    imports: [HttpClientTestingModule, FaqComponent],
+    providers: [ConfigService, DataService],
+}).compileComponents();
   });
 
   beforeEach(() => {

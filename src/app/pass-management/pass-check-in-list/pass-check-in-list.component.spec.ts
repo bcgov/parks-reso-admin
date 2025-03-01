@@ -43,16 +43,15 @@ describe('PassLookupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PassCheckInListComponent],
-      providers: [
+    providers: [
         LoggerService,
         DataService,
         QrScannerService,
         ConfigService,
         { provide: PassService, useValue: mockPassService },
-      ],
-      imports: [HttpClientTestingModule],
-    }).compileComponents();
+    ],
+    imports: [HttpClientTestingModule, PassCheckInListComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(PassCheckInListComponent);
     component = fixture.componentInstance;

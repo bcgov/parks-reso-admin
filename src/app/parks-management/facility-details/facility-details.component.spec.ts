@@ -34,15 +34,15 @@ describe('FacilityDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FacilityDetailsComponent],
-      providers: [
+    imports: [FacilityDetailsComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         ConfigService,
         { provide: DataService, useValue: fakeDataService },
         { provide: FacilityService, useValue: mockFacilityService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(FacilityDetailsComponent);
     component = fixture.componentInstance;

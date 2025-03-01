@@ -19,15 +19,14 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [HeaderComponent],
-      providers: [
+    imports: [RouterTestingModule, HeaderComponent],
+    providers: [
         { provide: ConfigService, useValue: fakeConfigService },
         KeycloakService,
         HttpClient,
         HttpHandler,
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

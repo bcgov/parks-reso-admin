@@ -8,8 +8,8 @@ describe('PassesCapacityBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PassesCapacityBarComponent ]
-    })
+    imports: [PassesCapacityBarComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(PassesCapacityBarComponent);

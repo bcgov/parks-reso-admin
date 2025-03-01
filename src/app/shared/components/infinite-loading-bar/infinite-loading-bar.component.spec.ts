@@ -12,9 +12,9 @@ describe('InfiniteLoadingBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InfiniteLoadingBarComponent ],
-      providers: [LoggerService, LoadingService, ConfigService, HttpClient, HttpHandler]
-    })
+    imports: [InfiniteLoadingBarComponent],
+    providers: [LoggerService, LoadingService, ConfigService, HttpClient, HttpHandler]
+})
     .compileComponents();
   });
 

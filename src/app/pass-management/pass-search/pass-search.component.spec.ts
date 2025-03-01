@@ -20,13 +20,13 @@ describe('PassSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PassSearchComponent],
-      providers: [
+    imports: [PassSearchComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         { provide: ConfigService, useValue: mockConfigService }
-      ]
-    })
+    ]
+})
       .compileComponents();
 
     fixture = TestBed.createComponent(PassSearchComponent);

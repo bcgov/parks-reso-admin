@@ -18,7 +18,7 @@ import { ToggleButtonModule } from './shared/components/toggle-button/toggle-but
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
+    imports: [
         RouterTestingModule,
         HttpClientModule,
         SidebarModule,
@@ -28,16 +28,16 @@ describe('AppComponent', () => {
         FooterModule,
         HomeModule,
         ToastrModule.forRoot(),
-      ],
-      declarations: [AppComponent],
-      providers: [
+        AppComponent,
+    ],
+    providers: [
         ConfigService,
         LoggerService,
         DataService,
         EventService,
         ToastService,
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   it('should create the app', () => {

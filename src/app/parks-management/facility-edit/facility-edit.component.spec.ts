@@ -51,16 +51,16 @@ describe('FacilityEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FacilityEditComponent],
-      providers: [
+    imports: [FacilityEditComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         ConfigService,
         { provide: DataService, useValue: mockDataService },
         { provide: ParkService, useValue: mockParkService },
         { provide: FacilityService, useValue: mockFacilityService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(FacilityEditComponent);
     component = fixture.componentInstance;

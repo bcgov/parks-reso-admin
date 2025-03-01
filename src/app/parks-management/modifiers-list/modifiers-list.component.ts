@@ -5,11 +5,15 @@ import { ModifierService } from 'src/app/services/modifier.service';
 import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
 import { tableSchema } from 'src/app/shared/components/table/table.component';
 import { Constants } from 'src/app/shared/utils/constants';
+import { TableComponent } from '../../shared/components/table/table.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-modifiers-list',
-  templateUrl: './modifiers-list.component.html',
-  styleUrls: ['./modifiers-list.component.scss'],
+    selector: 'app-modifiers-list',
+    templateUrl: './modifiers-list.component.html',
+    styleUrls: ['./modifiers-list.component.scss'],
+    standalone: true,
+    imports: [NgIf, TableComponent],
 })
 export class ModifiersListComponent implements OnInit {
   public facility;

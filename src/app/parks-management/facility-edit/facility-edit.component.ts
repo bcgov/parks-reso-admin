@@ -6,11 +6,24 @@ import { ModifierService } from 'src/app/services/modifier.service';
 import { ParkService } from 'src/app/services/park.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
+import { ModifiersListComponent } from '../modifiers-list/modifiers-list.component';
+import { ModifiersFormComponent } from '../modifiers-form/modifiers-form.component';
+import { FacilityEditFormComponent } from './facility-edit-form/facility-edit-form.component';
+import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy-header.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-facility-edit',
-  templateUrl: './facility-edit.component.html',
-  styleUrls: ['./facility-edit.component.scss'],
+    selector: 'app-facility-edit',
+    templateUrl: './facility-edit.component.html',
+    styleUrls: ['./facility-edit.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        FancyHeaderComponent,
+        FacilityEditFormComponent,
+        ModifiersFormComponent,
+        ModifiersListComponent,
+    ],
 })
 export class FacilityEditComponent implements OnDestroy {
   private subscriptions = new Subscription();

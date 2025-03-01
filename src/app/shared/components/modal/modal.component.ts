@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { NgIf, NgFor } from '@angular/common';
 
 export interface modalSchema {
   id: string;
@@ -15,9 +16,11 @@ export interface modalButtonSchema {
 }
 
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss'],
+    selector: 'app-modal',
+    templateUrl: './modal.component.html',
+    styleUrls: ['./modal.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor],
 })
 export class ModalComponent implements OnInit {
   @Input() modal: modalSchema;

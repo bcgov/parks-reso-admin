@@ -60,17 +60,16 @@ describe('ParkEditFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ParkEditFormComponent],
-      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule],
-      providers: [
+    imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, ParkEditFormComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         ConfigService,
         BsModalService,
         { provide: DataService, useValue: mockDataService },
         { provide: ParkService, useValue: mockParkService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(ParkEditFormComponent);
     component = fixture.componentInstance;

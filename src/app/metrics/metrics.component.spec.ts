@@ -9,9 +9,9 @@ describe('MetricsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MetricsComponent ],
-      providers: [HttpClient, HttpHandler, ConfigService]
-    })
+    imports: [MetricsComponent],
+    providers: [HttpClient, HttpHandler, ConfigService]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(MetricsComponent);

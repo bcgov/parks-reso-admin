@@ -4,12 +4,15 @@ import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { TableButtonComponent } from 'src/app/shared/components/table/table-components/table-button/table-button.component';
 import { Constants } from 'src/app/shared/utils/constants';
-import { tableSchema } from '../../shared/components/table/table.component';
+import { tableSchema, TableComponent } from '../../shared/components/table/table.component';
+import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy-header.component';
 
 @Component({
-  selector: 'app-parks-list',
-  templateUrl: './parks-list.component.html',
-  styleUrls: ['./parks-list.component.scss'],
+    selector: 'app-parks-list',
+    templateUrl: './parks-list.component.html',
+    styleUrls: ['./parks-list.component.scss'],
+    standalone: true,
+    imports: [FancyHeaderComponent, TableComponent],
 })
 export class ParksListComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();

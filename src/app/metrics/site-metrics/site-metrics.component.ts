@@ -8,11 +8,25 @@ import { LoadingService } from '../../services/loading.service';
 import { ChartPlugins } from 'src/app/shared/components/metrics/chart-metric/chart-metric-plugins';
 import { Utils } from 'src/app/shared/utils/utils';
 import { MetricsService } from 'src/app/services/metrics.service';
+import { ChartMetricComponent } from '../../shared/components/metrics/chart-metric/chart-metric.component';
+import { BasicMetricComponent } from '../../shared/components/metrics/basic-metric/basic-metric.component';
+import { MetricCardComponent } from '../../shared/components/metrics/metric-card/metric-card.component';
+import { NgIf, DatePipe } from '@angular/common';
+import { MetricsFilterComponent } from '../metrics-filter/metrics-filter.component';
 
 @Component({
-  selector: 'app-site-metrics',
-  templateUrl: './site-metrics.component.html',
-  styleUrls: ['./site-metrics.component.scss'],
+    selector: 'app-site-metrics',
+    templateUrl: './site-metrics.component.html',
+    styleUrls: ['./site-metrics.component.scss'],
+    standalone: true,
+    imports: [
+        MetricsFilterComponent,
+        NgIf,
+        MetricCardComponent,
+        BasicMetricComponent,
+        ChartMetricComponent,
+        DatePipe,
+    ],
 })
 export class SiteMetricsComponent implements OnDestroy, OnInit {
   private subscriptions = new Subscription();

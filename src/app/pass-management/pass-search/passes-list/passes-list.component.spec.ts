@@ -63,20 +63,20 @@ describe('PassesListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PassesListComponent],
-      providers: [
+    imports: [PassesListComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         ConfigService,
         BsModalService,
         { provide: KeycloakService, useValue: mockKeyCloakService },
         {
-          provide: DataService,
-          useValue: mockDataService,
+            provide: DataService,
+            useValue: mockDataService,
         },
         { provide: PassService, useValue: mockPassService }
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(PassesListComponent);
     component = fixture.componentInstance;

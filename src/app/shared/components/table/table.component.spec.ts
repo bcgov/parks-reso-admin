@@ -90,15 +90,15 @@ describe('TableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TableComponent],
-      providers: [
+    imports: [TableComponent],
+    providers: [
         LoggerService,
         { provide: LoadingService, useValue: mockLoadingService },
         ConfigService,
         HttpClient,
         HttpHandler,
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   beforeEach(() => {

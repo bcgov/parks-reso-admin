@@ -12,11 +12,18 @@ import { LoggerService } from 'src/app/services/logger.service';
 import { PassService } from 'src/app/services/pass.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-pass-check-in-list',
-  templateUrl: './pass-check-in-list.component.html',
-  styleUrls: ['./pass-check-in-list.component.scss'],
+    selector: 'app-pass-check-in-list',
+    templateUrl: './pass-check-in-list.component.html',
+    styleUrls: ['./pass-check-in-list.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgFor,
+        NgClass,
+    ],
 })
 export class PassCheckInListComponent implements OnChanges, OnDestroy {
   @Input() passes = [];

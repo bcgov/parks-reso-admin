@@ -8,11 +8,20 @@ import { TableButtonComponent } from 'src/app/shared/components/table/table-comp
 import { KeycloakService } from 'src/app/services/keycloak.service';
 import { TextWithIconsComponent } from 'src/app/shared/components/text-with-icons/text-with-icons.component';
 import { ParkService } from 'src/app/services/park.service';
+import { TableComponent } from '../../shared/components/table/table.component';
+import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy-header.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-park-details',
-  templateUrl: './park-details.component.html',
-  styleUrls: ['./park-details.component.scss'],
+    selector: 'app-park-details',
+    templateUrl: './park-details.component.html',
+    styleUrls: ['./park-details.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        FancyHeaderComponent,
+        TableComponent,
+    ],
 })
 export class ParkDetailsComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();

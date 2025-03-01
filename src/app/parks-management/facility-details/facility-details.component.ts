@@ -5,11 +5,15 @@ import { DataService } from 'src/app/services/data.service';
 import { FacilityService } from 'src/app/services/facility.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
+import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy-header.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-facility-details',
-  templateUrl: './facility-details.component.html',
-  styleUrls: ['./facility-details.component.scss'],
+    selector: 'app-facility-details',
+    templateUrl: './facility-details.component.html',
+    styleUrls: ['./facility-details.component.scss'],
+    standalone: true,
+    imports: [NgIf, FancyHeaderComponent],
 })
 export class FacilityDetailsComponent implements OnDestroy {
   private subscriptions = new Subscription();

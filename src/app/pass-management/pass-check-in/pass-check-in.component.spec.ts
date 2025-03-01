@@ -53,26 +53,25 @@ describe('PassCheckInComponent', () => {
   @Component({
     selector: 'app-qr-scanner',
     template: '',
-  })
+    standalone: true,
+    imports: [HttpClientTestingModule, RouterTestingModule],
+})
   class MockProductEditorComponent {}
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        PassCheckInComponent,
-        PassCheckInListComponent,
-        MockProductEditorComponent,
-        QrResultComponent,
-      ],
-      providers: [
+    providers: [
         { provide: PassService, useValue: mockPassService },
         { provide: QrScannerService, useValue: mockQrScannerService },
         { provide: DataService, useValue: mockDataService },
         LoggerService,
         ConfigService,
-      ],
-      imports: [HttpClientTestingModule, RouterTestingModule],
-    }).compileComponents();
+    ],
+    imports: [HttpClientTestingModule, RouterTestingModule, PassCheckInComponent,
+        PassCheckInListComponent,
+        MockProductEditorComponent,
+        QrResultComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(PassCheckInComponent);
     component = fixture.componentInstance;

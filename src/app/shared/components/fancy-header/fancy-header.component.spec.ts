@@ -9,9 +9,8 @@ describe('FancyHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FancyHeaderComponent],
-      imports: [RouterTestingModule],
-    }).compileComponents();
+    imports: [RouterTestingModule, FancyHeaderComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(FancyHeaderComponent);
     component = fixture.componentInstance;

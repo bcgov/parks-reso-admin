@@ -12,9 +12,9 @@ describe('TextToLoadingSpinnerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TextToLoadingSpinnerComponent ],
-      providers: [LoggerService, LoadingService, ConfigService, HttpClient, HttpHandler]
-    })
+    declarations: [TextToLoadingSpinnerComponent],
+    providers: [LoggerService, LoadingService, ConfigService, HttpClient, HttpHandler]
+})
     .compileComponents();
   });
 

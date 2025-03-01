@@ -4,11 +4,19 @@ import { Subscription } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import { QrScannerService } from './qr-scanner.service';
+import { ZXingScannerModule } from '@digitalspace/ngx-scanner';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-qr-scanner',
-  templateUrl: './qr-scanner.component.html',
-  styleUrls: ['./qr-scanner.component.scss'],
+    selector: 'app-qr-scanner',
+    templateUrl: './qr-scanner.component.html',
+    styleUrls: ['./qr-scanner.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgFor,
+        ZXingScannerModule,
+    ],
 })
 export class QrScannerComponent implements OnDestroy {
   private subscriptions = new Subscription();

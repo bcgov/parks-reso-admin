@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { DataService } from '../services/data.service';
 import { FacilityService } from '../services/facility.service';
@@ -10,7 +10,7 @@ import { Constants } from '../shared/utils/constants';
 @Injectable({
   providedIn: 'root',
 })
-export class FacilityResolver implements Resolve<void> {
+export class FacilityResolver  {
   constructor(
     protected facilityService: FacilityService,
     protected passService: PassService,

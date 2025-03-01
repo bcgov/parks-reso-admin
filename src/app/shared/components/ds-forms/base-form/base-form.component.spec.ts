@@ -6,7 +6,7 @@ import { AsyncSubject, BehaviorSubject, Observable, of } from 'rxjs';
 import { ConfigService } from 'src/app/services/config.service';
 
 import { BaseFormComponent } from './base-form.component';
-import { BaseFormModule } from './base-form.module';
+
 
 describe('BaseFormComponent', () => {
   let comp: BaseFormComponent;
@@ -23,10 +23,9 @@ describe('BaseFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BaseFormComponent],
-      imports: [BaseFormModule, RouterTestingModule],
-      providers: [HttpClient, HttpHandler, ConfigService],
-    }).compileComponents();
+    imports: [RouterTestingModule, BaseFormComponent],
+    providers: [HttpClient, HttpHandler, ConfigService],
+}).compileComponents();
   });
 
   beforeEach(() => {

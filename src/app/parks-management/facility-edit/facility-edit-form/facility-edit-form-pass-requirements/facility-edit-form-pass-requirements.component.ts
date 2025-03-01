@@ -1,11 +1,25 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Constants } from 'src/app/shared/utils/constants';
+import { TextInputComponent } from '../../../../shared/components/ds-forms/text-input/text-input.component';
+import { WysiwygInputComponent } from '../../../../shared/components/ds-forms/wysiwyg-input/wysiwyg-input.component';
+import { CheckboxComponent } from '../../../../shared/components/ds-forms/checkbox/checkbox.component';
+import { NgIf, NgFor } from '@angular/common';
+import { ToggleComponent } from '../../../../shared/components/ds-forms/toggle/toggle.component';
 
 @Component({
-  selector: 'app-facility-edit-form-pass-requirements',
-  templateUrl: './facility-edit-form-pass-requirements.component.html',
-  styleUrls: ['./facility-edit-form-pass-requirements.component.scss'],
+    selector: 'app-facility-edit-form-pass-requirements',
+    templateUrl: './facility-edit-form-pass-requirements.component.html',
+    styleUrls: ['./facility-edit-form-pass-requirements.component.scss'],
+    standalone: true,
+    imports: [
+        ToggleComponent,
+        NgIf,
+        NgFor,
+        CheckboxComponent,
+        WysiwygInputComponent,
+        TextInputComponent,
+    ],
 })
 export class FacilityEditFormPassRequirementsComponent implements OnInit {
   @Input() facilityPassesRequired = new UntypedFormControl();

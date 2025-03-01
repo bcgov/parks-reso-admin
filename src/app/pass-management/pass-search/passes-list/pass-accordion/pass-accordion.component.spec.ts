@@ -71,8 +71,8 @@ describe('PassAccordionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PassAccordionComponent ]
-    })
+    imports: [PassAccordionComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(PassAccordionComponent);

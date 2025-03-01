@@ -66,9 +66,8 @@ describe('FacilityEditFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FacilityEditFormComponent],
-      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule],
-      providers: [
+    imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, FacilityEditFormComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         { provide: ConfigService, useValue: mockConfigService },
@@ -76,8 +75,8 @@ describe('FacilityEditFormComponent', () => {
         { provide: DataService, useValue: mockDataService },
         { provide: ParkService, useValue: mockParkService },
         { provide: FacilityService, useValue: mockFacilityService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(FacilityEditFormComponent);
     component = fixture.componentInstance;
@@ -197,9 +196,8 @@ describe('FacilityAddFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FacilityEditFormComponent],
-      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule],
-      providers: [
+    imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, FacilityEditFormComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         { provide: ConfigService, useValue: mockConfigService },
@@ -207,8 +205,8 @@ describe('FacilityAddFormComponent', () => {
         { provide: DataService, useValue: mockDataService },
         { provide: ParkService, useValue: mockParkService },
         { provide: FacilityService, useValue: mockFacilityService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(FacilityEditFormComponent);
     component = fixture.componentInstance;

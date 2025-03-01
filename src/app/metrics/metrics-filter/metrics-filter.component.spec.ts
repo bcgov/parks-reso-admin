@@ -51,20 +51,20 @@ describe('MetricsFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MetricsFilterComponent],
-      imports: [
+    imports: [
         ReactiveFormsModule,
         FormsModule,
         HttpClientModule,
         SharedMetricsModule,
         DsFormsModule,
-        RouterTestingModule
-      ],
-      providers: [
+        RouterTestingModule,
+        MetricsFilterComponent
+    ],
+    providers: [
         ConfigService,
         { provide: DataService, useValue: mockDataService }
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(MetricsFilterComponent);
     component = fixture.componentInstance;

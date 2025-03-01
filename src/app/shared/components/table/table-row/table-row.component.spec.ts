@@ -35,9 +35,9 @@ describe('TableRowComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TableRowComponent],
-      providers: [ConfigService, HttpClient, HttpHandler],
-    }).compileComponents();
+    imports: [TableRowComponent],
+    providers: [ConfigService, HttpClient, HttpHandler],
+}).compileComponents();
   });
 
   beforeEach(() => {

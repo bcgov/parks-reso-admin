@@ -10,9 +10,10 @@ import Chart, { ChartTypeRegistry } from 'chart.js/auto';
 import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-chart-metric',
-  templateUrl: './chart-metric.component.html',
-  styleUrls: ['./chart-metric.component.scss'],
+    selector: 'app-chart-metric',
+    templateUrl: './chart-metric.component.html',
+    styleUrls: ['./chart-metric.component.scss'],
+    standalone: true,
 })
 export class ChartMetricComponent implements OnDestroy, AfterViewInit {
   @Input() type: keyof ChartTypeRegistry; // bar, bubble, doughnut, pie, line, polarArea, radar, scatter

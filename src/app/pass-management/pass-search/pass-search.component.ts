@@ -6,11 +6,18 @@ import { FacilityService } from 'src/app/services/facility.service';
 import { ParkService } from 'src/app/services/park.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
+import { PassesListComponent } from './passes-list/passes-list.component';
+import { PassesCapacityBarComponent } from './passes-capacity-bar/passes-capacity-bar.component';
+import { NgIf, DatePipe } from '@angular/common';
+import { PassesUtilityButtonsComponent } from './passes-utility-buttons/passes-utility-buttons.component';
+import { PassesFilterComponent } from './passes-filter/passes-filter.component';
 
 @Component({
-  selector: 'app-pass-search',
-  templateUrl: './pass-search.component.html',
-  styleUrls: ['./pass-search.component.scss']
+    selector: 'app-pass-search',
+    templateUrl: './pass-search.component.html',
+    styleUrls: ['./pass-search.component.scss'],
+    standalone: true,
+    imports: [PassesFilterComponent, PassesUtilityButtonsComponent, NgIf, PassesCapacityBarComponent, PassesListComponent, DatePipe]
 })
 export class PassSearchComponent implements OnDestroy {
   private subscriptions = new Subscription();

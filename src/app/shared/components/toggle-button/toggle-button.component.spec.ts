@@ -11,9 +11,9 @@ describe('ToggleButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ToggleButtonComponent ],
-      providers: [KeycloakService, ConfigService, HttpClient, HttpHandler]
-    })
+    imports: [ToggleButtonComponent],
+    providers: [KeycloakService, ConfigService, HttpClient, HttpHandler]
+})
     .compileComponents();
   });
 

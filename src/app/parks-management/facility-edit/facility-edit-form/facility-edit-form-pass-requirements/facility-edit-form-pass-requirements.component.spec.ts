@@ -19,8 +19,8 @@ describe('FacilityEditFormPassRequirementsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FacilityEditFormPassRequirementsComponent],
-    }).compileComponents();
+    imports: [FacilityEditFormPassRequirementsComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(
       FacilityEditFormPassRequirementsComponent

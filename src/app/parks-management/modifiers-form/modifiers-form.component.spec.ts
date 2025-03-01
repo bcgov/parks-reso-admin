@@ -52,17 +52,16 @@ describe('ModifiersFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModifiersFormComponent],
-      imports: [FormsModule, ReactiveFormsModule],
-      providers: [
+    imports: [FormsModule, ReactiveFormsModule, ModifiersFormComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         ConfigService,
         { provide: DataService, useValue: mockDataService },
         { provide: ParkService, useValue: mockParkService },
         { provide: FacilityService, useValue: mockFacilityService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(ModifiersFormComponent);
     component = fixture.componentInstance;

@@ -21,9 +21,10 @@ export interface formResult {
 }
 
 @Component({
-  selector: 'app-base-form',
-  templateUrl: './base-form.component.html',
-  styleUrls: ['./base-form.component.scss'],
+    selector: 'app-base-form',
+    templateUrl: './base-form.component.html',
+    styleUrls: ['./base-form.component.scss'],
+    standalone: true,
 })
 export class BaseFormComponent implements OnDestroy, AfterContentInit {
   public form: UntypedFormGroup; // the base form.

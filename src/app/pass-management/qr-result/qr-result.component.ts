@@ -5,9 +5,10 @@ import { QrScannerService } from 'src/app/shared/components/qr-scanner/qr-scanne
 import { Constants } from 'src/app/shared/utils/constants';
 
 @Component({
-  selector: 'app-qr-result',
-  templateUrl: './qr-result.component.html',
-  styleUrls: ['./qr-result.component.scss'],
+    selector: 'app-qr-result',
+    templateUrl: './qr-result.component.html',
+    styleUrls: ['./qr-result.component.scss'],
+    standalone: true,
 })
 export class QrResultComponent implements OnDestroy {
   private subscriptions = new Subscription();

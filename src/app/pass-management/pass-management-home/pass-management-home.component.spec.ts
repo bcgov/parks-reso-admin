@@ -14,11 +14,11 @@ describe('PassManagementHomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PassManagementHomeComponent],
-      providers: [
+    imports: [PassManagementHomeComponent],
+    providers: [
         { provide: ConfigService, useValue: mockConfigService }
-      ]
-    })
+    ]
+})
       .compileComponents();
 
     fixture = TestBed.createComponent(PassManagementHomeComponent);
