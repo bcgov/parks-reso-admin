@@ -44,7 +44,7 @@
     "rxjs": "^7.6.0",
     "tinymce": "^7.2.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.13.0"
+    "zone.js": "~0.14.10"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.16",
@@ -67,6 +67,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "~5.1.6"
+    "typescript": "~5.2.2"
   }
 }
