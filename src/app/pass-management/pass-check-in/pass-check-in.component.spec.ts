@@ -41,6 +41,7 @@ describe('PassCheckInComponent', () => {
 
   const mockQrScannerService = {
     disableScanner: () => {},
+    enableScanner: () => {},
     clearScannerOutput: () => {},
     watchScannerState: () => {
       return new BehaviorSubject(true);

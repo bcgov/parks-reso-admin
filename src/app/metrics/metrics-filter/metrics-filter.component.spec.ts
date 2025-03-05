@@ -8,7 +8,6 @@ import { MockData } from 'src/app/shared/utils/mock-data';
 import { BehaviorSubject } from 'rxjs';
 
 import { MetricsFilterComponent } from './metrics-filter.component';
-import { SharedMetricsModule } from '../../shared/components/metrics/shared-metrics.module';
 import { DsFormsModule } from '../../shared/components/ds-forms/ds-forms.module'
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -51,20 +50,19 @@ describe('MetricsFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [
+      imports: [
         ReactiveFormsModule,
         FormsModule,
         HttpClientModule,
-        SharedMetricsModule,
         DsFormsModule,
         RouterTestingModule,
         MetricsFilterComponent
-    ],
-    providers: [
+      ],
+      providers: [
         ConfigService,
         { provide: DataService, useValue: mockDataService }
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MetricsFilterComponent);
     component = fixture.componentInstance;
@@ -111,7 +109,7 @@ describe('MetricsFilterComponent', () => {
     expect(component.validateMetricsParams({ park: mockPark1.orcs, dateRange: mockDateRange, facility: mockFacility1.sk })).toBeTrue();
   })
 
- it('submits data correctly', async () => {
+  it('submits data correctly', async () => {
     const params = { park: mockPark1.orcs, dateRange: mockDateRange, facility: mockFacility1.sk };
     const filterSpy = spyOn(component['metricsService'], 'setFilterParams');
     await component.onSubmit(params);

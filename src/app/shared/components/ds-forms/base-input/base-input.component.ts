@@ -36,7 +36,7 @@ export class BaseInputComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.add(
-      this.control.valueChanges.subscribe((res) => {
+      this.control?.valueChanges.subscribe((res) => {
         if (res) {
           this.inputChange.emit(res);
         }
@@ -46,7 +46,7 @@ export class BaseInputComponent implements OnInit, OnDestroy {
   }
 
   isRequired() {
-    if (this.control.hasValidator(Validators.required)) {
+    if (this.control?.hasValidator(Validators.required)) {
       return true;
     }
     return false;

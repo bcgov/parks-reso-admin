@@ -6,6 +6,9 @@ import { Constants } from 'src/app/shared/utils/constants';
 import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { ParksListComponent } from './parks-list.component';
+import { ConfigService } from 'src/app/services/config.service';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('ParksListComponent', () => {
   let component: ParksListComponent;
@@ -25,9 +28,14 @@ describe('ParksListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [RouterTestingModule, ParksListComponent],
-    providers: [{ provide: DataService, useValue: mockDataService }],
-}).compileComponents();
+      imports: [RouterTestingModule, ParksListComponent],
+      providers: [
+        ConfigService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: DataService, useValue: mockDataService },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ParksListComponent);
     component = fixture.componentInstance;

@@ -7,6 +7,7 @@ import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { FacilityDetailsComponent } from './facility-details.component';
 import { FacilityService } from 'src/app/services/facility.service';
+import { ActivatedRoute } from '@angular/router';
 
 describe('FacilityDetailsComponent', () => {
   let component: FacilityDetailsComponent;
@@ -34,15 +35,25 @@ describe('FacilityDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [FacilityDetailsComponent],
-    providers: [
+      imports: [FacilityDetailsComponent],
+      providers: [
         HttpClient,
         HttpHandler,
         ConfigService,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => '',
+              },
+            },
+          },
+        },
         { provide: DataService, useValue: fakeDataService },
         { provide: FacilityService, useValue: mockFacilityService },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FacilityDetailsComponent);
     component = fixture.componentInstance;

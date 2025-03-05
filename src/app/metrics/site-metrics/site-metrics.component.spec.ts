@@ -12,7 +12,6 @@ import { DataService } from 'src/app/services/data.service';
 import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { SiteMetricsComponent } from './site-metrics.component';
-import { SharedMetricsModule } from '../../shared/components/metrics/shared-metrics.module';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SiteMetricsComponent', () => {
@@ -43,16 +42,27 @@ describe('SiteMetricsComponent', () => {
         return new BehaviorSubject(mockParksAndFacilities);
       return new BehaviorSubject(null);
     },
+    getItemValue: (id) => {
+      if (id === Constants.dataIds.CURRENT_METRICS)
+        return mockMetricsData;
+      if (id === Constants.dataIds.METRICS_FILTERS_PARAMS)
+        return mockMetricsParams;
+      if (id === Constants.dataIds.PARK_AND_FACILITY_LIST)
+        return mockParksAndFacilities;
+      return null;
+    }
+    ,
+    setItemValue: (id) => { }
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [HttpClientModule, SharedMetricsModule, RouterTestingModule, SiteMetricsComponent],
-    providers: [
+      imports: [HttpClientModule, RouterTestingModule, SiteMetricsComponent],
+      providers: [
         ConfigService,
         { provide: DataService, useValue: fakeDataService },
-    ],
-}).compileComponents();
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SiteMetricsComponent);
     component = fixture.componentInstance;

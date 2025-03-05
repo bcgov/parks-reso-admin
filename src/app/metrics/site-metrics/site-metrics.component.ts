@@ -177,7 +177,7 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
           this.facilityName = this.parksAndFacilities[this.filterParams.park]?.facilities?.[this.filterParams.facility]?.name;
         }
       }
-      if (this.filterParams.dateRange) {
+      if (this.filterParams?.dateRange) {
         this.dateRange = [this.filterParams.dateRange[0], this.filterParams.dateRange[1]];
         this.dateInterval = this.utils.createShortDateInterval(this.dateRange[0], this.dateRange[1]);
         this.noData = false;

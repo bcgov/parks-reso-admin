@@ -8,18 +8,18 @@ import { NgIf, NgFor } from '@angular/common';
 import { ToggleComponent } from '../../../../shared/components/ds-forms/toggle/toggle.component';
 
 @Component({
-    selector: 'app-facility-edit-form-pass-requirements',
-    templateUrl: './facility-edit-form-pass-requirements.component.html',
-    styleUrls: ['./facility-edit-form-pass-requirements.component.scss'],
-    standalone: true,
-    imports: [
-        ToggleComponent,
-        NgIf,
-        NgFor,
-        CheckboxComponent,
-        WysiwygInputComponent,
-        TextInputComponent,
-    ],
+  selector: 'app-facility-edit-form-pass-requirements',
+  templateUrl: './facility-edit-form-pass-requirements.component.html',
+  styleUrls: ['./facility-edit-form-pass-requirements.component.scss'],
+  standalone: true,
+  imports: [
+    ToggleComponent,
+    NgIf,
+    NgFor,
+    CheckboxComponent,
+    WysiwygInputComponent,
+    TextInputComponent,
+  ],
 })
 export class FacilityEditFormPassRequirementsComponent implements OnInit {
   @Input() facilityPassesRequired = new UntypedFormControl();
@@ -31,7 +31,7 @@ export class FacilityEditFormPassRequirementsComponent implements OnInit {
   public richTextDefault =
     '<p>You don&rsquo;t need a day-use pass for this date and pass type. Passes may be required on other days and at other parks.</p>';
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     if (!this.facilityBookingDaysRichText?.value) {
@@ -47,7 +47,11 @@ export class FacilityEditFormPassRequirementsComponent implements OnInit {
   }
 
   getControl(controlName) {
-    return this.facilityBookingTimes[controlName] as UntypedFormControl;
+    if (this.facilityBookingTimes[controlName]) {
+      return this.facilityBookingTimes[controlName] as UntypedFormControl;
+    } else {
+      return new UntypedFormControl(null);
+    }
   }
 
   togglePassesRequired(event) {

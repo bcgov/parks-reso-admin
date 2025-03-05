@@ -1,4 +1,4 @@
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClient, HttpHandler, provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
 import { ConfigService } from 'src/app/services/config.service';
@@ -9,6 +9,9 @@ import { MockData } from 'src/app/shared/utils/mock-data';
 import { FacilityEditComponent } from './facility-edit.component';
 import { ParkService } from 'src/app/services/park.service';
 import { FacilityService } from 'src/app/services/facility.service';
+import { ActivatedRoute } from '@angular/router';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 describe('FacilityEditComponent', () => {
   let component: FacilityEditComponent;
@@ -26,6 +29,9 @@ describe('FacilityEditComponent', () => {
       }
       if (id === Constants.dataIds.CURRENT_PARK_KEY) {
         return new BehaviorSubject(mockParkKey);
+      }
+      if (id === Constants.dataIds.MODIFIERS) {
+        return new BehaviorSubject([]);
       }
       return null;
     },
@@ -51,16 +57,27 @@ describe('FacilityEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [FacilityEditComponent],
-    providers: [
-        HttpClient,
-        HttpHandler,
+      imports: [FacilityEditComponent],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         ConfigService,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => '',
+              },
+            },
+          },
+        },
         { provide: DataService, useValue: mockDataService },
         { provide: ParkService, useValue: mockParkService },
         { provide: FacilityService, useValue: mockFacilityService },
-    ],
-}).compileComponents();
+        BsModalService,
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FacilityEditComponent);
     component = fixture.componentInstance;
