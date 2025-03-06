@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {
   ComponentFixture,
   TestBed,
@@ -57,12 +57,13 @@ describe('SiteMetricsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientModule, RouterTestingModule, SiteMetricsComponent],
-      providers: [
+    imports: [RouterTestingModule, SiteMetricsComponent],
+    providers: [
         ConfigService,
         { provide: DataService, useValue: fakeDataService },
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+}).compileComponents();
 
     fixture = TestBed.createComponent(SiteMetricsComponent);
     component = fixture.componentInstance;

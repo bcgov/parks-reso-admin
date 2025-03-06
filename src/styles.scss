@@ -3,10 +3,10 @@
 
 @import "@digitalspace/bcparks-bootstrap-theme/dist/scss/bootstrap-theme.scss";
 
-@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
 /* Importing ng-Select (multiselect) SCSS file */
-@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "@ng-select/ng-select/themes/default.theme.css";
 
 /* Importing Datepicker SCSS file. */
 @import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";

@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
@@ -6,6 +6,7 @@ import { ConfigService } from 'src/app/services/config.service';
 
 import { QrScannerComponent } from './qr-scanner.component';
 import { QrScannerService } from './qr-scanner.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('QrScannerComponent', () => {
   let component: QrScannerComponent;
@@ -42,12 +43,14 @@ describe('QrScannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+    imports: [QrScannerComponent],
     providers: [
         ConfigService,
         { provide: QrScannerService, useValue: mockQrScannerService },
         { provide: ApiService, useValue: mockApiService },
-    ],
-    imports: [HttpClientTestingModule, QrScannerComponent],
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
 }).compileComponents();
 
     fixture = TestBed.createComponent(QrScannerComponent);

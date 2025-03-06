@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Constants } from '../../shared/utils/constants';
@@ -50,19 +50,17 @@ describe('MetricsFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
+    imports: [ReactiveFormsModule,
         FormsModule,
-        HttpClientModule,
         DsFormsModule,
         RouterTestingModule,
-        MetricsFilterComponent
-      ],
-      providers: [
+        MetricsFilterComponent],
+    providers: [
         ConfigService,
-        { provide: DataService, useValue: mockDataService }
-      ],
-    }).compileComponents();
+        { provide: DataService, useValue: mockDataService },
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+}).compileComponents();
 
     fixture = TestBed.createComponent(MetricsFilterComponent);
     component = fixture.componentInstance;

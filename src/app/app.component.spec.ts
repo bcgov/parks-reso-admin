@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToastrModule } from 'ngx-toastr';
@@ -18,9 +18,7 @@ import { HomeComponent } from './home/home.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        HttpClientModule,
+    imports: [RouterTestingModule,
         SidebarModule,
         ToggleButtonModule,
         BreadcrumbModule,
@@ -28,16 +26,16 @@ describe('AppComponent', () => {
         FooterComponent,
         HomeComponent,
         ToastrModule.forRoot(),
-        AppComponent,
-      ],
-      providers: [
+        AppComponent],
+    providers: [
         ConfigService,
         LoggerService,
         DataService,
         EventService,
         ToastService,
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+}).compileComponents();
   });
 
   it('should create the app', () => {

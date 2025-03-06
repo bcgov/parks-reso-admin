@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfigService } from 'src/app/services/config.service';
 import { DataService } from 'src/app/services/data.service';
@@ -9,6 +9,7 @@ import { Constants } from 'src/app/shared/utils/constants';
 import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { PassCheckInListComponent } from './pass-check-in-list.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('PassLookupComponent', () => {
   let component: PassCheckInListComponent;
@@ -43,14 +44,16 @@ describe('PassLookupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+    imports: [PassCheckInListComponent],
     providers: [
         LoggerService,
         DataService,
         QrScannerService,
         ConfigService,
         { provide: PassService, useValue: mockPassService },
-    ],
-    imports: [HttpClientTestingModule, PassCheckInListComponent],
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
 }).compileComponents();
 
     fixture = TestBed.createComponent(PassCheckInListComponent);
