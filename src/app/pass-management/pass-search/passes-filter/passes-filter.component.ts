@@ -1,10 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -14,11 +9,17 @@ import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/
 import { Constants } from 'src/app/shared/utils/constants';
 import { DateTime } from 'luxon';
 import { Subject, takeUntil } from 'rxjs';
+import { PassesFilterFieldsComponent } from './passes-filter-fields/passes-filter-fields.component';
 
 @Component({
-  selector: 'app-passes-filter',
-  templateUrl: './passes-filter.component.html',
-  styleUrls: ['./passes-filter.component.scss'],
+    selector: 'app-passes-filter',
+    templateUrl: './passes-filter.component.html',
+    styleUrls: ['./passes-filter.component.scss'],
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        PassesFilterFieldsComponent,
+    ]
 })
 export class PassesFilterComponent extends BaseFormComponent {
 

@@ -1,11 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-infinite-loading-bar',
-  templateUrl: './infinite-loading-bar.component.html',
-  styleUrls: ['./infinite-loading-bar.component.scss'],
+    selector: 'app-infinite-loading-bar',
+    templateUrl: './infinite-loading-bar.component.html',
+    styleUrls: ['./infinite-loading-bar.component.scss'],
+    imports: [NgIf]
 })
 export class InfiniteLoadingBarComponent implements OnDestroy {
   private subscriptions = new Subscription();

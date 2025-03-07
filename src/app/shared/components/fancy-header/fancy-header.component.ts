@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-fancy-header',
-  templateUrl: './fancy-header.component.html',
-  styleUrls: ['./fancy-header.component.scss'],
+    selector: 'app-fancy-header',
+    templateUrl: './fancy-header.component.html',
+    styleUrls: ['./fancy-header.component.scss'],
+    imports: [NgIf]
 })
 export class FancyHeaderComponent implements OnInit {
   @Input() mainText = '';

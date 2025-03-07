@@ -4,12 +4,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
@@ -20,11 +15,26 @@ import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/
 import { modalSchema } from 'src/app/shared/components/modal/modal.component';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
+import { ModalComponent } from '../../shared/components/modal/modal.component';
+import { WysiwygInputComponent } from '../../shared/components/ds-forms/wysiwyg-input/wysiwyg-input.component';
+import { TextInputComponent } from '../../shared/components/ds-forms/text-input/text-input.component';
+import { ToggleComponent } from '../../shared/components/ds-forms/toggle/toggle.component';
+import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy-header.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-park-edit-form',
-  templateUrl: './park-edit-form.component.html',
-  styleUrls: ['./park-edit-form.component.scss'],
+    selector: 'app-park-edit-form',
+    templateUrl: './park-edit-form.component.html',
+    styleUrls: ['./park-edit-form.component.scss'],
+    imports: [
+        NgIf,
+        FancyHeaderComponent,
+        FormsModule,
+        ToggleComponent,
+        TextInputComponent,
+        WysiwygInputComponent,
+        ModalComponent,
+    ]
 })
 export class ParkEditFormComponent extends BaseFormComponent {
   public park;

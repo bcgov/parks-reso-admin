@@ -19,15 +19,14 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [HomeComponent],
-      providers: [
+    imports: [RouterTestingModule, HomeComponent],
+    providers: [
         { KeycloakService, useValue: fakeKeyCloakServiceIsAllowed },
         ConfigService,
         HttpClient,
         HttpHandler,
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
   });
 
   it('should create home cards with site metrics and frequently asked questions', async () => {

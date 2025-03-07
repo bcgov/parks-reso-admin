@@ -3,13 +3,20 @@ import { Utils } from 'src/app/shared/utils/utils';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { Constants } from 'src/app/shared/utils/constants';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PassService } from 'src/app/services/pass.service';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-manual-entry',
-  templateUrl: './manual-entry.component.html',
-  styleUrls: ['./manual-entry.component.scss'],
+    selector: 'app-manual-entry',
+    templateUrl: './manual-entry.component.html',
+    styleUrls: ['./manual-entry.component.scss'],
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgFor,
+        NgIf,
+    ]
 })
 export class ManualEntryComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();

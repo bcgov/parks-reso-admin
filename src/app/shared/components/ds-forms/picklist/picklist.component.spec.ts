@@ -8,8 +8,8 @@ describe('PicklistComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PicklistComponent ]
-    })
+    imports: [PicklistComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(PicklistComponent);

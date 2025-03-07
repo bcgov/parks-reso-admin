@@ -9,8 +9,8 @@ describe('ChartMetricComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ChartMetricComponent],
-    }).compileComponents();
+    imports: [ChartMetricComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(ChartMetricComponent);
     component = fixture.componentInstance;

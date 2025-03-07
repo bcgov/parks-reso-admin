@@ -1,4 +1,5 @@
-@import "src/assets/styles/abstracts/mixins.scss";
+@use "src/assets/styles/abstracts/mixins.scss";
+@use "@digitalspace/bcparks-bootstrap-theme/dist/scss/variables";
 
 html,
 body {
@@ -12,7 +13,7 @@ body {
 
 .accordion {
   .accordion-button {
-    color: $primary-blue;
+    color: variables.$primary-nav;
     background-color: white;
     box-shadow: none;
   }
@@ -38,7 +39,7 @@ body {
 }
 
 .form-section:nth-child(odd) {
-  background-color: $form-grey;
+  background-color: variables.$form-grey;
 }
 
 .invalid-field {

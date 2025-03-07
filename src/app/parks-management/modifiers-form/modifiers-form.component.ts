@@ -1,9 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
@@ -13,11 +9,19 @@ import { ModifierService } from 'src/app/services/modifier.service';
 import { ParkService } from 'src/app/services/park.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { Constants } from 'src/app/shared/utils/constants';
+import { TextInputComponent } from '../../shared/components/ds-forms/text-input/text-input.component';
+import { ShortdatePickerComponent } from '../../shared/components/ds-forms/shortdate-picker/shortdate-picker.component';
 
 @Component({
-  selector: 'app-modifiers-form',
-  templateUrl: './modifiers-form.component.html',
-  styleUrls: ['./modifiers-form.component.scss'],
+    selector: 'app-modifiers-form',
+    templateUrl: './modifiers-form.component.html',
+    styleUrls: ['./modifiers-form.component.scss'],
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        ShortdatePickerComponent,
+        TextInputComponent,
+    ]
 })
 export class ModifiersFormComponent
   extends BaseFormComponent

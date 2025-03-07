@@ -3,11 +3,21 @@ import { Subscription } from 'rxjs';
 import { ConfigService } from '../services/config.service';
 import { KeycloakService } from '../services/keycloak.service';
 import { SideBarService } from '../services/sidebar.service';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    imports: [
+        RouterLink,
+        NgIf,
+        NgbCollapse,
+        NgFor,
+        NgClass,
+    ]
 })
 export class HeaderComponent implements OnDestroy {
   @Input() showSideBar = true;

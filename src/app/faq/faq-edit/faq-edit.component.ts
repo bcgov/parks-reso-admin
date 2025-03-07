@@ -5,11 +5,7 @@ import {
   ViewChild,
   OnInit,
 } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DataService } from 'src/app/services/data.service';
@@ -17,11 +13,20 @@ import { LoadingService } from 'src/app/services/loading.service';
 import { FaqService } from 'src/app/services/faq.service';
 import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/base-form.component';
 import { modalSchema } from 'src/app/shared/components/modal/modal.component';
+import { ModalComponent } from '../../shared/components/modal/modal.component';
+import { WysiwygInputComponent } from '../../shared/components/ds-forms/wysiwyg-input/wysiwyg-input.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-faq-edit',
-  templateUrl: './faq-edit.component.html',
-  styleUrls: ['./faq-edit.component.scss'],
+    selector: 'app-faq-edit',
+    templateUrl: './faq-edit.component.html',
+    styleUrls: ['./faq-edit.component.scss'],
+    imports: [
+        FormsModule,
+        NgIf,
+        WysiwygInputComponent,
+        ModalComponent,
+    ]
 })
 //reput implements on innit
 export class FaqEditComponent extends BaseFormComponent implements OnInit {

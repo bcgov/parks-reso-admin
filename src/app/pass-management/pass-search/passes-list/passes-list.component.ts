@@ -19,11 +19,21 @@ import { modalSchema } from 'src/app/shared/components/modal/modal.component';
 import { KeycloakService } from 'src/app/services/keycloak.service';
 import { DateTime } from 'luxon';
 import { LoadingService } from 'src/app/services/loading.service';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { PassAccordionComponent } from './pass-accordion/pass-accordion.component';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-passes-list',
-  templateUrl: './passes-list.component.html',
-  styleUrls: ['./passes-list.component.scss'],
+    selector: 'app-passes-list',
+    templateUrl: './passes-list.component.html',
+    styleUrls: ['./passes-list.component.scss'],
+    imports: [
+        NgFor,
+        NgClass,
+        PassAccordionComponent,
+        NgIf,
+        ModalComponent,
+    ]
 })
 export class PassesListComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
   private subscriptions = new Subscription();

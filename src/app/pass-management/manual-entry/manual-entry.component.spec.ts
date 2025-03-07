@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   FormControl,
@@ -14,6 +14,7 @@ import { Constants } from 'src/app/shared/utils/constants';
 import { MockData } from 'src/app/shared/utils/mock-data';
 
 import { ManualEntryComponent } from './manual-entry.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ManualEntryComponent', () => {
   let component: ManualEntryComponent;
@@ -91,14 +92,15 @@ describe('ManualEntryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ManualEntryComponent],
-      imports: [HttpClientTestingModule, FormsModule, ReactiveFormsModule],
-      providers: [
+    imports: [FormsModule, ReactiveFormsModule, ManualEntryComponent],
+    providers: [
         ConfigService,
         { provide: PassService, useValue: mockPassService },
         { provide: DataService, useValue: mockDataService },
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
   });
 
   it('should create', async () => {

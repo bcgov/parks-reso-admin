@@ -9,8 +9,8 @@ describe('BasicMetricComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BasicMetricComponent],
-    }).compileComponents();
+    imports: [BasicMetricComponent],
+}).compileComponents();
     fixture = TestBed.createComponent(BasicMetricComponent);
     component = fixture.componentInstance;
     component._value = 2000;

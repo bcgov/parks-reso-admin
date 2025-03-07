@@ -57,9 +57,8 @@ describe('ParkDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ParkDetailsComponent],
-      imports: [RouterTestingModule],
-      providers: [
+    imports: [RouterTestingModule, ParkDetailsComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         ConfigService,
@@ -68,8 +67,8 @@ describe('ParkDetailsComponent', () => {
         { provide: DataService, useValue: mockDataService },
         { provide: KeycloakService, useValue: mockKeyCloakService },
         { provide: ParkService, useValue: mockParkService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(ParkDetailsComponent);
     component = fixture.componentInstance;

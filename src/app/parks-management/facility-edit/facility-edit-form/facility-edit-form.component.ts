@@ -4,12 +4,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -23,11 +18,23 @@ import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/
 import { modalSchema } from 'src/app/shared/components/modal/modal.component';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
+import { FacilityEditFormPassRequirementsComponent } from './facility-edit-form-pass-requirements/facility-edit-form-pass-requirements.component';
+import { FacilityEditFormDetailsComponent } from './facility-edit-form-details/facility-edit-form-details.component';
+import { FacilityEditFormPublishingDetailsComponent } from './facility-edit-form-publishing-details/facility-edit-form-publishing-details.component';
 
 @Component({
-  selector: 'app-facility-edit-form',
-  templateUrl: './facility-edit-form.component.html',
-  styleUrls: ['./facility-edit-form.component.scss'],
+    selector: 'app-facility-edit-form',
+    templateUrl: './facility-edit-form.component.html',
+    styleUrls: ['./facility-edit-form.component.scss'],
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        FacilityEditFormPublishingDetailsComponent,
+        FacilityEditFormDetailsComponent,
+        FacilityEditFormPassRequirementsComponent,
+        ModalComponent,
+    ]
 })
 export class FacilityEditFormComponent extends BaseFormComponent {
   public facility;

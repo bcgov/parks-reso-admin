@@ -1,4 +1,4 @@
-@import "src/assets/themes/variables";
+@use "@digitalspace/bcparks-bootstrap-theme/dist/scss/variables";
 
 .home-button {
   font-size: 1.5rem;
@@ -10,5 +10,5 @@
 
 .btn-link {
   text-decoration: none !important;
-  color: $primary !important;
+  color: variables.$primary !important;
 }

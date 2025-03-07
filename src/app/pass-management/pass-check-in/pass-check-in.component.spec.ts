@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -13,15 +13,15 @@ import { QrScannerService } from 'src/app/shared/components/qr-scanner/qr-scanne
 import { LoggerService } from 'src/app/services/logger.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { Constants } from 'src/app/shared/utils/constants';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 
 describe('PassCheckInComponent', () => {
   let component: PassCheckInComponent;
   let fixture: ComponentFixture<PassCheckInComponent>;
 
-  const mockUrl = `https://test.gov.bc.ca/testing?registrationNumber=${
-    MockData.mockPass_1.registrationNumber
-  }&park=${MockData.mockPass_1.pk.split('::')[1]}`;
+  const mockUrl = `https://test.gov.bc.ca/testing?registrationNumber=${MockData.mockPass_1.registrationNumber
+    }&park=${MockData.mockPass_1.pk.split('::')[1]}`;
 
   const mockPassService = {
     fetchData: (park, passId) => {
@@ -30,7 +30,7 @@ describe('PassCheckInComponent', () => {
   };
 
   const mockDataService = {
-    setItemValue: (id, value) => {},
+    setItemValue: (id, value) => { },
     watchItem: (id) => {
       return new BehaviorSubject([
         { ...MockData.mockPass_1 },
@@ -40,8 +40,9 @@ describe('PassCheckInComponent', () => {
   };
 
   const mockQrScannerService = {
-    disableScanner: () => {},
-    clearScannerOutput: () => {},
+    disableScanner: () => { },
+    enableScanner: () => { },
+    clearScannerOutput: () => { },
     watchScannerState: () => {
       return new BehaviorSubject(true);
     },
@@ -53,25 +54,28 @@ describe('PassCheckInComponent', () => {
   @Component({
     selector: 'app-qr-scanner',
     template: '',
-  })
-  class MockProductEditorComponent {}
+    imports: [],
+    providers: [
+        provideHttpClientTesting()
+    ]
+})
+  class MockProductEditorComponent { }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        PassCheckInComponent,
+      imports: [RouterTestingModule, PassCheckInComponent,
         PassCheckInListComponent,
         MockProductEditorComponent,
-        QrResultComponent,
-      ],
+        QrResultComponent],
       providers: [
         { provide: PassService, useValue: mockPassService },
         { provide: QrScannerService, useValue: mockQrScannerService },
         { provide: DataService, useValue: mockDataService },
         LoggerService,
         ConfigService,
-      ],
-      imports: [HttpClientTestingModule, RouterTestingModule],
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PassCheckInComponent);

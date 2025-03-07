@@ -1,4 +1,4 @@
-@import "src/assets/themes/variables";
+@use "@digitalspace/bcparks-bootstrap-theme/dist/scss/variables";
 
 a,
 a:hover,
@@ -12,7 +12,7 @@ a:focus {
 #sidebar {
   min-width: 250px;
   max-width: 250px;
-  background: $secondary-nav;
+  background: variables.$secondary-nav;
   color: #fff;
   transition: all 0.3s;
 }
@@ -29,12 +29,12 @@ a:focus {
 
 #sidebar ul li a:hover {
   color: #fff;
-  background: $bcgold;
+  background: variables.$bcgold;
 }
 
 #sidebar ul li.active > a,
 a[aria-expanded="true"] {
-  color: $bcgold;
+  color: variables.$bcgold;
 }
 
 #sidebar ul li.active a:hover {

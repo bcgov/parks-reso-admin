@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+
 import { DataService } from '../services/data.service';
 import { Constants } from '../shared/utils/constants';
 import { MetricsService } from '../services/metrics.service';
@@ -7,7 +7,7 @@ import { MetricsService } from '../services/metrics.service';
 @Injectable({
   providedIn: 'root',
 })
-export class MetricsResolver implements Resolve<void> {
+export class MetricsResolver  {
   constructor(
     private metricsService: MetricsService,
     private dataService: DataService

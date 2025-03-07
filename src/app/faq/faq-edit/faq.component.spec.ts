@@ -12,15 +12,14 @@ describe('FaqEditComponent', () => {
   let mockConfigService = {};
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FaqEditComponent],
-      imports: [FormsModule, ReactiveFormsModule, RouterTestingModule],
-      providers: [
+    imports: [FormsModule, ReactiveFormsModule, RouterTestingModule, FaqEditComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         { provide: ConfigService, useValue: mockConfigService },
         BsModalService,
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
     fixture = TestBed.createComponent(FaqEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-table-button',
-  templateUrl: './table-button.component.html',
-  styleUrls: ['./table-button.component.scss'],
+    selector: 'app-table-button',
+    templateUrl: './table-button.component.html',
+    styleUrls: ['./table-button.component.scss'],
+    standalone: true,
 })
 export class TableButtonComponent {
   @Input() onClick: Function = () => {};

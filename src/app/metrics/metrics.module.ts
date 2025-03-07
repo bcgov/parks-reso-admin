@@ -7,23 +7,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SiteMetricsComponent } from './site-metrics/site-metrics.component';
 import { RouterModule } from '@angular/router';
 import { MetricsRoutingModule } from './metrics-routing.module';
-import { SharedMetricsModule } from '../shared/components/metrics/shared-metrics.module';
+
 
 
 @NgModule({
-  declarations: [
-    MetricsComponent,
-    MetricsFilterComponent,
-    SiteMetricsComponent,
-  ],
-  imports: [
+    imports: [
     CommonModule,
     DsFormsModule,
     ReactiveFormsModule,
     RouterModule,
     MetricsRoutingModule,
-    SharedMetricsModule,
-  ],
-  providers: [],
+    MetricsComponent,
+    MetricsFilterComponent,
+    SiteMetricsComponent,
+],
+    providers: [],
 })
 export class MetricsModule {}

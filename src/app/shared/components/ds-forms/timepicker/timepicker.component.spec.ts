@@ -9,8 +9,8 @@ describe('TimepickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TimepickerComponent],
-    }).compileComponents();
+    imports: [TimepickerComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(TimepickerComponent);
     component = fixture.componentInstance;

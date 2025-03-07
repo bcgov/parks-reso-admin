@@ -9,9 +9,10 @@ import { Subscription } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
-  selector: 'app-text-to-loading-spinner',
-  templateUrl: './text-to-loading-spinner.component.html',
-  styleUrls: ['./text-to-loading-spinner.component.scss'],
+    selector: 'app-text-to-loading-spinner',
+    templateUrl: './text-to-loading-spinner.component.html',
+    styleUrls: ['./text-to-loading-spinner.component.scss'],
+    standalone: true
 })
 export class TextToLoadingSpinnerComponent implements OnDestroy {
   @Input() text;

@@ -8,8 +8,8 @@ describe('TableIconComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TableIconComponent],
-    }).compileComponents();
+    imports: [TableIconComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(TableIconComponent);
     component = fixture.componentInstance;

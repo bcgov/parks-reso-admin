@@ -10,9 +10,10 @@ import { UntypedFormControl, Validators } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-base-input',
-  templateUrl: './base-input.component.html',
-  styleUrls: ['./base-input.component.scss'],
+    selector: 'app-base-input',
+    templateUrl: './base-input.component.html',
+    styleUrls: ['./base-input.component.scss'],
+    standalone: true,
 })
 export class BaseInputComponent implements OnInit, OnDestroy {
   @Input() control = new UntypedFormControl();
@@ -35,7 +36,7 @@ export class BaseInputComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.add(
-      this.control.valueChanges.subscribe((res) => {
+      this.control?.valueChanges.subscribe((res) => {
         if (res) {
           this.inputChange.emit(res);
         }
@@ -45,7 +46,7 @@ export class BaseInputComponent implements OnInit, OnDestroy {
   }
 
   isRequired() {
-    if (this.control.hasValidator(Validators.required)) {
+    if (this.control?.hasValidator(Validators.required)) {
       return true;
     }
     return false;

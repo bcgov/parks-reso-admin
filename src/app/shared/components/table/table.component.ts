@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
+import { TableRowComponent } from './table-row/table-row.component';
+import { NgFor, NgStyle, NgIf } from '@angular/common';
 
 export interface columnSchema {
   id: string; // unique column identifier
@@ -20,9 +22,15 @@ export interface tableSchema {
 }
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
+    selector: 'app-table',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    imports: [
+        NgFor,
+        NgStyle,
+        NgIf,
+        TableRowComponent,
+    ]
 })
 export class TableComponent implements OnChanges, OnDestroy {
   @Input() tableSchema: tableSchema;

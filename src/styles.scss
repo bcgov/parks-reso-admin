@@ -1,19 +1,21 @@
-@import "src/assets/themes/variables";
-@import "/src/assets/styles/base/base.scss";
+@use "node_modules/ngx-toastr/toastr" as toastr;
+@use "/src/assets/styles/base/base.scss";
 
-@import "@digitalspace/bcparks-bootstrap-theme/dist/scss/bootstrap-theme.scss";
+@use "@digitalspace/bcparks-bootstrap-theme/dist/scss/bootstrap-theme.scss";
 
-@import "~bootstrap-icons/font/bootstrap-icons.css";
+@use "bootstrap-icons/font/bootstrap-icons.css";
 
 /* Importing ng-Select (multiselect) SCSS file */
-@import "~@ng-select/ng-select/themes/default.theme.css";
+@use "@ng-select/ng-select/themes/default.theme.css";
 
 /* Importing Datepicker SCSS file. */
-@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+@use "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+
+@use "@digitalspace/bcparks-bootstrap-theme/dist/scss/variables";
 
 /* Override ngx-boostrap colours */
 .bs-datepicker-body table td.week span {
-  color: $secondary-nav !important;
+  color: variables.$secondary-nav !important;
 }
 
 .bs-datepicker-body table td span.selected,
@@ -24,7 +26,5 @@
 .bs-datepicker-body table td span[class*="select-"]:after,
 .bs-datepicker-body table td[class*="select-"] span:after,
 .bs-datepicker-body table td.active-week span:hover {
-  background-color: $secondary-nav !important;
+  background-color: variables.$secondary-nav !important;
 }
-
-@import "node_modules/ngx-toastr/toastr";

@@ -7,6 +7,7 @@ describe('FacilityEditFormPassRequirementsComponent', () => {
   let component: FacilityEditFormPassRequirementsComponent;
   let fixture: ComponentFixture<FacilityEditFormPassRequirementsComponent>;
 
+  let mockfacilityPassesRequired = new UntypedFormControl(false);
   let mockFacilityBookingDays = {
     Monday: new UntypedFormControl(false),
     Tuesday: new UntypedFormControl(false),
@@ -16,17 +17,28 @@ describe('FacilityEditFormPassRequirementsComponent', () => {
     Saturday: new UntypedFormControl(false),
     Sunday: new UntypedFormControl(false),
   };
+  let mockfacilityBookingTimes = new UntypedFormGroup({
+    AM: new UntypedFormControl(false),
+    PM: new UntypedFormControl(false),
+    DAY: new UntypedFormControl(false),
+    capacityAM: new UntypedFormControl(0),
+    capacityPM: new UntypedFormControl(0),
+    capacityDAY: new UntypedFormControl(0)
+  });
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FacilityEditFormPassRequirementsComponent],
+      imports: [FacilityEditFormPassRequirementsComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(
       FacilityEditFormPassRequirementsComponent
     );
     component = fixture.componentInstance;
+    component.facilityPassesRequired = mockfacilityPassesRequired;
     component.facilityBookingDays = mockFacilityBookingDays;
+    component.facilityBookingTimes = mockfacilityBookingTimes;
+    component.facilityBookingDaysRichText = new UntypedFormControl(null);
     fixture.detectChanges();
   });
 

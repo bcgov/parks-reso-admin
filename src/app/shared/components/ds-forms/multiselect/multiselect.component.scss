@@ -1,11 +1,11 @@
-@import "src/assets/themes/variables";
+@use "@digitalspace/bcparks-bootstrap-theme/dist/scss/variables";
 
 $form-field-border: #9cace5;
 $form-field-disabled: #e9ecef;
 
 
 .ng-select-container {
-  border: 1px solid $gray-500 !important;
+  border: 1px solid variables.$gray-500 !important;
 }
 
 .ng-select-disabled {

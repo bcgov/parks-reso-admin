@@ -1,11 +1,20 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Utils } from '../../../utils/utils';
 import { BaseInputComponent } from '../base-input/base-input.component';
+import { FormsModule } from '@angular/forms';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { NgIf, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-shortdate-picker',
-  templateUrl: './shortdate-picker.component.html',
-  styleUrls: ['./shortdate-picker.component.scss'],
+    selector: 'app-shortdate-picker',
+    templateUrl: './shortdate-picker.component.html',
+    styleUrls: ['./shortdate-picker.component.scss'],
+    imports: [
+        NgIf,
+        NgClass,
+        BsDatepickerModule,
+        FormsModule,
+    ]
 })
 export class ShortdatePickerComponent extends BaseInputComponent implements OnChanges {
   @Input() minDate: Date = null as any;

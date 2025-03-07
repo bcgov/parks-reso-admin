@@ -22,8 +22,9 @@ import {
 } from 'rxjs';
 
 @Directive({
-  // eslint-disable-next-line
-  selector: '[countTo]',
+    // eslint-disable-next-line
+    selector: '[countTo]',
+    standalone: true,
 })
 export class CountToDirective implements OnDestroy, OnInit {
   @Input('countTo') set count(count: number) {

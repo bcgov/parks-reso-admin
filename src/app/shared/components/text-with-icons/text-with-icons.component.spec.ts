@@ -8,8 +8,8 @@ describe('TextWithIconsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TextWithIconsComponent ]
-    })
+    imports: [TextWithIconsComponent]
+})
     .compileComponents();
   });
 

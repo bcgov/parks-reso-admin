@@ -6,8 +6,8 @@ import { JwtUtil } from '../shared/utils/jwt-utils';
 import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { ToastService } from './toast.service';
+import Keycloak from 'keycloak-js';
 
-declare let Keycloak: any;
 
 @Injectable()
 export class KeycloakService {
@@ -214,7 +214,7 @@ export class KeycloakService {
         .updateToken(30)
         .then((refreshed) => {
           this.loggerService.log(`KC refreshed token?: ${refreshed}`);
-          observer.next();
+          observer.next(refreshed);
           observer.complete();
         })
         .catch((err) => {

@@ -9,11 +9,13 @@ import { PassUtils } from 'src/app/utils/pass-utils';
 import { DateTime } from 'luxon';
 import { KeycloakService } from 'src/app/services/keycloak.service';
 import { FacilityService } from 'src/app/services/facility.service';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-passes-utility-buttons',
-  templateUrl: './passes-utility-buttons.component.html',
-  styleUrls: ['./passes-utility-buttons.component.scss'],
+    selector: 'app-passes-utility-buttons',
+    templateUrl: './passes-utility-buttons.component.html',
+    styleUrls: ['./passes-utility-buttons.component.scss'],
+    imports: [NgIf, NgFor]
 })
 export class PassesUtilityButtonsComponent implements OnDestroy {
   private subscriptions = new Subscription();

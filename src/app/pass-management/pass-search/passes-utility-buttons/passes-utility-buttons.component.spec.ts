@@ -56,16 +56,16 @@ describe('PassesUtilityButtonsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PassesUtilityButtonsComponent],
-      providers: [
+    imports: [PassesUtilityButtonsComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         ConfigService,
         { provide: KeycloakService, useValue: mockKeyCloakService },
         { provide: DataService, useValue: mockDataService },
         { provide: FacilityService, useValue: mockFacilityService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(PassesUtilityButtonsComponent);
     component = fixture.componentInstance;

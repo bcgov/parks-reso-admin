@@ -1,10 +1,14 @@
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+import { TimepickerComponent } from '../../../../shared/components/ds-forms/timepicker/timepicker.component';
+import { PicklistComponent } from '../../../../shared/components/ds-forms/picklist/picklist.component';
+import { TextInputComponent } from '../../../../shared/components/ds-forms/text-input/text-input.component';
 
 @Component({
-  selector: 'app-facility-edit-form-details',
-  templateUrl: './facility-edit-form-details.component.html',
-  styleUrls: ['./facility-edit-form-details.component.scss']
+    selector: 'app-facility-edit-form-details',
+    templateUrl: './facility-edit-form-details.component.html',
+    styleUrls: ['./facility-edit-form-details.component.scss'],
+    imports: [TextInputComponent, PicklistComponent, TimepickerComponent]
 })
 export class FacilityEditFormDetailsComponent implements OnInit {
   @Input() resetEvent = new EventEmitter();

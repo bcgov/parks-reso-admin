@@ -28,14 +28,14 @@ describe('ModifiersListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModifiersListComponent],
-      providers: [
+    imports: [ModifiersListComponent],
+    providers: [
         HttpClient,
         HttpHandler,
         ConfigService,
         { provide: DataService, useValue: mockDataService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(ModifiersListComponent);
     component = fixture.componentInstance;

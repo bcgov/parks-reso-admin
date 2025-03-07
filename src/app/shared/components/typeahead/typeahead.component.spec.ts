@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NgbModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 
 import { TypeaheadComponent } from './typeahead.component';
 
@@ -10,8 +10,7 @@ describe('TypeaheadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, NgbModule, NgbTypeaheadModule],
-      declarations: [TypeaheadComponent],
+      imports: [TypeaheadComponent, FormsModule, NgbTypeahead],
     }).compileComponents();
   });
 

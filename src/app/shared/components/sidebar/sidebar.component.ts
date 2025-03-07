@@ -3,11 +3,17 @@ import { SideBarService } from 'src/app/services/sidebar.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { KeycloakService } from 'src/app/services/keycloak.service';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
+    selector: 'app-sidebar',
+    templateUrl: './sidebar.component.html',
+    styleUrls: ['./sidebar.component.scss'],
+    imports: [
+        NgClass,
+        NgFor,
+        NgIf,
+    ]
 })
 export class SidebarComponent implements OnDestroy {
   @HostBinding('class.is-toggled')

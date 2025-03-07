@@ -8,8 +8,8 @@ describe('PassManagementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PassManagementComponent]
-    })
+    imports: [PassManagementComponent]
+})
       .compileComponents();
 
     fixture = TestBed.createComponent(PassManagementComponent);

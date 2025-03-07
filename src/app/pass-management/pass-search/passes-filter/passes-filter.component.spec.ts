@@ -58,22 +58,22 @@ describe('PassesFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PassesFilterComponent],
-      imports: [
+    imports: [
         FormsModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([
-          { path: 'passType', component: PassesFilterComponent },
+            { path: 'passType', component: PassesFilterComponent },
         ]),
-      ],
-      providers: [
+        PassesFilterComponent,
+    ],
+    providers: [
         HttpClient,
         HttpHandler,
         ConfigService,
         { provide: DataService, useValue: mockDataService },
         { provide: FacilityService, useValue: mockFacilityService },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(PassesFilterComponent);
     component = fixture.componentInstance;

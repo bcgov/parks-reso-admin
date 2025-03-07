@@ -1,9 +1,16 @@
 import { Component, Input } from '@angular/core';
+import { CountToDirective } from '../../../utils/count-to.directive';
+import { NgIf, DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-basic-metric',
-  templateUrl: './basic-metric.component.html',
-  styleUrls: ['./basic-metric.component.scss'],
+    selector: 'app-basic-metric',
+    templateUrl: './basic-metric.component.html',
+    styleUrls: ['./basic-metric.component.scss'],
+    imports: [
+        NgIf,
+        CountToDirective,
+        DecimalPipe,
+    ]
 })
 export class BasicMetricComponent {
   @Input() set value(value: number) {
