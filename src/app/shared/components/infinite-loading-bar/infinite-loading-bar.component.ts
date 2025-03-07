@@ -7,8 +7,7 @@ import { NgIf } from '@angular/common';
     selector: 'app-infinite-loading-bar',
     templateUrl: './infinite-loading-bar.component.html',
     styleUrls: ['./infinite-loading-bar.component.scss'],
-    standalone: true,
-    imports: [NgIf],
+    imports: [NgIf]
 })
 export class InfiniteLoadingBarComponent implements OnDestroy {
   private subscriptions = new Subscription();

@@ -27,14 +27,13 @@ import { NgFor, NgClass, NgIf } from '@angular/common';
     selector: 'app-passes-list',
     templateUrl: './passes-list.component.html',
     styleUrls: ['./passes-list.component.scss'],
-    standalone: true,
     imports: [
         NgFor,
         NgClass,
         PassAccordionComponent,
         NgIf,
         ModalComponent,
-    ],
+    ]
 })
 export class PassesListComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
   private subscriptions = new Subscription();

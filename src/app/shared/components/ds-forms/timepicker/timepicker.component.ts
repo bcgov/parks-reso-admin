@@ -13,13 +13,12 @@ import { NgIf, NgClass } from '@angular/common';
     selector: 'app-timepicker',
     templateUrl: './timepicker.component.html',
     styleUrls: ['./timepicker.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         NgClass,
         TimepickerModule,
         FormsModule,
-    ],
+    ]
 })
 // Component control value must be of type NgbTimeStruct:
 // {hour: 24hour, minute: minute, second: second}

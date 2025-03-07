@@ -7,13 +7,12 @@ import { NgIf, NgClass } from '@angular/common';
     selector: 'app-toggle',
     templateUrl: './toggle.component.html',
     styleUrls: ['./toggle.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         NgClass,
         FormsModule,
         ReactiveFormsModule,
-    ],
+    ]
 })
 export class ToggleComponent extends BaseInputComponent {
   @Input() description = '';

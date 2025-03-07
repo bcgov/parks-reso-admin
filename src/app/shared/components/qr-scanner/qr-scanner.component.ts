@@ -11,12 +11,11 @@ import { NgIf, NgFor } from '@angular/common';
     selector: 'app-qr-scanner',
     templateUrl: './qr-scanner.component.html',
     styleUrls: ['./qr-scanner.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         NgFor,
         ZXingScannerModule,
-    ],
+    ]
 })
 export class QrScannerComponent implements OnDestroy {
   private subscriptions = new Subscription();

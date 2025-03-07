@@ -26,7 +26,6 @@ import { NgIf } from '@angular/common';
     selector: 'app-park-edit-form',
     templateUrl: './park-edit-form.component.html',
     styleUrls: ['./park-edit-form.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         FancyHeaderComponent,
@@ -35,7 +34,7 @@ import { NgIf } from '@angular/common';
         TextInputComponent,
         WysiwygInputComponent,
         ModalComponent,
-    ],
+    ]
 })
 export class ParkEditFormComponent extends BaseFormComponent {
   public park;

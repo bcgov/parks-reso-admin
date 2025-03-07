@@ -16,12 +16,11 @@ import { NgIf } from '@angular/common';
     selector: 'app-park-details',
     templateUrl: './park-details.component.html',
     styleUrls: ['./park-details.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         FancyHeaderComponent,
         TableComponent,
-    ],
+    ]
 })
 export class ParkDetailsComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();

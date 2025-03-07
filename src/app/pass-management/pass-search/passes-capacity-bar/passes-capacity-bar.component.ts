@@ -9,8 +9,7 @@ import { NgIf } from '@angular/common';
     selector: 'app-passes-capacity-bar',
     templateUrl: './passes-capacity-bar.component.html',
     styleUrls: ['./passes-capacity-bar.component.scss'],
-    standalone: true,
-    imports: [NgIf, NgbProgressbar],
+    imports: [NgIf, NgbProgressbar]
 })
 export class PassesCapacityBarComponent implements OnInit {
   private subscriptions = new Subscription();

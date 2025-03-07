@@ -8,18 +8,17 @@ import { NgIf, NgFor } from '@angular/common';
 import { ToggleComponent } from '../../../../shared/components/ds-forms/toggle/toggle.component';
 
 @Component({
-  selector: 'app-facility-edit-form-pass-requirements',
-  templateUrl: './facility-edit-form-pass-requirements.component.html',
-  styleUrls: ['./facility-edit-form-pass-requirements.component.scss'],
-  standalone: true,
-  imports: [
-    ToggleComponent,
-    NgIf,
-    NgFor,
-    CheckboxComponent,
-    WysiwygInputComponent,
-    TextInputComponent,
-  ],
+    selector: 'app-facility-edit-form-pass-requirements',
+    templateUrl: './facility-edit-form-pass-requirements.component.html',
+    styleUrls: ['./facility-edit-form-pass-requirements.component.scss'],
+    imports: [
+        ToggleComponent,
+        NgIf,
+        NgFor,
+        CheckboxComponent,
+        WysiwygInputComponent,
+        TextInputComponent,
+    ]
 })
 export class FacilityEditFormPassRequirementsComponent implements OnInit {
   @Input() facilityPassesRequired = new UntypedFormControl();

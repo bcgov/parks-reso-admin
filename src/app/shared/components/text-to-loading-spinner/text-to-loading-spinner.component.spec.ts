@@ -12,7 +12,7 @@ describe('TextToLoadingSpinnerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    declarations: [TextToLoadingSpinnerComponent],
+    imports: [TextToLoadingSpinnerComponent],
     providers: [LoggerService, LoadingService, ConfigService, HttpClient, HttpHandler]
 })
     .compileComponents();

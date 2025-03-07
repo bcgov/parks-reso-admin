@@ -7,7 +7,6 @@ import { NgFor } from '@angular/common';
     selector: 'app-pass-management-home',
     templateUrl: './pass-management-home.component.html',
     styleUrls: ['./pass-management-home.component.scss'],
-    standalone: true,
     imports: [NgFor, NavCardComponent]
 })
 export class PassManagementHomeComponent implements OnInit {

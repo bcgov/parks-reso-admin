@@ -5,6 +5,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/internal/Observable';
 import { merge } from 'rxjs/internal/observable/merge';
@@ -19,6 +20,8 @@ import { OperatorFunction } from 'rxjs/internal/types';
   selector: 'app-typeahead',
   templateUrl: './typeahead.component.html',
   styleUrls: ['./typeahead.component.scss'],
+  imports: [FormsModule, NgbTypeahead],
+  standalone: true
 })
 export class TypeaheadComponent {
   @Input() data: any[] = [];
@@ -48,12 +51,12 @@ export class TypeaheadComponent {
 
     return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
       map((term) =>
-        (term === ''
-          ? this.data
-          : this.data.filter(
-              (v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1
-            )
+      (term === ''
+        ? this.data
+        : this.data.filter(
+          (v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1
         )
+      )
       )
     );
   };

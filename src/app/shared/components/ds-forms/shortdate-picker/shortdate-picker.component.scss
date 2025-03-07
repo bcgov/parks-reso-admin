@@ -1,4 +1,4 @@
-@import "src/assets/themes/variables";
+@use "@digitalspace/bcparks-bootstrap-theme/dist/scss/variables";
 
 .input-group-text {
   background-color: #fff;
@@ -13,7 +13,7 @@
 }
 
 .clear-button {
-  color: $gray-500;
+  color: variables.$gray-500;
   cursor: pointer;
   & :hover {
     color: #333;

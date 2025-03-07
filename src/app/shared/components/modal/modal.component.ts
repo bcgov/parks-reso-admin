@@ -19,8 +19,7 @@ export interface modalButtonSchema {
     selector: 'app-modal',
     templateUrl: './modal.component.html',
     styleUrls: ['./modal.component.scss'],
-    standalone: true,
-    imports: [NgIf, NgFor],
+    imports: [NgIf, NgFor]
 })
 export class ModalComponent implements OnInit {
   @Input() modal: modalSchema;

@@ -18,14 +18,13 @@ import { NgIf } from '@angular/common';
     selector: 'app-pass-check-in',
     templateUrl: './pass-check-in.component.html',
     styleUrls: ['./pass-check-in.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         QrScannerComponent_1,
         QrResultComponent,
         ManualEntryComponent,
         PassCheckInListComponent,
-    ],
+    ]
 })
 export class PassCheckInComponent implements OnDestroy {
   @ViewChild(QrScannerComponent) qrScannerComponent: QrScannerComponent;

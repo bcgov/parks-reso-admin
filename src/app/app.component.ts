@@ -13,20 +13,19 @@ import { FooterComponent } from './footer/footer.component';
 import { InfiniteLoadingBarComponent } from './shared/components/infinite-loading-bar/infinite-loading-bar.component';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  standalone: true,
-  imports: [
-    HeaderComponent,
-    NgIf,
-    SidebarComponent,
-    ToggleButtonComponent,
-    BreadcrumbComponent,
-    RouterOutlet,
-    FooterComponent,
-    InfiniteLoadingBarComponent,
-  ],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    imports: [
+        HeaderComponent,
+        NgIf,
+        SidebarComponent,
+        ToggleButtonComponent,
+        BreadcrumbComponent,
+        RouterOutlet,
+        FooterComponent,
+        InfiniteLoadingBarComponent,
+    ]
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'attendance-and-revanue-admin';

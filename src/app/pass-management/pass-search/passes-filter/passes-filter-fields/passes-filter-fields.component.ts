@@ -8,12 +8,11 @@ import { ShortdatePickerComponent } from '../../../../shared/components/ds-forms
     selector: 'app-passes-filter-fields',
     templateUrl: './passes-filter-fields.component.html',
     styleUrls: ['./passes-filter-fields.component.scss'],
-    standalone: true,
     imports: [
         ShortdatePickerComponent,
         PicklistComponent,
         TextInputComponent,
-    ],
+    ]
 })
 export class PassesFilterFieldsComponent implements OnChanges {
   @Input() passType = new UntypedFormControl();

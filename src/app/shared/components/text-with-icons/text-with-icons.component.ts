@@ -5,8 +5,7 @@ import { NgFor, NgClass } from '@angular/common';
     selector: 'app-text-with-icons',
     templateUrl: './text-with-icons.component.html',
     styleUrls: ['./text-with-icons.component.scss'],
-    standalone: true,
-    imports: [NgFor, NgClass],
+    imports: [NgFor, NgClass]
 })
 export class TextWithIconsComponent implements OnInit {
   @Input() text;

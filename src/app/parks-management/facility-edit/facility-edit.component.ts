@@ -16,14 +16,13 @@ import { NgIf } from '@angular/common';
     selector: 'app-facility-edit',
     templateUrl: './facility-edit.component.html',
     styleUrls: ['./facility-edit.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         FancyHeaderComponent,
         FacilityEditFormComponent,
         ModifiersFormComponent,
         ModifiersListComponent,
-    ],
+    ]
 })
 export class FacilityEditComponent implements OnDestroy {
   private subscriptions = new Subscription();

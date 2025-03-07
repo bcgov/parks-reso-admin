@@ -1,7 +1,7 @@
-@import "/src/assets/themes/variables";
+@use "@digitalspace/bcparks-bootstrap-theme/dist/scss/variables";
 
 .footer-admin {
-  background-color: $primary-nav;
+  background-color: variables.$primary-nav;
   color: white;
   position: relative;
 }
@@ -12,7 +12,7 @@ a {
 }
 
 a:hover {
-  color: $bcgold;
+  color: variables.$bcgold;
 }
 
 .gov-links {

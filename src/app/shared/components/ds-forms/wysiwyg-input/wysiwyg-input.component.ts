@@ -8,12 +8,11 @@ import { NgIf } from '@angular/common';
     selector: 'app-wysiwyg-input',
     templateUrl: './wysiwyg-input.component.html',
     styleUrls: ['./wysiwyg-input.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         EditorComponent,
         FormsModule,
         ReactiveFormsModule,
-    ],
+    ]
 })
 export class WysiwygInputComponent extends BaseInputComponent {}

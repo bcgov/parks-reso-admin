@@ -9,12 +9,11 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
     selector: 'app-sidebar',
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
-    standalone: true,
     imports: [
         NgClass,
         NgFor,
         NgIf,
-    ],
+    ]
 })
 export class SidebarComponent implements OnDestroy {
   @HostBinding('class.is-toggled')

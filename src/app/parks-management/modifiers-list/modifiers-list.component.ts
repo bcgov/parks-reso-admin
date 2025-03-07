@@ -12,8 +12,7 @@ import { NgIf } from '@angular/common';
     selector: 'app-modifiers-list',
     templateUrl: './modifiers-list.component.html',
     styleUrls: ['./modifiers-list.component.scss'],
-    standalone: true,
-    imports: [NgIf, TableComponent],
+    imports: [NgIf, TableComponent]
 })
 export class ModifiersListComponent implements OnInit {
   public facility;

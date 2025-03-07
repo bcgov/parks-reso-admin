@@ -27,7 +27,6 @@ import { FacilityEditFormPublishingDetailsComponent } from './facility-edit-form
     selector: 'app-facility-edit-form',
     templateUrl: './facility-edit-form.component.html',
     styleUrls: ['./facility-edit-form.component.scss'],
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -35,7 +34,7 @@ import { FacilityEditFormPublishingDetailsComponent } from './facility-edit-form
         FacilityEditFormDetailsComponent,
         FacilityEditFormPassRequirementsComponent,
         ModalComponent,
-    ],
+    ]
 })
 export class FacilityEditFormComponent extends BaseFormComponent {
   public facility;

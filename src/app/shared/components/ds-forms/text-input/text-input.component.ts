@@ -7,13 +7,12 @@ import { NgIf, NgClass } from '@angular/common';
     selector: 'app-text-input',
     templateUrl: './text-input.component.html',
     styleUrls: ['./text-input.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         NgClass,
         FormsModule,
         ReactiveFormsModule,
-    ],
+    ]
 })
 export class TextInputComponent extends BaseInputComponent {
   @Input() type = 'text'; // text, number

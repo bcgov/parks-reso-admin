@@ -15,12 +15,11 @@ import { PassesFilterFieldsComponent } from './passes-filter-fields/passes-filte
     selector: 'app-passes-filter',
     templateUrl: './passes-filter.component.html',
     styleUrls: ['./passes-filter.component.scss'],
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,
         PassesFilterFieldsComponent,
-    ],
+    ]
 })
 export class PassesFilterComponent extends BaseFormComponent {
 

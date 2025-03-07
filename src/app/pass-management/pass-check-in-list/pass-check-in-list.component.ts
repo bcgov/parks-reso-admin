@@ -18,12 +18,11 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
     selector: 'app-pass-check-in-list',
     templateUrl: './pass-check-in-list.component.html',
     styleUrls: ['./pass-check-in-list.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         NgFor,
         NgClass,
-    ],
+    ]
 })
 export class PassCheckInListComponent implements OnChanges, OnDestroy {
   @Input() passes = [];

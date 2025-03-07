@@ -16,7 +16,6 @@ import { RadioButtonsComponent } from '../../shared/components/ds-forms/radio-bu
     selector: 'app-metrics-filter',
     templateUrl: './metrics-filter.component.html',
     styleUrls: ['./metrics-filter.component.scss'],
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -24,7 +23,7 @@ import { RadioButtonsComponent } from '../../shared/components/ds-forms/radio-bu
         ShortdatePickerComponent,
         NgTemplateOutlet,
         PicklistComponent,
-    ],
+    ]
 })
 export class MetricsFilterComponent extends BaseFormComponent {
   public params;

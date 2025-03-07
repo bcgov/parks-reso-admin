@@ -7,13 +7,12 @@ import { NgIf, NgClass } from '@angular/common';
     selector: 'app-text-area',
     templateUrl: './text-area.component.html',
     styleUrls: ['./text-area.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         NgClass,
         FormsModule,
         ReactiveFormsModule,
-    ],
+    ]
 })
 export class TextAreaComponent extends BaseInputComponent {
   @Input() charCap;

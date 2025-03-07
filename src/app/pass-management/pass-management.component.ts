@@ -5,8 +5,7 @@ import { RouterOutlet } from '@angular/router';
     selector: 'app-pass-management',
     templateUrl: './pass-management.component.html',
     styleUrls: ['./pass-management.component.scss'],
-    standalone: true,
-    imports: [RouterOutlet],
+    imports: [RouterOutlet]
 })
 export class PassManagementComponent {
 }

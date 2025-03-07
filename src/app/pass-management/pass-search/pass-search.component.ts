@@ -16,7 +16,6 @@ import { PassesFilterComponent } from './passes-filter/passes-filter.component';
     selector: 'app-pass-search',
     templateUrl: './pass-search.component.html',
     styleUrls: ['./pass-search.component.scss'],
-    standalone: true,
     imports: [PassesFilterComponent, PassesUtilityButtonsComponent, NgIf, PassesCapacityBarComponent, PassesListComponent, DatePipe]
 })
 export class PassSearchComponent implements OnDestroy {

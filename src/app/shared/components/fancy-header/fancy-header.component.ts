@@ -6,8 +6,7 @@ import { NgIf } from '@angular/common';
     selector: 'app-fancy-header',
     templateUrl: './fancy-header.component.html',
     styleUrls: ['./fancy-header.component.scss'],
-    standalone: true,
-    imports: [NgIf],
+    imports: [NgIf]
 })
 export class FancyHeaderComponent implements OnInit {
   @Input() mainText = '';

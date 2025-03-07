@@ -18,7 +18,6 @@ import { MetricsFilterComponent } from '../metrics-filter/metrics-filter.compone
     selector: 'app-site-metrics',
     templateUrl: './site-metrics.component.html',
     styleUrls: ['./site-metrics.component.scss'],
-    standalone: true,
     imports: [
         MetricsFilterComponent,
         NgIf,
@@ -26,7 +25,7 @@ import { MetricsFilterComponent } from '../metrics-filter/metrics-filter.compone
         BasicMetricComponent,
         ChartMetricComponent,
         DatePipe,
-    ],
+    ]
 })
 export class SiteMetricsComponent implements OnDestroy, OnInit {
   private subscriptions = new Subscription();

@@ -9,13 +9,12 @@ import { NgIf, NgClass } from '@angular/common';
     selector: 'app-shortdate-picker',
     templateUrl: './shortdate-picker.component.html',
     styleUrls: ['./shortdate-picker.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         NgClass,
         BsDatepickerModule,
         FormsModule,
-    ],
+    ]
 })
 export class ShortdatePickerComponent extends BaseInputComponent implements OnChanges {
   @Input() minDate: Date = null as any;

@@ -1,4 +1,4 @@
-import { enableProdMode, APP_INITIALIZER, importProvidersFrom } from '@angular/core';
+import { enableProdMode, importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
 
 import { environment } from './environments/environment';
 import { AppComponent } from './app/app.component';
@@ -48,12 +48,10 @@ function initConfig(
 bootstrapApplication(AppComponent, {
     providers: [
         importProvidersFrom(BrowserModule, CommonModule, AppRoutingModule, SidebarModule, ToggleButtonModule, BreadcrumbModule, HeaderModule, PassManagementModule, ToastrModule.forRoot(), FaqModule),
-        {
-            provide: APP_INITIALIZER,
-            useFactory: initConfig,
-            deps: [ConfigService, ApiService, AutoFetchService, KeycloakService],
-            multi: true,
-        },
+        provideAppInitializer(() => {
+        const initializerFn = (initConfig)(inject(ConfigService), inject(ApiService), inject(AutoFetchService), inject(KeycloakService));
+        return initializerFn();
+      }),
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,

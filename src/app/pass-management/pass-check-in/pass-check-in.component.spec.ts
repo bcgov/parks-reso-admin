@@ -54,12 +54,11 @@ describe('PassCheckInComponent', () => {
   @Component({
     selector: 'app-qr-scanner',
     template: '',
-    standalone: true,
     imports: [],
     providers: [
-      provideHttpClientTesting()
+        provideHttpClientTesting()
     ]
-  })
+})
   class MockProductEditorComponent { }
 
   beforeEach(async () => {

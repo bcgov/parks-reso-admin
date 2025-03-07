@@ -21,8 +21,7 @@ import { NgFor, NgIf } from '@angular/common';
     selector: '[app-table-row]',
     templateUrl: './table-row.component.html',
     styleUrls: ['./table-row.component.scss'],
-    standalone: true,
-    imports: [NgFor, NgIf],
+    imports: [NgFor, NgIf]
 })
 export class TableRowComponent implements AfterViewInit, OnDestroy {
   @Input() columnSchema: columnSchema[];

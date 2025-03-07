@@ -12,8 +12,7 @@ import { NgIf } from '@angular/common';
     selector: 'app-facility-details',
     templateUrl: './facility-details.component.html',
     styleUrls: ['./facility-details.component.scss'],
-    standalone: true,
-    imports: [NgIf, FancyHeaderComponent],
+    imports: [NgIf, FancyHeaderComponent]
 })
 export class FacilityDetailsComponent implements OnDestroy {
   private subscriptions = new Subscription();

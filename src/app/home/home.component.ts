@@ -8,8 +8,7 @@ import { NgFor } from '@angular/common';
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    standalone: true,
-    imports: [NgFor, NavCardComponent],
+    imports: [NgFor, NavCardComponent]
 })
 export class HomeComponent {
   // This can be pulled in via the config.

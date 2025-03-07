@@ -16,13 +16,12 @@ import { ShortdatePickerComponent } from '../../shared/components/ds-forms/short
     selector: 'app-modifiers-form',
     templateUrl: './modifiers-form.component.html',
     styleUrls: ['./modifiers-form.component.scss'],
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,
         ShortdatePickerComponent,
         TextInputComponent,
-    ],
+    ]
 })
 export class ModifiersFormComponent
   extends BaseFormComponent

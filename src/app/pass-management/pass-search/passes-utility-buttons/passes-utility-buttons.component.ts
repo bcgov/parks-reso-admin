@@ -15,8 +15,7 @@ import { NgIf, NgFor } from '@angular/common';
     selector: 'app-passes-utility-buttons',
     templateUrl: './passes-utility-buttons.component.html',
     styleUrls: ['./passes-utility-buttons.component.scss'],
-    standalone: true,
-    imports: [NgIf, NgFor],
+    imports: [NgIf, NgFor]
 })
 export class PassesUtilityButtonsComponent implements OnDestroy {
   private subscriptions = new Subscription();

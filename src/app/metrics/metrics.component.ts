@@ -5,8 +5,7 @@ import { RouterOutlet } from '@angular/router';
     selector: 'app-metrics',
     templateUrl: './metrics.component.html',
     styleUrls: ['./metrics.component.scss'],
-    standalone: true,
-    imports: [RouterOutlet],
+    imports: [RouterOutlet]
 })
 export class MetricsComponent {
 }

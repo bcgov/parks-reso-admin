@@ -7,7 +7,6 @@ import { ToggleComponent } from '../../../../shared/components/ds-forms/toggle/t
     selector: 'app-facility-edit-form-publishing-details',
     templateUrl: './facility-edit-form-publishing-details.component.html',
     styleUrls: ['./facility-edit-form-publishing-details.component.scss'],
-    standalone: true,
     imports: [ToggleComponent, TextInputComponent]
 })
 export class FacilityEditFormPublishingDetailsComponent implements OnInit {

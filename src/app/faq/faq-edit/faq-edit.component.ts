@@ -21,13 +21,12 @@ import { NgIf } from '@angular/common';
     selector: 'app-faq-edit',
     templateUrl: './faq-edit.component.html',
     styleUrls: ['./faq-edit.component.scss'],
-    standalone: true,
     imports: [
         FormsModule,
         NgIf,
         WysiwygInputComponent,
         ModalComponent,
-    ],
+    ]
 })
 //reput implements on innit
 export class FaqEditComponent extends BaseFormComponent implements OnInit {

@@ -11,8 +11,7 @@ import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy
     selector: 'app-parks-list',
     templateUrl: './parks-list.component.html',
     styleUrls: ['./parks-list.component.scss'],
-    standalone: true,
-    imports: [FancyHeaderComponent, TableComponent],
+    imports: [FancyHeaderComponent, TableComponent]
 })
 export class ParksListComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();

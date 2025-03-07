@@ -25,13 +25,12 @@ export interface tableSchema {
     selector: 'app-table',
     templateUrl: './table.component.html',
     styleUrls: ['./table.component.scss'],
-    standalone: true,
     imports: [
         NgFor,
         NgStyle,
         NgIf,
         TableRowComponent,
-    ],
+    ]
 })
 export class TableComponent implements OnChanges, OnDestroy {
   @Input() tableSchema: tableSchema;

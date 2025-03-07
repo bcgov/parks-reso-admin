@@ -14,13 +14,12 @@ import { NgIf, NgClass } from '@angular/common';
     styleUrls: ['./multiselect.component.scss'],
     // Note: ViewEncapsulation necessary to override ng-select css classes.
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         NgIf,
         NgSelectModule,
         NgClass,
         FormsModule,
-    ],
+    ]
 })
 export class MultiselectComponent
   extends BaseInputComponent

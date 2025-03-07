@@ -10,8 +10,7 @@ import { NgFor } from '@angular/common';
     selector: 'app-breadcrumb',
     templateUrl: './breadcrumb.component.html',
     styleUrls: ['./breadcrumb.component.scss'],
-    standalone: true,
-    imports: [NgFor],
+    imports: [NgFor]
 })
 export class BreadcrumbComponent implements OnDestroy {
   private subscriptions = new Subscription();

@@ -7,14 +7,13 @@ import { NgIf, NgClass, NgFor } from '@angular/common';
     selector: 'app-picklist',
     templateUrl: './picklist.component.html',
     styleUrls: ['./picklist.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         NgClass,
         FormsModule,
         ReactiveFormsModule,
         NgFor,
-    ],
+    ]
 })
 export class PicklistComponent extends BaseInputComponent {
   @Input() selectOptions;

@@ -11,13 +11,12 @@ import { NgFor, NgIf } from '@angular/common';
     selector: 'app-manual-entry',
     templateUrl: './manual-entry.component.html',
     styleUrls: ['./manual-entry.component.scss'],
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,
         NgFor,
         NgIf,
-    ],
+    ]
 })
 export class ManualEntryComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();

@@ -1,4 +1,4 @@
-@import "/src/assets/themes/variables";
+@use "@digitalspace/bcparks-bootstrap-theme/dist/scss/variables";
 
 nav {
   border-bottom: 0px;
@@ -13,21 +13,21 @@ nav {
 }
 
 .navbar-toggler {
-  color: $bcgold;
-  border-color: $bcgold;
+  color: variables.$bcgold;
+  border-color: variables.$bcgold;
 }
 
 .border-top {
-  border-color: $bcgold;
+  border-color: variables.$bcgold;
 }
 
 .welcome-text {
-  border-top: 1px solid $bcgold;
+  border-top: 1px solid variables.$bcgold;
   padding: 0.625rem;
 }
 
 .navbar-collapse {
-  background-color: $secondary-nav;
+  background-color: variables.$secondary-nav;
 }
 
 a,
@@ -46,10 +46,10 @@ a:focus {
 
 #dropdown ul li a:hover {
   color: #fff;
-  background: $bcgold;
+  background: variables.$bcgold;
 }
 
 #dropdown ul li.active > a,
 a[aria-expanded="true"] {
-  color: $bcgold;
+  color: variables.$bcgold;
 }

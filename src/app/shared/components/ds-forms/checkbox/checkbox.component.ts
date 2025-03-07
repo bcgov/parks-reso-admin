@@ -7,12 +7,11 @@ import { NgIf, NgClass } from '@angular/common';
     selector: 'app-checkbox',
     templateUrl: './checkbox.component.html',
     styleUrls: ['./checkbox.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         NgClass,
         FormsModule,
         ReactiveFormsModule,
-    ],
+    ]
 })
 export class CheckboxComponent extends BaseInputComponent {}

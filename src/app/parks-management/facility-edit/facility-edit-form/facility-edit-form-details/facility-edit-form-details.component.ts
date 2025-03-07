@@ -8,7 +8,6 @@ import { TextInputComponent } from '../../../../shared/components/ds-forms/text-
     selector: 'app-facility-edit-form-details',
     templateUrl: './facility-edit-form-details.component.html',
     styleUrls: ['./facility-edit-form-details.component.scss'],
-    standalone: true,
     imports: [TextInputComponent, PicklistComponent, TimepickerComponent]
 })
 export class FacilityEditFormDetailsComponent implements OnInit {

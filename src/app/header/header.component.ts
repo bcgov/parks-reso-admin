@@ -11,14 +11,13 @@ import { RouterLink } from '@angular/router';
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
-    standalone: true,
     imports: [
         RouterLink,
         NgIf,
         NgbCollapse,
         NgFor,
         NgClass,
-    ],
+    ]
 })
 export class HeaderComponent implements OnDestroy {
   @Input() showSideBar = true;

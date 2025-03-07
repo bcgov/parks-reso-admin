@@ -5,7 +5,6 @@ import { NgIf, NgFor, NgClass, NgTemplateOutlet } from '@angular/common';
     selector: 'app-pass-accordion',
     templateUrl: './pass-accordion.component.html',
     styleUrls: ['./pass-accordion.component.scss'],
-    standalone: true,
     imports: [NgIf, NgFor, NgClass, NgTemplateOutlet]
 })
 

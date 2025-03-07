@@ -5,7 +5,6 @@ import { RouterOutlet } from '@angular/router';
     selector: 'app-parks-management',
     templateUrl: './parks-management.component.html',
     styleUrls: ['./parks-management.component.scss'],
-    standalone: true,
     imports: [RouterOutlet]
 })
 export class ParksManagementComponent implements OnInit {

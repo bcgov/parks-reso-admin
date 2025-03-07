@@ -6,8 +6,7 @@ import { NgClass } from '@angular/common';
     selector: 'app-toggle-button',
     templateUrl: './toggle-button.component.html',
     styleUrls: ['./toggle-button.component.scss'],
-    standalone: true,
-    imports: [NgClass],
+    imports: [NgClass]
 })
 export class ToggleButtonComponent {
   public loading = true;

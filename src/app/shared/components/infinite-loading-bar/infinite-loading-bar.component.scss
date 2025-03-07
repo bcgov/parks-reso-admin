@@ -1,4 +1,4 @@
-@import "src/assets/themes/variables";
+@use "@digitalspace/bcparks-bootstrap-theme/dist/scss/variables";
 
 body {
   background: #ffffff;
@@ -15,14 +15,14 @@ body {
 .line {
   position: absolute;
   opacity: 0.4;
-  background: $bcgold;
+  background: variables.$bcgold;
   width: 150%;
   height: 5px;
 }
 
 .subline {
   position: absolute;
-  background: $bcgold;
+  background: variables.$bcgold;
   height: 5px;
 }
 .inc {

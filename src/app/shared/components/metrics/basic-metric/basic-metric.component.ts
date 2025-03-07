@@ -6,12 +6,11 @@ import { NgIf, DecimalPipe } from '@angular/common';
     selector: 'app-basic-metric',
     templateUrl: './basic-metric.component.html',
     styleUrls: ['./basic-metric.component.scss'],
-    standalone: true,
     imports: [
         NgIf,
         CountToDirective,
         DecimalPipe,
-    ],
+    ]
 })
 export class BasicMetricComponent {
   @Input() set value(value: number) {
