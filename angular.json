@@ -21,7 +21,8 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/dayuse"
+              "base": "dist/dayuse",
+              "browser": ""
             },
             "index": "src/index.html",
             "tsConfig": "tsconfig.app.json",
