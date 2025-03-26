@@ -75,7 +75,7 @@ Resources:
     Type: AWS::CloudFront::ResponseHeadersPolicy
     Properties:
       ResponseHeadersPolicyConfig:
-        Name: RobotHeadersPolicy
+        Name: RobotHeadersPolicyAdmin
         Comment: Policy to stop Google from caching
         CorsConfig:
           AccessControlAllowCredentials: false
