@@ -1,5 +1,13 @@
 @use "@digitalspace/bcparks-bootstrap-theme/dist/scss/variables";
 
+.land-acknowledgement {
+  background: #2464A4;
+  text-align: center;
+  width: 100vw;
+  margin: 0;
+  padding: 1rem 0 0 0; /* Top, Right, Bottom, Left */
+}
+
 .footer-admin {
   background-color: variables.$primary-nav;
   color: white;
