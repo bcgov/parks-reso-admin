@@ -65,14 +65,29 @@ export class ModifierService {
     this.loadingService.removeToFetchList(dataTag);
   }
 
-  //   {
-  //     "date": "2022-08-08T19:00:00.000Z",
-  //     "bookingTimes": {
-  //         "AM": "5000"
-  //     },
-  //     "parkName": "Garibaldi Provincial Park",
-  //     "facility": "Cheakamus"
-  //   }
+  /**
+   * Sets a modifier by sending a PUT request to the API and handles the response.
+   * Logs the operation, updates data, and displays success or error messages.
+   *
+   * @param obj - The modifier object to be sent to the API. It should include necessary
+   *              details such as parkOrcs and facility for data fetching.
+   * @returns A promise resolving to the response from the API.
+   *
+   * @throws Will log and handle any errors encountered during the API request.
+   *
+   * @remarks
+   * - On success, it fetches updated data and displays a success toast message.
+   * - On failure, it logs the error, displays an error toast message, and sets an error event.
+   * Example:
+   * {
+   *   "date": "2022-08-08T19:00:00.000Z",
+   *   "bookingTimes": {
+   *       "AM": "5000"
+   *   },
+   *   "parkName": "Garibaldi Provincial Park",
+   *   "facility": "Cheakamus"
+   * }
+   */
   async setModifier(obj) {
     let res;
     try {
@@ -85,10 +100,10 @@ export class ModifierService {
         'Modifier Service',
         Constants.ToastTypes.SUCCESS
       );
-    } catch (error) {
+    } catch (error: any) {
       this.loggerService.error(`${JSON.stringify(error)}`);
       this.toastService.addMessage(
-        `An error has occured while setting modifier.`,
+        `${error.error}`,
         'Modifier Service',
         Constants.ToastTypes.ERROR
       );
@@ -96,9 +111,6 @@ export class ModifierService {
         new EventObject(EventKeywords.ERROR, String(error), 'Modifier Service')
       );
     }
-
-    // TODO: kick off reservations list get
-
     return res;
   }
 
