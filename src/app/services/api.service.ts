@@ -23,7 +23,7 @@ export class ApiService implements OnDestroy {
   }
 
   errorHandler(error: HttpErrorResponse) {
-    return throwError(() => new Error(error.message));
+    return throwError(() => error);
   }
 
   ngOnDestroy(): void {
