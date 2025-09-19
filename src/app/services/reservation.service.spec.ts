@@ -184,6 +184,7 @@ describe('ReservationService', () => {
         overbooked: 0,
         modifier: 0,
         style: 'success',
+        parkSpecialClosure: false
       }
     );
     expect(unloadingSpy).toHaveBeenCalledTimes(1);
