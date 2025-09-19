@@ -66,6 +66,7 @@ export class ReservationService {
                     modifier: 0,
                     overbooked: 0,
                     style: 'success',
+                    parkSpecialClosure: res[parkSk]?.specialClosure || false
                   }
                 );
                 facilityReady.next(null);
