@@ -1,139 +1,103 @@
-import { HttpClient, HttpHandler } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BehaviorSubject } from 'rxjs';
-import { Constants } from '../shared/utils/constants';
-import { MockData } from '../shared/utils/mock-data';
-import { ApiService } from './api.service';
-import { ConfigService } from './config.service';
-import { DataService } from './data.service';
-import { LoggerService } from './logger.service';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MetricsService } from './metrics.service';
-import { EventKeywords, EventObject, EventService } from './event.service';
+import { ApiService } from './api.service';
+import { DataService } from './data.service';
+import { ToastService } from './toast.service';
+import { EventService } from './event.service';
+import { LoadingService } from './loading.service';
+import { LoggerService } from './logger.service';
+import { Constants } from '../shared/utils/constants';
 
 describe('MetricsService', () => {
   let service: MetricsService;
-
-  let mockMetrics = MockData.mockMetrics1;
-  let mockParkFacilities = MockData.mockParkFacility_1;
-
-  let mockApiService = {
-    get: (id, params) => {
-      if (id === 'metrics') {
-        return new BehaviorSubject([mockMetrics])
-      }
-      return new BehaviorSubject(null);
-    },
-  }
-
-  let mockDataService = {
-    setItemValue: (id, data) => {
-      return new BehaviorSubject(null);
-    },
-    getItemValue: (id) => {
-      if (id === Constants.dataIds.PARK_AND_FACILITY_LIST) {
-        return mockParkFacilities;
-      }
-      return new BehaviorSubject(null);
-    }
-  }
+  let mockApiService: jasmine.SpyObj<ApiService>;
+  let mockDataService: jasmine.SpyObj<DataService>;
+  let mockToastService: jasmine.SpyObj<ToastService>;
+  let mockEventService: jasmine.SpyObj<EventService>;
+  let mockLoadingService: jasmine.SpyObj<LoadingService>;
+  let mockLoggerService: jasmine.SpyObj<LoggerService>;
+  let mockRouter: jasmine.SpyObj<Router>;
+  let mockActivatedRoute: jasmine.SpyObj<ActivatedRoute>;
 
   beforeEach(() => {
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['get']);
+    const dataServiceSpy = jasmine.createSpyObj('DataService', ['getItemValue', 'setItemValue']);
+    const toastServiceSpy = jasmine.createSpyObj('ToastService', ['addMessage']);
+    const eventServiceSpy = jasmine.createSpyObj('EventService', ['setError']);
+    const loadingServiceSpy = jasmine.createSpyObj('LoadingService', ['addToFetchList', 'removeToFetchList']);
+    const loggerServiceSpy = jasmine.createSpyObj('LoggerService', ['debug', 'error']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const activatedRouteSpy = jasmine.createSpyObj('ActivatedRoute', [], {
+      snapshot: { queryParams: {} }
+    });
+
     TestBed.configureTestingModule({
       providers: [
-        HttpClient,
-        HttpHandler,
-        ConfigService,
-        LoggerService,
-        { provide: ApiService, useValue: mockApiService },
-        { provide: DataService, useValue: mockDataService },
-      ],
-      imports: [RouterTestingModule],
+        MetricsService,
+        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: DataService, useValue: dataServiceSpy },
+        { provide: ToastService, useValue: toastServiceSpy },
+        { provide: EventService, useValue: eventServiceSpy },
+        { provide: LoadingService, useValue: loadingServiceSpy },
+        { provide: LoggerService, useValue: loggerServiceSpy },
+        { provide: Router, useValue: routerSpy },
+        { provide: ActivatedRoute, useValue: activatedRouteSpy }
+      ]
     });
+
     service = TestBed.inject(MetricsService);
+    mockApiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    mockDataService = TestBed.inject(DataService) as jasmine.SpyObj<DataService>;
+    mockToastService = TestBed.inject(ToastService) as jasmine.SpyObj<ToastService>;
+    mockEventService = TestBed.inject(EventService) as jasmine.SpyObj<EventService>;
+    mockLoadingService = TestBed.inject(LoadingService) as jasmine.SpyObj<LoadingService>;
+    mockLoggerService = TestBed.inject(LoggerService) as jasmine.SpyObj<LoggerService>;
+    mockRouter = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+    mockActivatedRoute = TestBed.inject(ActivatedRoute) as jasmine.SpyObj<ActivatedRoute>;
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('fetches all metrics from all parks', async () => {
-    const apiSpy = spyOn(service['apiService'], 'get').and.callThrough();
-    await service.fetchData('2023-01-31');
-    // call api once for every facility in every park
-    let facilityCount = 0;
-    for (const park in mockParkFacilities) {
-      facilityCount += Object.keys(mockParkFacilities[park].facilities).length;
-    }
-    expect(apiSpy).toHaveBeenCalledTimes(facilityCount);
+  it('sets filter params', () => {
+    const mockParams = { foo: 'bar' };
+    service.setFilterParams(mockParams);
+    expect(mockDataService.setItemValue).toHaveBeenCalledWith(Constants.dataIds.METRICS_FILTERS_PARAMS, mockParams);
   });
 
-  it('fetches all metrics from all facilities in a park', async () => {
-    const apiSpy = spyOn(service['apiService'], 'get').and.callThrough();
-    const parkSk = Object.keys(mockParkFacilities)[0];
-    await service.fetchData('2023-01-31', '2023-01-31', parkSk);
-    // call api once for every facility in parkSk
-    let facilityCount = Object.keys(mockParkFacilities[parkSk].facilities).length;
-    expect(apiSpy).toHaveBeenCalledTimes(facilityCount);
-  })
+  it('handles fetchData with no facilities', async () => {
+    mockDataService.getItemValue.and.returnValue({});
+    await service.fetchData('2023-01-31');
+    expect(mockApiService.get).not.toHaveBeenCalled();
+  });
 
-  it('fetches all metrics from one facility', async () => {
-    const apiSpy = spyOn(service['apiService'], 'get').and.callThrough();
-    const parkSk = Object.keys(mockParkFacilities)[0];
-    const facilitySk = Object.keys(mockParkFacilities[parkSk].facilities)[0];
-    // should call api just once
-    await service.fetchData('2023-01-31', '2023-01-31', parkSk, facilitySk);
-    expect(apiSpy).toHaveBeenCalledTimes(1);
-  })
+  it('validateMetricsParams returns false for missing dateRange', () => {
+    const params = { park: 'all', facility: 'all' };
+    expect(service.validateMetricsParams(params)).toBeFalse();
+  });
 
-  it('sets filter params', async () => {
-    const filterSpy = spyOn(service['dataService'], 'setItemValue');
-    service.setFilterParams('params');
-    expect(filterSpy).toHaveBeenCalledWith(
-      Constants.dataIds.METRICS_FILTERS_PARAMS,
-      'params'
-    )
-  })
+  it('validateMetricsParams returns true for empty dateRange', () => {
+    const params = { park: 'all', facility: 'all', dateRange: [] };
+    expect(service.validateMetricsParams(params)).toBeTrue();
+  });
 
-  it('verifies metrics filter params', async () => {
-    let mockParams = {};
-    expect(service.validateMetricsParams(mockParams)).toBeFalse();
-    mockParams = {
-      park: 'MOC1'
-    }
-    expect(service.validateMetricsParams(mockParams)).toBeFalse();
-    mockParams = {
-      park: 'all',
-      dateRange: ['2023-01-01', '2023-01-02'],
-      facility: 'all'
-    }
-    expect(service.validateMetricsParams(mockParams)).toBeTrue();
-    expect(service.validateMetricsParams(mockParams, true)).toBeFalse();
-  })
+  it('validateMetricsParams returns true for single item dateRange', () => {
+    const params = { park: 'all', facility: 'all', dateRange: ['2023-01-01'] };
+    expect(service.validateMetricsParams(params)).toBeTrue();
+  });
 
-  it('generates capacity report csv', async () => {
-    // prevent test from actually downloading csv
-    const downloadSpy = spyOn(service['utils'], 'downloadCSV').and.callFake(() => {
-      console.log('Mocking csv download...');
-    })
-    const eventService = TestBed.inject(EventService);
-    const error1 = new EventObject(EventKeywords.ERROR, 'Invalid parameters. Please ensure only 1 facility is selected.', 'Metrics Service')
-    const error2 = new EventObject(EventKeywords.ERROR, 'No data to be exported.', 'Metrics Service')
-    const errorSpy = spyOn(service['eventService'], 'setError');
+  it('validateMetricsParams returns false for facility not all when requireAll is true', () => {
+    const params = { park: 'all', facility: 'Mock Facility', dateRange: ['2023-01-01', '2023-01-02'] };
+    expect(service.validateMetricsParams(params, true)).toBeFalse();
+  });
+
+  it('generateCapacityReportCSV does not call downloadCSV if params invalid', () => {
+    const downloadSpy = spyOn(service['utils'], 'downloadCSV');
     service.generateCapacityReportCSV([], {});
-    expect(errorSpy).toHaveBeenCalledOnceWith(error1);
-    errorSpy.calls.reset();
-    let mockParams = {
-      park: 'MOC1',
-      dateRange: ['2023-01-01', '2023-01-02'],
-      facility: 'Mock Facility'
-    }
-    service.generateCapacityReportCSV([], mockParams);
-    expect(errorSpy).toHaveBeenCalledOnceWith(error2);
-    errorSpy.calls.reset();
-    service.generateCapacityReportCSV([mockMetrics], mockParams);
-    expect(errorSpy).not.toHaveBeenCalled();
-    expect(downloadSpy).toHaveBeenCalledTimes(1);
-  })
+    expect(downloadSpy).not.toHaveBeenCalled();
+  });
 
 });

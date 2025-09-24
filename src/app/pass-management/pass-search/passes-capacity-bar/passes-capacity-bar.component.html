@@ -1,5 +1,12 @@
 <div *ngIf="data">
-  <label>
+  <label *ngIf="data.parkSpecialClosure === true">
+    <strong>
+      <span>
+        🚫 This facility is marked as closed for special reasons. Capacity levels are not displayed.
+      </span>
+    </strong>
+  </label>
+  <label *ngIf="data.parkSpecialClosure === false">
     <strong>
       <span *ngIf="data.reserved === null">
         To display capacity levels, you must filter by a date.
@@ -28,7 +35,7 @@
       <small>Modifier applied</small>
     </div>
   </label>
-  <div *ngIf="data.reserved !== null">
+  <div *ngIf="data.reserved !== null && data.parkSpecialClosure === false">
     <ngb-progressbar class="capacity-bar-top" [showValue]="true" type="{{ data.style }}" [value]="data.capPercent"
     height="1.5rem"></ngb-progressbar>
     <ngb-progressbar class="capacity-bar-bottom" [showValue]="false" type="success" [value]="data.checkInCount" [max]="data.capacity" height="1.0rem"></ngb-progressbar>
