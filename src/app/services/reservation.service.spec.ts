@@ -111,8 +111,9 @@ describe('ReservationService', () => {
       modifier: 8,
       style: 'success',
       checkInCount: 0,
+      parkSpecialClosure: false
     };
-    service.setCapacityBar(MockData.mockReservationObj_1, 'AM');
+    service.setCapacityBar(MockData.mockReservationObj_1, 'AM', '2024-01-15', 'mockPark1');
     expect(setDataSpy).toHaveBeenCalledOnceWith(
       Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
       expectedCapBarObj
@@ -207,5 +208,103 @@ describe('ReservationService', () => {
         'Reservation Service'
       )
     );
+  });
+
+  describe('Special Closure Date Logic', () => {
+    beforeEach(() => {
+      // Mock the utils getTodayAsShortDate to return a known date
+      spyOn(service['utils'], 'getTodayAsShortDate').and.returnValue('2024-01-15');
+      
+      // Mock park data with special closure
+      getDataSpy.and.returnValue({
+        'mockPark1': {
+          specialClosure: true,
+          specialClosureText: 'Special closure message'
+        }
+      });
+    });
+
+    it('should show special closure for today\'s date', () => {
+      const expectedCapBarObj = {
+        capPercent: 0,
+        reserved: 0,
+        capacity: 13,
+        overbooked: 0,
+        modifier: 8,
+        style: 'success',
+        checkInCount: 0,
+        parkSpecialClosure: true // Should be true for today
+      };
+      
+      service.setCapacityBar(MockData.mockReservationObj_1, 'AM', '2024-01-15', 'mockPark1');
+      expect(setDataSpy).toHaveBeenCalledWith(
+        Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+        expectedCapBarObj
+      );
+    });
+
+    it('should show special closure for future dates', () => {
+      const expectedCapBarObj = {
+        capPercent: 0,
+        reserved: 0,
+        capacity: 13,
+        overbooked: 0,
+        modifier: 8,
+        style: 'success',
+        checkInCount: 0,
+        parkSpecialClosure: true // Should be true for future date
+      };
+      
+      service.setCapacityBar(MockData.mockReservationObj_1, 'AM', '2024-01-20', 'mockPark1');
+      expect(setDataSpy).toHaveBeenCalledWith(
+        Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+        expectedCapBarObj
+      );
+    });
+
+    it('should NOT show special closure for past dates', () => {
+      const expectedCapBarObj = {
+        capPercent: 0,
+        reserved: 0,
+        capacity: 13,
+        overbooked: 0,
+        modifier: 8,
+        style: 'success',
+        checkInCount: 0,
+        parkSpecialClosure: false // Should be false for past date
+      };
+      
+      service.setCapacityBar(MockData.mockReservationObj_1, 'AM', '2024-01-10', 'mockPark1');
+      expect(setDataSpy).toHaveBeenCalledWith(
+        Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+        expectedCapBarObj
+      );
+    });
+
+    it('should not show special closure when park has no special closure', () => {
+      // Override park data to have no special closure
+      getDataSpy.and.returnValue({
+        'mockPark1': {
+          specialClosure: false
+        }
+      });
+
+      const expectedCapBarObj = {
+        capPercent: 0,
+        reserved: 0,
+        capacity: 13,
+        overbooked: 0,
+        modifier: 8,
+        style: 'success',
+        checkInCount: 0,
+        parkSpecialClosure: false // Should be false when no special closure
+      };
+      
+      service.setCapacityBar(MockData.mockReservationObj_1, 'AM', '2024-01-20', 'mockPark1');
+      expect(setDataSpy).toHaveBeenCalledWith(
+        Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
+        expectedCapBarObj
+      );
+    });
   });
 });
