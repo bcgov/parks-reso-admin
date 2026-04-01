@@ -8,7 +8,6 @@ import { LoadingService } from './loading.service';
 import { LoggerService } from './logger.service';
 import { ToastService, ToastTypes } from './toast.service';
 import { FacilityService } from './facility.service';
-import { Utils } from '../shared/utils/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +22,6 @@ export class ReservationService {
     private loadingService: LoadingService,
     private facilityService: FacilityService
   ) { }
-
-  private utils = new Utils();
 
   async fetchData(parkSk, facilitySk, resDate = null, selectedPassType = null) {
     let res;
@@ -50,7 +47,7 @@ export class ReservationService {
       this.dataService.setItemValue(dataTag, res);
       if (resDate && selectedPassType) {
         if (res[0]) {
-          this.setCapacityBar(res[0], selectedPassType, resDate, parkSk);
+          this.setCapacityBar(res[0], selectedPassType);
         } else {
           // No res Object. Use facility cap
           // If this is an initial load we have to make sure we wait until the facility is available.
@@ -60,9 +57,6 @@ export class ReservationService {
             .subscribe((res) => {
               if (res) {
                 const facility = this.facilityService.getCachedFacility({ pk: `facility::${parkSk}`, sk: facilitySk });
-                // Only show special closure for today or future dates
-                const isDateTodayOrFuture = resDate >= this.utils.getTodayAsShortDate();
-                const shouldShowSpecialClosure = (res[parkSk]?.specialClosure || false) && isDateTodayOrFuture;
                 this.dataService.setItemValue(
                   Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT,
                   {
@@ -72,7 +66,6 @@ export class ReservationService {
                     modifier: 0,
                     overbooked: 0,
                     style: 'success',
-                    parkSpecialClosure: shouldShowSpecialClosure
                   }
                 );
                 facilityReady.next(null);
@@ -111,7 +104,7 @@ export class ReservationService {
     return res;
   }
 
-  setCapacityBar(reservationObj, selectedPassType, resDate = null, parkSk = null) {
+  setCapacityBar(reservationObj, selectedPassType) {
     let capBarObj = {
       capPercent: 0,
       reserved: 0,
@@ -144,16 +137,6 @@ export class ReservationService {
       ? Math.floor((capBarObj.reserved / capBarObj.capacity) * 100)
       : 0;
     capBarObj.style = this.calculateProgressBarColour(capBarObj.capPercent);
-
-    // Add special closure logic - only show for today or future dates
-    if (resDate && parkSk) {
-      const parkData = this.dataService.getItemValue(Constants.dataIds.PARK_AND_FACILITY_LIST);
-      const isDateTodayOrFuture = resDate >= this.utils.getTodayAsShortDate();
-      const shouldShowSpecialClosure = (parkData?.[parkSk]?.specialClosure || false) && isDateTodayOrFuture;
-      capBarObj['parkSpecialClosure'] = shouldShowSpecialClosure;
-    } else {
-      capBarObj['parkSpecialClosure'] = false;
-    }
 
     // get current checked-in count, if any
     let currentCapBar = this.dataService.getItemValue(Constants.dataIds.CURRENT_CAPACITY_BAR_OBJECT);
