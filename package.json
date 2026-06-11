@@ -42,7 +42,7 @@
     "ngx-bootstrap": "^18",
     "ngx-toastr": "^16.0.1",
     "rxjs": "^7.6.0",
-    "tinymce": "^7.2.0",
+    "tinymce": "^7.9.3",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
