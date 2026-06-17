@@ -1,9 +1,12 @@
 <div class="mx-4">
   <h4>Scheduled capacity changes</h4>
-  <div *ngIf="!tableRows?.length">{{ tableEmptyMsg }}</div>
+  @if (!tableRows?.length) {
+    <div>{{ tableEmptyMsg }}</div>
+  }
 </div>
-<app-table
-  *ngIf="tableRows?.length"
-  [tableSchema]="tableSchema"
-  [data]="tableRows"
-></app-table>
+@if (tableRows?.length) {
+  <app-table
+    [tableSchema]="tableSchema"
+    [data]="tableRows"
+  ></app-table>
+}

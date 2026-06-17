@@ -1,9 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, TemplateRef, ViewChild, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -20,23 +15,31 @@ import { WysiwygInputComponent } from '../../shared/components/ds-forms/wysiwyg-
 import { TextInputComponent } from '../../shared/components/ds-forms/text-input/text-input.component';
 import { ToggleComponent } from '../../shared/components/ds-forms/toggle/toggle.component';
 import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy-header.component';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'app-park-edit-form',
     templateUrl: './park-edit-form.component.html',
     styleUrls: ['./park-edit-form.component.scss'],
     imports: [
-        NgIf,
-        FancyHeaderComponent,
-        FormsModule,
-        ToggleComponent,
-        TextInputComponent,
-        WysiwygInputComponent,
-        ModalComponent,
-    ]
+    FancyHeaderComponent,
+    FormsModule,
+    ToggleComponent,
+    TextInputComponent,
+    WysiwygInputComponent,
+    ModalComponent
+]
 })
 export class ParkEditFormComponent extends BaseFormComponent {
+  protected formBuilder: UntypedFormBuilder;
+  protected router: Router;
+  protected dataService: DataService;
+  protected loadingService: LoadingService;
+  protected changeDetector: ChangeDetectorRef;
+  private parkService = inject(ParkService);
+  private route = inject(ActivatedRoute);
+  private modalService = inject(BsModalService);
+
   public park;
   public isEditMode = new BehaviorSubject<boolean>(true);
   public parkEditModal: modalSchema;
@@ -46,17 +49,20 @@ export class ParkEditFormComponent extends BaseFormComponent {
   @ViewChild('parkEditConfirmationTemplate')
   parkEditConfirmationTemplate: TemplateRef<any>;
 
-  constructor(
-    protected formBuilder: UntypedFormBuilder,
-    protected router: Router,
-    protected dataService: DataService,
-    protected loadingService: LoadingService,
-    protected changeDetector: ChangeDetectorRef,
-    private parkService: ParkService,
-    private route: ActivatedRoute,
-    private modalService: BsModalService
-  ) {
-    super(formBuilder, router, dataService, loadingService, changeDetector);
+  constructor() {
+    const formBuilder = inject(UntypedFormBuilder);
+    const router = inject(Router);
+    const dataService = inject(DataService);
+    const loadingService = inject(LoadingService);
+    const changeDetector = inject(ChangeDetectorRef);
+
+    super();
+    this.formBuilder = formBuilder;
+    this.router = router;
+    this.dataService = dataService;
+    this.loadingService = loadingService;
+    this.changeDetector = changeDetector;
+
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.CURRENT_PARK_KEY).subscribe((res) => {
         if (res) {

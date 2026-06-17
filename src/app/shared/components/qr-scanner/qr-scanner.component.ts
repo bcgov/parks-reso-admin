@@ -1,23 +1,25 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { BarcodeFormat } from '@zxing/library';
 import { Subscription } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { LoggerService } from 'src/app/services/logger.service';
 import { QrScannerService } from './qr-scanner.service';
 import { ZXingScannerModule } from '@digitalspace/ngx-scanner';
-import { NgIf, NgFor } from '@angular/common';
+
 
 @Component({
     selector: 'app-qr-scanner',
     templateUrl: './qr-scanner.component.html',
     styleUrls: ['./qr-scanner.component.scss'],
     imports: [
-        NgIf,
-        NgFor,
-        ZXingScannerModule,
-    ]
+    ZXingScannerModule
+]
 })
 export class QrScannerComponent implements OnDestroy {
+  private logger = inject(LoggerService);
+  apiService = inject(ApiService);
+  private qrScannerService = inject(QrScannerService);
+
   private subscriptions = new Subscription();
 
   scannerEnabled = true;
@@ -42,11 +44,7 @@ export class QrScannerComponent implements OnDestroy {
 
   tryHarder = true;
 
-  constructor(
-    private logger: LoggerService,
-    public apiService: ApiService,
-    private qrScannerService: QrScannerService
-  ) {
+  constructor() {
     this.qrScannerService.enableScanner();
     this.subscriptions.add(
       this.qrScannerService.watchScannerState().subscribe((res) => {

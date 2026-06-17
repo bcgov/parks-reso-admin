@@ -1,10 +1,10 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ConfigService } from '../services/config.service';
 import { KeycloakService } from '../services/keycloak.service';
 import { SideBarService } from '../services/sidebar.service';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
-import { NgIf, NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -12,14 +12,16 @@ import { RouterLink } from '@angular/router';
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
     imports: [
-        RouterLink,
-        NgIf,
-        NgbCollapse,
-        NgFor,
-        NgClass,
-    ]
+    RouterLink,
+    NgbCollapse,
+    NgClass
+]
 })
 export class HeaderComponent implements OnDestroy {
+  protected configService = inject(ConfigService);
+  protected sidebarService = inject(SideBarService);
+  protected keycloakService = inject(KeycloakService);
+
   @Input() showSideBar = true;
 
   private subscriptions = new Subscription();
@@ -31,11 +33,9 @@ export class HeaderComponent implements OnDestroy {
   public isMenuCollapsed = true;
   public routes: any[] = [];
 
-  constructor(
-    protected configService: ConfigService,
-    protected sidebarService: SideBarService,
-    protected keycloakService: KeycloakService
-  ) {
+  constructor() {
+    const sidebarService = this.sidebarService;
+
     this.subscriptions.add(
       sidebarService.routes.subscribe((routes) => {
         this.routes = routes;

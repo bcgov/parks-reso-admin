@@ -46,15 +46,15 @@ describe('AuthGuard', () => {
     mockKeycloakService.isAuthorized.and.returnValue(true);
     mockKeycloakService.isAllowed.and.returnValue(false);
 
-    const guard = TestBed.get(AuthGuard);
+    const guard = TestBed.inject(AuthGuard);
 
-    const result = guard.canActivate(null, { url: '/export-reports' });
+    const result = guard.canActivate(null as any, { url: '/export-reports' } as any);
 
     expect(result).toEqual(undefined);
   });
 
   it('should return redirect to login page if the user is not authenticated and localStorage does not contain an idp value', () => {
-    const routerMock = TestBed.get(Router);
+    const routerMock = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     routerMock.parseUrl.calls.reset();
 
     mockKeycloakService.isAuthenticated.and.returnValue(false);
@@ -63,14 +63,14 @@ describe('AuthGuard', () => {
       return null;
     });
 
-    const guard = TestBed.get(AuthGuard);
-    guard.canActivate();
+    const guard = TestBed.inject(AuthGuard);
+    guard.canActivate(null as any, null as any);
 
     expect(routerMock.parseUrl).toHaveBeenCalledWith('/login');
   });
 
   it('should return redirect to login page if the user is not authenticated and localStorage contains an idp value', () => {
-    const routerMock = TestBed.get(Router);
+    const routerMock = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     routerMock.parseUrl.calls.reset();
 
     mockKeycloakService.isAuthenticated.and.returnValue(false);
@@ -79,21 +79,21 @@ describe('AuthGuard', () => {
       return 'idir';
     });
 
-    const guard = TestBed.get(AuthGuard);
-    guard.canActivate();
+    const guard = TestBed.inject(AuthGuard);
+    guard.canActivate(null as any, null as any);
 
     expect(mockKeycloakService.login).toHaveBeenCalled();
   });
 
   it('should return redirect to unauthorized page if the user is not authorized', () => {
-    const routerMock = TestBed.get(Router);
+    const routerMock = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     routerMock.parseUrl.calls.reset();
 
     mockKeycloakService.isAuthenticated.and.returnValue(true);
     mockKeycloakService.isAuthorized.and.returnValue(false);
 
-    const guard = TestBed.get(AuthGuard);
-    guard.canActivate();
+    const guard = TestBed.inject(AuthGuard);
+    guard.canActivate(null as any, null as any);
 
     expect(routerMock.parseUrl).toHaveBeenCalledWith('/unauthorized');
   });

@@ -1,21 +1,24 @@
-<label
-  *ngIf="label"
-  for="{{ id }}"
-  class="fw-bold mb-2 small d-flex justify-content-center"
-  >{{ label
-  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
->
-<div
-  class="form-check d-flex justify-content-center"
-  [ngClass]="{ 'invalid-field': isInvalid() }"
->
-  <input
-    class="form-check-input"
-    [formControl]="control"
-    type="checkbox"
-    [value]="control?.value"
-    name="{{ id }}"
-    id="{{ id }}"
-    [checked]="control?.value"
-  />
-</div>
+@if (label) {
+  <label
+    for="{{ id }}"
+    class="fw-bold mb-2 small d-flex justify-content-center"
+    >{{ label
+    }}@if (isRequired()) {
+    <span class="text-danger">&nbsp;*</span>
+    }</label
+    >
+  }
+  <div
+    class="form-check d-flex justify-content-center"
+    [ngClass]="{ 'invalid-field': isInvalid() }"
+    >
+    <input
+      class="form-check-input"
+      [formControl]="control"
+      type="checkbox"
+      [value]="control?.value"
+      name="{{ id }}"
+      id="{{ id }}"
+      [checked]="control?.value"
+      />
+  </div>

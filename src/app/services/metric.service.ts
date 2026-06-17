@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Constants } from '../shared/utils/constants';
 import { ApiService } from './api.service';
@@ -10,14 +10,13 @@ import { ToastService } from './toast.service';
   providedIn: 'root',
 })
 export class MetricService {
-  constructor(
-    private apiService: ApiService,
-    private eventService: EventService,
-    private loggerService: LoggerService,
-    private toastService: ToastService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  private apiService = inject(ApiService);
+  private eventService = inject(EventService);
+  private loggerService = inject(LoggerService);
+  private toastService = inject(ToastService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
 
   async fetchData(metric): Promise<any> {
     let errorSubject = '';

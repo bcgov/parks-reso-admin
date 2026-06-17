@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { Constants } from 'src/app/shared/utils/constants';
@@ -10,32 +10,33 @@ import { TextWithIconsComponent } from 'src/app/shared/components/text-with-icon
 import { ParkService } from 'src/app/services/park.service';
 import { TableComponent } from '../../shared/components/table/table.component';
 import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy-header.component';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'app-park-details',
     templateUrl: './park-details.component.html',
     styleUrls: ['./park-details.component.scss'],
     imports: [
-        NgIf,
-        FancyHeaderComponent,
-        TableComponent,
-    ]
+    FancyHeaderComponent,
+    TableComponent
+]
 })
 export class ParkDetailsComponent implements OnInit, OnDestroy {
+  protected dataService = inject(DataService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  protected keycloakService = inject(KeycloakService);
+  private parkService = inject(ParkService);
+
   private subscriptions = new Subscription();
   public park;
   public tableSchema: tableSchema;
   public tableRows: any[] = [];
   public addFacilityButtonConfig;
 
-  constructor(
-    protected dataService: DataService,
-    private router: Router,
-    private route: ActivatedRoute,
-    protected keycloakService: KeycloakService,
-    private parkService: ParkService,
-  ) {
+  constructor() {
+    const dataService = this.dataService;
+
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.CURRENT_PARK_KEY).subscribe((res) => {
         if (res) {

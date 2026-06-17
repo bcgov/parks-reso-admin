@@ -64,6 +64,7 @@ describe('SidebarComponent', () => {
     expect(component.getPathFromUrl(component['router'].url)).toEqual('/');
     component.onNavigate('mock1');
     await fixture.isStable();
+    await fixture.whenStable();
     fixture.detectChanges();
     expect(component.getPathFromUrl(component['router'].url)).toEqual('/mock1');
   });

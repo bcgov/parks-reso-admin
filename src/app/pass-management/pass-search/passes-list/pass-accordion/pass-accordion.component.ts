@@ -1,11 +1,11 @@
 import { Component, Input, TemplateRef } from '@angular/core';
-import { NgIf, NgFor, NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 @Component({
     selector: 'app-pass-accordion',
     templateUrl: './pass-accordion.component.html',
     styleUrls: ['./pass-accordion.component.scss'],
-    imports: [NgIf, NgFor, NgClass, NgTemplateOutlet]
+    imports: [NgClass, NgTemplateOutlet]
 })
 
 export class PassAccordionComponent {

@@ -59,7 +59,9 @@ describe('PassSearchComponent', () => {
       }
       return null;
     },
-    getItemValue: (id) => { }
+    getItemValue: (id) => { return {}; },
+    setItemValue: (id, params) => { return new BehaviorSubject(null); },
+    mergeItemValue: (id, params) => { return new BehaviorSubject(null); }
   };
 
   beforeEach(async () => {

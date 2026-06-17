@@ -19,11 +19,12 @@ describe('TextAreaComponent', () => {
   });
 
   it('should get text field length', async () => {
-    component.charCap = 4;
+    fixture.componentRef.setInput('charCap', 4);
     component.control.setValue(null);
     fixture.detectChanges();
     expect(component.getFieldLength()).toEqual(0);
     component.control.setValue('test');
+    fixture.changeDetectorRef.markForCheck();
     fixture.detectChanges();
     expect(component.getFieldLength()).toEqual(4);
   });
@@ -36,12 +37,12 @@ describe('TextAreaComponent', () => {
       fixture.debugElement.nativeElement.getElementsByTagName('textarea')[0];
     component.control.setValue('test');
     // no overflow
-    component.charCap = 5;
+    fixture.componentRef.setInput('charCap', 5);
     fixture.detectChanges();
     inputElement.dispatchEvent(e);
     expect(overflow).toHaveBeenCalledTimes(0);
     // overflow
-    component.charCap = 4;
+    fixture.componentRef.setInput('charCap', 4);
     fixture.detectChanges();
     inputElement.dispatchEvent(e);
     expect(overflow).toHaveBeenCalled();

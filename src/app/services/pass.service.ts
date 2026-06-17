@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
 import { Utils } from '../shared/utils/utils';
@@ -13,16 +13,14 @@ import { ToastService, ToastTypes } from './toast.service';
   providedIn: 'root',
 })
 export class PassService {
-  private utils = new Utils();
+  private dataService = inject(DataService);
+  private eventService = inject(EventService);
+  private loggerService = inject(LoggerService);
+  private toastService = inject(ToastService);
+  private apiService = inject(ApiService);
+  private loadingService = inject(LoadingService);
 
-  constructor(
-    private dataService: DataService,
-    private eventService: EventService,
-    private loggerService: LoggerService,
-    private toastService: ToastService,
-    private apiService: ApiService,
-    private loadingService: LoadingService
-  ) {}
+  private utils = new Utils();
 
   // params = {
   // passSk:,

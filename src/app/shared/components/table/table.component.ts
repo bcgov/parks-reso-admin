@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
 import { TableRowComponent } from './table-row/table-row.component';
-import { NgFor, NgStyle, NgIf } from '@angular/common';
+import { NgStyle } from '@angular/common';
 
 export interface columnSchema {
   id: string; // unique column identifier
@@ -26,13 +26,13 @@ export interface tableSchema {
     templateUrl: './table.component.html',
     styleUrls: ['./table.component.scss'],
     imports: [
-        NgFor,
-        NgStyle,
-        NgIf,
-        TableRowComponent,
-    ]
+    NgStyle,
+    TableRowComponent
+]
 })
 export class TableComponent implements OnChanges, OnDestroy {
+  protected loadingService = inject(LoadingService);
+
   @Input() tableSchema: tableSchema;
   @Input() data: any[];
   @Input() emptyTableMsg = 'This table is empty.';
@@ -45,7 +45,9 @@ export class TableComponent implements OnChanges, OnDestroy {
   public loading: boolean = false;
   private subscriptions = new Subscription();
 
-  constructor(protected loadingService: LoadingService) {
+  constructor() {
+    const loadingService = this.loadingService;
+
     this.subscriptions.add(
       loadingService.getLoadingStatus().subscribe((res) => {
         this.loading = res;

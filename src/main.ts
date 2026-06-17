@@ -1,4 +1,4 @@
-import { enableProdMode, importProvidersFrom, inject, provideAppInitializer } from '@angular/core';
+import { enableProdMode, importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 
 import { environment } from './environments/environment';
 import { AppComponent } from './app/app.component';
@@ -47,7 +47,7 @@ function initConfig(
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, CommonModule, AppRoutingModule, SidebarModule, ToggleButtonModule, BreadcrumbModule, HeaderModule, PassManagementModule, ToastrModule.forRoot(), FaqModule),
+        provideZoneChangeDetection(),importProvidersFrom(BrowserModule, CommonModule, AppRoutingModule, SidebarModule, ToggleButtonModule, BreadcrumbModule, HeaderModule, PassManagementModule, ToastrModule.forRoot(), FaqModule),
         provideAppInitializer(() => {
         const initializerFn = (initConfig)(inject(ConfigService), inject(ApiService), inject(AutoFetchService), inject(KeycloakService));
         return initializerFn();

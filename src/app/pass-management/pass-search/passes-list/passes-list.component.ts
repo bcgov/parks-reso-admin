@@ -1,14 +1,4 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  HostListener,
-  OnDestroy,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { PassService } from 'src/app/services/pass.service';
@@ -21,21 +11,26 @@ import { DateTime } from 'luxon';
 import { LoadingService } from 'src/app/services/loading.service';
 import { ModalComponent } from '../../../shared/components/modal/modal.component';
 import { PassAccordionComponent } from './pass-accordion/pass-accordion.component';
-import { NgFor, NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-passes-list',
     templateUrl: './passes-list.component.html',
     styleUrls: ['./passes-list.component.scss'],
     imports: [
-        NgFor,
-        NgClass,
-        PassAccordionComponent,
-        NgIf,
-        ModalComponent,
-    ]
+    NgClass,
+    PassAccordionComponent,
+    ModalComponent
+]
 })
 export class PassesListComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
+  protected dataService = inject(DataService);
+  protected keyCloakService = inject(KeycloakService);
+  protected passService = inject(PassService);
+  protected modalService = inject(BsModalService);
+  protected loadingService = inject(LoadingService);
+  protected cd = inject(ChangeDetectorRef);
+
   private subscriptions = new Subscription();
   public tableSchema: tableSchema;
   public passes: any[] = [];
@@ -64,14 +59,10 @@ export class PassesListComponent implements OnInit, OnDestroy, AfterViewInit, Af
     this.setWidth();
   }
 
-  constructor(
-    protected dataService: DataService,
-    protected keyCloakService: KeycloakService,
-    protected passService: PassService,
-    protected modalService: BsModalService,
-    protected loadingService: LoadingService,
-    protected cd: ChangeDetectorRef,
-  ) {
+  constructor() {
+    const dataService = this.dataService;
+    const loadingService = this.loadingService;
+
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.PASSES_LIST).subscribe((res) => {
         if (res) {

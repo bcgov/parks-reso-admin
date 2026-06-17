@@ -13,16 +13,19 @@
     <div innerHTML="{{ modal?.body }}"></div>
   </div>
   <div class="modal-footer">
-    <div *ngIf="modal?.buttons" class="d-flex">
-      <div *ngFor="let modalButton of modal?.buttons" class="ps-3">
-
-        <button
-          class="{{ modalButton?.classes }}"
-          (click)="(modalButton?.onClick())"
-        >
-          {{ modalButton?.text }}
-        </button>
+    @if (modal?.buttons) {
+      <div class="d-flex">
+        @for (modalButton of modal?.buttons; track modalButton) {
+          <div class="ps-3">
+            <button
+              class="{{ modalButton?.classes }}"
+              (click)="(modalButton?.onClick())"
+              >
+              {{ modalButton?.text }}
+            </button>
+          </div>
+        }
       </div>
-    </div>
+    }
   </div>
 </div>

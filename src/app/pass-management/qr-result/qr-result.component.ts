@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { skip, Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { QrScannerService } from 'src/app/shared/components/qr-scanner/qr-scanner.service';
@@ -11,14 +11,14 @@ import { Constants } from 'src/app/shared/utils/constants';
     standalone: true,
 })
 export class QrResultComponent implements OnDestroy {
+  private dataService = inject(DataService);
+  private qrScannerService = inject(QrScannerService);
+
   private subscriptions = new Subscription();
 
   public passes = [];
 
-  constructor(
-    private dataService: DataService,
-    private qrScannerService: QrScannerService
-  ) {
+  constructor() {
     this.subscriptions.add(
       this.dataService
         .watchItem(Constants.dataIds.PASS_CHECK_IN_LIST_EVENT)

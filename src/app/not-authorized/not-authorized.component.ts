@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { KeycloakService } from '../services/keycloak.service';
 
@@ -9,10 +9,9 @@ import { KeycloakService } from '../services/keycloak.service';
     standalone: true
 })
 export class NotAuthorizedComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private keycloakService: KeycloakService
-  ) {}
+  private router = inject(Router);
+  private keycloakService = inject(KeycloakService);
+
 
   ngOnInit() {
     if (this.keycloakService.isAuthenticated()) {

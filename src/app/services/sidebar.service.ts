@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Injectable, Output, EventEmitter, OnDestroy, inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter, Subscription } from 'rxjs';
 import { KeycloakService } from 'src/app/services/keycloak.service';
@@ -7,6 +7,9 @@ import { KeycloakService } from 'src/app/services/keycloak.service';
   providedIn: 'root',
 })
 export class SideBarService implements OnDestroy {
+  protected router = inject(Router);
+  protected keyCloakService = inject(KeycloakService);
+
   @Output() toggleChange: EventEmitter<boolean> = new EventEmitter();
 
   private subscriptions = new Subscription();
@@ -15,10 +18,10 @@ export class SideBarService implements OnDestroy {
   public routes;
   public hide = false;
 
-  constructor(
-    protected router: Router,
-    protected keyCloakService: KeycloakService
-  ) {
+  constructor() {
+    const router = this.router;
+    const keyCloakService = this.keyCloakService;
+
     let routesArray = router.config.filter((obj) => {
       if (obj.path === 'export-reports') {
         return keyCloakService.isAllowed('export-reports');

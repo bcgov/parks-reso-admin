@@ -122,6 +122,7 @@ describe('PassesFilterComponent', () => {
     component.setForm();
     await fixture.isStable();
     await component.onSubmit();
+    await fixture.whenStable();
     // overbooked = all is default
     expect(location.path()).toBe('/?park=MOC1&facilityName=Mock%20Facility%201&passType=AM&overbooked=all');
     expect(passServiceSpy).toHaveBeenCalledOnceWith({
@@ -136,6 +137,7 @@ describe('PassesFilterComponent', () => {
     component.setForm();
     await fixture.isStable();
     await component.onSubmit();
+    await fixture.whenStable();
     expect(location.path()).toBe('/?date=2022-12-19&park=MOC1&facilityName=Mock%20Facility%201&passType=AM&passStatus=reserved&firstName=firstName&lastName=lastName&email=mock@email.ca&reservationNumber=1234567890&overbooked=all');
     expect(passServiceSpy).toHaveBeenCalledOnceWith({
       date: '2022-12-19',

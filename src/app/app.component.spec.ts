@@ -319,6 +319,7 @@ describe('AppComponent', () => {
 
     it('should show sidebar when showSideBar is true', () => {
       component.showSideBar = true;
+      fixture.changeDetectorRef.markForCheck();
       fixture.detectChanges();
       
       const compiled = fixture.nativeElement;
@@ -335,6 +336,7 @@ describe('AppComponent', () => {
 
     it('should show toggle button when showSideBar is true', () => {
       component.showSideBar = true;
+      fixture.changeDetectorRef.markForCheck();
       fixture.detectChanges();
       
       const compiled = fixture.nativeElement;
@@ -351,6 +353,7 @@ describe('AppComponent', () => {
 
     it('should show breadcrumb when showBreadCrumb is true', () => {
       component.showBreadCrumb = true;
+      fixture.changeDetectorRef.markForCheck();
       fixture.detectChanges();
       
       const compiled = fixture.nativeElement;
@@ -372,6 +375,7 @@ describe('AppComponent', () => {
 
     it('should pass showSideBar property to header component', () => {
       component.showSideBar = true;
+      fixture.changeDetectorRef.markForCheck();
       fixture.detectChanges();
       
       const headerElement = fixture.nativeElement.querySelector('app-header');
@@ -415,6 +419,7 @@ describe('AppComponent', () => {
       mockActivatedRoute.firstChild.snapshot.data = { showSideBar: true, showBreadCrumb: true };
       component.ngOnInit();
       navigationSubject.next(new NavigationEnd(1, '/dashboard', '/dashboard'));
+      fixture.changeDetectorRef.markForCheck();
       fixture.detectChanges();
 
       expect(component.showSideBar).toBe(true);
@@ -425,6 +430,7 @@ describe('AppComponent', () => {
       // Simulate navigation to login page (no sidebar/breadcrumb)
       mockActivatedRoute.firstChild.snapshot.data = { showSideBar: false, showBreadCrumb: false };
       navigationSubject.next(new NavigationEnd(2, '/login', '/login'));
+      fixture.changeDetectorRef.markForCheck();
       fixture.detectChanges();
 
       expect(component.showSideBar).toBe(false);

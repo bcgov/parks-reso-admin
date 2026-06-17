@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -8,13 +8,14 @@ import { ActivatedRoute, Router } from '@angular/router';
     standalone: true,
 })
 export class NavCardComponent implements OnInit {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   @Input() cardHeader;
   @Input() cardTitle;
   @Input() cardText;
   @Input() navigation;
   @Input() relative: boolean = false;
-
-  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void { }
 

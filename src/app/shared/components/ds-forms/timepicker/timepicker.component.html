@@ -1,25 +1,30 @@
-<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
-  >{{ label
-  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
->
+@if (label) {
+  <label for="{{ id }}" class="fw-bold mb-2"
+    >{{ label
+    }}@if (isRequired()) {
+    <span class="text-danger">&nbsp;*</span>
+    }</label
+    >
+  }
 
-<div class="input-group mb-3" [ngClass]="{ 'invalid-field': isInvalid() }">
-  <span
-    *ngIf="icon"
-    class="input-group-text"
-    id="{{ ariaDescribedBy }}"
-    [ngClass]="icon"
-    ><i class="bi"></i
-  ></span>
-  <timepicker
-    title="Set the facility opening hour"
-    name="{{ id }}"
-    id="{{ id }}"
-    [(ngModel)]="modelTime"
-    (ngModelChange)="onTimeChange($event)"
-    [showMinutes]="showMinutes"
-    [showSeconds]="showSeconds"
-    [showMeridian]="!is24HTime"
-  >
-  </timepicker>
-</div>
+  <div class="input-group mb-3" [ngClass]="{ 'invalid-field': isInvalid() }">
+    @if (icon) {
+      <span
+        class="input-group-text"
+        id="{{ ariaDescribedBy }}"
+        [ngClass]="icon"
+        ><i class="bi"></i
+      ></span>
+    }
+    <timepicker
+      title="Set the facility opening hour"
+      name="{{ id }}"
+      id="{{ id }}"
+      [(ngModel)]="modelTime"
+      (ngModelChange)="onTimeChange($event)"
+      [showMinutes]="showMinutes"
+      [showSeconds]="showSeconds"
+      [showMeridian]="!is24HTime"
+      >
+    </timepicker>
+  </div>

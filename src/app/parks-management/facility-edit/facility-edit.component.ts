@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { FacilityService } from 'src/app/services/facility.service';
@@ -10,33 +10,34 @@ import { ModifiersListComponent } from '../modifiers-list/modifiers-list.compone
 import { ModifiersFormComponent } from '../modifiers-form/modifiers-form.component';
 import { FacilityEditFormComponent } from './facility-edit-form/facility-edit-form.component';
 import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy-header.component';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'app-facility-edit',
     templateUrl: './facility-edit.component.html',
     styleUrls: ['./facility-edit.component.scss'],
     imports: [
-        NgIf,
-        FancyHeaderComponent,
-        FacilityEditFormComponent,
-        ModifiersFormComponent,
-        ModifiersListComponent,
-    ]
+    FancyHeaderComponent,
+    FacilityEditFormComponent,
+    ModifiersFormComponent,
+    ModifiersListComponent
+]
 })
 export class FacilityEditComponent implements OnDestroy {
+  protected dataService = inject(DataService);
+  protected modifierService = inject(ModifierService);
+  protected facilityService = inject(FacilityService);
+  protected parkService = inject(ParkService);
+
   private subscriptions = new Subscription();
   public facility;
   public park;
 
   private utils = new Utils();
 
-  constructor(
-    protected dataService: DataService,
-    protected modifierService: ModifierService,
-    protected facilityService: FacilityService,
-    protected parkService: ParkService
-  ) {
+  constructor() {
+    const dataService = this.dataService;
+
     this.subscriptions.add(
       dataService
         .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)

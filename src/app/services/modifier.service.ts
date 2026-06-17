@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
 import { Utils } from '../shared/utils/utils';
@@ -13,16 +13,14 @@ import { ToastService } from './toast.service';
   providedIn: 'root',
 })
 export class ModifierService {
-  private utils = new Utils();
+  private apiService = inject(ApiService);
+  private eventService = inject(EventService);
+  private toastService = inject(ToastService);
+  private loggerService = inject(LoggerService);
+  private loadingService = inject(LoadingService);
+  private dataService = inject(DataService);
 
-  constructor(
-    private apiService: ApiService,
-    private eventService: EventService,
-    private toastService: ToastService,
-    private loggerService: LoggerService,
-    private loadingService: LoadingService,
-    private dataService: DataService
-  ) {}
+  private utils = new Utils();
 
   async fetchData(park, facility, date) {
     let dataTag = '';

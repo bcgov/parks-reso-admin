@@ -93,6 +93,7 @@ describe('SiteMetricsComponent', () => {
   it('should parse capacityData', async () => {
     let date = mockMetricsData.sk;
     component.dateInterval = ['2023-01-30', '2023-01-31', '2023-02-01'];
+    fixture.changeDetectorRef.markForCheck();
     let capacityData = component.getCapacityData();
     await fixture.isStable();
     fixture.detectChanges();

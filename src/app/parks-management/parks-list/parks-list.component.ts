@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
@@ -14,15 +14,17 @@ import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy
     imports: [FancyHeaderComponent, TableComponent]
 })
 export class ParksListComponent implements OnInit, OnDestroy {
+  protected dataService = inject(DataService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   private subscriptions = new Subscription();
   public tableSchema: tableSchema;
   public tableRows: any[] = [];
 
-  constructor(
-    protected dataService: DataService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor() {
+    const dataService = this.dataService;
+
     this.subscriptions.add(
       dataService
         .watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST)

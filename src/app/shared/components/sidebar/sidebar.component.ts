@@ -1,21 +1,23 @@
-import { Component, HostBinding, OnDestroy } from '@angular/core';
+import { Component, HostBinding, OnDestroy, inject } from '@angular/core';
 import { SideBarService } from 'src/app/services/sidebar.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { KeycloakService } from 'src/app/services/keycloak.service';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-sidebar',
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
     imports: [
-        NgClass,
-        NgFor,
-        NgIf,
-    ]
+    NgClass
+]
 })
 export class SidebarComponent implements OnDestroy {
+  protected sideBarService = inject(SideBarService);
+  protected router = inject(Router);
+  protected keyCloakService = inject(KeycloakService);
+
   @HostBinding('class.is-toggled')
   public hide = false;
 
@@ -24,11 +26,9 @@ export class SidebarComponent implements OnDestroy {
 
   private subscriptions = new Subscription();
 
-  constructor(
-    protected sideBarService: SideBarService,
-    protected router: Router,
-    protected keyCloakService: KeycloakService
-  ) {
+  constructor() {
+    const sideBarService = this.sideBarService;
+
     this.subscriptions.add(
       sideBarService.routes.subscribe((routes) => {
         // Peel out the non-active routes.

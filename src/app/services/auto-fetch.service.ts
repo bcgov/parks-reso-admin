@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { first, forkJoin } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
 import { ApiService } from './api.service';
@@ -11,17 +11,15 @@ import { ParkService } from './park.service';
   providedIn: 'root',
 })
 export class AutoFetchService {
+  private parkService = inject(ParkService);
+  private facilityService = inject(FacilityService);
+  private dataService = inject(DataService);
+  private loggerService = inject(LoggerService);
+  private apiService = inject(ApiService);
+
   // TODO: This should come in from the config service.
   public timeIntevalSeconds = 5 * 60;
   public fetchQueue = [Constants.dataIds.PARK_AND_FACILITY_LIST];
-
-  constructor(
-    private parkService: ParkService,
-    private facilityService: FacilityService,
-    private dataService: DataService,
-    private loggerService: LoggerService,
-    private apiService: ApiService
-  ) {}
 
   async run() {
     this.runFetches(this.fetchQueue);

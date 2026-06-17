@@ -1,40 +1,28 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoggerService } from 'src/app/services/logger.service';
 import { PassService } from 'src/app/services/pass.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
-import { NgIf, NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-pass-check-in-list',
     templateUrl: './pass-check-in-list.component.html',
     styleUrls: ['./pass-check-in-list.component.scss'],
     imports: [
-        NgIf,
-        NgFor,
-        NgClass,
-    ]
+    NgClass
+]
 })
 export class PassCheckInListComponent implements OnChanges, OnDestroy {
+  private passService = inject(PassService);
+  private logger = inject(LoggerService);
+
   @Input() passes = [];
   @Input() searching = true;
   @Output() event = new EventEmitter();
 
   private subscriptions = new Subscription();
-
-  constructor(
-    private passService: PassService,
-    private logger: LoggerService
-  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     // only logged upon a change after rendering

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
@@ -11,6 +11,11 @@ import Keycloak from 'keycloak-js';
 
 @Injectable()
 export class KeycloakService {
+  private configService = inject(ConfigService);
+  private router = inject(Router);
+  private loggerService = inject(LoggerService);
+  private toastService = inject(ToastService);
+
   public LAST_IDP_AUTHENTICATED = 'kc-last-idp-authenticated';
   private keycloakAuth: any;
   private keycloakEnabled: boolean;
@@ -22,13 +27,6 @@ export class KeycloakService {
     BCSC: 'bcsc',
     IDIR: 'idir',
   };
-
-  constructor(
-    private configService: ConfigService,
-    private router: Router,
-    private loggerService: LoggerService,
-    private toastService: ToastService
-  ) {}
 
   async init() {
     // Load up the config service data

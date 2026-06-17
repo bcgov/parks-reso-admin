@@ -1,13 +1,18 @@
 <app-header [showSideBar]="showSideBar"></app-header>
 <app-infinite-loading-bar></app-infinite-loading-bar>
 <div class="content d-flex">
-  <app-sidebar *ngIf="showSideBar" class="d-none d-lg-inline"></app-sidebar>
+  @if (showSideBar) {
+    <app-sidebar class="d-none d-lg-inline"></app-sidebar>
+  }
   <div class="w-100">
-    <app-toggle-button
-      *ngIf="showSideBar"
-      class="d-none d-lg-inline"
-    ></app-toggle-button>
-    <app-breadcrumb *ngIf="showBreadCrumb"></app-breadcrumb>
+    @if (showSideBar) {
+      <app-toggle-button
+        class="d-none d-lg-inline"
+      ></app-toggle-button>
+    }
+    @if (showBreadCrumb) {
+      <app-breadcrumb></app-breadcrumb>
+    }
     <router-outlet></router-outlet>
   </div>
 </div>

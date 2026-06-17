@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { DataService } from '../services/data.service';
 import { Constants } from '../shared/utils/constants';
@@ -8,10 +8,9 @@ import { MetricsService } from '../services/metrics.service';
   providedIn: 'root',
 })
 export class MetricsResolver  {
-  constructor(
-    private metricsService: MetricsService,
-    private dataService: DataService
-  ) { }
+  private metricsService = inject(MetricsService);
+  private dataService = inject(DataService);
+
   resolve() {
     const params = this.dataService.getItemValue(Constants.dataIds.METRICS_FILTERS_PARAMS);
     if (!params || !params.park) {

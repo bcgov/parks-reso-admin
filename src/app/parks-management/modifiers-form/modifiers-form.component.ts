@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -27,6 +27,15 @@ export class ModifiersFormComponent
   extends BaseFormComponent
   implements OnInit
 {
+  protected formBuilder: UntypedFormBuilder;
+  protected router: Router;
+  protected dataService: DataService;
+  protected loadingService: LoadingService;
+  protected changeDetector: ChangeDetectorRef;
+  private modifierService = inject(ModifierService);
+  private facilityService = inject(FacilityService);
+  private parkService = inject(ParkService);
+
   @Input() facility;
   @Input() park;
 
@@ -35,17 +44,20 @@ export class ModifiersFormComponent
   public hasPM = new BehaviorSubject(false);
   public hasDAY = new BehaviorSubject(false);
 
-  constructor(
-    protected formBuilder: UntypedFormBuilder,
-    protected router: Router,
-    protected dataService: DataService,
-    protected loadingService: LoadingService,
-    protected changeDetector: ChangeDetectorRef,
-    private modifierService: ModifierService,
-    private facilityService: FacilityService,
-    private parkService: ParkService,
-  ) {
-    super(formBuilder, router, dataService, loadingService, changeDetector);
+  constructor() {
+    const formBuilder = inject(UntypedFormBuilder);
+    const router = inject(Router);
+    const dataService = inject(DataService);
+    const loadingService = inject(LoadingService);
+    const changeDetector = inject(ChangeDetectorRef);
+
+    super();
+    this.formBuilder = formBuilder;
+    this.router = router;
+    this.dataService = dataService;
+    this.loadingService = loadingService;
+    this.changeDetector = changeDetector;
+
     this.subscriptions.add(
       dataService
         .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)

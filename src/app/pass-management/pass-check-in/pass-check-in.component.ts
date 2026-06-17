@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
@@ -12,21 +12,28 @@ import { PassCheckInListComponent } from '../pass-check-in-list/pass-check-in-li
 import { ManualEntryComponent } from '../manual-entry/manual-entry.component';
 import { QrResultComponent } from '../qr-result/qr-result.component';
 import { QrScannerComponent as QrScannerComponent_1 } from '../../shared/components/qr-scanner/qr-scanner.component';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'app-pass-check-in',
     templateUrl: './pass-check-in.component.html',
     styleUrls: ['./pass-check-in.component.scss'],
     imports: [
-        NgIf,
-        QrScannerComponent_1,
-        QrResultComponent,
-        ManualEntryComponent,
-        PassCheckInListComponent,
-    ]
+    QrScannerComponent_1,
+    QrResultComponent,
+    ManualEntryComponent,
+    PassCheckInListComponent
+]
 })
 export class PassCheckInComponent implements OnDestroy {
+  private passService = inject(PassService);
+  private logger = inject(LoggerService);
+  private qrScannerService = inject(QrScannerService);
+  private route = inject(ActivatedRoute);
+  private dataService = inject(DataService);
+  private router = inject(Router);
+  private toastService = inject(ToastService);
+
   @ViewChild(QrScannerComponent) qrScannerComponent: QrScannerComponent;
 
   private subscriptions = new Subscription();
@@ -35,15 +42,7 @@ export class PassCheckInComponent implements OnDestroy {
   public scannerSwitch = false;
   public passes = [];
 
-  constructor(
-    private passService: PassService,
-    private logger: LoggerService,
-    private qrScannerService: QrScannerService,
-    private route: ActivatedRoute,
-    private dataService: DataService,
-    private router: Router,
-    private toastService: ToastService
-  ) {
+  constructor() {
     if (
       this.route.snapshot.queryParamMap.get('park') &&
       this.route.snapshot.queryParamMap.get('registrationNumber')

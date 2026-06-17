@@ -1,8 +1,9 @@
-<div *ngIf="park" class="pb-4">
-  <app-fancy-header
-    [mainText]="park?.name"
-    [headerColour1]="'#2D834F'"
-    [headerColour2]="'#205d38'"
+@if (park) {
+  <div class="pb-4">
+    <app-fancy-header
+      [mainText]="park?.name"
+      [headerColour1]="'#2D834F'"
+      [headerColour2]="'#205d38'"
     [buttonSettings1]="{
       active: true,
       text: 'Details',
@@ -15,81 +16,89 @@
       nav: 'edit',
       hidden: false
     }"
-  ></app-fancy-header>
-
-  <div class="mx-4 pt-4">
-    <div class="row">
-      <div class="col-md-6">
-        <label><strong>Status:</strong></label>
-        <p *ngIf="park?.status === 'open'">Passes are required at this park.</p>
-        <p *ngIf="park?.status !== 'open'">
-          Passes are not required at this park.
-        </p>
-      </div>
-      <div class="col-md-6">
-        <label><strong>Capacity:</strong></label>
-        <p>{{ park?.capacity ? park?.capacity : "Not set" }}</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <label><strong>Park ORCS:</strong></label>
-        <br />
-        <p>{{ park?.orcs }}</p>
-      </div>
-      <div class="col-md-6">
-        <label><strong>Visible:</strong></label>
-        <br />
-        <p>{{ park?.visible }}</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <label><strong>BC Parks Link:</strong></label>
-        <br />
-        <p><a *ngIf="park?.bcParksLink" href="{{ park?.bcParksLink }}">{{
-          park?.bcParksLink
-        }}</a></p>
-      </div>
-      <div class="col-md-6">
-        <label><strong>Map Link:</strong></label>
-        <br />
-        <p><a *ngIf="park?.mapLink" href="{{ park?.mapLink }}">{{
-          park?.mapLink
-        }}</a></p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <label><strong>Video Link:</strong></label>
-        <br />
-        <p><a *ngIf="park?.videoLink" href="{{ park?.videoLink }}">{{
-          park?.videoLink
-        }}</a></p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <label><strong>Description:</strong></label>
-        <p [innerHTML]="park?.description"></p>
-      </div>
-    </div>
-  </div>
-
-  <div class="pt-4">
-    <app-fancy-header
-      [mainText]="'Facilities'"
-      [headerColour1]="'#AD9E7C'"
-      [headerColour2]="'#C1B59B'"
-      [buttonSettings1]="addFacilityButtonConfig"
     ></app-fancy-header>
+    <div class="mx-4 pt-4">
+      <div class="row">
+        <div class="col-md-6">
+          <label><strong>Status:</strong></label>
+          @if (park?.status === 'open') {
+            <p>Passes are required at this park.</p>
+          }
+          @if (park?.status !== 'open') {
+            <p>
+              Passes are not required at this park.
+            </p>
+          }
+        </div>
+        <div class="col-md-6">
+          <label><strong>Capacity:</strong></label>
+          <p>{{ park?.capacity ? park?.capacity : "Not set" }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label><strong>Park ORCS:</strong></label>
+          <br />
+          <p>{{ park?.orcs }}</p>
+        </div>
+        <div class="col-md-6">
+          <label><strong>Visible:</strong></label>
+          <br />
+          <p>{{ park?.visible }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label><strong>BC Parks Link:</strong></label>
+          <br />
+          <p>@if (park?.bcParksLink) {
+            <a href="{{ park?.bcParksLink }}">{{
+              park?.bcParksLink
+            }}</a>
+          }</p>
+        </div>
+        <div class="col-md-6">
+          <label><strong>Map Link:</strong></label>
+          <br />
+          <p>@if (park?.mapLink) {
+            <a href="{{ park?.mapLink }}">{{
+              park?.mapLink
+            }}</a>
+          }</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label><strong>Video Link:</strong></label>
+          <br />
+          <p>@if (park?.videoLink) {
+            <a href="{{ park?.videoLink }}">{{
+              park?.videoLink
+            }}</a>
+          }</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <label><strong>Description:</strong></label>
+          <p [innerHTML]="park?.description"></p>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4">
+      <app-fancy-header
+        [mainText]="'Facilities'"
+        [headerColour1]="'#AD9E7C'"
+        [headerColour2]="'#C1B59B'"
+        [buttonSettings1]="addFacilityButtonConfig"
+      ></app-fancy-header>
+    </div>
+    <div class="pt-4">
+      <app-table
+        [tableSchema]="tableSchema"
+        [data]="tableRows"
+        [emptyTableMsg]="'No facilites found.'"
+      ></app-table>
+    </div>
   </div>
-
-  <div class="pt-4">
-    <app-table
-      [tableSchema]="tableSchema"
-      [data]="tableRows"
-      [emptyTableMsg]="'No facilites found.'"
-    ></app-table>
-  </div>
-</div>
+}

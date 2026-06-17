@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
@@ -22,6 +22,15 @@ import { PassesFilterFieldsComponent } from './passes-filter-fields/passes-filte
     ]
 })
 export class PassesFilterComponent extends BaseFormComponent {
+  protected formBuilder: UntypedFormBuilder;
+  protected router: Router;
+  protected dataService: DataService;
+  protected loadingService: LoadingService;
+  protected changeDetector: ChangeDetectorRef;
+  protected passService = inject(PassService);
+  protected reservationService = inject(ReservationService);
+  private route = inject(ActivatedRoute);
+
 
   public parksAndFacilities;
   public passTypeOptions;
@@ -40,23 +49,20 @@ export class PassesFilterComponent extends BaseFormComponent {
   public facilityOptions: any[] = [];
   public searchOnPageLoadFlag = false;
 
-  constructor(
-    protected formBuilder: UntypedFormBuilder,
-    protected router: Router,
-    protected dataService: DataService,
-    protected loadingService: LoadingService,
-    protected changeDetector: ChangeDetectorRef,
-    protected passService: PassService,
-    protected reservationService: ReservationService,
-    private route: ActivatedRoute,
-  ) {
-    super(
-      formBuilder,
-      router,
-      dataService,
-      loadingService,
-      changeDetector
-    );
+  constructor() {
+    const formBuilder = inject(UntypedFormBuilder);
+    const router = inject(Router);
+    const dataService = inject(DataService);
+    const loadingService = inject(LoadingService);
+    const changeDetector = inject(ChangeDetectorRef);
+
+    super();
+    this.formBuilder = formBuilder;
+    this.router = router;
+    this.dataService = dataService;
+    this.loadingService = loadingService;
+    this.changeDetector = changeDetector;
+
 
     this.subscriptions.add(
       this.dataService

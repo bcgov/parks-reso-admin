@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { DataService } from '../services/data.service';
@@ -11,12 +11,11 @@ import { Constants } from '../shared/utils/constants';
   providedIn: 'root',
 })
 export class FacilityResolver  {
-  constructor(
-    protected facilityService: FacilityService,
-    protected passService: PassService,
-    protected dataService: DataService,
-    protected reservationService: ReservationService
-  ) {}
+  protected facilityService = inject(FacilityService);
+  protected passService = inject(PassService);
+  protected dataService = inject(DataService);
+  protected reservationService = inject(ReservationService);
+
   resolve(route: ActivatedRouteSnapshot) {
     const terminate = new Subject();
     this.dataService

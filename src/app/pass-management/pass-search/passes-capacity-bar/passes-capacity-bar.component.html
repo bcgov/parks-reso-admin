@@ -1,36 +1,56 @@
-<div *ngIf="data">
-  <label>
-    <strong>
-      <span *ngIf="data.reserved === null">
-        To display capacity levels, you must filter by a date.
-      </span>
-      <div *ngIf="data.reserved !== null" class="d-sm-flex">
-        <span>{{ data.reserved }}/{{ data.capacity }}&nbsp;</span>
-        <span class="text-success" *ngIf="data.modifier > 0">
-          (+{{ data.modifier }})&nbsp;
-        </span>
-        <span class="text-danger" *ngIf="data.modifier < 0">
-          ({{ data.modifier }})&nbsp;
-        </span>
-        <span class="me-2">passes reserved</span>
-        <div *ngIf="data.overbooked > 0 && data.overbooked === 1" class="text-danger">
-          <small><i class="bi bi-exclamation-triangle-fill"></i> {{ data.overbooked }} pass overbooked</small>
+@if (data) {
+  <div>
+    <label>
+      <strong>
+        @if (data.reserved === null) {
+          <span>
+            To display capacity levels, you must filter by a date.
+          </span>
+        }
+        @if (data.reserved !== null) {
+          <div class="d-sm-flex">
+            <span>{{ data.reserved }}/{{ data.capacity }}&nbsp;</span>
+            @if (data.modifier > 0) {
+              <span class="text-success">
+                (+{{ data.modifier }})&nbsp;
+              </span>
+            }
+            @if (data.modifier < 0) {
+              <span class="text-danger">
+                ({{ data.modifier }})&nbsp;
+              </span>
+            }
+            <span class="me-2">passes reserved</span>
+            @if (data.overbooked > 0 && data.overbooked === 1) {
+              <div class="text-danger">
+                <small><i class="bi bi-exclamation-triangle-fill"></i> {{ data.overbooked }} pass overbooked</small>
+              </div>
+            }
+            @if (data.overbooked > 1) {
+              <div class="text-danger">
+                <small><i class="bi bi-exclamation-triangle-fill"></i> {{ data.overbooked }} passes overbooked</small>
+              </div>
+            }
+          </div>
+        }
+        @if (data.reserved !== null) {
+          <div>
+            <small>{{data?.checkInCount ? data.checkInCount : '0'}} pass{{data?.checkInCount === 1 ? '' : 'es'}} checked in</small>
+          </div>
+        }
+      </strong>
+      @if (data.modifier > 0 || data.modifier < 0) {
+        <div class="text-muted">
+          <small>Modifier applied</small>
         </div>
-        <div *ngIf="data.overbooked > 1" class="text-danger">
-          <small><i class="bi bi-exclamation-triangle-fill"></i> {{ data.overbooked }} passes overbooked</small>
-        </div>
+      }
+    </label>
+    @if (data.reserved !== null) {
+      <div>
+        <ngb-progressbar class="capacity-bar-top" [showValue]="true" type="{{ data.style }}" [value]="data.capPercent"
+        height="1.5rem"></ngb-progressbar>
+        <ngb-progressbar class="capacity-bar-bottom" [showValue]="false" type="success" [value]="data.checkInCount" [max]="data.capacity" height="1.0rem"></ngb-progressbar>
       </div>
-      <div *ngIf="data.reserved !== null">
-        <small>{{data?.checkInCount ? data.checkInCount : '0'}} pass{{data?.checkInCount === 1 ? '' : 'es'}} checked in</small>
-      </div>
-    </strong>
-    <div *ngIf="data.modifier > 0 || data.modifier < 0" class="text-muted">
-      <small>Modifier applied</small>
-    </div>
-  </label>
-  <div *ngIf="data.reserved !== null">
-    <ngb-progressbar class="capacity-bar-top" [showValue]="true" type="{{ data.style }}" [value]="data.capPercent"
-    height="1.5rem"></ngb-progressbar>
-    <ngb-progressbar class="capacity-bar-bottom" [showValue]="false" type="success" [value]="data.checkInCount" [max]="data.capacity" height="1.0rem"></ngb-progressbar>
+    }
   </div>
-</div>
+}

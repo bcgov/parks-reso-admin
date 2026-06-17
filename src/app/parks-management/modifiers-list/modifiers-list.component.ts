@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { ModifierService } from 'src/app/services/modifier.service';
@@ -6,15 +6,18 @@ import { TableButtonComponent } from 'src/app/shared/components/table/table-comp
 import { tableSchema } from 'src/app/shared/components/table/table.component';
 import { Constants } from 'src/app/shared/utils/constants';
 import { TableComponent } from '../../shared/components/table/table.component';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'app-modifiers-list',
     templateUrl: './modifiers-list.component.html',
     styleUrls: ['./modifiers-list.component.scss'],
-    imports: [NgIf, TableComponent]
+    imports: [TableComponent]
 })
 export class ModifiersListComponent implements OnInit {
+  protected dataService = inject(DataService);
+  protected modifierService = inject(ModifierService);
+
   public facility;
   public park;
   private subscriptions = new Subscription();
@@ -22,10 +25,9 @@ export class ModifiersListComponent implements OnInit {
   public tableRows: any[] = [];
   public tableEmptyMsg = 'There are no scheduled capacity changes.';
 
-  constructor(
-    protected dataService: DataService,
-    protected modifierService: ModifierService
-  ) {
+  constructor() {
+    const dataService = this.dataService;
+
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.MODIFIERS).subscribe((res) => {
         this.tableRows = res;

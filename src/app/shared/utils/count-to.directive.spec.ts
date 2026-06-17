@@ -1,20 +1,22 @@
 import { ElementRef, Renderer2 } from '@angular/core';
-import { fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { CountToDirective } from './count-to.directive';
 
 describe('CountToDirective', () => {
-  let directive;
-  const elementRef = new ElementRef('p');
-  let renderer: Renderer2;
+  let directive: any;
 
   beforeEach(async () => {
-    directive = new CountToDirective(elementRef, renderer);
+    TestBed.configureTestingModule({
+      providers: [
+        CountToDirective,
+        { provide: ElementRef, useValue: new ElementRef('p') },
+        { provide: Renderer2, useValue: null },
+      ],
+    });
+    directive = TestBed.inject(CountToDirective);
   });
 
   it('should create an instance', () => {
-    const elementRef = new ElementRef('p');
-    let renderer: Renderer2;
-    const directive = new CountToDirective(elementRef, renderer);
     expect(directive).toBeTruthy();
   });
 

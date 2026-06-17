@@ -1,16 +1,22 @@
-<label *ngIf="label" for="{{ id }}" class="h2 mb-2"
-  >{{ label
-  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
->
-<p>
-  <small class="text-muted" *ngIf="subLabel">
-    {{ subLabel }}
-  </small>
-</p>
-<div>
-  <editor
-    [formControl]="control"
-    id="{{ id }}"
+@if (label) {
+  <label for="{{ id }}" class="h2 mb-2"
+    >{{ label
+    }}@if (isRequired()) {
+    <span class="text-danger">&nbsp;*</span>
+    }</label
+    >
+  }
+  <p>
+    @if (subLabel) {
+      <small class="text-muted">
+        {{ subLabel }}
+      </small>
+    }
+  </p>
+  <div>
+    <editor
+      [formControl]="control"
+      id="{{ id }}"
     [init]="{
       base_url: '/dayuse/tinymce',
       suffix: '.min',
@@ -22,5 +28,5 @@
     alignleft aligncenter alignright alignjustify | link | \
     bullist numlist outdent indent | removeformat | help'
     }"
-  ></editor>
-</div>
+    ></editor>
+  </div>
