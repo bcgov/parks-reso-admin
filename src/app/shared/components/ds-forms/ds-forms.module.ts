@@ -23,7 +23,7 @@ import { RadioButtonsComponent } from './radio-buttons/radio-buttons.component';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        BsDatepickerModule.forRoot(),
+        BsDatepickerModule,
         NgSelectModule,
         TimepickerModule,
         EditorModule,

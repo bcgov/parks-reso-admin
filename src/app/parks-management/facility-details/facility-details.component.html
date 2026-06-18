@@ -1,4 +1,5 @@
-<div *ngIf="facility" class="mb-4">
+@if (facility) {
+<div class="mb-4">
   <!-- Facility details -->
   <section>
     <app-fancy-header
@@ -45,12 +46,16 @@
           </div>
           <div class="col-md-6">
             <label><strong>QR Codes:</strong></label>
-            <p *ngIf="!facility.qrcode">
+            @if (!facility.qrcode) {
+            <p>
               Disabled
             </p>
-            <p *ngIf="facility.qrcode">
+            }
+            @if (facility.qrcode) {
+            <p>
               <i class="bi bi-qr-code"></i>&nbsp;Enabled
             </p>
+            }
           </div>
         </div>
         <div class="row">
@@ -60,9 +65,9 @@
             </label>
             <p>
               {{ bookingOpeningHourText }}
-              <small *ngIf="facility.bookingOpeningHour === null"
-                >(default)</small
-              >
+              @if (facility.bookingOpeningHour === null) {
+              <small>(default)</small>
+              }
             </p>
           </div>
           <div class="col-md-6">
@@ -71,13 +76,14 @@
             </label>
             <p>
               {{ bookingDaysAheadText }}
-              <small *ngIf="facility.bookingDaysAhead === null"
-                >(default)</small
-              >
+              @if (facility.bookingDaysAhead === null) {
+              <small>(default)</small>
+              }
             </p>
           </div>
         </div>
-        <div class="row" *ngIf="facility?.bookingTimes.AM">
+        @if (facility?.bookingTimes.AM) {
+        <div class="row">
           <div class="col-md-6">
             <label>
               <strong>AM Capacity:</strong>
@@ -87,6 +93,7 @@
             </p>
           </div>
         </div>
+        }
         <div class="row">
           <div class="col-md-6">
             <label><strong>Type:</strong></label>
@@ -95,7 +102,8 @@
             </p>
           </div>
         </div>
-        <div class="row" *ngIf="facility?.bookingTimes.DAY">
+        @if (facility?.bookingTimes.DAY) {
+        <div class="row">
           <div class="col-md-6">
             <label>
               <strong>All Day Capacity:</strong>
@@ -104,7 +112,8 @@
               {{ facility?.bookingTimes.DAY.max }}
             </p>
           </div>
-          <div class="col-md-6" *ngIf="facility?.bookingTimes.PM">
+          @if (facility?.bookingTimes.PM) {
+          <div class="col-md-6">
             <label>
               <strong>PM Capacity:</strong>
             </label>
@@ -112,7 +121,11 @@
               {{ facility?.bookingTimes.PM.max }}
             </p>
           </div>
+          }
         </div>
+        }
       </div>
     </div>
   </section>
+</div>
+}

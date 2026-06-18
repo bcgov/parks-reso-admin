@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ToastService } from '../../services/toast.service';
 import { ApiService } from '../../services/api.service';
 import { Constants } from '../../shared/utils/constants';
@@ -11,7 +11,7 @@ import { MetricsService } from 'src/app/services/metrics.service';
 import { ChartMetricComponent } from '../../shared/components/metrics/chart-metric/chart-metric.component';
 import { BasicMetricComponent } from '../../shared/components/metrics/basic-metric/basic-metric.component';
 import { MetricCardComponent } from '../../shared/components/metrics/metric-card/metric-card.component';
-import { NgIf, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MetricsFilterComponent } from '../metrics-filter/metrics-filter.component';
 
 @Component({
@@ -19,15 +19,20 @@ import { MetricsFilterComponent } from '../metrics-filter/metrics-filter.compone
     templateUrl: './site-metrics.component.html',
     styleUrls: ['./site-metrics.component.scss'],
     imports: [
-        MetricsFilterComponent,
-        NgIf,
-        MetricCardComponent,
-        BasicMetricComponent,
-        ChartMetricComponent,
-        DatePipe,
-    ]
+    MetricsFilterComponent,
+    MetricCardComponent,
+    BasicMetricComponent,
+    ChartMetricComponent,
+    DatePipe
+]
 })
 export class SiteMetricsComponent implements OnDestroy, OnInit {
+  private apiService = inject(ApiService);
+  private toastService = inject(ToastService);
+  private metricsService = inject(MetricsService);
+  protected dataService = inject(DataService);
+  protected loadingService = inject(LoadingService);
+
   private subscriptions = new Subscription();
   public loading: boolean = false;
 
@@ -64,13 +69,10 @@ export class SiteMetricsComponent implements OnDestroy, OnInit {
   signedURL: any;
   buttonText: any = 'Export Pass Data';
 
-  constructor(
-    private apiService: ApiService,
-    private toastService: ToastService,
-    private metricsService: MetricsService,
-    protected dataService: DataService,
-    protected loadingService: LoadingService,
-  ) {
+  constructor() {
+    const dataService = this.dataService;
+    const loadingService = this.loadingService;
+
     this.subscriptions.add(
       dataService
         .watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST)

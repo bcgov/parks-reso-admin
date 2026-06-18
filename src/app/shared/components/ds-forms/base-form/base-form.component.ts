@@ -1,10 +1,4 @@
-import {
-  AfterContentInit,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  OnDestroy,
-} from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, Component, EventEmitter, OnDestroy, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -27,6 +21,12 @@ export interface formResult {
     standalone: true,
 })
 export class BaseFormComponent implements OnDestroy, AfterContentInit {
+  bFormBuilder = inject(UntypedFormBuilder);
+  bRouter = inject(Router);
+  bDataService = inject(DataService);
+  bLoadingService = inject(LoadingService);
+  bChangeDetector = inject(ChangeDetectorRef);
+
   public form: UntypedFormGroup; // the base form.
   public data: any = {}; // existing form data
   public fields: any = {}; // raw key:value pairs of the form inputs.
@@ -40,13 +40,7 @@ export class BaseFormComponent implements OnDestroy, AfterContentInit {
   // TODO: add more events if necessary
   public resetEvent = new EventEmitter();
 
-  constructor(
-    public bFormBuilder: UntypedFormBuilder,
-    public bRouter: Router,
-    public bDataService: DataService,
-    public bLoadingService: LoadingService,
-    public bChangeDetector: ChangeDetectorRef
-  ) {
+  constructor() {
     this.form = this.bFormBuilder.group({});
     this.subscriptions.add(
       this.bLoadingService.getLoadingStatus().subscribe((res) => {

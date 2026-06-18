@@ -1,24 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Utils } from 'src/app/shared/utils/utils';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PassService } from 'src/app/services/pass.service';
-import { NgFor, NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'app-manual-entry',
     templateUrl: './manual-entry.component.html',
     styleUrls: ['./manual-entry.component.scss'],
     imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NgFor,
-        NgIf,
-    ]
+    FormsModule,
+    ReactiveFormsModule
+]
 })
 export class ManualEntryComponent implements OnInit, OnDestroy {
+  private dataService = inject(DataService);
+  private passService = inject(PassService);
+
   private subscriptions = new Subscription();
 
   public parks = {};
@@ -35,10 +36,7 @@ export class ManualEntryComponent implements OnInit, OnDestroy {
 
   public noResults = false;
 
-  constructor(
-    private dataService: DataService,
-    private passService: PassService
-  ) {
+  constructor() {
     this.subscriptions.add(
       this.dataService
         .watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST)

@@ -1,12 +1,5 @@
 import { formatNumber } from '@angular/common';
-import {
-  Directive,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-} from '@angular/core';
+import { Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2, inject } from '@angular/core';
 import {
   animationFrameScheduler,
   BehaviorSubject,
@@ -27,6 +20,9 @@ import {
     standalone: true,
 })
 export class CountToDirective implements OnDestroy, OnInit {
+  private readonly elementRef = inject(ElementRef);
+  private readonly renderer = inject(Renderer2);
+
   @Input('countTo') set count(count: number) {
     this._oldCount.next(this._count.value || 0);
     this._count.next(count);
@@ -73,11 +69,6 @@ export class CountToDirective implements OnDestroy, OnInit {
       );
     })
   );
-
-  constructor(
-    private readonly elementRef: ElementRef,
-    private readonly renderer: Renderer2
-  ) { }
 
   ngOnInit(): void {
     this.displayCurrentCount();

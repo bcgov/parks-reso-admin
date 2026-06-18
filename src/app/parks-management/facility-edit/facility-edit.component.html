@@ -1,8 +1,9 @@
-<div class="mb-4" *ngIf="facility">
-  <app-fancy-header
-    [mainText]="'Edit Facility: ' + facility?.name"
-    [headerColour1]="'#C1B59B'"
-    [headerColour2]="'#AD9E7C'"
+@if (facility) {
+  <div class="mb-4">
+    <app-fancy-header
+      [mainText]="'Edit Facility: ' + facility?.name"
+      [headerColour1]="'#C1B59B'"
+      [headerColour2]="'#AD9E7C'"
     [buttonSettings1]="{
       active: false,
       text: 'Details',
@@ -15,30 +16,32 @@
       nav: '',
       hidden: false
     }"
-  ></app-fancy-header>
-  <app-facility-edit-form> </app-facility-edit-form>
-
-  <hr />
-  <div class="mx-4">
-    <h2>Capacity Changes</h2>
-    <p class="mb-0">
-      To increase capacity, enter a positive number. To reduce capacity, enter a
-      negative number (e.g. -50). Note that reducing capacity could lead to
-      overbooked passes.
-    </p>
+    ></app-fancy-header>
+    <app-facility-edit-form> </app-facility-edit-form>
+    <hr />
+    <div class="mx-4">
+      <h2>Capacity Changes</h2>
+      <p class="mb-0">
+        To increase capacity, enter a positive number. To reduce capacity, enter a
+        negative number (e.g. -50). Note that reducing capacity could lead to
+        overbooked passes.
+      </p>
+    </div>
+    <div class="p-4">
+      <app-modifiers-form></app-modifiers-form>
+    </div>
+    <div class="mt-4">
+      <app-modifiers-list></app-modifiers-list>
+    </div>
   </div>
-  <div class="p-4">
-    <app-modifiers-form></app-modifiers-form>
+}
+@if (!facility && park) {
+  <div>
+    <app-fancy-header
+      [mainText]="'Add facility to ' + park?.name"
+      [headerColour1]="'#C1B59B'"
+      [headerColour2]="'#AD9E7C'"
+    ></app-fancy-header>
+    <app-facility-edit-form> </app-facility-edit-form>
   </div>
-  <div class="mt-4">
-    <app-modifiers-list></app-modifiers-list>
-  </div>
-</div>
-<div *ngIf="!facility && park">
-  <app-fancy-header
-    [mainText]="'Add facility to ' + park?.name"
-    [headerColour1]="'#C1B59B'"
-    [headerColour2]="'#AD9E7C'"
-  ></app-fancy-header>
-  <app-facility-edit-form> </app-facility-edit-form>
-</div>
+}

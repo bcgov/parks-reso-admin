@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Subscription, merge, of, fromEvent, map, throwError, catchError } from 'rxjs';
 import { ConfigService } from './config.service';
 
@@ -7,6 +7,9 @@ import { ConfigService } from './config.service';
   providedIn: 'root',
 })
 export class ApiService implements OnDestroy {
+  private http = inject(HttpClient);
+  private configService = inject(ConfigService);
+
   public token: string;
   public isMS: boolean; // IE, Edge, etc
   networkStatus: boolean = false;
@@ -14,8 +17,6 @@ export class ApiService implements OnDestroy {
 
   apiPath: string;
   env: 'local' | 'dev' | 'test' | 'prod';
-
-  constructor(private http: HttpClient, private configService: ConfigService) {}
 
   // Provide a getter for others to check current state.
   get isNetworkOffline() {

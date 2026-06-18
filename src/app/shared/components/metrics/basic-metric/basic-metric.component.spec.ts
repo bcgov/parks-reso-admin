@@ -25,6 +25,7 @@ describe('BasicMetricComponent', () => {
     const value = fixture.debugElement.nativeElement.getElementsByTagName('h1')[0];
     expect(value.innerText).toContain('2,000');
     component._value = 2500;
+    fixture.changeDetectorRef.markForCheck();
     fixture.detectChanges();
     expect(value.innerText).toContain('2,500');
   });

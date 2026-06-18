@@ -1,13 +1,15 @@
 <!-- checkedIn filters -->
 <div class="mb-5 mt-3 d-flex row">
-  <div *ngFor="let state of checkedInStates"
-    class="col-md-4 col-lg-auto border-bottom border-2 text-center filter-button"
-    [ngClass]="state?.value === checkedInState ? 'border-primary' : 'border-light'" (click)="changeCheckInState(state)">
+  @for (state of checkedInStates; track state) {
+    <div
+      class="col-md-4 col-lg-auto border-bottom border-2 text-center filter-button"
+      [ngClass]="state?.value === checkedInState ? 'border-primary' : 'border-light'" (click)="changeCheckInState(state)">
     <h4 class="px-4 mb-2 mt-3" [ngClass]="state?.value === checkedInState ? 'text-primary 
     ' : 'text-muted'">
-      {{state?.label}}
-    </h4>
-  </div>
+        {{state?.label}}
+      </h4>
+    </div>
+  }
 </div>
 
 <!-- Results table -->
@@ -15,26 +17,36 @@
   <div class="d-flex row">
     <app-pass-accordion [rowSchema]="rowSchema" [isHeader]="true"></app-pass-accordion>
   </div>
-  <div *ngIf="!loading">
-    <div *ngIf="!tableRows || tableRows?.length === 0"
+  @if (!loading) {
+    <div>
+      @if (!tableRows || tableRows?.length === 0) {
+        <div
+          class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-3 text-center">
+          No passes to display.
+        </div>
+      }
+      @for (pass of tableRows; track pass) {
+        <div>
+          <app-pass-accordion [pass]="pass" [cancelTemplate]="passCancelButtonTemplate" [rowSchema]="rowSchema"
+          [dropDownSchema]="dropDownSchema"></app-pass-accordion>
+        </div>
+      }
+    </div>
+  }
+  @if (loading) {
+    <div
       class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-3 text-center">
-      No passes to display.
+      <span class="spinner-border text-secondary"></span>
     </div>
-    <div *ngFor="let pass of tableRows">
-      <app-pass-accordion [pass]="pass" [cancelTemplate]="passCancelButtonTemplate" [rowSchema]="rowSchema"
-        [dropDownSchema]="dropDownSchema"></app-pass-accordion>
-    </div>
-  </div>
-  <div *ngIf="loading"
-    class="bg-light d-flex flex-column h-100 justify-content-center align-items-center p-3 text-center">
-    <span class="spinner-border text-secondary"></span>
-  </div>
+  }
 </div>
 
 <!-- Load more button -->
-<div *ngIf="lastEvaluatedKey" class="d-flex flex-column h-100 align-items-center m-2">
-  <button class="btn btn-outline-secondary" (click)="loadMorePasses()">Load more</button>
-</div>
+@if (lastEvaluatedKey) {
+  <div class="d-flex flex-column h-100 align-items-center m-2">
+    <button class="btn btn-outline-secondary" (click)="loadMorePasses()">Load more</button>
+  </div>
+}
 
 <!-- Here is where we store the templates for elements within the accoridion table -->
 <!-- Cancel modal -->
@@ -46,18 +58,26 @@
 <ng-template #passStatusTemplate let-pass="pass">
   <div class="d-flex align-items-center overflow-hidden">
     <div class="me-2">
-      <div *ngIf="pass?.passStatus === 'active'">
-        <i class="fs-3 bi bi-check-circle text-success"></i>
-      </div>
-      <div *ngIf="pass?.passStatus === 'reserved'">
-        <i class="fs-3 bi bi-clock text-warning"></i>
-      </div>
-      <div *ngIf="pass?.passStatus === 'expired'">
-        <i class="fs-3 bi bi-clock-history text-secondary pass-list-icon"></i>
-      </div>
-      <div *ngIf="pass?.passStatus === 'cancelled'">
-        <i class="fs-3 bi bi-x-circle text-danger pass-list-icon"></i>
-      </div>
+      @if (pass?.passStatus === 'active') {
+        <div>
+          <i class="fs-3 bi bi-check-circle text-success"></i>
+        </div>
+      }
+      @if (pass?.passStatus === 'reserved') {
+        <div>
+          <i class="fs-3 bi bi-clock text-warning"></i>
+        </div>
+      }
+      @if (pass?.passStatus === 'expired') {
+        <div>
+          <i class="fs-3 bi bi-clock-history text-secondary pass-list-icon"></i>
+        </div>
+      }
+      @if (pass?.passStatus === 'cancelled') {
+        <div>
+          <i class="fs-3 bi bi-x-circle text-danger pass-list-icon"></i>
+        </div>
+      }
     </div>
     <div>
       {{pass?.passStatus}}
@@ -68,12 +88,14 @@
 <!-- Pass overbooked template -->
 <ng-template #passIsOverbookedTemplate let-pass="pass">
   <div class="d-flex align-items-center overflow-hidden">
-    <div *ngIf="pass?.isOverbooked" class="d-flex">
-      <i class="text-danger fs-3 bi bi-exclamation-triangle-fill"></i>
-      <div class="d-flex d-md-none ms-2 text-danger">
-        Overbooked
+    @if (pass?.isOverbooked) {
+      <div class="d-flex">
+        <i class="text-danger fs-3 bi bi-exclamation-triangle-fill"></i>
+        <div class="d-flex d-md-none ms-2 text-danger">
+          Overbooked
+        </div>
       </div>
-    </div>
+    }
   </div>
 </ng-template>
 
@@ -81,15 +103,21 @@
 <ng-template #passCheckedInTemplate let-pass="pass">
   <div class="d-flex align-items-center overflow-hidden">
     <div>
-      <div *ngIf="!pass.checkedIn && pass?.passStatus !== 'active'">
-        <i class="fs-3 bi bi-circle text-secondary pass-list-icon"></i>
-      </div>
-      <div *ngIf="!pass.checkedIn && pass?.passStatus === 'active'">
-        <i class="fs-3 bi bi-circle text-success"></i>
-      </div>
-      <div *ngIf="pass.checkedIn">
-        <i class="fs-3 bi bi-check-circle-fill text-success"></i>
-      </div>
+      @if (!pass.checkedIn && pass?.passStatus !== 'active') {
+        <div>
+          <i class="fs-3 bi bi-circle text-secondary pass-list-icon"></i>
+        </div>
+      }
+      @if (!pass.checkedIn && pass?.passStatus === 'active') {
+        <div>
+          <i class="fs-3 bi bi-circle text-success"></i>
+        </div>
+      }
+      @if (pass.checkedIn) {
+        <div>
+          <i class="fs-3 bi bi-check-circle-fill text-success"></i>
+        </div>
+      }
     </div>
   </div>
 </ng-template>

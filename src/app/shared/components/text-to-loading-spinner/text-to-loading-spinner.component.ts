@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading.service';
 
@@ -15,6 +9,8 @@ import { LoadingService } from 'src/app/services/loading.service';
     standalone: true
 })
 export class TextToLoadingSpinnerComponent implements OnDestroy {
+  protected loadingService = inject(LoadingService);
+
   @Input() text;
   @Output() loadingStatus: EventEmitter<boolean> = new EventEmitter();
 
@@ -22,7 +18,9 @@ export class TextToLoadingSpinnerComponent implements OnDestroy {
 
   public loading = false;
 
-  constructor(protected loadingService: LoadingService) {
+  constructor() {
+    const loadingService = this.loadingService;
+
     this.subscriptions.add(
       loadingService.getLoadingStatus().subscribe((res) => {
         this.loading = res;

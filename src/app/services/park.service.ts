@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
 import { Utils } from '../shared/utils/utils';
@@ -13,14 +13,13 @@ import { ToastService, ToastTypes } from './toast.service';
   providedIn: 'root',
 })
 export class ParkService {
-  constructor(
-    private dataService: DataService,
-    private eventService: EventService,
-    private toastService: ToastService,
-    private loggerService: LoggerService,
-    private apiService: ApiService,
-    private loadingService: LoadingService
-  ) {}
+  private dataService = inject(DataService);
+  private eventService = inject(EventService);
+  private toastService = inject(ToastService);
+  private loggerService = inject(LoggerService);
+  private apiService = inject(ApiService);
+  private loadingService = inject(LoadingService);
+
   public utils = new Utils();
 
   // Get all parks

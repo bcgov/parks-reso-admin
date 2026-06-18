@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 import { Constants } from "../shared/utils/constants";
@@ -14,19 +14,17 @@ import { LoggerService } from "./logger.service";
   providedIn: 'root',
 })
 export class MetricsService {
+  private apiService = inject(ApiService);
+  private dataService = inject(DataService);
+  private toastService = inject(ToastService);
+  private eventService = inject(EventService);
+  private loadingService = inject(LoadingService);
+  private loggerService = inject(LoggerService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
 
   public utils = new Utils();
-
-  constructor(
-    private apiService: ApiService,
-    private dataService: DataService,
-    private toastService: ToastService,
-    private eventService: EventService,
-    private loadingService: LoadingService,
-    private loggerService: LoggerService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) { }
 
 
   async fetchData(startDate, endDate?, parkSk?, facilitySk?): Promise<any> {

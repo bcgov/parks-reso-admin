@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { LoggerService } from './logger.service';
 
@@ -6,12 +6,10 @@ import { LoggerService } from './logger.service';
   providedIn: 'root',
 })
 export class LoadingService {
+  private logger = inject(LoggerService);
+
   public fetchList = new BehaviorSubject({});
   public loading = new BehaviorSubject(false);
-
-  constructor(
-    private logger: LoggerService
-  ) {}
 
   addToFetchList(id, attributes = { loading: true }) {
     this.logger.debug(`addToFetchList: ${id} ${JSON.stringify(attributes)}`);

@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { NgIf, NgFor } from '@angular/common';
+
 
 export interface modalSchema {
   id: string;
@@ -19,14 +19,12 @@ export interface modalButtonSchema {
     selector: 'app-modal',
     templateUrl: './modal.component.html',
     styleUrls: ['./modal.component.scss'],
-    imports: [NgIf, NgFor]
+    imports: []
 })
 export class ModalComponent implements OnInit {
-  @Input() modal: modalSchema;
+  private modalService = inject(BsModalService);
 
-  constructor(
-    private modalService: BsModalService
-  ) {}
+  @Input() modal: modalSchema;
 
   ngOnInit(): void {}
 

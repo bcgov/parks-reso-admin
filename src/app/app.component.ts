@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
@@ -7,7 +7,7 @@ import { Constants } from './shared/utils/constants';
 import { BreadcrumbComponent } from './shared/components/breadcrumb/breadcrumb.component';
 import { ToggleButtonComponent } from './shared/components/toggle-button/toggle-button.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
-import { NgIf } from '@angular/common';
+
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { InfiniteLoadingBarComponent } from './shared/components/infinite-loading-bar/infinite-loading-bar.component';
@@ -17,27 +17,26 @@ import { InfiniteLoadingBarComponent } from './shared/components/infinite-loadin
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
     imports: [
-        HeaderComponent,
-        NgIf,
-        SidebarComponent,
-        ToggleButtonComponent,
-        BreadcrumbComponent,
-        RouterOutlet,
-        FooterComponent,
-        InfiniteLoadingBarComponent,
-    ]
+    HeaderComponent,
+    SidebarComponent,
+    ToggleButtonComponent,
+    BreadcrumbComponent,
+    RouterOutlet,
+    FooterComponent,
+    InfiniteLoadingBarComponent
+]
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private toastr = inject(ToastrService);
+  private toastService = inject(ToastService);
+
   title = 'attendance-and-revanue-admin';
   toastSubscription: Subscription;
   showSideBar = false;
   showBreadCrumb = false;
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private toastr: ToastrService,
-    private toastService: ToastService
-  ) {
+  constructor() {
     this.watchForToast();
   }
 

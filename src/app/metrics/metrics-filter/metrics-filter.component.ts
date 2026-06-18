@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
@@ -26,6 +26,13 @@ import { RadioButtonsComponent } from '../../shared/components/ds-forms/radio-bu
     ]
 })
 export class MetricsFilterComponent extends BaseFormComponent {
+  protected formBuilder: UntypedFormBuilder;
+  protected router: Router;
+  protected dataService: DataService;
+  protected loadingService: LoadingService;
+  protected changeDetector: ChangeDetectorRef;
+  protected metricsService = inject(MetricsService);
+
   public params;
   public parkFacilitiesList;
   public timeSpanOptions = ['week', 'month', 'year'];
@@ -38,15 +45,20 @@ export class MetricsFilterComponent extends BaseFormComponent {
   public minDate;
   public maxDate;
 
-  constructor(
-    protected formBuilder: UntypedFormBuilder,
-    protected router: Router,
-    protected dataService: DataService,
-    protected loadingService: LoadingService,
-    protected changeDetector: ChangeDetectorRef,
-    protected metricsService: MetricsService,
-  ) {
-    super(formBuilder, router, dataService, loadingService, changeDetector);
+  constructor() {
+    const formBuilder = inject(UntypedFormBuilder);
+    const router = inject(Router);
+    const dataService = inject(DataService);
+    const loadingService = inject(LoadingService);
+    const changeDetector = inject(ChangeDetectorRef);
+
+    super();
+    this.formBuilder = formBuilder;
+    this.router = router;
+    this.dataService = dataService;
+    this.loadingService = loadingService;
+    this.changeDetector = changeDetector;
+
     this.subscriptions.add(
       this.dataService.watchItem(Constants.dataIds.PARK_AND_FACILITY_LIST).subscribe((res) => {
         this.updateFilterParams();

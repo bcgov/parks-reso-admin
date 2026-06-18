@@ -1,9 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, TemplateRef, ViewChild, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -37,6 +32,17 @@ import { FacilityEditFormPublishingDetailsComponent } from './facility-edit-form
     ]
 })
 export class FacilityEditFormComponent extends BaseFormComponent {
+  protected formBuilder: UntypedFormBuilder;
+  protected router: Router;
+  protected dataService: DataService;
+  protected loadingService: LoadingService;
+  protected changeDetector: ChangeDetectorRef;
+  private facilityService = inject(FacilityService);
+  private parkService = inject(ParkService);
+  private route = inject(ActivatedRoute);
+  private modalService = inject(BsModalService);
+  private configService = inject(ConfigService);
+
   public facility;
   public park;
   public bookingDaysFormArray;
@@ -52,19 +58,20 @@ export class FacilityEditFormComponent extends BaseFormComponent {
   @ViewChild('facilityEditConfirmationTemplate')
   facilityEditConfirmationTemplate: TemplateRef<any>;
 
-  constructor(
-    protected formBuilder: UntypedFormBuilder,
-    protected router: Router,
-    protected dataService: DataService,
-    protected loadingService: LoadingService,
-    protected changeDetector: ChangeDetectorRef,
-    private facilityService: FacilityService,
-    private parkService: ParkService,
-    private route: ActivatedRoute,
-    private modalService: BsModalService,
-    private configService: ConfigService
-  ) {
-    super(formBuilder, router, dataService, loadingService, changeDetector);
+  constructor() {
+    const formBuilder = inject(UntypedFormBuilder);
+    const router = inject(Router);
+    const dataService = inject(DataService);
+    const loadingService = inject(LoadingService);
+    const changeDetector = inject(ChangeDetectorRef);
+
+    super();
+    this.formBuilder = formBuilder;
+    this.router = router;
+    this.dataService = dataService;
+    this.loadingService = loadingService;
+    this.changeDetector = changeDetector;
+
     this.subscriptions.add(
       this.dataService
         .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)

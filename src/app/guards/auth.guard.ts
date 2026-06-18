@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { UrlTree, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { ConfigService } from '../services/config.service';
 import { KeycloakService } from '../services/keycloak.service';
@@ -7,11 +7,10 @@ import { KeycloakService } from '../services/keycloak.service';
   providedIn: 'root',
 })
 export class AuthGuard  {
-  constructor(
-    private readonly keycloakService: KeycloakService,
-    private readonly router: Router,
-    private readonly configService: ConfigService
-  ) {}
+  private readonly keycloakService = inject(KeycloakService);
+  private readonly router = inject(Router);
+  private readonly configService = inject(ConfigService);
+
 
   canActivate(
     route: ActivatedRouteSnapshot,

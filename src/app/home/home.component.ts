@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { KeycloakService } from 'src/app/services/keycloak.service';
 import { ConfigService } from '../services/config.service';
 import { NavCardComponent } from '../shared/components/nav-card/nav-card.component';
-import { NgFor } from '@angular/common';
+
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    imports: [NgFor, NavCardComponent]
+    imports: [NavCardComponent]
 })
 export class HomeComponent {
+  protected keyCloakService = inject(KeycloakService);
+  protected configService = inject(ConfigService);
+
   // This can be pulled in via the config.
   public cardConfig = [
     {
@@ -20,10 +23,9 @@ export class HomeComponent {
       navigation: '/parks',
     },
   ];
-  constructor(
-    protected keyCloakService: KeycloakService,
-    protected configService: ConfigService
-  ) {
+  constructor() {
+    const keyCloakService = this.keyCloakService;
+
     this.cardConfig.push({
       cardHeader: 'Pass Management',
       cardTitle: 'Pass Management',

@@ -7,6 +7,7 @@ import {
   OnInit,
   EventEmitter,
   OnDestroy,
+  inject,
 } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { UntypedFormControl } from '@angular/forms';
@@ -37,7 +38,7 @@ export class DatePickerComponent implements OnInit, OnChanges, OnDestroy {
 
   private utils = new Utils();
 
-  constructor(private _changeDetectionRef: ChangeDetectorRef) {}
+  private _changeDetectionRef = inject(ChangeDetectorRef);
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['minDate'] && changes['minDate'].currentValue) {

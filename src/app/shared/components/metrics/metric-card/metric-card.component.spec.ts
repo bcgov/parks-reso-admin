@@ -18,7 +18,7 @@ describe('MetricCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    component.title = 'title';
+    fixture.componentRef.setInput('title', 'title');
     fixture.detectChanges();
     const card =
       fixture.debugElement.nativeElement.getElementsByTagName('h4')[0];

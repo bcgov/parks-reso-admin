@@ -68,7 +68,7 @@ describe('TableRowComponent', () => {
   });
 
   it('loads components', async () => {
-    component.columnSchema = mockColumnSchema;
+    fixture.componentRef.setInput('columnSchema', mockColumnSchema);
     await fixture.isStable();
     fixture.detectChanges();
     component.loadComponents();

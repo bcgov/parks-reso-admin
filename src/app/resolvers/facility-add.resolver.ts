@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { DataService } from '../services/data.service';
 import { Constants } from '../shared/utils/constants';
@@ -7,7 +7,8 @@ import { Constants } from '../shared/utils/constants';
   providedIn: 'root',
 })
 export class FacilityAddResolver  {
-  constructor(protected dataService: DataService) {}
+  protected dataService = inject(DataService);
+
   resolve() {
     this.dataService.setItemValue(Constants.dataIds.CURRENT_FACILITY_KEY, null);
   }

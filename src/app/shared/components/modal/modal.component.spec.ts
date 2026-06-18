@@ -45,7 +45,7 @@ describe('ModalComponent', () => {
   });
 
   it('renders the modal', async () => {
-    component.modal = mockModal;
+    fixture.componentRef.setInput('modal', mockModal);
     await fixture.isStable();
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title'));

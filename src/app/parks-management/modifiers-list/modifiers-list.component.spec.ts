@@ -74,6 +74,7 @@ describe('ModifiersListComponent', () => {
 
   it('shows empty table message', async () => {
     component.tableRows = [];
+    fixture.changeDetectorRef.markForCheck();
     fixture.detectChanges();
     const tableElement =
       fixture.debugElement.nativeElement.querySelector('div');

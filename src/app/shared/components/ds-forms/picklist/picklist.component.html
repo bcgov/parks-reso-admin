@@ -1,36 +1,49 @@
-<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
-  >{{ label
-  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
->
+@if (label) {
+  <label for="{{ id }}" class="fw-bold mb-2"
+    >{{ label
+    }}@if (isRequired()) {
+    <span class="text-danger">&nbsp;*</span>
+    }</label
+    >
+  }
 
-<div class="input-group mb-3" [ngClass]="{ 'invalid-field': isInvalid() }">
-  <span
-    *ngIf="icon"
-    class="input-group-text"
-    id="{{ ariaDescribedBy }}"
-    [ngClass]="icon"
-    ><i class="bi"></i
-  ></span>
-  <select
-    name="{{ id }}"
-    id="{{ id }}"
-    attr.aria-label="{{ ariaLabel }}"
-    attr.aria-describedby="{{ ariaDescribedBy }}"
-    [class.with-item-left]="icon"
-    class="form-control"
-    [formControl]="control"
-    [value]="control?.value"
-  >
-    <option selected *ngIf="defaultNullDisplay" value="null">
-      {{ defaultNullDisplay }}
-    </option>
-    <option *ngFor="let option of selectOptions; index as i" value="{{ option?.value }}" [disabled]="option?.disabled">
-      <div *ngIf="!option?.breakpoint">
-        {{ option?.display }}
-      </div>
-      <div *ngIf="option?.breakpoint" class="text-light">
-        {{drawStrikeoutBar()}}
-      </div>
-    </option>
-  </select>
-</div>
+  <div class="input-group mb-3" [ngClass]="{ 'invalid-field': isInvalid() }">
+    @if (icon) {
+      <span
+        class="input-group-text"
+        id="{{ ariaDescribedBy }}"
+        [ngClass]="icon"
+        ><i class="bi"></i
+      ></span>
+    }
+    <select
+      name="{{ id }}"
+      id="{{ id }}"
+      attr.aria-label="{{ ariaLabel }}"
+      attr.aria-describedby="{{ ariaDescribedBy }}"
+      [class.with-item-left]="icon"
+      class="form-control"
+      [formControl]="control"
+      [value]="control?.value"
+      >
+      @if (defaultNullDisplay) {
+        <option selected value="null">
+          {{ defaultNullDisplay }}
+        </option>
+      }
+      @for (option of selectOptions; track option; let i = $index) {
+        <option value="{{ option?.value }}" [disabled]="option?.disabled">
+          @if (!option?.breakpoint) {
+            <div>
+              {{ option?.display }}
+            </div>
+          }
+          @if (option?.breakpoint) {
+            <div class="text-light">
+              {{drawStrikeoutBar()}}
+            </div>
+          }
+        </option>
+      }
+    </select>
+  </div>

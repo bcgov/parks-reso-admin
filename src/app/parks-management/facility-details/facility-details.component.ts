@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ConfigService } from 'src/app/services/config.service';
 import { DataService } from 'src/app/services/data.service';
@@ -6,24 +6,25 @@ import { FacilityService } from 'src/app/services/facility.service';
 import { Constants } from 'src/app/shared/utils/constants';
 import { Utils } from 'src/app/shared/utils/utils';
 import { FancyHeaderComponent } from '../../shared/components/fancy-header/fancy-header.component';
-import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-facility-details',
     templateUrl: './facility-details.component.html',
     styleUrls: ['./facility-details.component.scss'],
-    imports: [NgIf, FancyHeaderComponent]
+    imports: [FancyHeaderComponent]
 })
 export class FacilityDetailsComponent implements OnDestroy {
+  protected dataService = inject(DataService);
+  protected configService = inject(ConfigService);
+  protected facilityService = inject(FacilityService);
+
   private subscriptions = new Subscription();
   public facility;
   public Utils = new Utils();
 
-  constructor(
-    protected dataService: DataService,
-    protected configService: ConfigService,
-    protected facilityService: FacilityService
-  ) {
+  constructor() {
+    const dataService = this.dataService;
+
     this.subscriptions.add(
       dataService
         .watchItem(Constants.dataIds.CURRENT_FACILITY_KEY)

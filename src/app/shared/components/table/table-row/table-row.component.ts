@@ -1,16 +1,7 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnDestroy,
-  QueryList,
-  ViewChildren,
-  ViewContainerRef,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, QueryList, ViewChildren, ViewContainerRef, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { columnSchema } from '../table.component';
-import { NgFor, NgIf } from '@angular/common';
+
 
 @Component({
     // Throws the following linting error: https://angular.io/guide/styleguide#style-05-03
@@ -21,9 +12,11 @@ import { NgFor, NgIf } from '@angular/common';
     selector: '[app-table-row]',
     templateUrl: './table-row.component.html',
     styleUrls: ['./table-row.component.scss'],
-    imports: [NgFor, NgIf]
+    imports: []
 })
 export class TableRowComponent implements AfterViewInit, OnDestroy {
+  private cd = inject(ChangeDetectorRef);
+
   @Input() columnSchema: columnSchema[];
   @Input() set rowData(value: any) {
     this._rowData.next(value);
@@ -37,8 +30,6 @@ export class TableRowComponent implements AfterViewInit, OnDestroy {
 
   @ViewChildren('cellTemplateComponent', { read: ViewContainerRef })
   cellTemplateComponents: QueryList<ViewContainerRef>;
-
-  constructor(private cd: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
     // Ensure rowData is loaded before rendering row.

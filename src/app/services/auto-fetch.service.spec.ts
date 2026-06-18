@@ -67,13 +67,7 @@ describe('AutoFetchService', () => {
   });
 
   it('should have default time interval of 5 minutes', () => {
-    const newService = new AutoFetchService(
-      mockParkService,
-      mockFacilityService,
-      mockDataService,
-      mockLoggerService,
-      mockApiService
-    );
+    const newService = TestBed.runInInjectionContext(() => new AutoFetchService());
     expect(newService.timeIntevalSeconds).toBe(5 * 60);
   });
 

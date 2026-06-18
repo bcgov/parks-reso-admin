@@ -4,10 +4,12 @@
 <div class="pt-3 container-fluid">
   <div class="pt-md-5 container container-fluid">
     <div class="row">
-      <div class="col-md-6 col-12 mb-3" *ngFor="let card of cardConfig">
-        <app-nav-card [cardHeader]="card.cardHeader" [cardTitle]="card.cardTitle" [cardText]="card.cardText"
+      @for (card of cardConfig; track card) {
+        <div class="col-md-6 col-12 mb-3">
+          <app-nav-card [cardHeader]="card.cardHeader" [cardTitle]="card.cardTitle" [cardText]="card.cardText"
           [navigation]="card.navigation" [relative]="true"></app-nav-card>
-      </div>
+        </div>
+      }
     </div>
   </div>
 </div>

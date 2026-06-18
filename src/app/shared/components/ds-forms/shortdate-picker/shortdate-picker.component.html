@@ -1,60 +1,71 @@
-<label *ngIf="label" for="{{ id }}" class="fw-bold mb-2"
-  >{{ label
-  }}<span *ngIf="isRequired()" class="text-danger">&nbsp;*</span></label
->
-
-<div class="input-group" [ngClass]="{ 'invalid-field': isInvalid() }">
-  <span
-    *ngIf="icon"
-    class="input-group-text"
-    id="{{ ariaDescribedBy }}"
-    [ngClass]="icon"
-    ><i class="bi"></i
-  ></span>
-  <input
-    *ngIf="!range"
-    id="{{ id }}"
-    title="Select a Date"
-    class="form-control with-item-right"
-    [class.with-item-left]="icon"
-    [disabled]="checkDisabled()"
-    bsDatepicker
-    placeholder="Select date"
-    type="text"
-    name="{{ id }}"
-    [minDate]="minDate"
-    [(ngModel)]="modelDate"
-    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-    (ngModelChange)="onDateChange()"
-  />
-  <input
-    *ngIf="range"
-    id="{{ id }}"
-    title="Select a Date"
-    class="form-control with-item-right"
-    [class.with-item-left]="icon"
-    [disabled]="checkDisabled()"
-    bsDaterangepicker
-    placeholder="Select date range"
-    type="text"
-    name="{{ id }}"
-    [minDate]="minDate"
-    [maxDate]="maxDate"
-    [(ngModel)]="modelDate"
-    [bsConfig]="{ rangeInputFormat: 'YYYY-MM-DD', maxDateRange: maxDateRange }"
-    (ngModelChange)="onDateChange()"
-  />
-
-  <div
-    class="input-group-text clear-button"
+@if (label) {
+  <label for="{{ id }}" class="fw-bold mb-2"
+    >{{ label
+    }}@if (isRequired()) {
+    <span class="text-danger">&nbsp;*</span>
+    }</label
     >
-    <div *ngIf="control?.enabled"
-      title="Clear Date"
-      (click)="clearDate()">
-      <i class="bi bi-x-lg"></i>
-    </div>
-    <div *ngIf="!control?.enabled">
-      <i class="spinner-border spinner-border-sm"></i>
+  }
+
+  <div class="input-group" [ngClass]="{ 'invalid-field': isInvalid() }">
+    @if (icon) {
+      <span
+        class="input-group-text"
+        id="{{ ariaDescribedBy }}"
+        [ngClass]="icon"
+        ><i class="bi"></i
+      ></span>
+    }
+    @if (!range) {
+      <input
+        id="{{ id }}"
+        title="Select a Date"
+        class="form-control with-item-right"
+        [class.with-item-left]="icon"
+        [disabled]="checkDisabled()"
+        bsDatepicker
+        placeholder="Select date"
+        type="text"
+        name="{{ id }}"
+        [minDate]="minDate"
+        [(ngModel)]="modelDate"
+        [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+        (ngModelChange)="onDateChange()"
+        />
+    }
+    @if (range) {
+      <input
+        id="{{ id }}"
+        title="Select a Date"
+        class="form-control with-item-right"
+        [class.with-item-left]="icon"
+        [disabled]="checkDisabled()"
+        bsDaterangepicker
+        placeholder="Select date range"
+        type="text"
+        name="{{ id }}"
+        [minDate]="minDate"
+        [maxDate]="maxDate"
+        [(ngModel)]="modelDate"
+        [bsConfig]="{ rangeInputFormat: 'YYYY-MM-DD', maxDateRange: maxDateRange }"
+        (ngModelChange)="onDateChange()"
+        />
+    }
+
+    <div
+      class="input-group-text clear-button"
+      >
+      @if (control?.enabled) {
+        <div
+          title="Clear Date"
+          (click)="clearDate()">
+          <i class="bi bi-x-lg"></i>
+        </div>
+      }
+      @if (!control?.enabled) {
+        <div>
+          <i class="spinner-border spinner-border-sm"></i>
+        </div>
+      }
     </div>
   </div>
-</div>

@@ -51,7 +51,8 @@ describe('BreadcrumbComponent', () => {
 
   it('should navigate to enter-data', async () => {
     component.onNavigate('/enter-data');
-    await fixture.isStable();
+    await fixture.whenStable();
+    fixture.changeDetectorRef.markForCheck();
     fixture.detectChanges();
     expect(component['router'].url).toEqual('/enter-data');
   });

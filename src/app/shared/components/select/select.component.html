@@ -6,7 +6,9 @@
   [ngModel]="model"
   (ngModelChange)="emit($event)"
   [disabled]="disabled ? true : false"
->
+  >
   <option selected>- Select an option -</option>
-  <option *ngFor="let item of data" [value]="item.id">{{ item.label }}</option>
+  @for (item of data; track item) {
+    <option [value]="item.id">{{ item.label }}</option>
+  }
 </select>

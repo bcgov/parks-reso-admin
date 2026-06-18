@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Subject, firstValueFrom, takeUntil } from 'rxjs';
 import { Constants } from '../shared/utils/constants';
 import { ApiService } from './api.service';
@@ -13,15 +13,14 @@ import { FacilityService } from './facility.service';
   providedIn: 'root',
 })
 export class ReservationService {
-  constructor(
-    private dataService: DataService,
-    private eventService: EventService,
-    private toastService: ToastService,
-    private loggerService: LoggerService,
-    private apiService: ApiService,
-    private loadingService: LoadingService,
-    private facilityService: FacilityService
-  ) { }
+  private dataService = inject(DataService);
+  private eventService = inject(EventService);
+  private toastService = inject(ToastService);
+  private loggerService = inject(LoggerService);
+  private apiService = inject(ApiService);
+  private loadingService = inject(LoadingService);
+  private facilityService = inject(FacilityService);
+
 
   async fetchData(parkSk, facilitySk, resDate = null, selectedPassType = null) {
     let res;

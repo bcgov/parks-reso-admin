@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  TemplateRef,
-  ViewChild,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, TemplateRef, ViewChild, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -15,21 +9,29 @@ import { BaseFormComponent } from 'src/app/shared/components/ds-forms/base-form/
 import { modalSchema } from 'src/app/shared/components/modal/modal.component';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
 import { WysiwygInputComponent } from '../../shared/components/ds-forms/wysiwyg-input/wysiwyg-input.component';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'app-faq-edit',
     templateUrl: './faq-edit.component.html',
     styleUrls: ['./faq-edit.component.scss'],
     imports: [
-        FormsModule,
-        NgIf,
-        WysiwygInputComponent,
-        ModalComponent,
-    ]
+    FormsModule,
+    WysiwygInputComponent,
+    ModalComponent
+]
 })
 //reput implements on innit
 export class FaqEditComponent extends BaseFormComponent implements OnInit {
+  protected formBuilder: UntypedFormBuilder;
+  protected router: Router;
+  protected dataService: DataService;
+  protected loadingService: LoadingService;
+  protected changeDetector: ChangeDetectorRef;
+  private faqService = inject(FaqService);
+  private route = inject(ActivatedRoute);
+  private modalService = inject(BsModalService);
+
   public faqData : any;
   public sanityCheck : any;
   public faqEditModal: modalSchema;
@@ -38,17 +40,20 @@ export class FaqEditComponent extends BaseFormComponent implements OnInit {
   @ViewChild('faqEditTemplate')
   faqEditTemplate: TemplateRef<any>;
 
-  constructor(
-    protected formBuilder: UntypedFormBuilder,
-    protected router: Router,
-    protected dataService: DataService,
-    protected loadingService: LoadingService,
-    protected changeDetector: ChangeDetectorRef,
-    private faqService: FaqService,
-    private route: ActivatedRoute,
-    private modalService: BsModalService
-    ) {
-    super(formBuilder, router, dataService, loadingService, changeDetector);
+  constructor() {
+    const formBuilder = inject(UntypedFormBuilder);
+    const router = inject(Router);
+    const dataService = inject(DataService);
+    const loadingService = inject(LoadingService);
+    const changeDetector = inject(ChangeDetectorRef);
+
+    super();
+  
+    this.formBuilder = formBuilder;
+    this.router = router;
+    this.dataService = dataService;
+    this.loadingService = loadingService;
+    this.changeDetector = changeDetector;
   }
  async ngOnInit() {
     const data = await this.faqService.fetchData()

@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 import { DataService } from 'src/app/services/data.service';
@@ -9,15 +9,22 @@ import { PassUtils } from 'src/app/utils/pass-utils';
 import { DateTime } from 'luxon';
 import { KeycloakService } from 'src/app/services/keycloak.service';
 import { FacilityService } from 'src/app/services/facility.service';
-import { NgIf, NgFor } from '@angular/common';
+
 
 @Component({
     selector: 'app-passes-utility-buttons',
     templateUrl: './passes-utility-buttons.component.html',
     styleUrls: ['./passes-utility-buttons.component.scss'],
-    imports: [NgIf, NgFor]
+    imports: []
 })
 export class PassesUtilityButtonsComponent implements OnDestroy {
+  protected apiService = inject(ApiService);
+  protected toastService = inject(ToastService);
+  protected dataService = inject(DataService);
+  protected keyCloakService = inject(KeycloakService);
+  protected passService = inject(PassService);
+  protected facilityService = inject(FacilityService);
+
   private subscriptions = new Subscription();
   public facility;
   private parkSk;
@@ -25,14 +32,9 @@ export class PassesUtilityButtonsComponent implements OnDestroy {
 
   public passes;
 
-  constructor(
-    protected apiService: ApiService,
-    protected toastService: ToastService,
-    protected dataService: DataService,
-    protected keyCloakService: KeycloakService,
-    protected passService: PassService,
-    protected facilityService: FacilityService
-  ) {
+  constructor() {
+    const dataService = this.dataService;
+
     this.subscriptions.add(
       dataService.watchItem(Constants.dataIds.FILTERED_PASSES_LIST).subscribe((res) => {
         this.passes = res;
